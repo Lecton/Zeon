@@ -1,0 +1,25 @@
+Primary Priorities:
+
+	Video Streaming
+	Microphone Streaming
+	Windows Compatibility
+	Direct Compatible (Offline Server)
+	Titling virtual screen
+
+Secondary Priorities:
+
+	Server Compatible
+	Android Compatible
+	Audio Stream Capturing
+
+Tertiary Priorities:
+
+	Virtual Screen Editing
+	Secure Connection
+	Safety
+	iOS Compatibility
+
+Added Features:
+
+	User friendly
+	Simple GUI
