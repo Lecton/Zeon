@@ -1,0 +1,5 @@
+http://www.coderanch.com/t/473431/java/java/Java-Media-Framework-capture-screen
+http://stackoverflow.com/questions/9242045/screen-capture-using-java-making-a-java-based-screen-recorder
+http://www.screenleap.com/api
+http://www.oracle.com/technetwork/java/javase/documentation/screengrabber-178281.html#howto
+http://www.xuggle.com/xuggler
