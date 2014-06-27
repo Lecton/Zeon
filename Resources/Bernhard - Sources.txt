@@ -3,3 +3,4 @@ http://stackoverflow.com/questions/9242045/screen-capture-using-java-making-a-ja
 http://www.screenleap.com/api
 http://www.oracle.com/technetwork/java/javase/documentation/screengrabber-178281.html#howto
 http://www.xuggle.com/xuggler
+http://developeriq.in/articles/2011/jul/09/sharing-your-display-over-network-with-java/
