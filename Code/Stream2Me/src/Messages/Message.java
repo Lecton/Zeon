@@ -13,9 +13,11 @@ import java.util.Date;
  */
 public class Message implements Serializable {
     public String Sender ="";
+    public int ID =-1;
     public String Title ="";
     public Date timestamp =null;
     public transient int SSN;
+    public String passwordHash ="";
     
     /**
      * Returns the message being send as a String

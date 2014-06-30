@@ -12,7 +12,6 @@ import java.io.Serializable;
  */
 public class Greeting extends Message {
     public String name ="";
-    public int ID =-1;
     public int[] colleagueIDs;
     public String[] colleagueNames;
     public int size;

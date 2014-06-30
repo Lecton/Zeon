@@ -9,7 +9,6 @@ package Messages;
  * @author Lecton
  */
 public class RemoveUser extends Message {
-    public int ID =-1;
     public int size =0;
     
     public RemoveUser(int ID, int size, String Sender) {

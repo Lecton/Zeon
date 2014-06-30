@@ -12,7 +12,6 @@ import server.clientConnection;
  * @author Lecton
  */
 public class UpdateUser extends Message {
-    public int ID =-1;
     public String name ="";
     
     public UpdateUser(int ID, String name) {
