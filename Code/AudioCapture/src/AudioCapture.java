@@ -1,6 +1,3 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -10,80 +7,70 @@ import javax.sound.sampled.*;
 
 public class AudioCapture 
 {
-
   protected boolean running;
   ByteArrayOutputStream out;
   TargetDataLine line;
   Socket socket = null;
-  DataOutputStream dOut = null;
+  DataOutputStream dos = null;
+  String HOST = "127.0.0.1";
+  DataLine.Info info;
   
   public AudioCapture()
   {
-//    Container content = frame.getContentPane();
+        try 
+        {
+            socket = new Socket(HOST, 10007);
+            dos = new DataOutputStream(socket.getOutputStream());
+            info = new DataLine.Info(TargetDataLine.class, getFormat());
+            line = (TargetDataLine) AudioSystem.getLine(info);
+            line.open(getFormat());
+            line.start();
 
-
-
-
-    
-    
-    try {
-        String serverHostname = new String("127.0.0.1");
-        PrintWriter output = null;
-        BufferedReader input = null;
-            socket = new Socket(serverHostname, 10007);
-        dOut = new DataOutputStream(socket.getOutputStream());
-        
-        DataLine.Info info = new DataLine.Info(
-                                  TargetDataLine.class, getFormat());
-        line = (TargetDataLine) AudioSystem.getLine(info);
-        line.open(getFormat());
-        line.start();
-    } catch (UnknownHostException ex) {
-        Logger.getLogger(AudioCapture.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (IOException ex) {
-        Logger.getLogger(AudioCapture.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (LineUnavailableException e){
-      System.err.println("Line unavailable: " + e);
-      System.exit(-2);
-    }
-
-
+        }
+        catch (IOException | LineUnavailableException ex){
+            ex.printStackTrace();
+        }
   }
 
   protected void captureAudio() throws UnknownHostException, IOException 
   {
-        Runnable runner = new Runnable(){
-        int bufferSize = (int)getFormat().getSampleRate() * getFormat().getFrameSize();
-        byte buffer[] = new byte[bufferSize];
- 
-        public void run(){
-            out = new ByteArrayOutputStream();
-            running = true;
-            
-            try
+        Runnable runner = new Runnable()
+        {
+            int bufferSize = (int)getFormat().getSampleRate() * getFormat().getFrameSize();
+            byte buffer[] = new byte[bufferSize];
+
+            public void run()
             {
-              while (running) 
-              {
-                int count = line.read(buffer, 0, buffer.length);
-                if (count > 0){
-                  out.write(buffer, 0, count);
-                  dOut.writeInt(count);
-                  dOut.write(buffer); 
+                out = new ByteArrayOutputStream();
+                running = true;
+                try
+                {
+                  while (running) 
+                  {
+                        int count = line.read(buffer, 0, buffer.length);
+                        if (count > 0)
+                        {
+                          out.write(buffer, 0, count);
+                          dos.writeInt(count);
+                          dos.write(buffer); 
+                        }
+                  }
+                  out.close();
                 }
-              }
-              out.close();
-            }catch(IOException e){
-              System.err.println("I/O problems: " + e);
-              System.exit(-1);
+                catch(IOException ex)
+                {
+                  ex.printStackTrace();
+                }
             }
-        }
       };
+        
       Thread captureThread = new Thread(runner);
       captureThread.start();
   }
 
 
-  private AudioFormat getFormat(){
+  private AudioFormat getFormat()
+  {
     float sampleRate = 8000;
     int sampleSizeInBits = 8;
     int channels = 1;
@@ -91,7 +78,7 @@ public class AudioCapture
     boolean bigEndian = true;
     
     return new AudioFormat(sampleRate, 
-        sampleSizeInBits, channels, signed, bigEndian);
+                                    sampleSizeInBits, channels, signed, bigEndian);
   }
 
 }
