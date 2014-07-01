@@ -4,9 +4,12 @@
  * and open the template in the editor.
  */
 
+import client.Client;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.xml.stream.events.StartDocument;
 import server.RelayServer;
 
 /**
@@ -17,13 +20,12 @@ public class main {
     /**
      * @param args the comm and line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         try {
             RelayServer rs =new RelayServer(2014);
             rs.start();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        
     }
 }

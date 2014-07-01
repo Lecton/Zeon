@@ -17,28 +17,55 @@ public class Colleague {
     String name ="";
     String localName ="";
     String content = "";
-    JPanel panel = new JPanel();
-    JLabel label = new JLabel(content);
-
-    public boolean contained(ArrayList<Colleague> list) {
-        for (int i=0; i<list.size(); i++) {
-            if (list.get(i).ID == ID) {
-                return true;
-            }
-        }
-        return false;
+    JPanel panel;
+    JLabel label;
+    int tabIndex =-1;
+    
+    /**
+     * Create a new Colleague and set its default panel content
+     */
+    public Colleague() {
+        panel =new JPanel();
+        label =new JLabel(content);
+        panel.add(label);
+    }
+    
+    /**
+     * Update the content of the Colleague panel
+     */
+    public void updatePanel() {
+        label.setText(content);
     }
 
-    public boolean update(ArrayList<Colleague> list) {
+    /**
+     * Checks if the current colleague is contained in the list
+     * @param list Array of colleague objects
+     * @return index if list if contained. -1 if not
+     */
+    public int contained(ArrayList<Colleague> list) {
         for (int i=0; i<list.size(); i++) {
-            Colleague c =list.get(i);
-            if (c.ID == ID) {
-                if (c.localName.equalsIgnoreCase(c.name)) {
-                    c.localName =name;
-                }
-                c.name = name;
+            if (list.get(i).ID == ID) {
+                return i;
             }
         }
-        return false;
+        return -1;
+    }
+
+    /**
+     * Updates the other colleague object with the details in the current one 
+     * if the current one has the same ID and the other one
+     * @param other Colleague to update
+     * @return true if successfully update. false if not
+     */
+    public boolean update(Colleague other) {
+        if (other.ID == ID) {
+            if (other.localName.equalsIgnoreCase(other.name)) {
+                other.localName =name;
+            }
+            other.name = name;
+            return true;
+        } else {
+            return false;
+        }
     }
 }
