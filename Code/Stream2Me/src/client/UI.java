@@ -6,10 +6,15 @@
 
 package client;
 
+import Messages.ClientInit;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -18,18 +23,23 @@ import javax.swing.SwingUtilities;
 public class UI extends JFrame {
     protected enum Action {REMOVE, ADD, UPDATE}
     
-    JTabbedPane jtp;
+    private Connection con =null;
+    private JTabbedPane jtp;
+    private JMenuBar menuBar =null;
+    private inStream input =null;
+    private Client client =null;
     
-    public UI() {
-        setupUI("");
-    }
+    public String name ="User";
+    public int ID =-1;
     
-    public UI(String name) {
-        setupUI(name);
-    }
-    
-    private synchronized void setupUI(String name) {
-//        setDefaultLookAndFeelDecorated(false);
+    public UI(String name, int PORT, Client client) {
+        this.client =client;
+        this.name =name;
+        con =new Connection();
+        con.setPORT(PORT);
+        con.setAddress("127.0.0.1");
+        
+        setDefaultLookAndFeelDecorated(false);
         if (name.isEmpty()) {
             setTitle("Stream2Me");
         } else {
@@ -38,46 +48,53 @@ public class UI extends JFrame {
         
         setMinimumSize(new Dimension(300, 300));
         
-        jtp = new JTabbedPane();
-        getContentPane().add(jtp);
         
+        menuBar =new JMenuBar();
+        createMenu();
+        setJMenuBar(menuBar);
+        
+        jtp = new JTabbedPane();
+        add(jtp);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+        
+        input =new inStream(this);
     }
     
-    public synchronized void updateGUI(Colleague coll, Action act) {
-        switch (act) {
-            case REMOVE: 
+    private void createMenu() {
+        final JMenuItem connect =new JMenuItem("Connect");
+        connect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 try {
-                    jtp.invalidate();
-                    jtp.removeTabAt(coll.tabIndex);
-                    jtp.validate();
-                    
-                    System.out.println("Remove user"+coll.localName);
-                } catch (IndexOutOfBoundsException ioobe) {
-                    System.err.println("UPDATEGUI - Error removing user");
+                    con.makeConnection();
+                    con.write(new ClientInit(name));
+                    input.setInputStream(con.getInputStream());
+                    (new Thread(input)).start();
+                    connect.setEnabled(false);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
+            }
+        });
+        menuBar.add(connect);
+    }
+    
+    
+    public void updateGUI(Colleague coll, UI.Action action) {
+        switch (action) {
+            case ADD:
+                coll.tabIndex =jtp.getTabCount();
+                jtp.add(coll.localName, coll.panel);
                 break;
-                
-            case ADD: //IDindex will be -1
-                jtp.invalidate();
-                jtp.addTab(""+coll.localName, coll.panel);
-                jtp.validate();
-                
-                coll.updatePanel();
-                coll.tabIndex =jtp.getTabCount()-1;
-                System.out.println("Add user "+coll.localName);
+            case REMOVE:
+                jtp.removeTabAt(coll.tabIndex);
                 break;
             case UPDATE:
                 jtp.setTitleAt(coll.tabIndex, coll.localName);
-                
-                coll.updatePanel();
-                System.out.println("Update user "+coll.localName);
                 break;
             default:
                 break;
         }
-        
-        jtp.updateUI();
     }
 }

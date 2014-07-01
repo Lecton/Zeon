@@ -2,10 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
+package ClientOld;
 
-import Messages.*;
+import Messages.Greeting;
+import Messages.Message;
+import Messages.NewUser;
+import Messages.RemoveUser;
+import Messages.StringMessage;
+import Messages.UpdateUser;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
@@ -17,14 +23,13 @@ import java.util.ArrayList;
 public class inStream implements Runnable {
     public ArrayList<Colleague> colleagues = new ArrayList<>();
     private ObjectInputStream ois = null;
-    private UI userInterface =null;
+    private Client client = null;
+    private UI userInterface = null;
 
-    public inStream(UI userInterface) {
+    public inStream(InputStream input, Client c, UI userInterface) throws IOException {
+        ois = new ObjectInputStream(input);
+        this.client =c;
         this.userInterface =userInterface;
-    }
-    
-    public void setInputStream(ObjectInputStream ois) {
-        this.ois =ois;
     }
 
     @Override
@@ -33,14 +38,17 @@ public class inStream implements Runnable {
             try {
                 Object o = ois.readObject();
                 Message m =(Message)o;
+
                 if (m instanceof Greeting) {
                     greetUserMessage(m);
                 } else if (m instanceof NewUser) {
                     newUserMessage(m);
-                } else if (m instanceof RemoveUser) {
-                    removeUserMessage(m);
                 } else if (m instanceof UpdateUser) {
                     updateUserMessage(m);
+                } else if (m instanceof RemoveUser) {
+                    removeUserMessage(m);
+                } else if (m instanceof StringMessage) {
+                    stringUserMessage(m);
                 } else {
                     System.out.println("Message: "+m.getMessage());
                 }
@@ -68,12 +76,11 @@ public class inStream implements Runnable {
 
     private void greetUserMessage(Message m) {
         Greeting g =(Greeting) m;
-        userInterface.ID =g.ID;
+        client.ID =g.ID;
         Colleague cc =new Colleague();
-        
         cc.ID =g.ID;
-        cc.name =userInterface.name;
-        cc.localName =userInterface.name;
+        cc.name =client.name;
+        cc.localName =client.name;
         colleagues.add(cc);
         userInterface.updateGUI(cc, UI.Action.ADD);
 
@@ -90,7 +97,7 @@ public class inStream implements Runnable {
     private void newUserMessage(Message m) {
         NewUser um =(NewUser)m;
         
-        if (um.ID != userInterface.ID) {
+        if (um.ID != client.ID) {
             Colleague tempColleague =new Colleague();
             tempColleague.ID =um.ID;
             tempColleague.name =um.name;
@@ -109,12 +116,21 @@ public class inStream implements Runnable {
         if (index != -1) {
             userInterface.updateGUI(colleagues.get(index), UI.Action.REMOVE);
             colleagues.remove(index);
-            for (int i=index; i<colleagues.size(); i++) {
-                colleagues.get(i).tabIndex--;
-            }
         }
         
         System.out.println("Removed User");
+    }
+
+    private void stringUserMessage(Message m) {
+        System.out.println(m.getMessage());
+
+        StringMessage sm =(StringMessage)m;
+        
+        int index =-1;
+        if((index =find(sm.ID)) != -1){
+            colleagues.get(index).content += m.getMessage() + "\n";
+            userInterface.updateGUI(colleagues.get(index), UI.Action.UPDATE);
+        }
     }
 
     private void updateUserMessage(Message m) {

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-import client.Client;
+import ClientOld.Client;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

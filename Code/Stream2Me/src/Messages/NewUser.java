@@ -22,6 +22,6 @@ public class NewUser extends Message {
     }
     
     public String getMessage() {
-        return "Update " + ":" + size;
+        return "New User " + ":" + size;
     }
 }
