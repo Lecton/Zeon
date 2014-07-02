@@ -16,7 +16,7 @@ public class Colleague {
     int ID =-1;
     String name ="";
     String localName ="";
-    String content = "";
+    String content = "This is the label";
     JPanel panel;
     JLabel label;
     int tabIndex =-1;
@@ -27,14 +27,20 @@ public class Colleague {
     public Colleague() {
         panel =new JPanel();
         label =new JLabel(content);
-        panel.add(label);
+        setupPanel();
     }
     
     /**
      * Update the content of the Colleague panel
      */
     public void updatePanel() {
+        panel.removeAll();
         label.setText(content);
+        setupPanel();
+    }
+    
+    private void setupPanel() {
+        panel.add(label);
     }
 
     /**

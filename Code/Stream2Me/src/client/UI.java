@@ -91,6 +91,7 @@ public class UI extends JFrame {
                 jtp.removeTabAt(coll.tabIndex);
                 break;
             case UPDATE:
+                coll.updatePanel();
                 jtp.setTitleAt(coll.tabIndex, coll.localName);
                 break;
             default:

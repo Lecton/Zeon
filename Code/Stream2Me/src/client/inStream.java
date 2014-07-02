@@ -41,6 +41,8 @@ public class inStream implements Runnable {
                     removeUserMessage(m);
                 } else if (m instanceof UpdateUser) {
                     updateUserMessage(m);
+                } else if (m instanceof StringMessage) {
+                    stringUserMessage(m);
                 } else {
                     System.out.println("Message: "+m.getMessage());
                 }
@@ -126,6 +128,18 @@ public class inStream implements Runnable {
                 colleagues.get(index).localName =uu.name;
             }
             colleagues.get(index).name =uu.name;
+            userInterface.updateGUI(colleagues.get(index), UI.Action.UPDATE);
+        }
+    }
+
+    private void stringUserMessage(Message m) {
+        System.out.println(m.getMessage());
+
+        StringMessage sm =(StringMessage)m;
+        
+        int index =-1;
+        if((index =find(sm.ID)) != -1){
+            colleagues.get(index).content += m.getMessage() + "\n";
             userInterface.updateGUI(colleagues.get(index), UI.Action.UPDATE);
         }
     }
