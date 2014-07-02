@@ -13,34 +13,15 @@ import javax.swing.JPanel;
  * @author Lecton
  */
 public class Colleague {
-    int ID =-1;
-    String name ="";
-    String localName ="";
-    String content = "This is the label";
-    JPanel panel;
-    JLabel label;
-    int tabIndex =-1;
+    public int ID =-1;
+    public String name ="";
+    public String localName ="";
+    public String content = "This is the label";
     
     /**
      * Create a new Colleague and set its default panel content
      */
     public Colleague() {
-        panel =new JPanel();
-        label =new JLabel(content);
-        setupPanel();
-    }
-    
-    /**
-     * Update the content of the Colleague panel
-     */
-    public void updatePanel() {
-        panel.removeAll();
-        label.setText(content);
-        setupPanel();
-    }
-    
-    private void setupPanel() {
-        panel.add(label);
     }
 
     /**

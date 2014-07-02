@@ -6,6 +6,7 @@
 
 package client;
 
+import client.GUI.GUI;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,7 +16,7 @@ import javax.swing.JOptionPane;
 public class Client {
     private int PORT =2014;
     private String name ="User";
-    private UI userInterface =null;
+    private GUI userInterface =null;
     
     public Client() {
         setup();
@@ -33,7 +34,12 @@ public class Client {
     }
     
     private void setup() {
-        userInterface =new UI(name, PORT, this);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                userInterface =new GUI(name, PORT, Client.this);
+                userInterface.setVisible(true);
+            }
+        });
     }
     
     public static void main(String[] args){

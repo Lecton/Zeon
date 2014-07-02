@@ -5,6 +5,7 @@
 package client;
 
 import Messages.*;
+import client.GUI.GUI;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -15,11 +16,10 @@ import java.util.ArrayList;
  * @author Bernhard
  */
 public class inStream implements Runnable {
-    public ArrayList<Colleague> colleagues = new ArrayList<>();
     private ObjectInputStream ois = null;
-    private UI userInterface =null;
+    private GUI userInterface =null;
 
-    public inStream(UI userInterface) {
+    public inStream(GUI userInterface) {
         this.userInterface =userInterface;
     }
     
@@ -60,8 +60,8 @@ public class inStream implements Runnable {
      * @return the colleague index or -1 if no one has that ID
      */
     private int find(int ID) {
-        for (int i=0; i<colleagues.size(); i++) {
-            if (colleagues.get(i).ID == ID) {
+        for (int i=0; i<userInterface.ContactPane.colleagues.size(); i++) {
+            if (userInterface.ContactPane.colleagues.get(i).ID == ID) {
                 return i;
             }
         }
@@ -76,16 +76,16 @@ public class inStream implements Runnable {
         cc.ID =g.ID;
         cc.name =userInterface.name;
         cc.localName =userInterface.name;
-        colleagues.add(cc);
-        userInterface.updateGUI(cc, UI.Action.ADD);
+        userInterface.ContactPane.addContact(cc);
+//        userInterface.updateGUI(cc, GUI.Action.ADD);
 
         for (int i=0; i<g.size; i++) {
             Colleague c =new Colleague();
             c.ID =g.colleagueIDs[i];
             c.name =g.colleagueNames[i];
             c.localName =c.name;
-            colleagues.add(c);
-            userInterface.updateGUI(c, UI.Action.ADD);
+            userInterface.ContactPane.addContact(c);
+//            userInterface.updateGUI(c, GUI.Action.ADD);
         }
     }
     
@@ -97,9 +97,9 @@ public class inStream implements Runnable {
             tempColleague.ID =um.ID;
             tempColleague.name =um.name;
             tempColleague.localName =um.name;
-            
-            colleagues.add(tempColleague);
-            userInterface.updateGUI(tempColleague, UI.Action.ADD);
+            userInterface.ContactPane.addContact(tempColleague);
+//            colleagues.add(tempColleague);
+//            userInterface.updateGUI(tempColleague, GUI.Action.ADD);
         }
     }
 
@@ -109,11 +109,12 @@ public class inStream implements Runnable {
         
         int index =find(ru.ID);
         if (index != -1) {
-            userInterface.updateGUI(colleagues.get(index), UI.Action.REMOVE);
-            colleagues.remove(index);
-            for (int i=index; i<colleagues.size(); i++) {
-                colleagues.get(i).tabIndex--;
-            }
+//            userInterface.updateGUI(colleagues.get(index), GUI.Action.REMOVE);
+            userInterface.ContactPane.removeContact(userInterface.ContactPane.colleagues.get(index));
+//            colleagues.remove(index);
+//            for (int i=index; i<colleagues.size(); i++) {
+//                colleagues.get(i).tabIndex--;
+//            }
         }
         
         System.out.println("Removed User");
@@ -124,11 +125,11 @@ public class inStream implements Runnable {
         
         int index =-1;
         if ((index =find(uu.ID)) != -1) {
-            if (colleagues.get(index).name.equalsIgnoreCase(colleagues.get(index).localName)) {
-                colleagues.get(index).localName =uu.name;
+            if (userInterface.ContactPane.colleagues.get(index).name.equalsIgnoreCase(userInterface.ContactPane.colleagues.get(index).localName)) {
+                userInterface.ContactPane.colleagues.get(index).localName =uu.name;
             }
-            colleagues.get(index).name =uu.name;
-            userInterface.updateGUI(colleagues.get(index), UI.Action.UPDATE);
+            userInterface.ContactPane.colleagues.get(index).name =uu.name;
+//            userInterface.updateGUI(colleagues.get(index), GUI.Action.UPDATE);
         }
     }
 
@@ -139,8 +140,8 @@ public class inStream implements Runnable {
         
         int index =-1;
         if((index =find(sm.ID)) != -1){
-            colleagues.get(index).content += m.getMessage() + "\n";
-            userInterface.updateGUI(colleagues.get(index), UI.Action.UPDATE);
+            userInterface.ContactPane.colleagues.get(index).content += m.getMessage() + "\n";
+//            userInterface.updateGUI(colleagues.get(index), GUI.Action.UPDATE);
         }
     }
 }
