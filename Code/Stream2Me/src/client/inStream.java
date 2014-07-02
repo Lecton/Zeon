@@ -53,20 +53,6 @@ public class inStream implements Runnable {
             }
         }
     }
-    
-    /**
-     * Find the colleague with the same ID as provided and returns his index
-     * @param ID of the colleague to find
-     * @return the colleague index or -1 if no one has that ID
-     */
-    private int find(int ID) {
-        for (int i=0; i<userInterface.ContactPane.colleagues.size(); i++) {
-            if (userInterface.ContactPane.colleagues.get(i).ID == ID) {
-                return i;
-            }
-        }
-        return -1;
-    }
 
     private void greetUserMessage(Message m) {
         Greeting g =(Greeting) m;
@@ -77,7 +63,6 @@ public class inStream implements Runnable {
         cc.name =userInterface.name;
         cc.localName =userInterface.name;
         userInterface.ContactPane.addContact(cc);
-//        userInterface.updateGUI(cc, GUI.Action.ADD);
 
         for (int i=0; i<g.size; i++) {
             Colleague c =new Colleague();
@@ -85,7 +70,6 @@ public class inStream implements Runnable {
             c.name =g.colleagueNames[i];
             c.localName =c.name;
             userInterface.ContactPane.addContact(c);
-//            userInterface.updateGUI(c, GUI.Action.ADD);
         }
     }
     
@@ -107,30 +91,22 @@ public class inStream implements Runnable {
         RemoveUser ru =(RemoveUser)m;
         boolean done =false;
         
-        int index =find(ru.ID);
-        if (index != -1) {
+//        int index =find(ru.ID);
+//        if (index != -1) {
 //            userInterface.updateGUI(colleagues.get(index), GUI.Action.REMOVE);
-            userInterface.ContactPane.removeContact(userInterface.ContactPane.colleagues.get(index));
+//            userInterface.ContactPane.removeContact(userInterface.ContactPane.colleagues.get(index));
 //            colleagues.remove(index);
 //            for (int i=index; i<colleagues.size(); i++) {
 //                colleagues.get(i).tabIndex--;
 //            }
-        }
+//        }
         
         System.out.println("Removed User");
     }
 
     private void updateUserMessage(Message m) {
         UpdateUser uu =(UpdateUser) m;
-        
-        int index =-1;
-        if ((index =find(uu.ID)) != -1) {
-            if (userInterface.ContactPane.colleagues.get(index).name.equalsIgnoreCase(userInterface.ContactPane.colleagues.get(index).localName)) {
-                userInterface.ContactPane.colleagues.get(index).localName =uu.name;
-            }
-            userInterface.ContactPane.colleagues.get(index).name =uu.name;
-//            userInterface.updateGUI(colleagues.get(index), GUI.Action.UPDATE);
-        }
+        userInterface.ContactPane.updateUser(uu);
     }
 
     private void stringUserMessage(Message m) {
@@ -139,9 +115,9 @@ public class inStream implements Runnable {
         StringMessage sm =(StringMessage)m;
         
         int index =-1;
-        if((index =find(sm.ID)) != -1){
+//        if((index =find(sm.ID)) != -1){
             userInterface.ContactPane.colleagues.get(index).content += m.getMessage() + "\n";
 //            userInterface.updateGUI(colleagues.get(index), GUI.Action.UPDATE);
-        }
+//        }
     }
 }

@@ -6,16 +6,22 @@
 
 package client.GUI;
 
+import Messages.UpdateUser;
 import client.Colleague;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
 import java.util.ArrayList;
+import javax.swing.GroupLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.LayoutStyle;
 import javax.swing.ListCellRenderer;
 
 /**
@@ -35,6 +41,20 @@ public class Contacts extends JScrollPane {
         setViewportView(list);
     }
     
+    /**
+     * Find the colleague with the same ID as provided and returns his index
+     * @param ID of the colleague to find
+     * @return the colleague index or -1 if no one has that ID
+     */
+    private int find(int ID) {
+        for (int i=0; i<colleagues.size(); i++) {
+            if (colleagues.get(i).ID == ID) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
     public void addContact(Colleague coll) {
         System.out.println("User added");
         colleagues.add(coll);
@@ -46,30 +66,71 @@ public class Contacts extends JScrollPane {
         colleagues.remove(coll);
         list.setListData(colleagues.toArray());
     }
+
+    public void updateUser(UpdateUser uu) {
+        System.out.println("User updated");
+        int index =-1;
+        if ((index =find(uu.ID)) != -1) {
+            colleagues.get(index).setName(uu.name);
+        }
+        list.setListData(colleagues.toArray());
+    }
     
     private class CellRenderer extends JPanel implements ListCellRenderer<Colleague> {
         private final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
 
         private JLabel name;
         private JLabel avatar;
+        private JButton button1;
+        private JButton button2;
+        private GroupLayout layout;
 
         public CellRenderer() {
             setOpaque(true);
             this.setLayout(new BorderLayout());
             name =new JLabel("User");
             avatar =new JLabel();
+            layout = new GroupLayout(this);
             
-            add(name);
-            add(avatar);
-            
+            button1 = new JButton();
+            button2 = new JButton();
+
+            name.setText("Name");
+
+            button1.setBackground(new Color(51, 255, 0));
+            button2.setBackground(new Color(255, 0, 0));
+
+            setLayout(layout);
+            layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(avatar, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(name, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(button1, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(button2, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 29, Short.MAX_VALUE))))
+            );
+            layout.setVerticalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addComponent(avatar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(name, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(button2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(button1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            );
         }
 
         @Override
         public Component getListCellRendererComponent(JList<? extends Colleague> list, Colleague value,
             int index, boolean isSelected, boolean cellHasFocus) {
                 name.setText(value.name);
-            
-                add(name);
+                avatar.setIcon(new ImageIcon("./default.png"));
 //                name.setText(value.getTitle());
 //                name.setIcon(value.getImage());
                 if (isSelected) {

@@ -55,4 +55,15 @@ public class Colleague {
             return false;
         }
     }
+
+    public void setName(String name) {
+        if (this.name.equalsIgnoreCase(this.localName)) {
+            this.localName =name;
+        }
+        this.name =name;
+    }
+
+    public void setlocalName(String localName) {
+        this.localName =localName;
+    }
 }

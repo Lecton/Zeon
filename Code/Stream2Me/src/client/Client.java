@@ -35,6 +35,7 @@ public class Client {
     
     private void setup() {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 userInterface =new GUI(name, PORT, Client.this);
                 userInterface.setVisible(true);
