@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author Bernhard
+ * @author Zenadia
  */
 public class Client {
     private int PORT = 2014;

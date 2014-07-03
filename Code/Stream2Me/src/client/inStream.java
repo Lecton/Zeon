@@ -13,6 +13,7 @@ import java.io.ObjectInputStream;
  *
  * @author Lecton
  * @author Bernhard
+ * @author Zenadia
  */
 public class inStream implements Runnable {
     private ObjectInputStream ois = null;

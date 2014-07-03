@@ -28,6 +28,7 @@ import javax.swing.event.ListSelectionListener;
 /**
  *
  * @author Bernhard
+ * @author Zenadia
  */
 public class Contacts extends JScrollPane {
     public ArrayList<Colleague> colleagues = new ArrayList<>();

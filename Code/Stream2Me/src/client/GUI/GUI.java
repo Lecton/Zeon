@@ -19,6 +19,7 @@ import javax.swing.JFrame;
  *
  * @author Lecton
  * @author Bernhard
+ * @author Zenadia
  */
 public class GUI extends JFrame {
     public enum Action {REMOVE, ADD, UPDATE}

@@ -16,6 +16,7 @@ import Messages.Message;
 /**
  *
  * @author Bernhard
+ * @author Zenadia
  */
 public class Connection {
     private int PORT;

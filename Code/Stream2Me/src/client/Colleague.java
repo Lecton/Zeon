@@ -12,6 +12,7 @@ import java.util.HashMap;
  *
  * @author Bernhard
  * @author Lecton
+ * @author Zenadia
  */
 public class Colleague {
     public int ID =-1;
