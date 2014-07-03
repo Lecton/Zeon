@@ -88,7 +88,6 @@ public class inStream implements Runnable {
 
     private void removeUserMessage(Message m) {
         RemoveUser ru =(RemoveUser)m;
-        boolean done =false;
         
         userInterface.ContactPane.removeContact(ru.ID);
         System.out.println("Removed User");

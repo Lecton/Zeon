@@ -16,7 +16,7 @@ public class Colleague {
     public int ID =-1;
     public String name ="";
     public String localName ="";
-    public String content = "This is the label";
+//    public String content = "This is the label";
     
     private HashMap<String, String> chatHistory;
     

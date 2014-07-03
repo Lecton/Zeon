@@ -80,19 +80,10 @@ public class RelayServer {
     }
     int check = 1;
     public void relayMessage(clientConnection cc, Message mess) throws IOException {
-<<<<<<< HEAD
         if (mess.to == -1) {
             for (int i=0; i<clients.size(); i++) {
                 if (!clients.get(i).equals(cc)){
                     clients.get(i).send(mess);
-=======
-        if(mess instanceof StringMessage){
-            if (mess.to == -1) {
-                for (int i=0; i<clients.size(); i++) {
-                    if (!clients.get(i).equals(cc)){
-                        clients.get(i).send(mess);
-                    }
->>>>>>> 6d89ec76a51f2a70a2ebd05af19cbe64acdc9007
                 }
             }
         } else {
@@ -102,24 +93,6 @@ public class RelayServer {
                     break;
                 }
             }
-<<<<<<< HEAD
-=======
-        }else{
-            if (mess.to == -1) {
-                for (int i=0; i<clients.size(); i++) {
-                    if (!clients.get(i).equals(cc)){
-                        clients.get(i).send(mess);
-                    }
-                }
-            } else {
-                for (int i=0; i<clients.size(); i++) {
-                    if (clients.get(i).getID() == mess.to) {
-                        clients.get(i).send(mess);
-                    }
-                }
-            }
-            
->>>>>>> 6d89ec76a51f2a70a2ebd05af19cbe64acdc9007
         }
     }
     

@@ -24,7 +24,6 @@ import javax.swing.LayoutStyle;
 import javax.swing.ListCellRenderer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.basic.BasicListUI;
 
 /**
  *
@@ -105,12 +104,12 @@ public class Contacts extends JScrollPane {
     }
     
     private class ListSelection implements ListSelectionListener {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                System.out.println("First Index: "+e.getFirstIndex());
-                System.out.println("Last Index: "+e.getLastIndex());
-            }
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            System.out.println("First Index: "+e.getFirstIndex());
+            System.out.println("Last Index: "+e.getLastIndex());
         }
+    }
     
     private class CellRenderer extends JPanel implements ListCellRenderer<Colleague> {
         private final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);

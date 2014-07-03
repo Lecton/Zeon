@@ -6,13 +6,10 @@
 
 package MediaStreaming.Video;
 
-import Messages.Message;
 import Messages.VideoStream;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -43,9 +40,9 @@ class Stream implements Runnable {
                 VideoStream m =new VideoStream(previousMessage);
                 m.img =img;
                 previousMessage =m;
-                sleep();
             }
             send(previousMessage);
+            sleep();
         }
     }
     

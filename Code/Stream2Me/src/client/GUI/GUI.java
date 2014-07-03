@@ -302,7 +302,6 @@ public class GUI extends JFrame {
     }//GEN-LAST:event_ControlStreamPlayActionPerformed
 
     private void menuConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConnectActionPerformed
-        // TODO add your handling code here:
         try {
             con.makeConnection();
             con.write(new ClientInit(name));
