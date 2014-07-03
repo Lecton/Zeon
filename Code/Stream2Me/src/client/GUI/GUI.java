@@ -6,6 +6,8 @@ import client.Client;
 import client.Connection;
 import client.inStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JFrame;
 
 /*
@@ -314,12 +316,13 @@ public class GUI extends JFrame {
     }//GEN-LAST:event_menuConnectActionPerformed
 
     private void chatSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chatSendActionPerformed
-        System.out.println(chatText.getText());
+//        System.out.println(chatText.getText());
         if(!chatText.getText().isEmpty()){
             StringMessage sm = new StringMessage(name +" :\t"+ chatText.getText() + "\n", ID);
-            sm.to =ContactPane.getSelectedID();
+            sm.to = ContactPane.getSelectedID();
             if (sm.to != -2) {
                 con.write(sm);
+                ContactPane.acceptMessage(sm);
             }
         }
         chatText.setText("");
@@ -328,9 +331,16 @@ public class GUI extends JFrame {
     private void ControlAudioStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlAudioStopActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ControlAudioStopActionPerformed
-
-    public void setChatMessage(String mess){
-        this.chatMessages.setText(mess);
+    
+    public synchronized void setChatHistory(ArrayList<StringMessage> chatHist){
+        chatMessages.setText("");
+        for(int i = 0; i < chatHist.size(); i++){
+            appendChatMessage(chatHist.get(i));
+        }
+    }
+    
+    public synchronized void appendChatMessage(StringMessage chatMsg){
+        chatMessages.append(chatMsg.getMessage()+"\n");
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

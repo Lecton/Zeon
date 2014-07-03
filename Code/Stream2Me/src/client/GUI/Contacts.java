@@ -40,6 +40,8 @@ public class Contacts extends JScrollPane {
         list.setVisibleRowCount(10);
         list.setCellRenderer(new CellRenderer());
         setViewportView(list);
+        list.setSelectionMode(list.getSelectionModel().SINGLE_SELECTION);
+        list.addListSelectionListener(new ListSelection());
     }
     
     public int getSelectedIndex() {
@@ -51,13 +53,13 @@ public class Contacts extends JScrollPane {
     }
     
     public int getSelectedID() {
-        int index =getSelectedIndex();
+        int index = getSelectedIndex();
         if (index == -1) {
             return -2;
         } else if (colleagues.get(index).ID == userInterface.ID) {
             return -1;
         } else {
-            return colleagues.get(getSelectedID()).ID;
+            return colleagues.get(index).ID;
         }
     }
     
@@ -104,7 +106,7 @@ public class Contacts extends JScrollPane {
 
     public void updateUser(UpdateUser uu) {
         System.out.println("User updated");
-        int index =-1;
+        int index = -1;
         if ((index =find(uu.ID)) != -1) {
             colleagues.get(index).setName(uu.name);
         }
@@ -112,14 +114,58 @@ public class Contacts extends JScrollPane {
     }
     
     public void acceptMessage(StringMessage sm) {
-        
+        if(sm.to == -1){
+            Colleague me =getColleague(userInterface.ID);
+            me.addMessage(sm);
+            if (getSelectedID() == -1) {
+                userInterface.appendChatMessage(sm);
+            }
+        }
+        else if(userInterface.ID == sm.ID){
+            Colleague receiver = getColleague(sm.to);
+            if(receiver != null){
+                receiver.addMessage(sm);
+                if(receiver.ID == getSelectedID()){
+                    userInterface.appendChatMessage(sm);
+                }
+            }
+        }
+        else{
+            Colleague sender = getColleague(sm.ID);
+            if (sender != null) {
+                sender.addMessage(sm);
+                if(sender.ID == getSelectedID()){
+                    userInterface.appendChatMessage(sm);
+                }
+            }
+        }
     }
     
     private class ListSelection implements ListSelectionListener {
+        int lastSelected =-1;
+        
         @Override
         public void valueChanged(ListSelectionEvent e) {
-            System.out.println("First Index: "+e.getFirstIndex());
-            System.out.println("Last Index: "+e.getLastIndex());
+            if (!e.getValueIsAdjusting()) {
+                if (list.getSelectedIndex() == -1) {
+                    //Do nothing. 
+                } 
+                else {
+//                    System.out.println(lastSelected+" --> "+list.getSelectedIndex());
+                    
+                    if (lastSelected == list.getSelectedIndex()) {
+                        lastSelected =-1;
+                        list.clearSelection();
+                    } 
+                    else {
+                        lastSelected =list.getSelectedIndex();
+                        //update ChatText
+                        Colleague selectedColleague =(Colleague)getSelectedValue();
+                        System.out.println("Selected Person: "+selectedColleague.name);
+                        userInterface.setChatHistory(selectedColleague.getMessages());
+                    }
+                }
+            }
         }
     }
     

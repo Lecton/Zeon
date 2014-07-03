@@ -4,6 +4,7 @@
  */
 package client;
 
+import Messages.StringMessage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,20 +19,20 @@ public class Colleague {
     public String localName ="";
 //    public String content = "This is the label";
     
-    private HashMap<String, String> chatHistory;
+    private ArrayList<StringMessage> chatHistory;
     
     /**
      * Create a new Colleague and set its default panel content
      */
     public Colleague() {
-        chatHistory =new HashMap<String, String>();
+        chatHistory =new ArrayList<StringMessage>();
     }
     
-    public void addMessage(String Sender, String mess) {
-        chatHistory.put(Sender, name);
+    public void addMessage(StringMessage sm) {
+        chatHistory.add(sm);
     }
     
-    public HashMap<String, String> getMessages() {
+    public ArrayList<StringMessage> getMessages() {
         return chatHistory;
     }
 
