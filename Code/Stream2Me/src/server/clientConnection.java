@@ -72,7 +72,9 @@ public class clientConnection {
                         
                         UpdateUser um =new UpdateUser(id, name);
                         relay.relayMessage(clientConnection.this, um);
-                    } else {
+                    }else if(o instanceof StringMessage){
+                        relay.relayMessage(clientConnection.this, o);
+                    }else {
                         System.out.println("Message: "+o.getMessage());
                         relay.relayMessage(clientConnection.this, o);
                     }

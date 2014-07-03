@@ -6,6 +6,7 @@
 
 package client.GUI;
 
+import Messages.StringMessage;
 import Messages.UpdateUser;
 import client.Colleague;
 import java.awt.BorderLayout;
@@ -31,7 +32,7 @@ import javax.swing.ListCellRenderer;
 public class Contacts extends JScrollPane {
     public ArrayList<Colleague> colleagues = new ArrayList<>();
     
-    private JList list;
+    public JList list;
     
     public Contacts() {
         list =new JList();
@@ -74,6 +75,10 @@ public class Contacts extends JScrollPane {
             colleagues.get(index).setName(uu.name);
         }
         list.setListData(colleagues.toArray());
+    }
+    
+    public void acceptMessage(StringMessage sm) {
+        
     }
     
     private class CellRenderer extends JPanel implements ListCellRenderer<Colleague> {

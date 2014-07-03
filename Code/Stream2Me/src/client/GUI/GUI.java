@@ -1,6 +1,7 @@
 package client.GUI;
 
 import Messages.ClientInit;
+import Messages.StringMessage;
 import client.Client;
 import client.Connection;
 import client.inStream;
@@ -120,6 +121,11 @@ public class GUI extends JFrame {
 
         ControlAudioStop.setBackground(new java.awt.Color(255, 51, 51));
         ControlAudioStop.setText("Stop");
+        ControlAudioStop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ControlAudioStopActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout StreamControlsLayout = new javax.swing.GroupLayout(StreamControls);
         StreamControls.setLayout(StreamControlsLayout);
@@ -178,7 +184,7 @@ public class GUI extends JFrame {
             .addGroup(ControlPanelLayout.createSequentialGroup()
                 .addComponent(StreamControls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ContactPane, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE))
+                .addComponent(ContactPane, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE))
         );
 
         MainSplit.setLeftComponent(ControlPanel);
@@ -186,12 +192,15 @@ public class GUI extends JFrame {
         InterfaceSplit.setDividerLocation(400);
         InterfaceSplit.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
-        chatSend.setText("jButton1");
+        chatSend.setText("Submit");
+        chatSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chatSendActionPerformed(evt);
+            }
+        });
 
         chatMessages.setBackground(new java.awt.Color(204, 204, 204));
         chatMessages.setEditable(false);
-
-        chatText.setText("textField1");
 
         javax.swing.GroupLayout ChatPanelLayout = new javax.swing.GroupLayout(ChatPanel);
         ChatPanel.setLayout(ChatPanelLayout);
@@ -200,9 +209,10 @@ public class GUI extends JFrame {
             .addGroup(ChatPanelLayout.createSequentialGroup()
                 .addGroup(ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ChatPanelLayout.createSequentialGroup()
-                        .addComponent(chatText, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
+                        .addComponent(chatText, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chatSend, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(chatSend, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20))
                     .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -238,7 +248,7 @@ public class GUI extends JFrame {
         InterfacePanel.setLayout(InterfacePanelLayout);
         InterfacePanelLayout.setHorizontalGroup(
             InterfacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(InterfaceSplit, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(InterfaceSplit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
         );
         InterfacePanelLayout.setVerticalGroup(
             InterfacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,7 +280,7 @@ public class GUI extends JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(MainSplit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(MainSplit, javax.swing.GroupLayout.DEFAULT_SIZE, 996, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -305,6 +315,31 @@ public class GUI extends JFrame {
         }
     }//GEN-LAST:event_menuConnectActionPerformed
 
+    private void chatSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chatSendActionPerformed
+        System.out.println(chatText.getText());
+        for(int i = 0; i < ContactPane.colleagues.size();i++){
+            if(ContactPane.colleagues.get(i).ID != ID &&
+                          !chatText.getText().isEmpty()){
+                int selectedIndex =ContactPane.list.getSelectedIndex();
+                StringMessage sm = new StringMessage(name +" :\t"+ chatText.getText() + "\n", ID);
+                if (selectedIndex != -1) {
+                    sm.to =ContactPane.colleagues.get(selectedIndex).ID;
+                } else {
+                    sm.to =-1;
+                }
+                con.write(sm);
+            }
+        }
+    }//GEN-LAST:event_chatSendActionPerformed
+
+    private void ControlAudioStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlAudioStopActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ControlAudioStopActionPerformed
+
+    public void setChatMessage(String mess){
+        String oldMessage = this.chatMessages.getText();
+        this.chatMessages.setText(oldMessage + mess);
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ChatPanel;

@@ -33,7 +33,6 @@
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="mainMenu"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -102,7 +101,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="StreamControls" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="ContactPane" pref="431" max="32767" attributes="0"/>
+                      <Component id="ContactPane" pref="433" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -239,6 +238,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Stop"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ControlAudioStopActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -289,12 +291,13 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="chatText" pref="675" max="32767" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="chatText" pref="641" max="32767" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="chatSend" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="chatSend" min="-2" pref="77" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="chatMessages" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="chatMessages" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -320,8 +323,11 @@
                   <SubComponents>
                     <Component class="javax.swing.JButton" name="chatSend">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="jButton1"/>
+                        <Property name="text" type="java.lang.String" value="Submit"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chatSendActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="java.awt.TextArea" name="chatMessages">
                       <Properties>
@@ -332,9 +338,6 @@
                       </Properties>
                     </Component>
                     <Component class="java.awt.TextField" name="chatText">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="textField1"/>
-                      </Properties>
                     </Component>
                   </SubComponents>
                 </Container>

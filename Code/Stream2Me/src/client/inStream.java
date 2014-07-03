@@ -110,13 +110,13 @@ public class inStream implements Runnable {
     }
 
     private void stringUserMessage(Message m) {
-        System.out.println(m.getMessage());
-
         StringMessage sm =(StringMessage)m;
         
-        int index =-1;
+        userInterface.setChatMessage(sm.getMessage());
+//        userInterface.ContactPane.acceptMessage(sm);
+//        int index =-1;
 //        if((index =find(sm.ID)) != -1){
-            userInterface.ContactPane.colleagues.get(index).content += m.getMessage() + "\n";
+//            userInterface.ContactPane.colleagues.get(index).content += m.getMessage() + "\n";
 //            userInterface.updateGUI(colleagues.get(index), GUI.Action.UPDATE);
 //        }
     }

@@ -71,7 +71,7 @@ public class Client {
         while (true) {
             String line = scan.nextLine();
             try {
-                os.writeObject(new StringMessage(line, name, ID));
+                os.writeObject(new StringMessage(line, ID));
                 os.flush();
             } catch (IOException ex) {
                 System.err.println("START - writeObject Error");

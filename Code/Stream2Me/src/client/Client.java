@@ -14,9 +14,9 @@ import javax.swing.JOptionPane;
  * @author Bernhard
  */
 public class Client {
-    private int PORT =2014;
-    private String name ="User";
-    private GUI userInterface =null;
+    private int PORT = 2014;
+    private String name = "User";
+    private GUI userInterface = null;
     
     public Client() {
         setup();

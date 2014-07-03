@@ -52,8 +52,12 @@ public class Connection {
         return ois;
     }
     
-    public void write(Message m) throws IOException {
-        oos.writeObject(m);
-        oos.flush();
+    public void write(Message m) {
+        try {
+            oos.writeObject(m);
+            oos.flush();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 }

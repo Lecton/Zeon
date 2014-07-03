@@ -18,6 +18,7 @@ public class Message implements Serializable {
     public Date timestamp =null;
     public transient int SSN;
     public String passwordHash ="";
+    public int to =-1; //-1 send to ALL
     
     /**
      * Returns the message being send as a String

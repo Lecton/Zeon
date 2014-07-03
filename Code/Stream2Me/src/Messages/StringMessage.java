@@ -11,9 +11,8 @@ package Messages;
 public class StringMessage extends Message {
     public String mess ="";
     
-    public StringMessage(String mess, String Sender, int ID) {
+    public StringMessage(String mess, int ID) {
         this.mess =mess;
-        this.Sender =Sender;
         this.ID =ID;
         this.Title ="String Message";
     }

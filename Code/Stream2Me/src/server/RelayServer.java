@@ -79,11 +79,20 @@ public class RelayServer {
         
         System.out.println("Clients: " + clients.size());
     }
-    
+    int check = 1;
     public void relayMessage(clientConnection cc, Message mess) throws IOException {
-        for (int i=0; i<clients.size(); i++) {
-            if (!clients.get(i).equals(cc)){
-                clients.get(i).send(mess);
+        if (mess.to == -1) {
+            for (int i=0; i<clients.size(); i++) {
+                if (!clients.get(i).equals(cc)){
+                    clients.get(i).send(mess);
+                }
+            }
+        } else {
+            for (int i=0; i<clients.size(); i++) {
+                if (clients.get(i).getID() == mess.to) {
+                    clients.get(i).send(mess);
+                    break;
+                }
             }
         }
     }
