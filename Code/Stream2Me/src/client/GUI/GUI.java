@@ -66,7 +66,7 @@ public class GUI extends JFrame {
         ControlAudio = new javax.swing.JButton();
         ControlAudioPlay = new javax.swing.JButton();
         ControlAudioStop = new javax.swing.JButton();
-        ContactPane = new client.GUI.Contacts();
+        ContactPane = new client.GUI.Contacts(this);
         InterfacePanel = new javax.swing.JPanel();
         InterfaceSplit = new javax.swing.JSplitPane();
         ChatPanel = new javax.swing.JPanel();
@@ -247,7 +247,7 @@ public class GUI extends JFrame {
         InterfacePanel.setLayout(InterfacePanelLayout);
         InterfacePanelLayout.setHorizontalGroup(
             InterfacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(InterfaceSplit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
+            .addComponent(InterfaceSplit, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         InterfacePanelLayout.setVerticalGroup(
             InterfacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -279,7 +279,7 @@ public class GUI extends JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(MainSplit, javax.swing.GroupLayout.DEFAULT_SIZE, 996, Short.MAX_VALUE)
+                .addComponent(MainSplit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -315,19 +315,14 @@ public class GUI extends JFrame {
 
     private void chatSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chatSendActionPerformed
         System.out.println(chatText.getText());
-        for(int i = 0; i < ContactPane.colleagues.size();i++){
-            if(ContactPane.colleagues.get(i).ID != ID &&
-                          !chatText.getText().isEmpty()){
-                int selectedIndex =ContactPane.getSelectedIndex();
-                StringMessage sm = new StringMessage(name +" :\t"+ chatText.getText() + "\n", ID);
-                if (selectedIndex != -1) {
-                    sm.to =ContactPane.colleagues.get(selectedIndex).ID;
-                } else {
-                    sm.to =-1;
-                }
+        if(!chatText.getText().isEmpty()){
+            StringMessage sm = new StringMessage(name +" :\t"+ chatText.getText() + "\n", ID);
+            sm.to =ContactPane.getSelectedID();
+            if (sm.to != -2) {
                 con.write(sm);
             }
         }
+        chatText.setText("");
     }//GEN-LAST:event_chatSendActionPerformed
 
     private void ControlAudioStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlAudioStopActionPerformed

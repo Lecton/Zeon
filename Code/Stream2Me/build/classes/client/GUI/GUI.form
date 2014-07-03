@@ -247,6 +247,7 @@
             </Container>
             <Component class="client.GUI.Contacts" name="ContactPane">
               <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new client.GUI.Contacts(this)"/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
               </AuxValues>
             </Component>

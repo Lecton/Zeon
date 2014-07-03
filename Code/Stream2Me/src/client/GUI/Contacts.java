@@ -31,11 +31,12 @@ import javax.swing.event.ListSelectionListener;
  */
 public class Contacts extends JScrollPane {
     public ArrayList<Colleague> colleagues = new ArrayList<>();
-    
+    private GUI userInterface;
     private JList list;
     
-    public Contacts() {
-        list =new JList();
+    public Contacts(GUI userInterface) {
+        this.userInterface = userInterface;
+        list = new JList();
         list.setVisibleRowCount(10);
         list.setCellRenderer(new CellRenderer());
         setViewportView(list);
@@ -47,6 +48,17 @@ public class Contacts extends JScrollPane {
     
     public Object getSelectedValue() {
         return list.getSelectedValue();
+    }
+    
+    public int getSelectedID() {
+        int index =getSelectedIndex();
+        if (index == -1) {
+            return -2;
+        } else if (colleagues.get(index).ID == userInterface.ID) {
+            return -1;
+        } else {
+            return colleagues.get(getSelectedID()).ID;
+        }
     }
     
     
