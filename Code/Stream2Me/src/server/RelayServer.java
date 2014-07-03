@@ -81,7 +81,7 @@ public class RelayServer {
     }
     int check = 1;
     public void relayMessage(clientConnection cc, Message mess) throws IOException {
-        
+        if(mess instanceof StringMessage){
             if (mess.to == -1) {
                 for (int i=0; i<clients.size(); i++) {
                     if (!clients.get(i).equals(cc)){
@@ -96,6 +96,22 @@ public class RelayServer {
                     }
                 }
             }
+        }else{
+            if (mess.to == -1) {
+                for (int i=0; i<clients.size(); i++) {
+                    if (!clients.get(i).equals(cc)){
+                        clients.get(i).send(mess);
+                    }
+                }
+            } else {
+                for (int i=0; i<clients.size(); i++) {
+                    if (clients.get(i).getID() == mess.to) {
+                        clients.get(i).send(mess);
+                    }
+                }
+            }
+            
+        }
     }
     
     public void closeConnection(clientConnection cc) throws IOException {
