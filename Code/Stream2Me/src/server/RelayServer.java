@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import javax.xml.crypto.dsig.XMLObject;
 
 /**
  *
@@ -81,21 +80,30 @@ public class RelayServer {
     }
     int check = 1;
     public void relayMessage(clientConnection cc, Message mess) throws IOException {
+<<<<<<< HEAD
+        if (mess.to == -1) {
+            for (int i=0; i<clients.size(); i++) {
+                if (!clients.get(i).equals(cc)){
+                    clients.get(i).send(mess);
+=======
         if(mess instanceof StringMessage){
             if (mess.to == -1) {
                 for (int i=0; i<clients.size(); i++) {
                     if (!clients.get(i).equals(cc)){
                         clients.get(i).send(mess);
                     }
-                }
-            } else {
-                for (int i=0; i<clients.size(); i++) {
-                    if (clients.get(i).getID() == mess.to) {
-                        clients.get(i).send(mess);
-                        break;
-                    }
+>>>>>>> 6d89ec76a51f2a70a2ebd05af19cbe64acdc9007
                 }
             }
+        } else {
+            for (int i=0; i<clients.size(); i++) {
+                if (clients.get(i).getID() == mess.to) {
+                    clients.get(i).send(mess);
+                    break;
+                }
+            }
+<<<<<<< HEAD
+=======
         }else{
             if (mess.to == -1) {
                 for (int i=0; i<clients.size(); i++) {
@@ -111,6 +119,7 @@ public class RelayServer {
                 }
             }
             
+>>>>>>> 6d89ec76a51f2a70a2ebd05af19cbe64acdc9007
         }
     }
     

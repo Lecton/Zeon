@@ -8,7 +8,6 @@ import Messages.*;
 import client.GUI.GUI;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
 
 /**
  *
@@ -91,16 +90,7 @@ public class inStream implements Runnable {
         RemoveUser ru =(RemoveUser)m;
         boolean done =false;
         
-//        int index =find(ru.ID);
-//        if (index != -1) {
-//            userInterface.updateGUI(colleagues.get(index), GUI.Action.REMOVE);
-//            userInterface.ContactPane.removeContact(userInterface.ContactPane.colleagues.get(index));
-//            colleagues.remove(index);
-//            for (int i=index; i<colleagues.size(); i++) {
-//                colleagues.get(i).tabIndex--;
-//            }
-//        }
-        
+        userInterface.ContactPane.removeContact(ru.ID);
         System.out.println("Removed User");
     }
 

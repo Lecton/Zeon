@@ -67,14 +67,17 @@ public class clientConnection {
                     Message o =(Message)ois.readObject();
                     
                     if (o instanceof ClientInit) {
+                        System.out.println("ClientInit received");
                         ClientInit ci =(ClientInit) o;
                         name =ci.name;
                         
                         UpdateUser um =new UpdateUser(id, name);
                         relay.relayMessage(clientConnection.this, um);
-                    }else if(o instanceof StringMessage){
+                    } else if(o instanceof StringMessage) {
+                        System.out.println("StringMessage received");
                         relay.relayMessage(clientConnection.this, o);
-                    }else {
+                    } else {
+                        System.out.println("Some message received");
                         System.out.println("Message: "+o.getMessage());
                         relay.relayMessage(clientConnection.this, o);
                     }

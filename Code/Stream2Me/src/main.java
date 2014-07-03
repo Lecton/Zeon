@@ -4,12 +4,7 @@
  * and open the template in the editor.
  */
 
-import ClientOld.Client;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.xml.stream.events.StartDocument;
 import server.RelayServer;
 
 /**

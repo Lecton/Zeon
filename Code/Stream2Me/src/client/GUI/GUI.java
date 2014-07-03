@@ -5,7 +5,6 @@ import Messages.StringMessage;
 import client.Client;
 import client.Connection;
 import client.inStream;
-import java.awt.HeadlessException;
 import java.io.IOException;
 import javax.swing.JFrame;
 
@@ -320,7 +319,7 @@ public class GUI extends JFrame {
         for(int i = 0; i < ContactPane.colleagues.size();i++){
             if(ContactPane.colleagues.get(i).ID != ID &&
                           !chatText.getText().isEmpty()){
-                int selectedIndex =ContactPane.list.getSelectedIndex();
+                int selectedIndex =ContactPane.getSelectedIndex();
                 StringMessage sm = new StringMessage(name +" :\t"+ chatText.getText() + "\n", ID);
                 if (selectedIndex != -1) {
                     sm.to =ContactPane.colleagues.get(selectedIndex).ID;
@@ -337,8 +336,7 @@ public class GUI extends JFrame {
     }//GEN-LAST:event_ControlAudioStopActionPerformed
 
     public void setChatMessage(String mess){
-        String oldMessage = this.chatMessages.getText();
-        this.chatMessages.setText(oldMessage + mess);
+        this.chatMessages.setText(mess);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

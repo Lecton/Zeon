@@ -5,11 +5,11 @@
 package client;
 
 import java.util.ArrayList;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.util.HashMap;
 
 /**
  *
+ * @author Bernhard
  * @author Lecton
  */
 public class Colleague {
@@ -18,10 +18,21 @@ public class Colleague {
     public String localName ="";
     public String content = "This is the label";
     
+    private HashMap<String, String> chatHistory;
+    
     /**
      * Create a new Colleague and set its default panel content
      */
     public Colleague() {
+        chatHistory =new HashMap<String, String>();
+    }
+    
+    public void addMessage(String Sender, String mess) {
+        chatHistory.put(Sender, name);
+    }
+    
+    public HashMap<String, String> getMessages() {
+        return chatHistory;
     }
 
     /**

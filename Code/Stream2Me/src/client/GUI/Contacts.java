@@ -12,10 +12,8 @@ import client.Colleague;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Graphics;
 import java.util.ArrayList;
 import javax.swing.GroupLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,6 +22,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle;
 import javax.swing.ListCellRenderer;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicListUI;
 
 /**
  *
@@ -32,15 +33,24 @@ import javax.swing.ListCellRenderer;
 public class Contacts extends JScrollPane {
     public ArrayList<Colleague> colleagues = new ArrayList<>();
     
-    public JList list;
+    private JList list;
     
     public Contacts() {
         list =new JList();
         list.setVisibleRowCount(10);
         list.setCellRenderer(new CellRenderer());
-        
         setViewportView(list);
     }
+    
+    public int getSelectedIndex() {
+        return list.getSelectedIndex();
+    }
+    
+    public Object getSelectedValue() {
+        return list.getSelectedValue();
+    }
+    
+    
     
     /**
      * Find the colleague with the same ID as provided and returns his index
@@ -56,15 +66,28 @@ public class Contacts extends JScrollPane {
         return -1;
     }
     
+    private Colleague getColleague(int ID) {
+        int index =find(ID);
+        if (index != -1) {
+            return colleagues.get(index);
+        }
+        return null;
+    }
+    
     public void addContact(Colleague coll) {
         System.out.println("User added");
         colleagues.add(coll);
         list.setListData(colleagues.toArray());
     }
     
-    public void removeContact(Colleague coll) {
+    public void removeContact(int colleagueID) {
         System.out.println("User removed");
-        colleagues.remove(coll);
+        Colleague toRemove =getColleague(colleagueID);
+        if (toRemove != null) {
+            colleagues.remove(toRemove);
+        } else {
+            System.err.println("Error removing colleague with ID: "+colleagueID);
+        }
         list.setListData(colleagues.toArray());
     }
 
@@ -80,6 +103,14 @@ public class Contacts extends JScrollPane {
     public void acceptMessage(StringMessage sm) {
         
     }
+    
+    private class ListSelection implements ListSelectionListener {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                System.out.println("First Index: "+e.getFirstIndex());
+                System.out.println("Last Index: "+e.getLastIndex());
+            }
+        }
     
     private class CellRenderer extends JPanel implements ListCellRenderer<Colleague> {
         private final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
