@@ -35,6 +35,8 @@ public class Contacts extends JScrollPane {
     private GUI userInterface;
     private JList list;
     
+    public Contacts() {throw new IllegalStateException("constructor not usabe here");}
+    
     public Contacts(GUI userInterface) {
         this.userInterface = userInterface;
         list = new JList();

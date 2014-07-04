@@ -74,8 +74,8 @@ public class GUI extends JFrame {
         InterfaceSplit = new javax.swing.JSplitPane();
         ChatPanel = new javax.swing.JPanel();
         chatSend = new javax.swing.JButton();
-        chatMessages = new java.awt.TextArea();
         chatText = new java.awt.TextField();
+        chatMessages = new client.GUI.ChatArea(this);
         DetailsPanel = new javax.swing.JPanel();
         mainMenu = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
@@ -201,29 +201,22 @@ public class GUI extends JFrame {
             }
         });
 
-        chatMessages.setBackground(new java.awt.Color(204, 204, 204));
-        chatMessages.setEditable(false);
-
         javax.swing.GroupLayout ChatPanelLayout = new javax.swing.GroupLayout(ChatPanel);
         ChatPanel.setLayout(ChatPanelLayout);
         ChatPanelLayout.setHorizontalGroup(
             ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ChatPanelLayout.createSequentialGroup()
-                .addGroup(ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ChatPanelLayout.createSequentialGroup()
-                        .addComponent(chatText, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chatSend, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20))
-                    .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addComponent(chatText, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chatSend, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
+            .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         ChatPanelLayout.setVerticalGroup(
             ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ChatPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                .addGap(7, 7, 7)
                 .addGroup(ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chatSend)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ChatPanelLayout.createSequentialGroup()
@@ -334,14 +327,12 @@ public class GUI extends JFrame {
     }//GEN-LAST:event_ControlAudioStopActionPerformed
     
     public synchronized void setChatHistory(ArrayList<StringMessage> chatHist){
-        chatMessages.setText("");
-        for(int i = 0; i < chatHist.size(); i++){
-            appendChatMessage(chatHist.get(i));
-        }
+//        chatMessages.setText("");
+        chatMessages.setChatMessages(chatHist);
     }
     
     public synchronized void appendChatMessage(StringMessage chatMsg){
-        chatMessages.append(chatMsg.getMessage()+"\n");
+        chatMessages.append(chatMsg);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -362,7 +353,7 @@ public class GUI extends JFrame {
     private javax.swing.JSplitPane InterfaceSplit;
     private javax.swing.JSplitPane MainSplit;
     private javax.swing.JPanel StreamControls;
-    private java.awt.TextArea chatMessages;
+    public client.GUI.ChatArea chatMessages;
     private javax.swing.JButton chatSend;
     private java.awt.TextField chatText;
     private javax.swing.JMenuBar mainMenu;
