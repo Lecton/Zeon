@@ -29,7 +29,7 @@ public class ChatArea extends JScrollPane {
     private JList list;
     private boolean multiperson =false;
     
-    public ChatArea() {throw new IllegalStateException("constructor not usabe here");}
+    public ChatArea() {}
     
     public ChatArea(GUI userInterface) {
         this.userInterface = userInterface;
@@ -51,18 +51,17 @@ public class ChatArea extends JScrollPane {
     }
     
     public void append(StringMessage sm) {
-        chatMessages.add(sm);
+//        chatMessages.add(sm);
         list.setListData(chatMessages.toArray());
     }
     
     public void appendChatMessage(StringMessage chatMsg){
-        chatMessages.add(chatMsg);
+//        chatMessages.add(chatMsg);
         list.setListData(chatMessages.toArray());
     }
     
     
     private class CellRenderer extends JPanel implements ListCellRenderer<StringMessage> {
-        private final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
 
         private JLabel name;
         private JLabel timestamp;
@@ -117,14 +116,6 @@ public class ChatArea extends JScrollPane {
                 name.setText(value.Sender);
                 timestamp.setText("now");
                 message.setText(value.mess);
-            
-                if (isSelected) {
-                    setBackground(HIGHLIGHT_COLOR);
-                    setForeground(Color.white);
-                } else {
-                    setBackground(Color.white);
-                    setForeground(Color.black);
-                }
                 return this;
             }
         }

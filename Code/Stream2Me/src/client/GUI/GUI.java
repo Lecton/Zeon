@@ -57,6 +57,7 @@ public class GUI extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        DetailsPanel = new javax.swing.JPanel();
         MainSplit = new javax.swing.JSplitPane();
         ControlPanel = new javax.swing.JPanel();
         StreamControls = new javax.swing.JPanel();
@@ -76,11 +77,21 @@ public class GUI extends JFrame {
         chatSend = new javax.swing.JButton();
         chatText = new java.awt.TextField();
         chatMessages = new client.GUI.ChatArea(this);
-        DetailsPanel = new javax.swing.JPanel();
         mainMenu = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuConnect = new javax.swing.JMenuItem();
         menuEdit = new javax.swing.JMenu();
+
+        javax.swing.GroupLayout DetailsPanelLayout = new javax.swing.GroupLayout(DetailsPanel);
+        DetailsPanel.setLayout(DetailsPanelLayout);
+        DetailsPanelLayout.setHorizontalGroup(
+            DetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 758, Short.MAX_VALUE)
+        );
+        DetailsPanelLayout.setVerticalGroup(
+            DetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 399, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -206,16 +217,15 @@ public class GUI extends JFrame {
         ChatPanelLayout.setHorizontalGroup(
             ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ChatPanelLayout.createSequentialGroup()
-                .addComponent(chatText, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
+                .addComponent(chatText, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(chatSend, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
+                .addComponent(chatSend, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         ChatPanelLayout.setVerticalGroup(
             ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ChatPanelLayout.createSequentialGroup()
-                .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
                 .addGap(7, 7, 7)
                 .addGroup(ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chatSend)
@@ -225,19 +235,6 @@ public class GUI extends JFrame {
         );
 
         InterfaceSplit.setBottomComponent(ChatPanel);
-
-        javax.swing.GroupLayout DetailsPanelLayout = new javax.swing.GroupLayout(DetailsPanel);
-        DetailsPanel.setLayout(DetailsPanelLayout);
-        DetailsPanelLayout.setHorizontalGroup(
-            DetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 758, Short.MAX_VALUE)
-        );
-        DetailsPanelLayout.setVerticalGroup(
-            DetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 399, Short.MAX_VALUE)
-        );
-
-        InterfaceSplit.setLeftComponent(DetailsPanel);
 
         javax.swing.GroupLayout InterfacePanelLayout = new javax.swing.GroupLayout(InterfacePanel);
         InterfacePanel.setLayout(InterfacePanelLayout);

@@ -6,7 +6,6 @@ package client;
 
 import Messages.StringMessage;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  *
