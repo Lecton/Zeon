@@ -16,7 +16,8 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 /**
- *
+ * Specifies the details of the input stream and provides options of how
+ * to handle certain activities in the system.
  * @author Lecton
  * @author Bernhard
  */
@@ -25,19 +26,30 @@ public class inStream implements Runnable {
     private ObjectInputStream ois = null;
     private Client client = null;
     private UI userInterface = null;
-
+    
+    /**
+     * Constructor
+     * @param input - 
+     * @param c
+     * @param userInterface
+     * @throws IOException 
+     */
     public inStream(InputStream input, Client c, UI userInterface) throws IOException {
         ois = new ObjectInputStream(input);
-        this.client =c;
-        this.userInterface =userInterface;
+        this.client = c;
+        this.userInterface = userInterface;
     }
 
+    /**
+     * Runs the client object with an instance of the Message class.
+     * Identifies the kind of message being created with a specific action.
+     */
     @Override
     public void run() {
         while (true) {
             try {
                 Object o = ois.readObject();
-                Message m =(Message)o;
+                Message m = (Message)o;
 
                 if (m instanceof Greeting) {
                     greetUserMessage(m);
@@ -50,7 +62,7 @@ public class inStream implements Runnable {
                 } else if (m instanceof StringMessage) {
                     stringUserMessage(m);
                 } else {
-                    System.out.println("Message: "+m.getMessage());
+                    System.out.println("Message: " + m.getMessage());
                 }
             } catch (IOException ioe) {
                 System.err.println("RUN - IOException");
@@ -62,11 +74,12 @@ public class inStream implements Runnable {
     
     /**
      * Find the colleague with the same ID as provided and returns his index
-     * @param ID of the colleague to find
-     * @return the colleague index or -1 if no one has that ID
+     * within the list of colleagues.
+     * @param ID - the ID of the colleague to find.
+     * @return the colleague index or -1 if no one has that ID.
      */
     private int find(int ID) {
-        for (int i=0; i<colleagues.size(); i++) {
+        for (int i = 0; i < colleagues.size(); i++) {
             if (colleagues.get(i).ID == ID) {
                 return i;
             }
@@ -74,45 +87,59 @@ public class inStream implements Runnable {
         return -1;
     }
 
+    /**
+     * The function that creates a greeting message when a user connects.
+     * @param m - the message of what kind of activity is taking place.
+     */
     private void greetUserMessage(Message m) {
-        Greeting g =(Greeting) m;
-        client.ID =g.ID;
-        Colleague cc =new Colleague();
-        cc.ID =g.ID;
-        cc.name =client.name;
-        cc.localName =client.name;
+        Greeting g = (Greeting) m;
+        client.ID = g.ID;
+        Colleague cc = new Colleague();
+        cc.ID = g.ID;
+        cc.name = client.name;
+        cc.localName = client.name;
         colleagues.add(cc);
         userInterface.updateGUI(cc, UI.Action.ADD);
 
-        for (int i=0; i<g.size; i++) {
-            Colleague c =new Colleague();
-            c.ID =g.colleagueIDs[i];
-            c.name =g.colleagueNames[i];
-            c.localName =c.name;
+        for (int i = 0; i < g.size; i++) {
+            Colleague c = new Colleague();
+            c.ID = g.colleagueIDs[i];
+            c.name = g.colleagueNames[i];
+            c.localName = c.name;
             colleagues.add(c);
             userInterface.updateGUI(c, UI.Action.ADD);
         }
     }
     
+    /**
+     * The function that creates a message notifying the system that a new user 
+     * was added.
+     * @param m - the message of what kind of activity is taking place.
+     */
     private void newUserMessage(Message m) {
-        NewUser um =(NewUser)m;
+        NewUser um = (NewUser)m;
         
         if (um.ID != client.ID) {
-            Colleague tempColleague =new Colleague();
-            tempColleague.ID =um.ID;
-            tempColleague.name =um.name;
-            tempColleague.localName =um.name;
+            Colleague tempColleague = new Colleague();
+            tempColleague.ID = um.ID;
+            tempColleague.name = um.name;
+            tempColleague.localName = um.name;
             
             colleagues.add(tempColleague);
             userInterface.updateGUI(tempColleague, UI.Action.ADD);
         }
     }
 
+    /**
+     * The function that creates a message notifying the system that a user 
+     * has been removed. 
+     * @param m - the message of what kind of activity is taking place.
+     */
     private void removeUserMessage(Message m) {
-        RemoveUser ru =(RemoveUser)m;
-        boolean done =false;
+        RemoveUser ru = (RemoveUser)m;
+        boolean done = false;
         
-        int index =find(ru.ID);
+        int index = find(ru.ID);
         if (index != -1) {
             userInterface.updateGUI(colleagues.get(index), UI.Action.REMOVE);
             colleagues.remove(index);
@@ -121,27 +148,37 @@ public class inStream implements Runnable {
         System.out.println("Removed User");
     }
 
+    /**
+     * The function that creates a message notifying the system that a user
+     * has created a string/text message.
+     * @param m - the message of what kind of activity is taking place.
+     */
     private void stringUserMessage(Message m) {
         System.out.println(m.getMessage());
 
-        StringMessage sm =(StringMessage)m;
+        StringMessage sm = (StringMessage)m;
         
-        int index =-1;
-        if((index =find(sm.ID)) != -1){
+        int index = -1;
+        if((index = find(sm.ID)) != -1){
             colleagues.get(index).content += m.getMessage() + "\n";
             userInterface.updateGUI(colleagues.get(index), UI.Action.UPDATE);
         }
     }
 
+    /**
+     * The function that creates a message notifying the system that a user
+     * is to be updated.
+     * @param m - the message of what kind of activity is taking place. 
+     */
     private void updateUserMessage(Message m) {
-        UpdateUser uu =(UpdateUser) m;
+        UpdateUser uu = (UpdateUser) m;
         
-        int index =-1;
-        if ((index =find(uu.ID)) != -1) {
+        int index = -1;
+        if ((index = find(uu.ID)) != -1) {
             if (colleagues.get(index).name.equalsIgnoreCase(colleagues.get(index).localName)) {
-                colleagues.get(index).localName =uu.name;
+                colleagues.get(index).localName = uu.name;
             }
-            colleagues.get(index).name =uu.name;
+            colleagues.get(index).name = uu.name;
             userInterface.updateGUI(colleagues.get(index), UI.Action.UPDATE);
         }
     }

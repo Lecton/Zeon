@@ -9,7 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- *
+ * Defines a colleague with its own ID, name, content, panel in the user interface,
+ * and its own label.
  * @author Lecton
  */
 public class Colleague {
@@ -23,6 +24,7 @@ public class Colleague {
     
     /**
      * Create a new Colleague and set its default panel content
+     * Creates a new panel for the colleague and assigns it a label.
      */
     public Colleague() {
         panel = new JPanel();
