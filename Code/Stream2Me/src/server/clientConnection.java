@@ -73,6 +73,9 @@ public class clientConnection {
                         
                         UpdateUser um =new UpdateUser(id, name);
                         relay.relayMessage(clientConnection.this, um);
+                    } else if (o instanceof AudioStream) {
+                        System.out.println("Audio Message received");
+                        relay.relayMessage(clientConnection.this, o);
                     } else if(o instanceof StringMessage) {
                         System.out.println("StringMessage received");
                         relay.relayMessage(clientConnection.this, o);

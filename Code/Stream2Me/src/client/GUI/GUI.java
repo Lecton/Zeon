@@ -1,5 +1,6 @@
 package client.GUI;
 
+import MediaStreaming.Audio.AudioCapture;
 import Messages.ClientInit;
 import Messages.StringMessage;
 import client.Client;
@@ -27,6 +28,7 @@ public class GUI extends JFrame {
     private Connection con =null;
     private inStream input =null;
     private Client client =null;
+    private AudioCapture ac;
     
     public String name ="User";
     public int ID =-1;
@@ -131,6 +133,11 @@ public class GUI extends JFrame {
 
         ControlAudioPlay.setBackground(new java.awt.Color(102, 255, 51));
         ControlAudioPlay.setText("Play");
+        ControlAudioPlay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ControlAudioPlayActionPerformed(evt);
+            }
+        });
 
         ControlAudioStop.setBackground(new java.awt.Color(255, 51, 51));
         ControlAudioStop.setText("Stop");
@@ -225,7 +232,7 @@ public class GUI extends JFrame {
         ChatPanelLayout.setVerticalGroup(
             ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ChatPanelLayout.createSequentialGroup()
-                .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
                 .addGap(7, 7, 7)
                 .addGroup(ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chatSend)
@@ -299,6 +306,7 @@ public class GUI extends JFrame {
             con.makeConnection();
             con.write(new ClientInit(name));
             input.setInputStream(con.getInputStream());
+            ac = new AudioCapture(con.getOutputStream(),this.name,this.ID);
             (new Thread(input)).start();
             menuConnect.setEnabled(false);
         } catch (IOException ex) {
@@ -320,8 +328,23 @@ public class GUI extends JFrame {
     }//GEN-LAST:event_chatSendActionPerformed
 
     private void ControlAudioStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlAudioStopActionPerformed
-        // TODO add your handling code here:
+        ControlAudioPlay.setEnabled(true);
+        ControlAudioStop.setEnabled(false);
+        ac.running = false;
     }//GEN-LAST:event_ControlAudioStopActionPerformed
+
+    private void ControlAudioPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlAudioPlayActionPerformed
+        ControlAudioPlay.setEnabled(false);
+        ControlAudioStop.setEnabled(true);
+         try
+         {
+             ac.captureAudio();
+         }
+         catch (IOException ex)
+         {
+             ex.printStackTrace();
+         }
+    }//GEN-LAST:event_ControlAudioPlayActionPerformed
     
     public synchronized void setChatHistory(ArrayList<StringMessage> chatHist){
 //        chatMessages.setText("");
