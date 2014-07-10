@@ -13,13 +13,15 @@ import server.RelayServer;
  */
 public class main {
     /**
-     * @param args the comm and line arguments
+     * 
+     * @param args
      */
     public static void main(String[] args) throws InterruptedException {
         try {
-            RelayServer rs =new RelayServer(2014);
+            RelayServer rs = new RelayServer(2014);
             rs.start();
-        } catch (IOException ex) {
+        } 
+        catch (IOException ex) {
             ex.printStackTrace();
         }
     }
