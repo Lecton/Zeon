@@ -21,7 +21,7 @@ public class Message implements Serializable {
     public int to =-1; //-1 send to ALL
     
     /**
-     * Returns the message being send as a String
+     * Retrieves the message and returns the message being sent as a String
      * @return message
      */
     public String getMessage() {

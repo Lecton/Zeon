@@ -22,8 +22,6 @@ import java.util.logging.Logger;
  * @author Bernhard
  */
 public class StreamVideo {
-    static private enum state {PLAY, PAUSE, STOP};
-        
     private int ID =-1;
     private VideoStream vs;
     private long fps =5;
@@ -31,30 +29,48 @@ public class StreamVideo {
     private ObjectOutputStream oos;
     private ScreenCapture sc;
     private Thread video;
-    private Stream stream;
+    private Stream vStream;
     
+    /**
+     * Constructor to create a video stream object by which the captured video
+     * is streamed to a recipient.
+     * @param vs - the VideoStream message object for the current sender
+     * @param _fps - the frames per second of the video being streamed
+     * @param sc - the screen capture object.
+     * @param oos - the object output stream.
+     */
     public StreamVideo(VideoStream vs, long _fps, ScreenCapture sc, ObjectOutputStream oos) {
         this.ID =vs.ID;
         this.vs =vs;
         this.fps =_fps;
         this.sc =sc;
         this.oos =oos;
-        stream =new Stream(oos, sc, fps, vs);
+        vStream =new Stream(oos, sc, fps, vs);
     }
     
+    /**
+     * Starts the current video stream and changes its state to Started.
+     */
     public void start() {
-        stream.start();
-        
-        video =new Thread(stream);
-        video.start();
+        if (vStream.isStopped()) {
+            video =new Thread(vStream);
+            video.start();
+        }
+        vStream.start();
     }
     
+    /**
+     * Pauses the current video stream and changes its state to Paused.
+     */
     public void pause() {
-        stream.pause();
+        vStream.pause();
     }
     
+    /**
+     * Stops the current video stream and changes its state to Stopped.
+     */
     public void stop() {
-        stream.stop();
+        vStream.stop();
         try {
             video.join();
         } catch (InterruptedException ex) {

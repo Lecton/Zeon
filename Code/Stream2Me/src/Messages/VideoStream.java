@@ -18,6 +18,13 @@ public class VideoStream extends Message {
     public long count =-1;
     public String img;
     
+    /**
+     * 
+     * @param Sender - the name of the sender of this message
+     * @param ID - the ID of the sender of this message
+     * @param count - a counter.
+     * @param to - the ID of the recipient of this message.
+     */
     public VideoStream(String Sender, int ID, long count, int to) throws IOException {
         this.Sender =Sender;
         this.ID =ID;
@@ -25,6 +32,10 @@ public class VideoStream extends Message {
         this.to =to;
     }
     
+    /**
+     * Constructor to create and initialize a video stream
+     * @param clone 
+     */
     public VideoStream(VideoStream clone) {
         this.Sender =clone.Sender;
         this.ID =clone.ID;
