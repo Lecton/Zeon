@@ -76,6 +76,9 @@ public class clientConnection {
                     } else if (o instanceof AudioStream) {
                         System.out.println("Audio Message received");
                         relay.relayMessage(clientConnection.this, o);
+                    } else if (o instanceof VideoStream) {
+                        System.out.println("Video Message received");
+                        relay.relayMessage(clientConnection.this, o);
                     } else if(o instanceof StringMessage) {
                         System.out.println("StringMessage received");
                         relay.relayMessage(clientConnection.this, o);

@@ -6,16 +6,20 @@ package client;
 
 import Messages.*;
 import client.GUI.GUI;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+import javax.swing.ImageIcon;
+import sun.misc.BASE64Decoder;
 
 /**
  *
@@ -53,6 +57,8 @@ public class inStream implements Runnable {
                     stringUserMessage(m);
                 } else if (m instanceof AudioStream) {
                     audioStreamMessage(m);
+                } else if (m instanceof VideoStream) {
+                    videoStreamMessage(m);
                 } else {
                     System.out.println("Message: "+m.getMessage());
                 }
@@ -176,7 +182,6 @@ public class inStream implements Runnable {
     } 
   }
 
-    
     private AudioFormat getFormat() {
         float sampleRate = 8000;
         int sampleSizeInBits = 8;
@@ -186,5 +191,32 @@ public class inStream implements Runnable {
 
         return new AudioFormat(sampleRate, 
                 sampleSizeInBits, channels, signed, bigEndian);
-    }    
+    }
+    
+    private void videoStreamMessage(Message m) {
+        VideoStream vs =(VideoStream)m;
+        
+        BufferedImage img =decodeToImage(vs.img);
+        if (img != null) {
+            userInterface.imgBlock.setIcon(new ImageIcon(img));
+            userInterface.imgBlock.updateUI();
+        }
+    }
+    
+    private BufferedImage decodeToImage(String imageString) {
+        
+        
+        BufferedImage image = null;
+        byte[] imageByte;
+        try {
+            BASE64Decoder decoder = new BASE64Decoder();
+            imageByte = decoder.decodeBuffer(imageString);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+            image = ImageIO.read(bis);
+            bis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
 }

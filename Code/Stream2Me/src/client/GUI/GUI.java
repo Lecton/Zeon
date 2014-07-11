@@ -1,14 +1,19 @@
 package client.GUI;
 
 import MediaStreaming.Audio.AudioCapture;
+import MediaStreaming.Video.ScreenCapture;
+import MediaStreaming.Video.StreamVideo;
 import Messages.ClientInit;
 import Messages.StringMessage;
+import Messages.VideoStream;
 import client.Client;
 import client.Connection;
 import client.inStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /*
@@ -29,6 +34,7 @@ public class GUI extends JFrame {
     private inStream input =null;
     private Client client =null;
     private AudioCapture ac;
+    private StreamVideo sv;
     
     public String name ="User";
     public int ID =-1;
@@ -79,6 +85,8 @@ public class GUI extends JFrame {
         chatSend = new javax.swing.JButton();
         chatText = new java.awt.TextField();
         chatMessages = new client.GUI.ChatArea(this);
+        jPanel1 = new javax.swing.JPanel();
+        imgBlock = new javax.swing.JLabel();
         mainMenu = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuConnect = new javax.swing.JMenuItem();
@@ -125,6 +133,11 @@ public class GUI extends JFrame {
 
         ControlVideoPlay.setBackground(new java.awt.Color(102, 255, 51));
         ControlVideoPlay.setText("Play");
+        ControlVideoPlay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ControlVideoPlayActionPerformed(evt);
+            }
+        });
 
         ControlVideoStop.setBackground(new java.awt.Color(255, 51, 51));
         ControlVideoStop.setText("Stop");
@@ -243,6 +256,25 @@ public class GUI extends JFrame {
 
         InterfaceSplit.setBottomComponent(ChatPanel);
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(imgBlock, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(imgBlock, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        InterfaceSplit.setLeftComponent(jPanel1);
+
         javax.swing.GroupLayout InterfacePanelLayout = new javax.swing.GroupLayout(InterfacePanel);
         InterfacePanel.setLayout(InterfacePanelLayout);
         InterfacePanelLayout.setHorizontalGroup(
@@ -307,6 +339,7 @@ public class GUI extends JFrame {
             con.write(new ClientInit(name));
             input.setInputStream(con.getInputStream());
             ac = new AudioCapture(con.getOutputStream(),this.name,this.ID);
+            sv =new StreamVideo(new VideoStream(this.name, this.ID, -1, -1), 1, new ScreenCapture(), con.getOutputStream());
             (new Thread(input)).start();
             menuConnect.setEnabled(false);
         } catch (IOException ex) {
@@ -345,6 +378,10 @@ public class GUI extends JFrame {
              ex.printStackTrace();
          }
     }//GEN-LAST:event_ControlAudioPlayActionPerformed
+
+    private void ControlVideoPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlVideoPlayActionPerformed
+        sv.start();
+    }//GEN-LAST:event_ControlVideoPlayActionPerformed
     
     public synchronized void setChatHistory(ArrayList<StringMessage> chatHist){
 //        chatMessages.setText("");
@@ -376,6 +413,8 @@ public class GUI extends JFrame {
     public client.GUI.ChatArea chatMessages;
     private javax.swing.JButton chatSend;
     private java.awt.TextField chatText;
+    public javax.swing.JLabel imgBlock;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuBar mainMenu;
     private javax.swing.JMenuItem menuConnect;
     private javax.swing.JMenu menuEdit;

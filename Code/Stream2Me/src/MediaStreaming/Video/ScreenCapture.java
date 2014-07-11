@@ -6,13 +6,12 @@
 
 package MediaStreaming.Video;
 
+import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.io.DataOutputStream;
-import java.io.ObjectOutputStream;
 import javax.swing.ImageIcon;
 
 /**
@@ -32,7 +31,7 @@ public class ScreenCapture {
         height =size.height;
         try {
             r = new Robot();
-        } catch(Exception ex) {
+        } catch(AWTException ex) {
             ex.printStackTrace();
         }
         setSize();
@@ -63,9 +62,5 @@ public class ScreenCapture {
     
     public byte[] getScreenByteArray() {
         return getScreenImage().toString().getBytes();
-    }
-    
-    public void streamVideo(ObjectOutputStream oos, long fps, Object MessageHeader) {
-        
     }
 }
