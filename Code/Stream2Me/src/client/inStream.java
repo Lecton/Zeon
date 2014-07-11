@@ -31,14 +31,27 @@ public class inStream implements Runnable {
     private ObjectInputStream ois = null;
     private GUI userInterface =null;
 
+    /**
+     * Constructor that initializes and creates an incoming stream and specifies 
+     * it an interface.
+     * @param userInterface 
+     */
     public inStream(GUI userInterface) {
         this.userInterface =userInterface;
     }
     
+    /**
+     * Sets the object input stream for this specific incoming stream via a connection.
+     * @param ois - the object input stream.
+     */
     public void setInputStream(ObjectInputStream ois) {
         this.ois =ois;
     }
 
+    /**
+     * Runs the incoming stream via the connection, determines the type of message 
+     * and performs the required action for each different message type.
+     */
     @Override
     public void run() {
         while (true) {
@@ -70,25 +83,36 @@ public class inStream implements Runnable {
         }
     }
 
+    /**
+     * Updates the system and colleague information as the colleague is created,
+     * and assigns the colleague a space in the interface, and sends a greeting
+     * message to the new colleague/client.
+     * @param m - the message.
+     */
     private void greetUserMessage(Message m) {
-        Greeting g =(Greeting) m;
-        userInterface.ID =g.ID;
-        Colleague cc =new Colleague();
+        Greeting g = (Greeting) m;
+        userInterface.ID = g.ID;
+        Colleague cc = new Colleague();
         
-        cc.ID =g.ID;
-        cc.name =userInterface.name;
-        cc.localName =userInterface.name;
+        cc.ID = g.ID;
+        cc.name = userInterface.name;
+        cc.localName = userInterface.name;
         userInterface.ContactPane.addContact(cc);
 
-        for (int i=0; i<g.size; i++) {
-            Colleague c =new Colleague();
-            c.ID =g.colleagueIDs[i];
-            c.name =g.colleagueNames[i];
-            c.localName =c.name;
+        for (int i = 0; i < g.size; i++) {
+            Colleague c = new Colleague();
+            c.ID = g.colleagueIDs[i];
+            c.name = g.colleagueNames[i];
+            c.localName = c.name;
             userInterface.ContactPane.addContact(c);
         }
     }
     
+    /**
+     * Sends a message to update the system and informing other colleagues
+     * that a client/user has been added and has connected.
+     * @param m - the message.
+     */
     private void newUserMessage(Message m) {
         NewUser um =(NewUser)m;
         
@@ -103,6 +127,11 @@ public class inStream implements Runnable {
         }
     }
 
+    /**
+     * Sends a message to update the system and informing other colleagues
+     * that a client/user has been removed or is no longer active.
+     * @param m - the message.
+     */
     private void removeUserMessage(Message m) {
         RemoveUser ru =(RemoveUser)m;
         
@@ -110,11 +139,20 @@ public class inStream implements Runnable {
         System.out.println("Removed User");
     }
 
+    /**
+     * Sends a message to update the system and informing other colleagues
+     * that a client/user has had information changed.
+     * @param m - the message.
+     */
     private void updateUserMessage(Message m) {
         UpdateUser uu =(UpdateUser) m;
         userInterface.ContactPane.updateUser(uu);
     }
 
+    /**
+     * 
+     * @param m - the message.
+     */
     private void stringUserMessage(Message m) {
         StringMessage sm =(StringMessage)m;
 //        System.out.println("message received: " + sm.getMessage());
@@ -128,6 +166,12 @@ public class inStream implements Runnable {
 //        }
     }
     
+    /**
+     * Sends a message to update the system and informing other colleagues
+     * that a client/user wishes to send messages that allow for the streaming 
+     * of audio data.
+     * @param m 
+     */
     private void audioStreamMessage(Message m){
     try
     {
@@ -182,6 +226,11 @@ public class inStream implements Runnable {
     } 
   }
 
+    /**
+     * Determines and returns the format of an audio files to be streamed via the 
+     * connection.
+     * @return 
+     */
     private AudioFormat getFormat() {
         float sampleRate = 8000;
         int sampleSizeInBits = 8;
@@ -193,6 +242,12 @@ public class inStream implements Runnable {
                 sampleSizeInBits, channels, signed, bigEndian);
     }
     
+    /**
+     * Sends a message to update the system and informing other colleagues
+     * that a client/user wishes to send messages that allow for the streaming 
+     * of video data.
+     * @param m 
+     */
     private void videoStreamMessage(Message m) {
         VideoStream vs =(VideoStream)m;
         
@@ -203,6 +258,11 @@ public class inStream implements Runnable {
         }
     }
     
+    /**
+     * Decodes an image string to be used in the streaming of video data.
+     * @param imageString - the image defines as a string which needs decoding.
+     * @return \
+     */
     private BufferedImage decodeToImage(String imageString) {
         
         

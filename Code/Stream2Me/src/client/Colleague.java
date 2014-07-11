@@ -28,10 +28,18 @@ public class Colleague {
         chatHistory =new ArrayList<StringMessage>();
     }
     
+    /**
+     * Adds a message to the colleague's message history.
+     * @param sm - the message to be added to the chat history.
+     */
     public void addMessage(StringMessage sm) {
         chatHistory.add(sm);
     }
     
+    /**
+     * Retrieves the sent messages for a colleague.
+     * @return 
+     */
     public ArrayList<StringMessage> getMessages() {
         return chatHistory;
     }
@@ -68,6 +76,10 @@ public class Colleague {
         }
     }
 
+    /**
+     * Changes the colleague's name and updates it.
+     * @param name - the name of the colleague.
+     */
     public void setName(String name) {
         if (this.name.equalsIgnoreCase(this.localName)) {
             this.localName =name;
@@ -75,6 +87,10 @@ public class Colleague {
         this.name =name;
     }
 
+    /**
+     * Changes the colleague's local name and updates it.
+     * @param localName - the colleague's local name.
+     */
     public void setlocalName(String localName) {
         this.localName =localName;
     }

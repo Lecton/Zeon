@@ -19,7 +19,8 @@ public class VideoStream extends Message {
     public String img;
     
     /**
-     * 
+     * Constructor to create and specify the variables of a video stream, including
+     * name of sender, ID, and recipient.
      * @param Sender - the name of the sender of this message
      * @param ID - the ID of the sender of this message
      * @param count - a counter.
@@ -33,7 +34,7 @@ public class VideoStream extends Message {
     }
     
     /**
-     * Constructor to create and initialize a video stream
+     * Constructor to create and initialize a video stream by cloning an existing one.
      * @param clone 
      */
     public VideoStream(VideoStream clone) {
