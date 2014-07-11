@@ -35,8 +35,15 @@ public class Contacts extends JScrollPane {
     private GUI userInterface;
     private JList list;
     
+    /**
+     * Default constructor to create a blank list of contacts.
+     */
     public Contacts() {}
     
+    /**
+     * Constructor that creates a list of contacts.
+     * @param userInterface 
+     */
     public Contacts(GUI userInterface) {
         this.userInterface = userInterface;
         list = new JList();
@@ -47,14 +54,27 @@ public class Contacts extends JScrollPane {
         list.addListSelectionListener(new ListSelection());
     }
     
+    /**
+     * Returns the selected index or item in the list of contacts - i.e. selecting
+     * a contact one wishes to send a message to. 
+     * @return 
+     */
     public int getSelectedIndex() {
         return list.getSelectedIndex();
     }
     
+    /**
+     * Returns the selected value or item in the list of contacts.
+     * @return 
+     */
     public Object getSelectedValue() {
         return list.getSelectedValue();
     }
     
+    /**
+     * Returns the selected ID or item in the list of contacts.
+     * @return 
+     */
     public int getSelectedID() {
         int index = getSelectedIndex();
         if (index == -1) {
@@ -69,8 +89,8 @@ public class Contacts extends JScrollPane {
     
     
     /**
-     * Find the colleague with the same ID as provided and returns his index
-     * @param ID of the colleague to find
+     * Finds the colleague with the same ID as provided and returns his index
+     * @param ID - ID the colleague to find
      * @return the colleague index or -1 if no one has that ID
      */
     private int find(int ID) {
@@ -82,6 +102,11 @@ public class Contacts extends JScrollPane {
         return -1;
     }
     
+    /**
+     * Returns the colleague with the same ID as provided.
+     * @param ID - ID of the colleague to find. 
+     * @return 
+     */
     private Colleague getColleague(int ID) {
         int index =find(ID);
         if (index != -1) {
@@ -90,12 +115,20 @@ public class Contacts extends JScrollPane {
         return null;
     }
     
+    /**
+     * Allows the user to add a contact to their list of contacts. 
+     * @param coll - colleague to be added to the list.
+     */
     public void addContact(Colleague coll) {
         System.out.println("User added");
         colleagues.add(coll);
         list.setListData(colleagues.toArray());
     }
     
+    /**
+     * Compares and removes a contact from the list according to its specified ID.
+     * @param colleagueID - the ID of the colleague to be removed.
+     */
     public void removeContact(int colleagueID) {
         System.out.println("User removed");
         Colleague toRemove =getColleague(colleagueID);
@@ -107,6 +140,11 @@ public class Contacts extends JScrollPane {
         list.setListData(colleagues.toArray());
     }
 
+    /**
+     * Updates the information of a user in the contact list if/when their 
+     * information changes.
+     * @param uu - the user update message.
+     */
     public void updateUser(UpdateUser uu) {
         System.out.println("User updated");
         int index = -1;
@@ -116,6 +154,11 @@ public class Contacts extends JScrollPane {
         list.setListData(colleagues.toArray());
     }
     
+    /**
+     * Allows the user to accept a string message from one of the colleagues on his/her 
+     * contacts list.
+     * @param sm - the string message to be accepted.
+     */
     public void acceptMessage(StringMessage sm) {
         if(sm.to == -1){
             Colleague me =getColleague(userInterface.ID);
@@ -144,6 +187,10 @@ public class Contacts extends JScrollPane {
         }
     }
     
+    /**
+     * Allows the user to select a specific colleague or contact on his/her list
+     * of contacts.
+     */
     private class ListSelection implements ListSelectionListener {
         int lastSelected =-1;
         
@@ -172,6 +219,7 @@ public class Contacts extends JScrollPane {
         }
     }
     
+
     private class CellRenderer extends JPanel implements ListCellRenderer<Colleague> {
         private final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
 
@@ -181,6 +229,10 @@ public class Contacts extends JScrollPane {
         private JButton button2;
         private GroupLayout layout;
 
+        /**
+        * Renders the cells in the list whenever a change is made to the list of
+        * contacts.
+        */
         public CellRenderer() {
             setOpaque(true);
             this.setLayout(new BorderLayout());
