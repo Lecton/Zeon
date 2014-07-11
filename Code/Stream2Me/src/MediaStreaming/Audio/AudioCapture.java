@@ -6,6 +6,10 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import javax.sound.sampled.*;
 
+/**
+ * 
+ * @author Zenadia
+ */
 public class AudioCapture 
 {
   public boolean running;
@@ -20,14 +24,21 @@ public class AudioCapture
   public String name;
   DataLine.Info info;
   
+  /**
+   * Constructor to initialize the audio stream capture object.
+   * Streaming audio is identified as a set of data lines and the format is 
+   * determined once the first line is retrieved.
+   * @param oos - the object output stream.
+   * @param _name - the name of this specific audio stream.
+   * @param _ID - the ID of this specific audio stream.
+   */
   public AudioCapture(ObjectOutputStream oos,String _name,int _ID)
   {
-        try 
-        {
+        try{
             this.name = _name;
             this.ID = _ID;
             as = new AudioStream(this.name, this.ID, -1);
-            as.to =-1;
+            as.to = -1;
             this.oos = oos;
             info = new DataLine.Info(TargetDataLine.class, getFormat());
             line = (TargetDataLine) AudioSystem.getLine(info);
@@ -40,33 +51,31 @@ public class AudioCapture
         }
   }
 
-  public void captureAudio() throws UnknownHostException, IOException 
-  {
-        Runnable runner = new Runnable()
-        {
+  /**
+   * Captures the audio by reading the data in the object output stream.
+   * @throws UnknownHostException
+   * @throws IOException 
+   */
+  public void captureAudio() throws UnknownHostException, IOException{
+        Runnable runner = new Runnable(){
             int bufferSize = (int)getFormat().getSampleRate() * getFormat().getFrameSize();
 //            byte buffer[] = new byte[bufferSize];
             int counter = 0;
-            public void run()
-            {
+            public void run(){
                 running = true;
-                try
-                {
-                  while (running) 
-                  {
-                        AudioStream as =new AudioStream(name, ID, counter);
-                        as.buffer =new byte[bufferSize];
+                try{
+                  while (running){
+                        AudioStream as = new AudioStream(name, ID, counter);
+                        as.buffer = new byte[bufferSize];
                         int count = line.read(as.buffer, 0, as.buffer.length);
-                        if (count > 0)
-                        {
+                        if (count > 0){
                             oos.writeObject(as);
                             oos.flush();
                             counter++;
                         }
                   }
                 }
-                catch(IOException ex)
-                {
+                catch(IOException ex){
                   ex.printStackTrace();
                 }
             }
@@ -76,9 +85,11 @@ public class AudioCapture
       captureThread.start();
   }
 
-
-  private AudioFormat getFormat()
-  {
+/**
+ * Determines the format of the audio based on its sample rate, sample size, etc.
+ * @return 
+ */
+  private AudioFormat getFormat(){
     float sampleRate = 8000;
     int sampleSizeInBits = 8;
     int channels = 1;

@@ -10,23 +10,37 @@ package Messages;
  */
 public class AudioStream extends Message {
     
-    public long count =-1;
-    public int bufferSize =0;
-    public byte[] buffer =new byte[bufferSize];
+    public long count = -1;
+    public int bufferSize = 0;
+    public byte[] buffer = new byte[bufferSize];
     
+    /**
+     * 
+     * @param Sender
+     * @param ID
+     * @param count 
+     */
     public AudioStream(String Sender, int ID, long count) {
         this.Sender = Sender;
-        this.ID =ID;
+        this.ID = ID;
         this.count = count;
     }    
     
+    /**
+     * 
+     * @param clone 
+     */
     public AudioStream(AudioStream clone) {
         this.Sender = clone.Sender;
-        this.ID =clone.ID;
-        this.to =clone.to;
+        this.ID = clone.ID;
+        this.to = clone.to;
         this.count = clone.count+1;
     }
     
+    /**
+     * 
+     * @return 
+     */
     @Override
     public String getMessage() {
         String result ="Audio Message {\n";
