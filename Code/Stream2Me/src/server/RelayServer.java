@@ -15,6 +15,7 @@ import java.util.ArrayList;
 /**
  *
  * @author Bernhard
+ * @author Lecton
  */
 public class RelayServer {
     private int PORT =2000;
@@ -71,7 +72,6 @@ public class RelayServer {
         
         clients.add(cc);
         for (int i=0; i<clients.size(); i++) {
-//            if (!clients.get(i).equals(cc)){
                 clients.get(i).send(new NewUser(clients.size(), cc.getID(), cc.getName(), "Server"));
 //            }
         }

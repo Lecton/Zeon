@@ -10,6 +10,7 @@ import client.Client;
 import client.Connection;
 import client.inStream;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -53,7 +54,7 @@ public class GUI extends JFrame {
         
         setTitle("Stream2Me: "+name);
         
-        input =new inStream(this);
+        input = new inStream(this);
     }
 
     /**
@@ -141,6 +142,11 @@ public class GUI extends JFrame {
 
         ControlVideoStop.setBackground(new java.awt.Color(255, 51, 51));
         ControlVideoStop.setText("Stop");
+        ControlVideoStop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ControlVideoStopActionPerformed(evt);
+            }
+        });
 
         ControlAudio.setText("Audio");
 
@@ -348,7 +354,7 @@ public class GUI extends JFrame {
     }//GEN-LAST:event_menuConnectActionPerformed
 
     private void chatSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chatSendActionPerformed
-//        System.out.println(chatText.getText());
+
         if(!chatText.getText().isEmpty()){
             StringMessage sm = new StringMessage(name +" :\t"+ chatText.getText() + "\n", ID);
             sm.to = ContactPane.getSelectedID();
@@ -361,27 +367,28 @@ public class GUI extends JFrame {
     }//GEN-LAST:event_chatSendActionPerformed
 
     private void ControlAudioStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlAudioStopActionPerformed
-        ControlAudioPlay.setEnabled(true);
-        ControlAudioStop.setEnabled(false);
-        ac.running = false;
+//        ControlAudioPlay.setEnabled(true);
+//        ControlAudioStop.setEnabled(false);
+        ac.stop();
     }//GEN-LAST:event_ControlAudioStopActionPerformed
 
     private void ControlAudioPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlAudioPlayActionPerformed
-        ControlAudioPlay.setEnabled(false);
-        ControlAudioStop.setEnabled(true);
-         try
-         {
-             ac.captureAudio();
-         }
-         catch (IOException ex)
-         {
-             ex.printStackTrace();
-         }
+        try {
+            //        ControlAudioPlay.setEnabled(false);
+            //        ControlAudioStop.setEnabled(true);
+                         ac.start();
+        }catch (IOException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_ControlAudioPlayActionPerformed
 
     private void ControlVideoPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlVideoPlayActionPerformed
         sv.start();
     }//GEN-LAST:event_ControlVideoPlayActionPerformed
+
+    private void ControlVideoStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlVideoStopActionPerformed
+        
+    }//GEN-LAST:event_ControlVideoStopActionPerformed
     
     public synchronized void setChatHistory(ArrayList<StringMessage> chatHist){
 //        chatMessages.setText("");

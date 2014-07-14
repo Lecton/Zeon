@@ -4,6 +4,8 @@
  */
 package Messages;
 
+import java.util.Date;
+
 /**
  *
  * @author Lecton
@@ -20,6 +22,9 @@ public class StringMessage extends Message {
         this.mess =mess;
         this.ID =ID;
         this.Title ="String Message";
+        Date d = new Date();
+        this.timestamp = d.getHours()+
+                         ":"+d.getMinutes();
     }
     
     /**

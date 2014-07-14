@@ -8,6 +8,7 @@ import javax.sound.sampled.*;
 
 /**
  * 
+ * @author Lecton
  * @author Zenadia
  */
 public class AudioCapture 
@@ -56,10 +57,9 @@ public class AudioCapture
    * @throws UnknownHostException
    * @throws IOException 
    */
-  public void captureAudio() throws UnknownHostException, IOException{
+  public void start() throws UnknownHostException, IOException{
         Runnable runner = new Runnable(){
             int bufferSize = (int)getFormat().getSampleRate() * getFormat().getFrameSize();
-//            byte buffer[] = new byte[bufferSize];
             int counter = 0;
             public void run(){
                 running = true;
@@ -85,6 +85,10 @@ public class AudioCapture
       captureThread.start();
   }
 
+  public void stop(){
+      this.running = false;
+  }
+  
 /**
  * Determines the format of the audio based on its sample rate, sample size, etc.
  * @return 

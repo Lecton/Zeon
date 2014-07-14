@@ -142,7 +142,7 @@ public class ChatArea extends JScrollPane {
         public Component getListCellRendererComponent(JList<? extends StringMessage> list, StringMessage value,
             int index, boolean isSelected, boolean cellHasFocus) {
                 name.setText(value.Sender);
-                timestamp.setText("now");
+                timestamp.setText(value.timestamp);
                 message.setText(value.mess);
                 return this;
             }

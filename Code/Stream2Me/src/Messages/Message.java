@@ -15,7 +15,7 @@ public class Message implements Serializable {
     public String Sender ="";
     public int ID =-1;
     public String Title ="";
-    public Date timestamp =null;
+    public String timestamp =null;
     public transient int SSN;
     public String passwordHash ="";
     public int to =-1; //-1 send to ALL
