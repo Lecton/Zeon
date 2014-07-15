@@ -129,6 +129,11 @@ public class GUI extends JFrame {
 
         ControlStreamStop.setBackground(new java.awt.Color(255, 51, 51));
         ControlStreamStop.setText("Stop");
+        ControlStreamStop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ControlStreamStopActionPerformed(evt);
+            }
+        });
 
         ControlVideo.setText("Video");
 
@@ -336,7 +341,13 @@ public class GUI extends JFrame {
     }//GEN-LAST:event_ControlStreamActionPerformed
 
     private void ControlStreamPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlStreamPlayActionPerformed
-        // TODO add your handling code here:
+        try 
+        {
+            ac.start();
+            sv.start();
+        }catch (IOException ex){
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_ControlStreamPlayActionPerformed
 
     private void menuConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConnectActionPerformed
@@ -373,10 +384,9 @@ public class GUI extends JFrame {
     }//GEN-LAST:event_ControlAudioStopActionPerformed
 
     private void ControlAudioPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlAudioPlayActionPerformed
-        try {
-            //        ControlAudioPlay.setEnabled(false);
-            //        ControlAudioStop.setEnabled(true);
-                         ac.start();
+        try 
+        {
+            ac.start();
         }catch (IOException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -387,8 +397,13 @@ public class GUI extends JFrame {
     }//GEN-LAST:event_ControlVideoPlayActionPerformed
 
     private void ControlVideoStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlVideoStopActionPerformed
-        
+        sv.stop();
     }//GEN-LAST:event_ControlVideoStopActionPerformed
+
+    private void ControlStreamStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlStreamStopActionPerformed
+        ac.stop();
+        sv.stop();
+    }//GEN-LAST:event_ControlStreamStopActionPerformed
     
     public synchronized void setChatHistory(ArrayList<StringMessage> chatHist){
 //        chatMessages.setText("");

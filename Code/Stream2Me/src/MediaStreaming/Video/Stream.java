@@ -21,13 +21,13 @@ import sun.misc.BASE64Encoder;
  *
  * @author Bernhard
  */
-class Stream implements Runnable {
-    public ObjectOutputStream oos =null;
-    public ScreenCapture screen =null;
+class Stream implements Runnable{
+    public ObjectOutputStream oos = null;
+    public ScreenCapture screen = null;
     
-    private String img ="";
-    private VideoStream previousMessage =null;
-    private long interval =0;
+    private String img = "";
+    private VideoStream previousMessage = null;
+    private long interval = 0;
     
     /**
      * Constructor that defines a stream when an object output stream, frames per
@@ -38,7 +38,7 @@ class Stream implements Runnable {
      * @param vs - the VideoStream message object
      */
     public Stream(ObjectOutputStream oos, ScreenCapture sc,
-            long fps, VideoStream vs) {
+                                    long fps, VideoStream vs) {
         this.oos =oos;
         this.screen =sc;
         previousMessage =vs;
@@ -54,11 +54,11 @@ class Stream implements Runnable {
             if (isPlaying()) {
                 img =encodeToString(screen.getScreenImage(), "png");
                 previousMessage =new VideoStream(previousMessage);
-                System.out.println(img);
-                previousMessage.img =img;
+                //System.out.println(img);
+                previousMessage.img = img;
             }
             send(previousMessage);
-            sleep();
+            sleep();;
         }
     }
     
