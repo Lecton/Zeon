@@ -143,7 +143,7 @@ public class GUI extends JFrame {
         streamButton1.createButton();
 
         ProfilePic.setBackground(new java.awt.Color(255, 255, 255));
-        ProfilePic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/GUI/default_profile.png"))); // NOI18N
+        ProfilePic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/default_profile.png"))); // NOI18N
         ProfilePic.setToolTipText("");
 
         javax.swing.GroupLayout UserControlsLayout = new javax.swing.GroupLayout(UserControls);
@@ -212,7 +212,7 @@ public class GUI extends JFrame {
 
         chatSend.setBackground(new java.awt.Color(255, 255, 255));
         chatSend.setForeground(new java.awt.Color(255, 255, 255));
-        chatSend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/GUI/submit.png"))); // NOI18N
+        chatSend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/submit.png"))); // NOI18N
         chatSend.setToolTipText("");
         chatSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
