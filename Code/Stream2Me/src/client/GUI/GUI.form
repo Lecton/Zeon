@@ -242,8 +242,9 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="2" name="C:\Users\Lecton\Documents\GitHub\Zeon\Code\Stream2Me\assests\default_profile.png"/>
+                      <Image iconType="3" name="/client/GUI/default_profile.png"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -372,7 +373,7 @@
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="2" name="C:\Users\Lecton\Documents\GitHub\Zeon\Code\Stream2Me\assests\submit.png"/>
+                          <Image iconType="3" name="/client/GUI/submit.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value=""/>
                       </Properties>

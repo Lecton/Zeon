@@ -143,7 +143,8 @@ public class GUI extends JFrame {
         streamButton1.createButton();
 
         ProfilePic.setBackground(new java.awt.Color(255, 255, 255));
-        ProfilePic.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lecton\\Documents\\GitHub\\Zeon\\Code\\Stream2Me\\assests\\default_profile.png")); // NOI18N
+        ProfilePic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/GUI/default_profile.png"))); // NOI18N
+        ProfilePic.setToolTipText("");
 
         javax.swing.GroupLayout UserControlsLayout = new javax.swing.GroupLayout(UserControls);
         UserControls.setLayout(UserControlsLayout);
@@ -211,7 +212,7 @@ public class GUI extends JFrame {
 
         chatSend.setBackground(new java.awt.Color(255, 255, 255));
         chatSend.setForeground(new java.awt.Color(255, 255, 255));
-        chatSend.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lecton\\Documents\\GitHub\\Zeon\\Code\\Stream2Me\\assests\\submit.png")); // NOI18N
+        chatSend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/GUI/submit.png"))); // NOI18N
         chatSend.setToolTipText("");
         chatSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -239,7 +240,7 @@ public class GUI extends JFrame {
         ChatPanelLayout.setVerticalGroup(
             ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ChatPanelLayout.createSequentialGroup()
-                .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                 .addGap(7, 7, 7)
                 .addGroup(ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chatSend)
@@ -269,7 +270,7 @@ public class GUI extends JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(imgBlock, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+                .addComponent(imgBlock, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
