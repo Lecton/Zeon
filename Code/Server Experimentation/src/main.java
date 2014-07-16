@@ -4,17 +4,25 @@
  * and open the template in the editor.
  */
 
+import java.io.IOException;
+import server.RelayServer;
+
 /**
  *
  * @author Bernhard
  */
 public class main {
-
     /**
-     * @param args the command line arguments
+     * 
+     * @param args
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) throws InterruptedException {
+        try {
+            RelayServer rs = new RelayServer(2014);
+            rs.start();
+        } 
+        catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
-    
 }
