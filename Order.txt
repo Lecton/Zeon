@@ -23,3 +23,7 @@ Added Features:
 
 	User friendly
 	Simple GUI
+
+
+Lecton:
+	GUI hover interface.
