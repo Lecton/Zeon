@@ -26,19 +26,20 @@ public class Main {
     button.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                   if (e.getButton() == MouseEvent.BUTTON1) {
-                      if(pressed){
+                      if(!pressed){
                           pressed = !pressed;
-                          button.setIcon(new ImageIcon(("clicked-stream.png")));
+                          button.setSize(5,5);
+                          button.setIcon(new ImageIcon(("submit.png")));
                       }else{
                           pressed = !pressed;
-                        button.setIcon(new ImageIcon(("unclicked-stream.png")));                         
+                        button.setIcon(new ImageIcon(("submit.png")));                         
                       }
                       
                   } 
 
                 }
               });
-    button.setIcon(new ImageIcon(("unclicked-stream.png")));
+    button.setIcon(new ImageIcon(("submit.png")));
         frame.add(button);
         frame.setSize(new Dimension(500,500));
         frame.setVisible(true);  

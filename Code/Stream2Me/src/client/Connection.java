@@ -30,7 +30,7 @@ public class Connection {
      */
     public Connection() {
         PORT =2014;
-        address ="127.0.0.1";
+        address ="192.168.1.45";
     }
     
     /**

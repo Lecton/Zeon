@@ -9,6 +9,7 @@ import Messages.VideoStream;
 import client.Client;
 import client.Connection;
 import client.inStream;
+import java.awt.Color;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -48,9 +49,13 @@ public class GUI extends JFrame {
         this.name =name;
         con =new Connection();
         con.setPORT(PORT);
-        con.setAddress("127.0.0.1");
         
         initComponents();
+        this.getContentPane().setBackground(Color.WHITE);
+        MainSplit.setBackground(Color.black);
+        MainSplit.setBorder(null);
+//        this.repaint();
+//        this.update(UserControls.getGraphics());
         
         setTitle("Stream2Me: "+name);
         
@@ -69,16 +74,11 @@ public class GUI extends JFrame {
         DetailsPanel = new javax.swing.JPanel();
         MainSplit = new javax.swing.JSplitPane();
         ControlPanel = new javax.swing.JPanel();
-        StreamControls = new javax.swing.JPanel();
-        ControlStream = new javax.swing.JButton();
-        ControlStreamPlay = new javax.swing.JButton();
-        ControlStreamStop = new javax.swing.JButton();
-        ControlVideo = new javax.swing.JButton();
-        ControlVideoPlay = new javax.swing.JButton();
-        ControlVideoStop = new javax.swing.JButton();
-        ControlAudio = new javax.swing.JButton();
-        ControlAudioPlay = new javax.swing.JButton();
-        ControlAudioStop = new javax.swing.JButton();
+        UserControls = new javax.swing.JPanel();
+        videoButton1 = new client.GUI.VideoButton();
+        audioButton1 = new client.GUI.AudioButton();
+        streamButton1 = new client.GUI.StreamButton();
+        ProfilePic = new javax.swing.JLabel();
         ContactPane = new client.GUI.Contacts(this);
         InterfacePanel = new javax.swing.JPanel();
         InterfaceSplit = new javax.swing.JSplitPane();
@@ -105,141 +105,124 @@ public class GUI extends JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
+        MainSplit.setBackground(new java.awt.Color(255, 255, 255));
+        MainSplit.setBorder(null);
         MainSplit.setDividerLocation(230);
+        MainSplit.setDividerSize(1);
+        MainSplit.setForeground(new java.awt.Color(255, 255, 255));
         MainSplit.setMinimumSize(new java.awt.Dimension(230, 3));
+        MainSplit.setBackground(Color.black);
+        MainSplit.setBorder(null);
 
-        StreamControls.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        ControlPanel.setBackground(new java.awt.Color(255, 255, 255));
+        ControlPanel.setForeground(new java.awt.Color(255, 255, 255));
 
-        ControlStream.setText("Stream");
-        ControlStream.setToolTipText("");
-        ControlStream.addActionListener(new java.awt.event.ActionListener() {
+        UserControls.setBackground(new java.awt.Color(255, 255, 255));
+        UserControls.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 85, 0)));
+        UserControls.setForeground(new java.awt.Color(255, 255, 255));
+
+        videoButton1.setBackground(new java.awt.Color(255, 255, 255));
+        videoButton1.createButton();
+        videoButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ControlStreamActionPerformed(evt);
+                videoButton1ActionPerformed(evt);
             }
         });
 
-        ControlStreamPlay.setBackground(new java.awt.Color(102, 255, 51));
-        ControlStreamPlay.setText("Play");
-        ControlStreamPlay.addActionListener(new java.awt.event.ActionListener() {
+        audioButton1.setBackground(new java.awt.Color(255, 255, 255));
+        audioButton1.createButton();
+        audioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ControlStreamPlayActionPerformed(evt);
+                audioButton1ActionPerformed(evt);
             }
         });
 
-        ControlStreamStop.setBackground(new java.awt.Color(255, 51, 51));
-        ControlStreamStop.setText("Stop");
-        ControlStreamStop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ControlStreamStopActionPerformed(evt);
-            }
-        });
+        streamButton1.setBackground(new java.awt.Color(255, 255, 255));
+        streamButton1.createButton();
 
-        ControlVideo.setText("Video");
+        ProfilePic.setBackground(new java.awt.Color(255, 255, 255));
+        ProfilePic.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lecton\\Documents\\GitHub\\Zeon\\Code\\Stream2Me\\assests\\default_profile.png")); // NOI18N
 
-        ControlVideoPlay.setBackground(new java.awt.Color(102, 255, 51));
-        ControlVideoPlay.setText("Play");
-        ControlVideoPlay.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ControlVideoPlayActionPerformed(evt);
-            }
-        });
-
-        ControlVideoStop.setBackground(new java.awt.Color(255, 51, 51));
-        ControlVideoStop.setText("Stop");
-        ControlVideoStop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ControlVideoStopActionPerformed(evt);
-            }
-        });
-
-        ControlAudio.setText("Audio");
-
-        ControlAudioPlay.setBackground(new java.awt.Color(102, 255, 51));
-        ControlAudioPlay.setText("Play");
-        ControlAudioPlay.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ControlAudioPlayActionPerformed(evt);
-            }
-        });
-
-        ControlAudioStop.setBackground(new java.awt.Color(255, 51, 51));
-        ControlAudioStop.setText("Stop");
-        ControlAudioStop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ControlAudioStopActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout StreamControlsLayout = new javax.swing.GroupLayout(StreamControls);
-        StreamControls.setLayout(StreamControlsLayout);
-        StreamControlsLayout.setHorizontalGroup(
-            StreamControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(StreamControlsLayout.createSequentialGroup()
-                .addGroup(StreamControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(ControlAudio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ControlVideo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ControlStream, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(14, 14, 14)
-                .addGroup(StreamControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(ControlAudioPlay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ControlStreamPlay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ControlVideoPlay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(StreamControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(ControlVideoStop, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ControlStreamStop, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ControlAudioStop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 10, Short.MAX_VALUE))
-        );
-        StreamControlsLayout.setVerticalGroup(
-            StreamControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(StreamControlsLayout.createSequentialGroup()
+        javax.swing.GroupLayout UserControlsLayout = new javax.swing.GroupLayout(UserControls);
+        UserControls.setLayout(UserControlsLayout);
+        UserControlsLayout.setHorizontalGroup(
+            UserControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(UserControlsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(StreamControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ControlStream, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(StreamControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(ControlStreamStop, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(ControlStreamPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(StreamControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ControlVideo)
-                    .addComponent(ControlVideoPlay)
-                    .addComponent(ControlVideoStop))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(StreamControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ControlAudio)
-                    .addComponent(ControlAudioPlay)
-                    .addComponent(ControlAudioStop)))
+                .addGroup(UserControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(UserControlsLayout.createSequentialGroup()
+                        .addComponent(audioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(videoButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(streamButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(ProfilePic, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
+                .addContainerGap())
         );
+        UserControlsLayout.setVerticalGroup(
+            UserControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, UserControlsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(ProfilePic, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(UserControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(streamButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(videoButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(audioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        ContactPane.setBackground(new java.awt.Color(255, 255, 255));
+        ContactPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 85, 0)));
+        ContactPane.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout ControlPanelLayout = new javax.swing.GroupLayout(ControlPanel);
         ControlPanel.setLayout(ControlPanelLayout);
         ControlPanelLayout.setHorizontalGroup(
             ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ControlPanelLayout.createSequentialGroup()
-                .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ContactPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(StreamControls, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ContactPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(UserControls, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         ControlPanelLayout.setVerticalGroup(
             ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ControlPanelLayout.createSequentialGroup()
-                .addComponent(StreamControls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ContactPane, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE))
+                .addComponent(UserControls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(ContactPane, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         MainSplit.setLeftComponent(ControlPanel);
 
+        InterfaceSplit.setBackground(new java.awt.Color(255, 255, 255));
+        InterfaceSplit.setBorder(javax.swing.BorderFactory.createCompoundBorder(null, javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 85, 0))));
         InterfaceSplit.setDividerLocation(400);
+        InterfaceSplit.setDividerSize(1);
+        InterfaceSplit.setForeground(new java.awt.Color(255, 255, 255));
         InterfaceSplit.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        InterfaceSplit.setMinimumSize(new java.awt.Dimension(1, 7));
 
-        chatSend.setText("Submit");
+        ChatPanel.setBackground(new java.awt.Color(255, 255, 255));
+
+        chatSend.setBackground(new java.awt.Color(255, 255, 255));
+        chatSend.setForeground(new java.awt.Color(255, 255, 255));
+        chatSend.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lecton\\Documents\\GitHub\\Zeon\\Code\\Stream2Me\\assests\\submit.png")); // NOI18N
+        chatSend.setToolTipText("");
         chatSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chatSendActionPerformed(evt);
+            }
+        });
+
+        chatText.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        chatText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chatTextActionPerformed(evt);
             }
         });
 
@@ -248,7 +231,7 @@ public class GUI extends JFrame {
         ChatPanelLayout.setHorizontalGroup(
             ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ChatPanelLayout.createSequentialGroup()
-                .addComponent(chatText, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE)
+                .addComponent(chatText, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chatSend, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -256,7 +239,7 @@ public class GUI extends JFrame {
         ChatPanelLayout.setVerticalGroup(
             ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ChatPanelLayout.createSequentialGroup()
-                .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
                 .addGap(7, 7, 7)
                 .addGroup(ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chatSend)
@@ -267,20 +250,26 @@ public class GUI extends JFrame {
 
         InterfaceSplit.setBottomComponent(ChatPanel);
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+
+        imgBlock.setBackground(new java.awt.Color(255, 255, 255));
+        imgBlock.setForeground(new java.awt.Color(255, 255, 255));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(imgBlock, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
+                .addComponent(imgBlock, javax.swing.GroupLayout.DEFAULT_SIZE, 743, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(imgBlock, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                .addComponent(imgBlock, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -290,11 +279,11 @@ public class GUI extends JFrame {
         InterfacePanel.setLayout(InterfacePanelLayout);
         InterfacePanelLayout.setHorizontalGroup(
             InterfacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(InterfaceSplit, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(InterfaceSplit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         InterfacePanelLayout.setVerticalGroup(
             InterfacePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(InterfaceSplit)
+            .addComponent(InterfaceSplit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         MainSplit.setRightComponent(InterfacePanel);
@@ -329,26 +318,12 @@ public class GUI extends JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(MainSplit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(MainSplit, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void ControlStreamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlStreamActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ControlStreamActionPerformed
-
-    private void ControlStreamPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlStreamPlayActionPerformed
-        try 
-        {
-            ac.start();
-            sv.start();
-        }catch (IOException ex){
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_ControlStreamPlayActionPerformed
 
     private void menuConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConnectActionPerformed
         try {
@@ -377,33 +352,30 @@ public class GUI extends JFrame {
         chatText.setText("");
     }//GEN-LAST:event_chatSendActionPerformed
 
-    private void ControlAudioStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlAudioStopActionPerformed
-//        ControlAudioPlay.setEnabled(true);
-//        ControlAudioStop.setEnabled(false);
-        ac.stop();
-    }//GEN-LAST:event_ControlAudioStopActionPerformed
+    private void videoButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_videoButton1ActionPerformed
+        if(!videoButton1.pressed){
+            sv.start();
+        }else{
+            sv.stop();
+        }
+    }//GEN-LAST:event_videoButton1ActionPerformed
 
-    private void ControlAudioPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlAudioPlayActionPerformed
+    private void chatTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chatTextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chatTextActionPerformed
+
+    private void audioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioButton1ActionPerformed
         try 
         {
-            ac.start();
-        }catch (IOException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            if(!audioButton1.pressed){
+                ac.start();
+            }else{
+                ac.stop();
+            }
+        }catch (IOException ex){
+            ex.printStackTrace();
         }
-    }//GEN-LAST:event_ControlAudioPlayActionPerformed
-
-    private void ControlVideoPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlVideoPlayActionPerformed
-        sv.start();
-    }//GEN-LAST:event_ControlVideoPlayActionPerformed
-
-    private void ControlVideoStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlVideoStopActionPerformed
-        sv.stop();
-    }//GEN-LAST:event_ControlVideoStopActionPerformed
-
-    private void ControlStreamStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ControlStreamStopActionPerformed
-        ac.stop();
-        sv.stop();
-    }//GEN-LAST:event_ControlStreamStopActionPerformed
+    }//GEN-LAST:event_audioButton1ActionPerformed
     
     public synchronized void setChatHistory(ArrayList<StringMessage> chatHist){
 //        chatMessages.setText("");
@@ -417,21 +389,14 @@ public class GUI extends JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ChatPanel;
     public client.GUI.Contacts ContactPane;
-    private javax.swing.JButton ControlAudio;
-    private javax.swing.JButton ControlAudioPlay;
-    private javax.swing.JButton ControlAudioStop;
     private javax.swing.JPanel ControlPanel;
-    private javax.swing.JButton ControlStream;
-    private javax.swing.JButton ControlStreamPlay;
-    private javax.swing.JButton ControlStreamStop;
-    private javax.swing.JButton ControlVideo;
-    private javax.swing.JButton ControlVideoPlay;
-    private javax.swing.JButton ControlVideoStop;
     private javax.swing.JPanel DetailsPanel;
     private javax.swing.JPanel InterfacePanel;
     private javax.swing.JSplitPane InterfaceSplit;
     private javax.swing.JSplitPane MainSplit;
-    private javax.swing.JPanel StreamControls;
+    public javax.swing.JLabel ProfilePic;
+    private javax.swing.JPanel UserControls;
+    private client.GUI.AudioButton audioButton1;
     public client.GUI.ChatArea chatMessages;
     private javax.swing.JButton chatSend;
     private java.awt.TextField chatText;
@@ -441,5 +406,8 @@ public class GUI extends JFrame {
     private javax.swing.JMenuItem menuConnect;
     private javax.swing.JMenu menuEdit;
     private javax.swing.JMenu menuFile;
+    private client.GUI.StreamButton streamButton1;
+    private client.GUI.VideoButton videoButton1;
     // End of variables declaration//GEN-END:variables
+   
 }

@@ -63,7 +63,7 @@ public class Client {
     }
     
     public static void main(String[] args){
-        String name = JOptionPane.showInputDialog("Please enter your name.");
+        String name ="a";// JOptionPane.showInputDialog("Please enter your name.");
         System.out.println("My name is "+name+"!");
 
         Client client = (new Client(2014,name));
