@@ -93,7 +93,7 @@ public class clientConnection {
                         relay.closeConnection(clientConnection.this);
                         break;
                     } catch (IOException ex1) {
-                        ex1.printStackTrace();
+                        System.out.println("Client notification error");
                     }
                 }
             }

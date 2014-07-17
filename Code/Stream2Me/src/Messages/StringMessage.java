@@ -23,8 +23,8 @@ public class StringMessage extends Message {
         this.ID =ID;
         this.Title ="String Message";
         Date d = new Date();
-        this.timestamp = d.getHours()+
-                         ":"+d.getMinutes();
+//        this.timestamp = d.getHours()+
+//                         ":"+d.getMinutes();
     }
     
     /**
@@ -32,6 +32,7 @@ public class StringMessage extends Message {
      * string.
      * @return 
      */
+    @Override
     public String getMessage() {
         return mess;
     }

@@ -1,4 +1,4 @@
-    package client.GUI;
+    package client.GUI.Buttons;
 
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
@@ -10,10 +10,13 @@ public class Button extends JButton{
 //       JButton button = new JButton();
        public boolean pressed = false;
        public String bname = null;
-       public Button(){}
+       public Button() {
+           createButton();
+       }
        
-       public Button(String _name){
+       public Button(String _name) {
            this.bname = _name;
+           createButton();
        }
        
        public void createButton(){

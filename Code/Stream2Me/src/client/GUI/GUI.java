@@ -35,8 +35,6 @@ public class GUI extends JFrame {
     private Connection con =null;
     private inStream input =null;
     private Client client =null;
-    private AudioCapture ac;
-    private StreamVideo sv;
     
     public String name ="User";
     public int ID =-1;
@@ -49,6 +47,7 @@ public class GUI extends JFrame {
         this.name =name;
         con =new Connection();
         con.setPORT(PORT);
+        con.setAddress("192.168.1.45");
         
         initComponents();
         this.getContentPane().setBackground(Color.WHITE);
@@ -57,8 +56,8 @@ public class GUI extends JFrame {
 //        this.repaint();
 //        this.update(UserControls.getGraphics());
         
-        setTitle("Stream2Me: "+name);
-        
+        setTitle("Stream2Me: " + name);
+//        this.userName.set
         input = new inStream(this);
     }
 
@@ -72,14 +71,12 @@ public class GUI extends JFrame {
     private void initComponents() {
 
         DetailsPanel = new javax.swing.JPanel();
+        userProfile1 = new client.GUI.UserProfile();
+        userProfile2 = new client.GUI.UserProfile();
         MainSplit = new javax.swing.JSplitPane();
         ControlPanel = new javax.swing.JPanel();
-        UserControls = new javax.swing.JPanel();
-        videoButton1 = new client.GUI.VideoButton();
-        audioButton1 = new client.GUI.AudioButton();
-        streamButton1 = new client.GUI.StreamButton();
-        ProfilePic = new javax.swing.JLabel();
         ContactPane = new client.GUI.Contacts(this);
+        userProfileControl = new client.GUI.UserProfile();
         InterfacePanel = new javax.swing.JPanel();
         InterfaceSplit = new javax.swing.JSplitPane();
         ChatPanel = new javax.swing.JPanel();
@@ -119,63 +116,6 @@ public class GUI extends JFrame {
         ControlPanel.setBackground(new java.awt.Color(255, 255, 255));
         ControlPanel.setForeground(new java.awt.Color(255, 255, 255));
 
-        UserControls.setBackground(new java.awt.Color(255, 255, 255));
-        UserControls.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 85, 0)));
-        UserControls.setForeground(new java.awt.Color(255, 255, 255));
-
-        videoButton1.setBackground(new java.awt.Color(255, 255, 255));
-        videoButton1.createButton();
-        videoButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                videoButton1ActionPerformed(evt);
-            }
-        });
-
-        audioButton1.setBackground(new java.awt.Color(255, 255, 255));
-        audioButton1.createButton();
-        audioButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                audioButton1ActionPerformed(evt);
-            }
-        });
-
-        streamButton1.setBackground(new java.awt.Color(255, 255, 255));
-        streamButton1.createButton();
-
-        ProfilePic.setBackground(new java.awt.Color(255, 255, 255));
-        ProfilePic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/default_profile.png"))); // NOI18N
-        ProfilePic.setToolTipText("");
-
-        javax.swing.GroupLayout UserControlsLayout = new javax.swing.GroupLayout(UserControls);
-        UserControls.setLayout(UserControlsLayout);
-        UserControlsLayout.setHorizontalGroup(
-            UserControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(UserControlsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(UserControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(UserControlsLayout.createSequentialGroup()
-                        .addComponent(audioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(videoButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(streamButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(ProfilePic, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        UserControlsLayout.setVerticalGroup(
-            UserControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, UserControlsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ProfilePic, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(UserControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(streamButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(videoButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(audioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
         ContactPane.setBackground(new java.awt.Color(255, 255, 255));
         ContactPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 85, 0)));
         ContactPane.setForeground(new java.awt.Color(255, 255, 255));
@@ -185,17 +125,19 @@ public class GUI extends JFrame {
         ControlPanelLayout.setHorizontalGroup(
             ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ControlPanelLayout.createSequentialGroup()
-                .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ContactPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(UserControls, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addComponent(ContactPane, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                .addGap(22, 22, 22))
+            .addGroup(ControlPanelLayout.createSequentialGroup()
+                .addComponent(userProfileControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         ControlPanelLayout.setVerticalGroup(
             ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ControlPanelLayout.createSequentialGroup()
-                .addComponent(UserControls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(ContactPane, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(userProfileControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ContactPane, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         MainSplit.setLeftComponent(ControlPanel);
@@ -214,6 +156,8 @@ public class GUI extends JFrame {
         chatSend.setForeground(new java.awt.Color(255, 255, 255));
         chatSend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/submit.png"))); // NOI18N
         chatSend.setToolTipText("");
+        chatSend.setBorderPainted(false);
+        chatSend.setContentAreaFilled(false);
         chatSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chatSendActionPerformed(evt);
@@ -331,8 +275,7 @@ public class GUI extends JFrame {
             con.makeConnection();
             con.write(new ClientInit(name));
             input.setInputStream(con.getInputStream());
-            ac = new AudioCapture(con.getOutputStream(),this.name,this.ID);
-            sv =new StreamVideo(new VideoStream(this.name, this.ID, -1, -1), 1, new ScreenCapture(), con.getOutputStream());
+            userProfileControl.initializeStreams(con, this.name, this.ID);
             (new Thread(input)).start();
             menuConnect.setEnabled(false);
         } catch (IOException ex) {
@@ -353,29 +296,21 @@ public class GUI extends JFrame {
         chatText.setText("");
     }//GEN-LAST:event_chatSendActionPerformed
 
-    private void videoButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_videoButton1ActionPerformed
-        if(!videoButton1.pressed){
-            sv.start();
-        }else{
-            sv.stop();
-        }
-    }//GEN-LAST:event_videoButton1ActionPerformed
-
     private void chatTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chatTextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_chatTextActionPerformed
 
     private void audioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioButton1ActionPerformed
-        try 
-        {
-            if(!audioButton1.pressed){
-                ac.start();
-            }else{
-                ac.stop();
-            }
-        }catch (IOException ex){
-            ex.printStackTrace();
-        }
+//        try 
+//        {
+//            if(!audioButton1.pressed){
+//                ac.start();
+//            }else{
+//                ac.stop();
+//            }
+//        }catch (IOException ex){
+//            ex.printStackTrace();
+//        }
     }//GEN-LAST:event_audioButton1ActionPerformed
     
     public synchronized void setChatHistory(ArrayList<StringMessage> chatHist){
@@ -395,9 +330,6 @@ public class GUI extends JFrame {
     private javax.swing.JPanel InterfacePanel;
     private javax.swing.JSplitPane InterfaceSplit;
     private javax.swing.JSplitPane MainSplit;
-    public javax.swing.JLabel ProfilePic;
-    private javax.swing.JPanel UserControls;
-    private client.GUI.AudioButton audioButton1;
     public client.GUI.ChatArea chatMessages;
     private javax.swing.JButton chatSend;
     private java.awt.TextField chatText;
@@ -407,8 +339,9 @@ public class GUI extends JFrame {
     private javax.swing.JMenuItem menuConnect;
     private javax.swing.JMenu menuEdit;
     private javax.swing.JMenu menuFile;
-    private client.GUI.StreamButton streamButton1;
-    private client.GUI.VideoButton videoButton1;
+    private client.GUI.UserProfile userProfile1;
+    private client.GUI.UserProfile userProfile2;
+    private client.GUI.UserProfile userProfileControl;
     // End of variables declaration//GEN-END:variables
    
 }
