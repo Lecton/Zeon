@@ -7,15 +7,7 @@
 package MediaStreaming.Video;
 
 import Messages.VideoStream;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import client.Connection;
 
 /**
  *
@@ -26,7 +18,7 @@ public class StreamVideo {
     private VideoStream vs;
     private long fps =5;
     
-    private ObjectOutputStream oos;
+    private Connection con;
     private ScreenCapture sc;
     private Thread video;
     private Stream vStream;
@@ -39,13 +31,13 @@ public class StreamVideo {
      * @param sc - the screen capture object.
      * @param oos - the object output stream.
      */
-    public StreamVideo(VideoStream vs, long _fps, ScreenCapture sc, ObjectOutputStream oos) {
+    public StreamVideo(VideoStream vs, long _fps, ScreenCapture sc, Connection con) {
         this.ID =vs.ID;
         this.vs =vs;
         this.fps =_fps;
         this.sc =sc;
-        this.oos =oos;
-        vStream =new Stream(oos, sc, fps, vs);
+        this.con =con;
+        vStream =new Stream(con, sc, fps, vs);
     }
     
     /**

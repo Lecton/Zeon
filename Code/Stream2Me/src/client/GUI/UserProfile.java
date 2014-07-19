@@ -31,8 +31,8 @@ public class UserProfile extends javax.swing.JPanel {
     }
     
     public void initializeStreams(Connection con, String name, int ID) throws IOException {
-        ac = new AudioCapture(con.getOutputStream(),name,ID);
-        sv =new StreamVideo(new VideoStream(name, ID, -1, -1), 1, new ScreenCapture(), con.getOutputStream());
+        ac = new AudioCapture(con,name,ID);
+        sv =new StreamVideo(new VideoStream(name, ID, -1, -1), 1, new ScreenCapture(), con);
     }
     
     public void setAvatar(BufferedImage newAvatar) {
@@ -89,6 +89,11 @@ public class UserProfile extends javax.swing.JPanel {
         });
 
         streamBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unclicked-stream.png"))); // NOI18N
+        streamBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                streamBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -155,6 +160,20 @@ public class UserProfile extends javax.swing.JPanel {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_avatarMousePressed
+
+    private void streamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_streamBtnActionPerformed
+        if (!streamBtn.pressed) {
+            try  {
+                ac.start();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            sv.start();
+        } else {
+            ac.stop();
+            sv.stop();
+        }
+    }//GEN-LAST:event_streamBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private client.GUI.Buttons.AudioButton audioBtn;

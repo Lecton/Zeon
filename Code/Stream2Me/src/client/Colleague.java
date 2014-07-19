@@ -28,6 +28,13 @@ public class Colleague {
         chatHistory =new ArrayList<StringMessage>();
     }
     
+    public Colleague(int ID, String name, String localName) {
+        chatHistory =new ArrayList<StringMessage>();
+        this.ID =ID;
+        this.name =name;
+        this.localName =localName;
+    }
+    
     /**
      * Adds a message to the colleague's message history.
      * @param sm - the message to be added to the chat history.

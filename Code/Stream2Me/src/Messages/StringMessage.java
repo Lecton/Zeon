@@ -4,7 +4,9 @@
  */
 package Messages;
 
+import client.GUI.GUI;
 import java.util.Date;
+import server.clientConnection;
 
 /**
  *
@@ -35,5 +37,20 @@ public class StringMessage extends Message {
     @Override
     public String getMessage() {
         return mess;
+    }
+
+    /**
+     * 
+     * @param userInterface - GUI reference for updating the ContactPane
+     */
+    @Override
+    public void handle(GUI userInterface) {
+        userInterface.ContactPane.acceptMessage(this);
+    }
+
+    @Override
+    public Message repackage(clientConnection cc) {
+        System.out.println("String message received");
+        return this;
     }
 }

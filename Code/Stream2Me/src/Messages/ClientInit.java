@@ -4,8 +4,12 @@
  */
 package Messages;
 
+import client.GUI.GUI;
+import server.clientConnection;
+
 /**
  *
+ * @author Bernhard
  * @author Lecton
  */
 public class ClientInit extends Message {
@@ -24,7 +28,19 @@ public class ClientInit extends Message {
      * string.
      * @return 
      */
+    @Override
     public String getMessage() {
-        return "My name is "+name+".";
+        return "ClientInit: "+name+".";
+    }
+
+    @Override
+    public void handle(GUI userInterface) {
+        throw new UnsupportedOperationException("Should not be received.");
+    }
+
+    @Override
+    public Message repackage(clientConnection cc) {
+        cc.setName(name);
+        return new UpdateUser(cc.getID(), name);
     }
 }

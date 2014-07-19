@@ -4,11 +4,13 @@
  */
 package Messages;
 
+import client.GUI.GUI;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import server.clientConnection;
 
 /**
  *
@@ -26,7 +28,7 @@ public class VideoStream extends Message {
      * @param count - a counter.
      * @param to - the ID of the recipient of this message.
      */
-    public VideoStream(String Sender, int ID, long count, int to) throws IOException {
+    public VideoStream(String Sender, int ID, long count, int to) {
         this.Sender =Sender;
         this.ID =ID;
         this.count =count;
@@ -42,5 +44,33 @@ public class VideoStream extends Message {
         this.ID =clone.ID;
         this.count =clone.count+1;
         this.to =clone.to;
+    }
+
+    @Override
+    public String getMessage() {
+        String value ="Video Message";
+        
+        return value;
+    }
+
+    /**
+     * Sends a message to update the system and informing other colleagues
+     * that a client/user wishes to send messages that allow for the streaming 
+     * of video data.
+     * @param userInterface
+     */
+    @Override
+    public void handle(GUI userInterface) {
+        BufferedImage image =MessageUtils.decodeToImage(this.img);
+        if (image != null) {
+            userInterface.imgBlock.setIcon(new ImageIcon(image));
+            userInterface.imgBlock.updateUI();
+        }
+    }
+
+    @Override
+    public Message repackage(clientConnection cc) {
+        System.out.println("Video Message Received");
+        return this;
     }
 }

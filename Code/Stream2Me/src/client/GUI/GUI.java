@@ -1,21 +1,13 @@
 package client.GUI;
 
-import MediaStreaming.Audio.AudioCapture;
-import MediaStreaming.Video.ScreenCapture;
-import MediaStreaming.Video.StreamVideo;
 import Messages.ClientInit;
 import Messages.StringMessage;
-import Messages.VideoStream;
 import client.Client;
 import client.Connection;
 import client.inStream;
 import java.awt.Color;
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /*
@@ -47,7 +39,7 @@ public class GUI extends JFrame {
         this.name =name;
         con =new Connection();
         con.setPORT(PORT);
-        con.setAddress("192.168.1.45");
+        con.setAddress("127.0.0.1");
         
         initComponents();
         this.getContentPane().setBackground(Color.WHITE);
@@ -274,7 +266,7 @@ public class GUI extends JFrame {
         try {
             con.makeConnection();
             con.write(new ClientInit(name));
-            input.setInputStream(con.getInputStream());
+            input.setInputStream(con);
             userProfileControl.initializeStreams(con, this.name, this.ID);
             (new Thread(input)).start();
             menuConnect.setEnabled(false);
@@ -289,7 +281,7 @@ public class GUI extends JFrame {
             StringMessage sm = new StringMessage(name +" :\t"+ chatText.getText() + "\n", ID);
             sm.to = ContactPane.getSelectedID();
             if (sm.to != -2) {
-                con.write(sm);
+                con.writeSafe(sm);
                 ContactPane.acceptMessage(sm);
             }
         }
@@ -301,25 +293,20 @@ public class GUI extends JFrame {
     }//GEN-LAST:event_chatTextActionPerformed
 
     private void audioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioButton1ActionPerformed
-//        try 
-//        {
-//            if(!audioButton1.pressed){
-//                ac.start();
-//            }else{
-//                ac.stop();
-//            }
-//        }catch (IOException ex){
-//            ex.printStackTrace();
-//        }
+
     }//GEN-LAST:event_audioButton1ActionPerformed
     
-    public synchronized void setChatHistory(ArrayList<StringMessage> chatHist){
+    public void setChatHistory(ArrayList<StringMessage> chatHist){
 //        chatMessages.setText("");
         chatMessages.setChatMessages(chatHist);
     }
     
-    public synchronized void appendChatMessage(StringMessage chatMsg){
+    public void appendChatMessage(StringMessage chatMsg){
         chatMessages.append(chatMsg);
+    }
+    
+    public inStream getInstream() {
+        return input;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

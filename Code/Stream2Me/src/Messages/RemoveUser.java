@@ -4,6 +4,9 @@
  */
 package Messages;
 
+import client.GUI.GUI;
+import server.clientConnection;
+
 /**
  *
  * @author Lecton
@@ -28,7 +31,24 @@ public class RemoveUser extends Message {
      * A function to retrieve the message and return the sent message as a string.
      * @return 
      */
+    @Override
     public String getMessage() {
         return ID + " left the chat.";
+    }
+
+    /**
+     * Sends a message to update the system and informing other colleagues
+     * that a client/user has been removed or is no longer active.
+     * @param userInterface - GUI reference for updating the ContactPane
+     */
+    @Override
+    public void handle(GUI userInterface) {
+        userInterface.ContactPane.removeContact(this.ID);
+        System.out.println("Removed User");
+    }
+
+    @Override
+    public Message repackage(clientConnection cc) {
+        throw new UnsupportedOperationException("Should not be received.");
     }
 }

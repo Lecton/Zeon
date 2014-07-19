@@ -4,6 +4,7 @@
  */
 package Messages;
 
+import client.GUI.GUI;
 import java.util.ArrayList;
 import server.clientConnection;
 
@@ -32,7 +33,24 @@ public class UpdateUser extends Message {
      * string.
      * @return 
      */
+    @Override
     public String getMessage() {
         return "My name is "+this.name+". My ID is "+this.ID+".";
+    }
+
+    /**
+     * Sends a message to update the system and informing other colleagues
+     * that a client/user has had information changed.
+     * @param userInterface - GUI reference for updating the ContactPane
+     */
+    @Override
+    public void handle(GUI userInterface) {
+        userInterface.ContactPane.updateUser(this);
+    }
+
+    @Override
+    public Message repackage(clientConnection cc) {
+        System.out.println("Update User received");
+        return this;
     }
 }

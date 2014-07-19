@@ -4,6 +4,9 @@
  */
 package Messages;
 
+import client.GUI.GUI;
+import server.clientConnection;
+
 /**
  *
  * @author Lecton
@@ -34,7 +37,26 @@ public class NewUser extends Message {
      * a string.
      * @return 
      */
+    @Override
     public String getMessage() {
         return "New User " + ":" + size;
+    }
+
+    
+    /**
+     * Sends a message to update the system and informing other colleagues
+     * that a client/user has been added and has connected.
+     * @param userInterface - GUI reference for updating the ContactPane
+     */
+    @Override
+    public void handle(GUI userInterface) {
+        if (this.ID != userInterface.ID) {
+            userInterface.ContactPane.addContact(this.ID, this.name, this.name);
+        }
+    }
+
+    @Override
+    public Message repackage(clientConnection cc) {
+        throw new UnsupportedOperationException("Should not be received.");
     }
 }

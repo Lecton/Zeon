@@ -12,6 +12,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import Messages.Message;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 
 /**
  *
@@ -29,8 +31,8 @@ public class Connection {
      * Constructor to assign a default IP address and port number.
      */
     public Connection() {
-        PORT =2014;
-        address ="192.168.1.45";
+        PORT =2000;
+        address ="127.0.0.1";
     }
     
     /**
@@ -55,28 +57,32 @@ public class Connection {
      */
     public void makeConnection() throws IOException {
         soc =new Socket(address, PORT);
-        oos =new ObjectOutputStream(soc.getOutputStream());
-        ois =new ObjectInputStream(soc.getInputStream());
+        oos =new ObjectOutputStream((soc.getOutputStream()));
+        ois =new ObjectInputStream((soc.getInputStream()));
     }
     
-    /**
-     * Returns the object output stream and its associated messages for this
-     * connection.
-     * @return
-     * @throws IOException 
-     */
-    public ObjectOutputStream getOutputStream() throws IOException {
-        return oos;
-    }
+//    /**
+//     * Returns the object output stream and its associated messages for this
+//     * connection.
+//     * @return
+//     * @throws IOException 
+//     */
+//    public ObjectOutputStream getOutputStream() throws IOException {
+//        return oos;
+//    }
     
-    /**
-     * Returns the object input stream and its associated messages for this
-     * connection.
-     * @return
-     * @throws IOException 
-     */
-    public ObjectInputStream getInputStream() throws IOException {
-        return ois;
+//    /**
+//     * Returns the object input stream and its associated messages for this
+//     * connection.
+//     * @return
+//     * @throws IOException 
+//     */
+//    public ObjectInputStream getInputStream() throws IOException {
+//        return ois;
+//    }
+    
+    public Message read() throws IOException, ClassNotFoundException {
+        return (Message)ois.readObject();
     }
     
     /**
@@ -85,12 +91,22 @@ public class Connection {
      * that specific message type.
      * @param m - message to be sent.
      */
-    public void write(Message m) {
+    public synchronized void write(Message m) throws IOException {
+        oos.writeObject(m);
+        oos.flush();
+    }
+    
+    public void writeSafe(Message m) {
         try {
-            oos.writeObject(m);
-            oos.flush();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+            write(m);
+        } catch (Exception ignored) {}
+    }
+    
+    public void writeStackTrace(Message m) {
+        try {
+            write(m);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

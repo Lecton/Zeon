@@ -4,10 +4,12 @@
  */
 package Messages;
 
-import java.io.Serializable;
+import client.GUI.GUI;
+import server.clientConnection;
 
 /**
  *
+ * @author Bernhard
  * @author Lecton
  */
 public class Greeting extends Message {
@@ -40,8 +42,32 @@ public class Greeting extends Message {
      * such as the message name and ID.
      * @return 
      */
+    @Override
     public String getMessage() {
         return "Greetings "+this.name+".\n"+"ID "+this.ID+".";
+    }
+
+    
+    /**
+     * Updates the system and colleague information as the colleague is created,
+     * and assigns the colleague a space in the interface.
+     * @param userInterface - GUI reference for updating of the ContactPane
+     */
+    @Override
+    public void handle(GUI userInterface) {
+        System.out.println(getMessage());
+        
+        userInterface.ID = this.ID;
+        userInterface.ContactPane.addContact(userInterface.ID, userInterface.name, userInterface.name);
+
+        for (int i = 0; i < this.size; i++) {
+            userInterface.ContactPane.addContact(this.colleagueIDs[i], this.colleagueNames[i], this.colleagueNames[i]);
+        }
+    }
+    
+    @Override
+    public Message repackage(clientConnection cc) {
+        throw new UnsupportedOperationException("Should not be received.");
     }
     
     

@@ -117,11 +117,13 @@ public class Contacts extends JScrollPane {
     
     /**
      * Allows the user to add a contact to their list of contacts. 
-     * @param coll - colleague to be added to the list.
+     * @param ID - ID of the contact to be added
+     * @param name - Name of the contact to be added
+     * @param localname - Local name of the contact to be added
      */
-    public void addContact(Colleague coll) {
+    public void addContact(int ID, String name, String localname) {
         System.out.println("User added");
-        colleagues.add(coll);
+        colleagues.add(new Colleague(ID, name, localname));
         list.setListData(colleagues.toArray());
     }
     

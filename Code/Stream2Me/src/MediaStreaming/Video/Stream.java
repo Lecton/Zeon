@@ -6,14 +6,12 @@
 
 package MediaStreaming.Video;
 
+import Messages.MessageUtils;
 import Messages.VideoStream;
+import client.Connection;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import sun.misc.BASE64Encoder;
 
@@ -22,7 +20,7 @@ import sun.misc.BASE64Encoder;
  * @author Bernhard
  */
 class Stream implements Runnable{
-    public ObjectOutputStream oos = null;
+    public Connection con = null;
     public ScreenCapture screen = null;
     
     private String img = "";
@@ -37,9 +35,9 @@ class Stream implements Runnable{
      * @param fps - the frames per second.
      * @param vs - the VideoStream message object
      */
-    public Stream(ObjectOutputStream oos, ScreenCapture sc,
+    public Stream(Connection con, ScreenCapture sc,
                                     long fps, VideoStream vs) {
-        this.oos =oos;
+        this.con =con;
         this.screen =sc;
         previousMessage =vs;
         this.interval =fps/1000;
@@ -52,7 +50,7 @@ class Stream implements Runnable{
     public void run() {
         while (!isStopped()) {
             if (isPlaying()) {
-                img =encodeToString(screen.getScreenImage(), "png");
+                img =MessageUtils.encodeToString(screen.getScreenImage(), "png");
                 previousMessage =new VideoStream(previousMessage);
                 //System.out.println(img);
                 previousMessage.img = img;
@@ -60,24 +58,6 @@ class Stream implements Runnable{
             send(previousMessage);
             sleep();;
         }
-    }
-    
-    private static String encodeToString(BufferedImage image, String type) {
-        String imageString = null;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-        try {
-            ImageIO.write(image, type, bos);
-            byte[] imageBytes = bos.toByteArray();
-
-            BASE64Encoder encoder = new BASE64Encoder();
-            imageString = encoder.encode(imageBytes);
-
-            bos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return imageString;
     }
     
     private void sleep() {
@@ -94,15 +74,10 @@ class Stream implements Runnable{
      */
     private void send(VideoStream m) {
         try {
-            oos.writeObject(m);
+            con.write(m);
         } catch (IOException ex) {
-            System.err.println("Error writing");
-        }
-        
-        try {
-            oos.flush();
-        } catch (IOException ex) {
-            System.err.println("Error flushing");
+            System.err.println("Error sending");
+            this.stop();
         }
     }
     

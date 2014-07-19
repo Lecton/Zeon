@@ -4,8 +4,12 @@
  */
 package Messages;
 
+import client.GUI.GUI;
+import server.clientConnection;
+
 /**
  *
+ * @author Bernhard
  * @author Lecton
  */
 public class AudioStream extends Message {
@@ -53,5 +57,16 @@ public class AudioStream extends Message {
         result +="}";
         
         return result;
+    }
+
+    @Override
+    public void handle(GUI userInterface) {
+        userInterface.getInstream().audioStreamMessage(this);
+    }
+
+    @Override
+    public Message repackage(clientConnection cc) {
+        System.out.println("Audio Message received");
+        return this;
     }
 }

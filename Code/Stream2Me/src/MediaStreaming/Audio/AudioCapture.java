@@ -1,6 +1,7 @@
 package MediaStreaming.Audio;
 
 import Messages.AudioStream;
+import client.Connection;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -10,6 +11,7 @@ import javax.sound.sampled.*;
  * 
  * @author Lecton
  * @author Zenadia
+ * @author Bernhard
  */
 public class AudioCapture 
 {
@@ -18,7 +20,7 @@ public class AudioCapture
   AudioStream as;
   TargetDataLine line;
   Socket socket = null;
-  ObjectOutputStream oos = null;
+  Connection con = null;
   String HOST;
   int PORT;
   int ID;
@@ -33,14 +35,14 @@ public class AudioCapture
    * @param _name - the name of this specific audio stream.
    * @param _ID - the ID of this specific audio stream.
    */
-  public AudioCapture(ObjectOutputStream oos,String _name,int _ID)
+  public AudioCapture(Connection con,String _name,int _ID)
   {
         try{
             this.name = _name;
             this.ID = _ID;
             as = new AudioStream(this.name, this.ID, -1);
             as.to = -1;
-            this.oos = oos;
+            this.con = con;
             info = new DataLine.Info(TargetDataLine.class, getFormat());
             line = (TargetDataLine) AudioSystem.getLine(info);
             line.open(getFormat());
@@ -69,8 +71,7 @@ public class AudioCapture
                         as.buffer = new byte[bufferSize];
                         int count = line.read(as.buffer, 0, as.buffer.length);
                         if (count > 0){
-                            oos.writeObject(as);
-                            oos.flush();
+                            con.write(as);
                             counter++;
                         }
                   }

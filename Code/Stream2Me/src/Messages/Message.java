@@ -4,14 +4,15 @@
  */
 package Messages;
 
+import client.GUI.GUI;
 import java.io.Serializable;
-import java.util.Date;
+import server.clientConnection;
 
 /**
  *
  * @author Lecton
  */
-public class Message implements Serializable {
+public abstract class Message implements Serializable {
     public String Sender ="";
     public int ID =-1;
     public String Title ="";
@@ -20,11 +21,9 @@ public class Message implements Serializable {
     public String passwordHash ="";
     public int to =-1; //-1 send to ALL
     
-    /**
-     * Retrieves the message and returns the message being sent as a String
-     * @return message
-     */
-    public String getMessage() {
-        return "Default Message";
-    }
+    public abstract String getMessage();
+    
+    public abstract void handle(GUI userInterface);
+    
+    public abstract Message repackage(clientConnection cc);
 }
