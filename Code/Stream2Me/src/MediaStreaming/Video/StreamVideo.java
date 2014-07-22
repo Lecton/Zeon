@@ -14,7 +14,6 @@ import client.Connection;
  * @author Bernhard
  */
 public class StreamVideo {
-    private int ID =-1;
     private VideoStream vs;
     private long fps =5;
     
@@ -32,7 +31,6 @@ public class StreamVideo {
      * @param oos - the object output stream.
      */
     public StreamVideo(VideoStream vs, long _fps, ScreenCapture sc, Connection con) {
-        this.ID =vs.ID;
         this.vs =vs;
         this.fps =_fps;
         this.sc =sc;

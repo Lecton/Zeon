@@ -58,10 +58,10 @@ public class Greeting extends Message {
         System.out.println(getMessage());
         
         userInterface.ID = this.ID;
-        userInterface.ContactPane.addContact(userInterface.ID, userInterface.name, userInterface.name);
+        userInterface.getContactPane().addContact(userInterface.ID, userInterface.name, userInterface.name);
 
         for (int i = 0; i < this.size; i++) {
-            userInterface.ContactPane.addContact(this.colleagueIDs[i], this.colleagueNames[i], this.colleagueNames[i]);
+            userInterface.getContactPane().addContact(this.colleagueIDs[i], this.colleagueNames[i], this.colleagueNames[i]);
         }
     }
     

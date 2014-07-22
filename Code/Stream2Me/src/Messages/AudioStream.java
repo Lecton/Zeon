@@ -5,6 +5,9 @@
 package Messages;
 
 import client.GUI.GUI;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import server.clientConnection;
 
 /**
@@ -13,9 +16,7 @@ import server.clientConnection;
  * @author Lecton
  */
 public class AudioStream extends Message {
-    
-    public long count = -1;
-    public int bufferSize = 0;
+    private int bufferSize = 0;
     public byte[] buffer = new byte[bufferSize];
     
     /**
@@ -23,12 +24,11 @@ public class AudioStream extends Message {
      * the chosen audio to its location.
      * @param Sender - the name of the sender that is streaming the audio.
      * @param ID - the ID of the sender that is streaming the audio.
-     * @param count - a counter.
      */
-    public AudioStream(String Sender, int ID, long count) {
+    public AudioStream(String Sender, int ID, int to) {
         this.Sender = Sender;
         this.ID = ID;
-        this.count = count;
+        this.to =to;
     }    
     
     /**
@@ -40,7 +40,6 @@ public class AudioStream extends Message {
         this.Sender = clone.Sender;
         this.ID = clone.ID;
         this.to = clone.to;
-        this.count = clone.count+1;
     }
     
     /**
@@ -61,7 +60,11 @@ public class AudioStream extends Message {
 
     @Override
     public void handle(GUI userInterface) {
-        userInterface.getInstream().audioStreamMessage(this);
+        try {
+            userInterface.audio.write(buffer);
+        } catch (IOException ex) {
+            System.err.println("AUDIOMESSAGE - ERORR writing");
+        }
     }
 
     @Override

@@ -51,7 +51,7 @@ public class NewUser extends Message {
     @Override
     public void handle(GUI userInterface) {
         if (this.ID != userInterface.ID) {
-            userInterface.ContactPane.addContact(this.ID, this.name, this.name);
+            userInterface.getContactPane().addContact(this.ID, this.name, this.name);
         }
     }
 

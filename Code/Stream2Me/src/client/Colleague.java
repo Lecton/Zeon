@@ -4,7 +4,13 @@
  */
 package client;
 
+import MediaStreaming.Audio.AudioCapture;
+import MediaStreaming.Video.ScreenCapture;
+import MediaStreaming.Video.StreamVideo;
+import Messages.AudioStream;
 import Messages.StringMessage;
+import Messages.VideoStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -17,6 +23,8 @@ public class Colleague {
     public int ID =-1;
     public String name ="";
     public String localName ="";
+    private AudioCapture ac;
+    private StreamVideo sv;
 //    public String content = "This is the label";
     
     private ArrayList<StringMessage> chatHistory;
@@ -100,5 +108,30 @@ public class Colleague {
      */
     public void setlocalName(String localName) {
         this.localName =localName;
+    }
+    
+    public void initializeStreams(Connection con, String name, int ID) {
+        ac = new AudioCapture(con, new AudioStream(name, ID, this.ID));
+        sv = new StreamVideo(new VideoStream(name, ID, this.ID), 1, new ScreenCapture(), con);
+    }
+    
+    public void startAudioStream() {
+        System.out.println("Starting audio");
+        ac.start();
+    }
+    
+    public void stopAudioStream() {
+        System.out.println("Stopping audio");
+        ac.stop();
+    }
+    
+    public void startVideoStream() {
+        System.out.println("Starting video");
+        sv.start();
+    }
+    
+    public void stopVideoStream() {
+        System.out.println("Stopping video");
+        sv.stop();
     }
 }

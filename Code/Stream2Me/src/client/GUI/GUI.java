@@ -30,6 +30,8 @@ public class GUI extends JFrame {
     
     public String name ="User";
     public int ID =-1;
+    
+    public AudioPlayer audio;
 
     /**
      * Creates new form GUI
@@ -45,12 +47,10 @@ public class GUI extends JFrame {
         this.getContentPane().setBackground(Color.WHITE);
         MainSplit.setBackground(Color.black);
         MainSplit.setBorder(null);
-//        this.repaint();
-//        this.update(UserControls.getGraphics());
         
         setTitle("Stream2Me: " + name);
-//        this.userName.set
         input = new inStream(this);
+        audio =new AudioPlayer();
     }
 
     /**
@@ -68,7 +68,7 @@ public class GUI extends JFrame {
         MainSplit = new javax.swing.JSplitPane();
         ControlPanel = new javax.swing.JPanel();
         ContactPane = new client.GUI.Contacts(this);
-        userProfileControl = new client.GUI.UserProfile();
+        userProfileControl = new client.GUI.UserProfile(this);
         InterfacePanel = new javax.swing.JPanel();
         InterfaceSplit = new javax.swing.JSplitPane();
         ChatPanel = new javax.swing.JPanel();
@@ -267,9 +267,10 @@ public class GUI extends JFrame {
             con.makeConnection();
             con.write(new ClientInit(name));
             input.setInputStream(con);
-            userProfileControl.initializeStreams(con, this.name, this.ID);
             (new Thread(input)).start();
             menuConnect.setEnabled(false);
+            audio.play();
+            (new Thread(audio)).start();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -279,8 +280,8 @@ public class GUI extends JFrame {
 
         if(!chatText.getText().isEmpty()){
             StringMessage sm = new StringMessage(name +" :\t"+ chatText.getText() + "\n", ID);
-            sm.to = ContactPane.getSelectedID();
-            if (sm.to != -2) {
+            sm.setTo(ContactPane.getSelectedID());
+            if (sm.getTo() != -2) {
                 con.writeSafe(sm);
                 ContactPane.acceptMessage(sm);
             }
@@ -308,10 +309,30 @@ public class GUI extends JFrame {
     public inStream getInstream() {
         return input;
     }
+
+    public UserProfile getUserProfileControl() {
+        return userProfileControl;
+    }
+
+    public Contacts getContactPane() {
+        return ContactPane;
+    }
+    
+    public Connection getConnection() {
+        return con;
+    }
+    
+    public String getUsername() {
+        return name;
+    }
+    
+    public int getID() {
+        return ID;
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ChatPanel;
-    public client.GUI.Contacts ContactPane;
+    private client.GUI.Contacts ContactPane;
     private javax.swing.JPanel ControlPanel;
     private javax.swing.JPanel DetailsPanel;
     private javax.swing.JPanel InterfacePanel;

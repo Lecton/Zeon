@@ -9,11 +9,7 @@ package MediaStreaming.Video;
 import Messages.MessageUtils;
 import Messages.VideoStream;
 import client.Connection;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import javax.imageio.ImageIO;
-import sun.misc.BASE64Encoder;
 
 /**
  *

@@ -3,12 +3,19 @@ package client.GUI;
 import MediaStreaming.Audio.AudioCapture;
 import MediaStreaming.Video.ScreenCapture;
 import MediaStreaming.Video.StreamVideo;
+import Messages.AudioStream;
 import Messages.VideoStream;
+import client.Colleague;
 import client.Connection;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /*
  * To change this template, choose Tools | Templates
@@ -20,8 +27,7 @@ import javax.swing.ImageIcon;
  * @author Lecton
  */
 public class UserProfile extends javax.swing.JPanel {
-    private AudioCapture ac;
-    private StreamVideo sv;
+    GUI userInterface =null;
     
     /**
      * Creates new form UserProfile
@@ -30,14 +36,21 @@ public class UserProfile extends javax.swing.JPanel {
         initComponents();
     }
     
-    public void initializeStreams(Connection con, String name, int ID) throws IOException {
-        ac = new AudioCapture(con,name,ID);
-        sv =new StreamVideo(new VideoStream(name, ID, -1, -1), 1, new ScreenCapture(), con);
+    public UserProfile(GUI userInterface) {
+        this.userInterface =userInterface;
+        initComponents();
     }
     
     public void setAvatar(BufferedImage newAvatar) {
         ImageIcon resizedAvatar =new ImageIcon(newAvatar.getScaledInstance(133, 133, Image.SCALE_SMOOTH));
         avatar.setIcon(resizedAvatar);
+    }
+    
+    public void setAvatar() throws IOException {
+//        File f =searchForDefault();
+//        if (f != null) {
+//            setAvatar(ImageIO.read(f))
+//        }
     }
 
     /**
@@ -65,6 +78,9 @@ public class UserProfile extends javax.swing.JPanel {
 
         avatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/default_profile.png"))); // NOI18N
         avatar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                avatarMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 avatarMousePressed(evt);
             }
@@ -136,23 +152,24 @@ public class UserProfile extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void audioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioBtnActionPerformed
-        try 
-        {
-            if(!audioBtn.pressed){
-                ac.start();
-            }else{
-                ac.stop();
+        Colleague selectedColleague =(Colleague)userInterface.getContactPane().getSelectedValue();
+        if (selectedColleague != null) {
+            if (!audioBtn.pressed) {
+                selectedColleague.startAudioStream();
+            } else {
+                selectedColleague.stopAudioStream();
             }
-        }catch (IOException ex){
-            ex.printStackTrace();
         }
     }//GEN-LAST:event_audioBtnActionPerformed
 
     private void videoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_videoBtnActionPerformed
-        if(!videoBtn.pressed){
-            sv.start();
-        }else{
-            sv.stop();
+        Colleague selectedColleague =(Colleague)userInterface.getContactPane().getSelectedValue();
+        if (selectedColleague != null) {
+            if (!videoBtn.pressed) {
+                selectedColleague.startVideoStream();
+            } else {
+                selectedColleague.stopVideoStream();
+            }
         }
     }//GEN-LAST:event_videoBtnActionPerformed
 
@@ -162,19 +179,72 @@ public class UserProfile extends javax.swing.JPanel {
     }//GEN-LAST:event_avatarMousePressed
 
     private void streamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_streamBtnActionPerformed
-        if (!streamBtn.pressed) {
-            try  {
-                ac.start();
-            } catch (IOException ex) {
-                ex.printStackTrace();
+        Colleague selectedColleague =(Colleague)userInterface.getContactPane().getSelectedValue();
+        if (selectedColleague != null) {
+            if (!streamBtn.pressed) {
+                selectedColleague.startAudioStream();
+                selectedColleague.startVideoStream();
+            } else {
+                selectedColleague.stopAudioStream();
+                selectedColleague.stopVideoStream();
             }
-            sv.start();
-        } else {
-            ac.stop();
-            sv.stop();
         }
     }//GEN-LAST:event_streamBtnActionPerformed
 
+    private void avatarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_avatarMouseClicked
+        if (evt.getButton() == 3) {
+            try {
+                JFileChooser chooser =new JFileChooser();
+                chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                FileNameExtensionFilter filter =new FileNameExtensionFilter("images", "jpg","bmp","png");
+                chooser.setFileFilter(filter);
+                
+                if (chooser.showOpenDialog(null) == 0) {
+                    deleteFile();
+                    
+                    File cf =chooser.getSelectedFile();
+                    String ext =cf.getName().substring(cf.getName().lastIndexOf(".")+1);
+                    File nf =new File(FILE_DIR+NAME+"."+ext);
+                    BufferedImage bi =resizeImage(ImageIO.read(cf));
+                    ImageIO.write(bi, ext, nf);
+                    setAvatar(bi);
+                }
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_avatarMouseClicked
+
+    public void deleteFile() throws IOException {
+        File folder =new File(FILE_DIR);
+        File[] files =folder.listFiles();
+        if (files != null && files.length > 0) {
+            for (File f: files) {
+                if (f.isFile() && f.getName().startsWith(NAME)) {
+                    if (!f.delete()) {
+                        throw new IOException("File could not be deleted");
+                    }
+                }
+            }
+        } else {
+            System.out.println("There are no files");
+        }
+    }
+    
+    public BufferedImage resizeImage(BufferedImage img) {
+        BufferedImage newImage =new BufferedImage(SMALL_SIZE, SMALL_SIZE, BufferedImage.TYPE_INT_RGB);
+        Graphics g =newImage.getGraphics();
+        g.drawImage(img, 0, 0, SMALL_SIZE, SMALL_SIZE, null);
+        g.dispose();
+        
+        return newImage;
+    }
+    
+    private int ID;
+    private final String FILE_DIR =".\\assests\\profile\\";
+    private final String NAME ="" + ID;
+    private final int SMALL_SIZE =133;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private client.GUI.Buttons.AudioButton audioBtn;
     private javax.swing.JLabel avatar;

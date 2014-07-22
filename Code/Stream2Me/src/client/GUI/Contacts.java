@@ -123,7 +123,9 @@ public class Contacts extends JScrollPane {
      */
     public void addContact(int ID, String name, String localname) {
         System.out.println("User added");
-        colleagues.add(new Colleague(ID, name, localname));
+        Colleague coll =new Colleague(ID, name, localname);
+        coll.initializeStreams(userInterface.getConnection(), userInterface.getUsername(), userInterface.getID());
+        colleagues.add(coll);
         list.setListData(colleagues.toArray());
     }
     
@@ -150,7 +152,7 @@ public class Contacts extends JScrollPane {
     public void updateUser(UpdateUser uu) {
         System.out.println("User updated");
         int index = -1;
-        if ((index =find(uu.ID)) != -1) {
+        if ((index =find(uu.getID())) != -1) {
             colleagues.get(index).setName(uu.name);
         }
         list.setListData(colleagues.toArray());
@@ -162,15 +164,15 @@ public class Contacts extends JScrollPane {
      * @param sm - the string message to be accepted.
      */
     public void acceptMessage(StringMessage sm) {
-        if(sm.to == -1){
+        if(sm.getTo() == -1){
             Colleague me =getColleague(userInterface.ID);
             me.addMessage(sm);
             if (getSelectedID() == -1) {
                 userInterface.appendChatMessage(sm);
             }
         }
-        else if(userInterface.ID == sm.ID){
-            Colleague receiver = getColleague(sm.to);
+        else if(userInterface.ID == sm.getID()){
+            Colleague receiver = getColleague(sm.getTo());
             if(receiver != null){
                 receiver.addMessage(sm);
                 if(receiver.ID == getSelectedID()){
@@ -179,7 +181,7 @@ public class Contacts extends JScrollPane {
             }
         }
         else{
-            Colleague sender = getColleague(sm.ID);
+            Colleague sender = getColleague(sm.getID());
             if (sender != null) {
                 sender.addMessage(sm);
                 if(sender.ID == getSelectedID()){
@@ -205,11 +207,7 @@ public class Contacts extends JScrollPane {
                 else {
 //                    System.out.println(lastSelected+" --> "+list.getSelectedIndex());
                     
-                    if (lastSelected == list.getSelectedIndex()) {
-                        lastSelected =-1;
-                        list.clearSelection();
-                    } 
-                    else {
+                    if (lastSelected != list.getSelectedIndex()) {
                         lastSelected =list.getSelectedIndex();
                         //update ChatText
                         Colleague selectedColleague =(Colleague)getSelectedValue();

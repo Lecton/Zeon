@@ -92,8 +92,12 @@ public class Connection {
      * @param m - message to be sent.
      */
     public synchronized void write(Message m) throws IOException {
-        oos.writeObject(m);
-        oos.flush();
+        if (m.getTo() != -2) {
+            oos.writeObject(m);
+            oos.flush();
+        } else {
+            System.out.println("Not sending: "+m.getTo());
+        }
     }
     
     public void writeSafe(Message m) {

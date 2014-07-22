@@ -45,7 +45,7 @@ public class StringMessage extends Message {
      */
     @Override
     public void handle(GUI userInterface) {
-        userInterface.ContactPane.acceptMessage(this);
+        userInterface.getContactPane().acceptMessage(this);
     }
 
     @Override

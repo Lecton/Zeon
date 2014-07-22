@@ -17,7 +17,6 @@ import server.clientConnection;
  * @author Bernhard
  */
 public class VideoStream extends Message {
-    public long count =-1;
     public String img;
     
     /**
@@ -25,13 +24,11 @@ public class VideoStream extends Message {
      * name of sender, ID, and recipient.
      * @param Sender - the name of the sender of this message
      * @param ID - the ID of the sender of this message
-     * @param count - a counter.
      * @param to - the ID of the recipient of this message.
      */
-    public VideoStream(String Sender, int ID, long count, int to) {
+    public VideoStream(String Sender, int ID, int to) {
         this.Sender =Sender;
         this.ID =ID;
-        this.count =count;
         this.to =to;
     }
     
@@ -42,7 +39,6 @@ public class VideoStream extends Message {
     public VideoStream(VideoStream clone) {
         this.Sender =clone.Sender;
         this.ID =clone.ID;
-        this.count =clone.count+1;
         this.to =clone.to;
     }
 

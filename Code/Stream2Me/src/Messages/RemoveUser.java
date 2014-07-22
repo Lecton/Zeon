@@ -43,7 +43,7 @@ public class RemoveUser extends Message {
      */
     @Override
     public void handle(GUI userInterface) {
-        userInterface.ContactPane.removeContact(this.ID);
+        userInterface.getContactPane().removeContact(this.ID);
         System.out.println("Removed User");
     }
 

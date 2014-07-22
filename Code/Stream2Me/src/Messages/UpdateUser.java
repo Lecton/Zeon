@@ -45,7 +45,7 @@ public class UpdateUser extends Message {
      */
     @Override
     public void handle(GUI userInterface) {
-        userInterface.ContactPane.updateUser(this);
+        userInterface.getContactPane().updateUser(this);
     }
 
     @Override

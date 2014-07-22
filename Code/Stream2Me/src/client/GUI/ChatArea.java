@@ -141,9 +141,9 @@ public class ChatArea extends JScrollPane {
         @Override
         public Component getListCellRendererComponent(JList<? extends StringMessage> list, StringMessage value,
             int index, boolean isSelected, boolean cellHasFocus) {
-                name.setText(value.Sender);
-                timestamp.setText(value.timestamp);
-                message.setText(value.mess);
+                name.setText(value.getSender());
+                timestamp.setText(value.getTimestamp());
+                message.setText(value.getMessage());
                 return this;
             }
         }

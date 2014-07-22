@@ -6,12 +6,14 @@
 
 package Messages;
 
+import MediaStreaming.Audio.AudioLine;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.TargetDataLine;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -20,6 +22,7 @@ import sun.misc.BASE64Encoder;
  * @author Bernhard
  */
 public class MessageUtils {
+    private static AudioLine audioLine =new AudioLine();
     
     /**
      * Decodes an image string to be used in the streaming of video data.
@@ -57,6 +60,12 @@ public class MessageUtils {
             e.printStackTrace();
         }
         return imageString;
+    }
+    
+    
+    
+    public static AudioLine getAudioLine() {
+        return audioLine;
     }
     
     /**

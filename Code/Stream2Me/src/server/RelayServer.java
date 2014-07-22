@@ -108,7 +108,7 @@ public class RelayServer {
     public void relayMessage(clientConnection cc, Message mess) throws IOException {
         
         
-        if (mess.to == -1) {
+        if (mess.getTo() == -1) {
             for (clientConnection client: clients) {
                 if (!client.equals(cc)){
                     client.send(mess);
@@ -116,7 +116,7 @@ public class RelayServer {
             }
         } else {
             for (clientConnection client: clients) {
-                if (client.getID() == mess.to) {
+                if (client.getID() == mess.getTo()) {
                     client.send(mess);
                     break;
                 }
