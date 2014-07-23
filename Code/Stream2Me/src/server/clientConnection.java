@@ -8,6 +8,8 @@ package server;
 
 import Messages.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -17,7 +19,7 @@ public class clientConnection implements Runnable {
     private Connection con =null;
     private RelayServer relay = null;
     private String name = null;
-    private int id = -1;
+    private int id = -1; 
     
     public clientConnection(Connection con, RelayServer rs,int _id) throws IOException, ClassNotFoundException {
         name = con.getHostName();
@@ -59,5 +61,13 @@ public class clientConnection implements Runnable {
     
     public void send(Message m) throws IOException {
         con.write(m);
+    }
+    
+    public StreamProperties getStreamProperties(String StreamID) {
+        return relay.getStreamProperties(StreamID);
+    }
+    
+    public void addStreamProperty(String StreamID, int[] allowedID) {
+        relay.addStreamProperty(id, StreamID, allowedID);
     }
 }

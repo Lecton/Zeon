@@ -6,8 +6,8 @@ package Messages;
 
 import client.GUI.GUI;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import server.StreamProperties;
 import server.clientConnection;
 
 /**
@@ -18,6 +18,7 @@ import server.clientConnection;
 public class AudioStream extends Message {
     private int bufferSize = 0;
     public byte[] buffer = new byte[bufferSize];
+    private String streamID ="";
     
     /**
      * Constructor which initializes and creates the audio stream that transfers
@@ -25,11 +26,11 @@ public class AudioStream extends Message {
      * @param Sender - the name of the sender that is streaming the audio.
      * @param ID - the ID of the sender that is streaming the audio.
      */
-    public AudioStream(String Sender, int ID, int to) {
+    public AudioStream(String Sender, int ID) {
         this.Sender = Sender;
         this.ID = ID;
-        this.to =to;
-    }    
+        this.to =-1;
+    }
     
     /**
      * Constructor which initializes and creates the audio stream that transfers
@@ -40,6 +41,15 @@ public class AudioStream extends Message {
         this.Sender = clone.Sender;
         this.ID = clone.ID;
         this.to = clone.to;
+        this.streamID = clone.streamID;
+    }
+
+    public void setStreamID(String streamID) {
+        this.streamID = streamID;
+    }
+
+    public String getStreamID() {
+        return streamID;
     }
     
     /**
@@ -60,8 +70,9 @@ public class AudioStream extends Message {
 
     @Override
     public void handle(GUI userInterface) {
+        System.out.println("Audio message receivd");
         try {
-            userInterface.audio.write(buffer);
+            userInterface.getAudio().write(buffer);
         } catch (IOException ex) {
             System.err.println("AUDIOMESSAGE - ERORR writing");
         }
@@ -71,5 +82,18 @@ public class AudioStream extends Message {
     public Message repackage(clientConnection cc) {
         System.out.println("Audio Message received");
         return this;
+    }
+
+    @Override
+    public void relay(ConcurrentLinkedQueue<clientConnection> clients, clientConnection cc) throws IOException {
+        StreamProperties sp =cc.getStreamProperties(streamID);
+        if (sp != null) {
+            for (int target: sp.getTargets()) {
+                to =target;
+                super.relay(clients, cc); //To change body of generated methods, choose Tools | Templates.
+            }
+        } else {
+            System.out.println("No Stream Property set for this audio stream. ID: "+this.streamID);
+        }
     }
 }

@@ -1,12 +1,7 @@
 package client.GUI;
 
-import MediaStreaming.Audio.AudioCapture;
-import MediaStreaming.Video.ScreenCapture;
-import MediaStreaming.Video.StreamVideo;
-import Messages.AudioStream;
-import Messages.VideoStream;
+import Messages.MessageUtils;
 import client.Colleague;
-import client.Connection;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -154,8 +149,8 @@ public class UserProfile extends javax.swing.JPanel {
     private void audioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioBtnActionPerformed
         Colleague selectedColleague =(Colleague)userInterface.getContactPane().getSelectedValue();
         if (selectedColleague != null) {
-            if (!audioBtn.pressed) {
-                selectedColleague.startAudioStream();
+            if (!audioBtn.isPressed()) {
+                selectedColleague.startAudioStream(MessageUtils.intToArray(userInterface.getContactPane().getSelectedID()));
             } else {
                 selectedColleague.stopAudioStream();
             }
@@ -165,7 +160,7 @@ public class UserProfile extends javax.swing.JPanel {
     private void videoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_videoBtnActionPerformed
         Colleague selectedColleague =(Colleague)userInterface.getContactPane().getSelectedValue();
         if (selectedColleague != null) {
-            if (!videoBtn.pressed) {
+            if (!videoBtn.isPressed()) {
                 selectedColleague.startVideoStream();
             } else {
                 selectedColleague.stopVideoStream();
@@ -181,8 +176,8 @@ public class UserProfile extends javax.swing.JPanel {
     private void streamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_streamBtnActionPerformed
         Colleague selectedColleague =(Colleague)userInterface.getContactPane().getSelectedValue();
         if (selectedColleague != null) {
-            if (!streamBtn.pressed) {
-                selectedColleague.startAudioStream();
+            if (!streamBtn.isPressed()) {
+                selectedColleague.startAudioStream(MessageUtils.intToArray(userInterface.getContactPane().getSelectedID()));
                 selectedColleague.startVideoStream();
             } else {
                 selectedColleague.stopAudioStream();

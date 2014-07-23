@@ -1,5 +1,6 @@
 package client.GUI;
 
+import client.GUI.audio.AudioPlayer;
 import Messages.ClientInit;
 import Messages.StringMessage;
 import client.Client;
@@ -9,6 +10,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 /*
  * To change this template, choose Tools | Templates
@@ -22,23 +24,23 @@ import javax.swing.JFrame;
  * @author Zenadia
  */
 public class GUI extends JFrame {
-    public enum Action {REMOVE, ADD, UPDATE}
+    private enum Action {REMOVE, ADD, UPDATE}
     
     private Connection con =null;
     private inStream input =null;
     private Client client =null;
     
-    public String name ="User";
-    public int ID =-1;
+    private String username ="User";
+    private int ID =-1;
     
-    public AudioPlayer audio;
+    private AudioPlayer audio;
 
     /**
      * Creates new form GUI
      */
     public GUI(String name, int PORT, Client client) {
         this.client =client;
-        this.name =name;
+        this.username =name;
         con =new Connection();
         con.setPORT(PORT);
         con.setAddress("127.0.0.1");
@@ -81,6 +83,7 @@ public class GUI extends JFrame {
         menuFile = new javax.swing.JMenu();
         menuConnect = new javax.swing.JMenuItem();
         menuEdit = new javax.swing.JMenu();
+        mmuUpdateList = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout DetailsPanelLayout = new javax.swing.GroupLayout(DetailsPanel);
         DetailsPanel.setLayout(DetailsPanelLayout);
@@ -238,6 +241,15 @@ public class GUI extends JFrame {
         mainMenu.add(menuFile);
 
         menuEdit.setText("Edit");
+
+        mmuUpdateList.setText("Update Contacts");
+        mmuUpdateList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mmuUpdateListActionPerformed(evt);
+            }
+        });
+        menuEdit.add(mmuUpdateList);
+
         mainMenu.add(menuEdit);
 
         setJMenuBar(mainMenu);
@@ -265,7 +277,7 @@ public class GUI extends JFrame {
     private void menuConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConnectActionPerformed
         try {
             con.makeConnection();
-            con.write(new ClientInit(name));
+            con.write(new ClientInit(username));
             input.setInputStream(con);
             (new Thread(input)).start();
             menuConnect.setEnabled(false);
@@ -279,7 +291,7 @@ public class GUI extends JFrame {
     private void chatSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chatSendActionPerformed
 
         if(!chatText.getText().isEmpty()){
-            StringMessage sm = new StringMessage(name +" :\t"+ chatText.getText() + "\n", ID);
+            StringMessage sm = new StringMessage(username +" :\t"+ chatText.getText() + "\n", ID);
             sm.setTo(ContactPane.getSelectedID());
             if (sm.getTo() != -2) {
                 con.writeSafe(sm);
@@ -296,6 +308,10 @@ public class GUI extends JFrame {
     private void audioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioButton1ActionPerformed
 
     }//GEN-LAST:event_audioButton1ActionPerformed
+
+    private void mmuUpdateListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmuUpdateListActionPerformed
+        ContactPane.updateList();
+    }//GEN-LAST:event_mmuUpdateListActionPerformed
     
     public void setChatHistory(ArrayList<StringMessage> chatHist){
 //        chatMessages.setText("");
@@ -323,11 +339,23 @@ public class GUI extends JFrame {
     }
     
     public String getUsername() {
-        return name;
+        return username;
     }
     
     public int getID() {
         return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public JLabel getImgBlock() {
+        return imgBlock;
+    }
+
+    public AudioPlayer getAudio() {
+        return audio;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -338,15 +366,16 @@ public class GUI extends JFrame {
     private javax.swing.JPanel InterfacePanel;
     private javax.swing.JSplitPane InterfaceSplit;
     private javax.swing.JSplitPane MainSplit;
-    public client.GUI.ChatArea chatMessages;
+    private client.GUI.ChatArea chatMessages;
     private javax.swing.JButton chatSend;
     private java.awt.TextField chatText;
-    public javax.swing.JLabel imgBlock;
+    private javax.swing.JLabel imgBlock;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuBar mainMenu;
     private javax.swing.JMenuItem menuConnect;
     private javax.swing.JMenu menuEdit;
     private javax.swing.JMenu menuFile;
+    private javax.swing.JMenuItem mmuUpdateList;
     private client.GUI.UserProfile userProfile1;
     private client.GUI.UserProfile userProfile2;
     private client.GUI.UserProfile userProfileControl;

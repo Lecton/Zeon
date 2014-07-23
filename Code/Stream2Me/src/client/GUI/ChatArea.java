@@ -8,7 +8,6 @@ package client.GUI;
 
 import Messages.StringMessage;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.util.ArrayList;
 import javax.swing.GroupLayout;

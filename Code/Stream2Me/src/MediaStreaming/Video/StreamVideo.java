@@ -6,6 +6,8 @@
 
 package MediaStreaming.Video;
 
+import Messages.MessageUtils;
+import Messages.UpdateUser;
 import Messages.VideoStream;
 import client.Connection;
 
@@ -42,6 +44,7 @@ public class StreamVideo {
      * Starts the current video stream and changes its state to Started.
      */
     public void start() {
+//        con.writeSafe(new UpdateUser(vs.getID(), vs.getTo(), "Video Stream", MessageUtils.Update.STARTVIDEO));
         if (vStream.isStopped()) {
             video =new Thread(vStream);
             video.start();
@@ -60,6 +63,7 @@ public class StreamVideo {
      * Stops the current video stream and changes its state to Stopped.
      */
     public void stop() {
+//        con.writeSafe(new UpdateUser(vs.getID(), vs.getTo(), "Video Stream", MessageUtils.Update.STOPVIDEO));
         vStream.stop();
         try {
             video.join();

@@ -10,7 +10,6 @@ import MediaStreaming.Video.StreamVideo;
 import Messages.AudioStream;
 import Messages.StringMessage;
 import Messages.VideoStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -20,11 +19,13 @@ import java.util.ArrayList;
  * @author Zenadia
  */
 public class Colleague {
-    public int ID =-1;
-    public String name ="";
-    public String localName ="";
+    private int ID =-1;
+    private String username ="";
     private AudioCapture ac;
     private StreamVideo sv;
+    private String avatarURL;
+    private boolean incomingAudio =false;
+    private boolean incomingVideo =false;
 //    public String content = "This is the label";
     
     private ArrayList<StringMessage> chatHistory;
@@ -34,13 +35,15 @@ public class Colleague {
      */
     public Colleague() {
         chatHistory =new ArrayList<StringMessage>();
+        avatarURL ="default_profile.png";
     }
     
-    public Colleague(int ID, String name, String localName) {
+    public Colleague(int ID, String name) {
         chatHistory =new ArrayList<StringMessage>();
         this.ID =ID;
-        this.name =name;
-        this.localName =localName;
+        this.username =name;
+        avatarURL ="default_profile.png";
+//        avatarURL ="profile\\" + ID + ".png";
     }
     
     /**
@@ -81,10 +84,7 @@ public class Colleague {
      */
     public boolean update(Colleague other) {
         if (other.ID == ID) {
-            if (other.localName.equalsIgnoreCase(other.name)) {
-                other.localName =name;
-            }
-            other.name = name;
+            other.username = username;
             return true;
         } else {
             return false;
@@ -95,29 +95,39 @@ public class Colleague {
      * Changes the colleague's name and updates it.
      * @param name - the name of the colleague.
      */
-    public void setName(String name) {
-        if (this.name.equalsIgnoreCase(this.localName)) {
-            this.localName =name;
-        }
-        this.name =name;
+    public void setUsername(String name) {
+        this.username =name;
     }
 
-    /**
-     * Changes the colleague's local name and updates it.
-     * @param localName - the colleague's local name.
-     */
-    public void setlocalName(String localName) {
-        this.localName =localName;
+    public int getID() {
+        return ID;
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+
+    public String getAvatarURL() {
+        return avatarURL;
+    }
+
+    public void setAvatarURL(String avatarURL) {
+        this.avatarURL = avatarURL;
     }
     
     public void initializeStreams(Connection con, String name, int ID) {
-        ac = new AudioCapture(con, new AudioStream(name, ID, this.ID));
-        sv = new StreamVideo(new VideoStream(name, ID, this.ID), 1, new ScreenCapture(), con);
+        int target =this.ID;
+        if (this.ID == ID) {
+            target = -1;
+        }
+        
+        ac = new AudioCapture(con, new AudioStream(name, ID));
+        sv = new StreamVideo(new VideoStream(name, ID, target), 1, new ScreenCapture(), con);
     }
     
-    public void startAudioStream() {
+    public void startAudioStream(int[] allowed) {
         System.out.println("Starting audio");
-        ac.start();
+        ac.start(allowed);
     }
     
     public void stopAudioStream() {
@@ -133,5 +143,21 @@ public class Colleague {
     public void stopVideoStream() {
         System.out.println("Stopping video");
         sv.stop();
+    }
+
+    public void setIncomingAudio(boolean incomingAudio) {
+        this.incomingAudio = incomingAudio;
+    }
+
+    public void setIncomingVideo(boolean incomingVideo) {
+        this.incomingVideo = incomingVideo;
+    }
+
+    public boolean getIncomingAudio() {
+        return incomingAudio;
+    }
+
+    public boolean getIncomingVideo() {
+        return incomingVideo;
     }
 }

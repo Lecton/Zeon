@@ -12,9 +12,7 @@ import server.clientConnection;
  * @author Lecton
  */
 public class NewUser extends Message {
-    public int size =0;
-    public int ID =-1;
-    public String name ="";
+    private int size =0;
     
     /**
      * COnstructor to define the message notifying the system that a new user
@@ -27,7 +25,6 @@ public class NewUser extends Message {
     public NewUser(int size, int ID, String name, String Sender) {
         this.size = size;
         this.ID = ID;
-        this.name = name;
         this.Sender = Sender;
         this.Title = "New User";
     }
@@ -50,8 +47,8 @@ public class NewUser extends Message {
      */
     @Override
     public void handle(GUI userInterface) {
-        if (this.ID != userInterface.ID) {
-            userInterface.getContactPane().addContact(this.ID, this.name, this.name);
+        if (this.ID != userInterface.getID()) {
+            userInterface.getContactPane().addContact(this.ID, this.Sender);
         }
     }
 

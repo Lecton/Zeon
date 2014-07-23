@@ -5,7 +5,9 @@
 package Messages;
 
 import client.GUI.GUI;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import server.clientConnection;
 
 /**
@@ -65,5 +67,23 @@ public abstract class Message implements Serializable {
 
     public void setTo(int to) {
         this.to = to;
+    }
+    
+    public void relay(ConcurrentLinkedQueue<clientConnection> clients, clientConnection cc) throws IOException {
+        System.out.println("Relay "+this.getClass().getSimpleName()+" to: "+to);
+        if (to == -1) {
+            for (clientConnection client: clients) {
+                if (!client.equals(cc)){
+                    client.send(this);
+                }
+            }
+        } else {
+            for (clientConnection client: clients) {
+                if (client.getID() == to) {
+                    client.send(this);
+                    break;
+                }
+            }
+        }
     }
 }

@@ -16,8 +16,8 @@ import java.io.IOException;
  * @author Bernhard
  */
 class Stream implements Runnable{
-    public Connection con = null;
-    public ScreenCapture screen = null;
+    private Connection con = null;
+    private ScreenCapture screen = null;
     
     private String img = "";
     private VideoStream previousMessage = null;
@@ -49,7 +49,7 @@ class Stream implements Runnable{
                 img =MessageUtils.encodeToString(screen.getScreenImage(), "png");
                 previousMessage =new VideoStream(previousMessage);
                 //System.out.println(img);
-                previousMessage.img = img;
+                previousMessage.setImg(img);
             }
             send(previousMessage);
             sleep();;

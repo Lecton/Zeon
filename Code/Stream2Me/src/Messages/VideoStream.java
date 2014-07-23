@@ -6,9 +6,6 @@ package Messages;
 
 import client.GUI.GUI;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import server.clientConnection;
 
@@ -17,7 +14,7 @@ import server.clientConnection;
  * @author Bernhard
  */
 public class VideoStream extends Message {
-    public String img;
+    private String img;
     
     /**
      * Constructor to create and specify the variables of a video stream, including
@@ -59,8 +56,8 @@ public class VideoStream extends Message {
     public void handle(GUI userInterface) {
         BufferedImage image =MessageUtils.decodeToImage(this.img);
         if (image != null) {
-            userInterface.imgBlock.setIcon(new ImageIcon(image));
-            userInterface.imgBlock.updateUI();
+            userInterface.getImgBlock().setIcon(new ImageIcon(image));
+            userInterface.getImgBlock().updateUI();
         }
     }
 
@@ -68,5 +65,9 @@ public class VideoStream extends Message {
     public Message repackage(clientConnection cc) {
         System.out.println("Video Message Received");
         return this;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

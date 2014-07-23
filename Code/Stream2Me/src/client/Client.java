@@ -7,7 +7,6 @@
 package client;
 
 import client.GUI.GUI;
-import javax.swing.JOptionPane;
 
 /**
  *

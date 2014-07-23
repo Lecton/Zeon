@@ -4,8 +4,6 @@
  */
 package client.GUI.Buttons;
 
-import client.GUI.Buttons.Button;
-
 /**
  *
  * @author Lecton

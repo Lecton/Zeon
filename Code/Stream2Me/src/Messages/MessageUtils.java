@@ -13,7 +13,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.TargetDataLine;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -23,6 +22,8 @@ import sun.misc.BASE64Encoder;
  */
 public class MessageUtils {
     private static AudioLine audioLine =new AudioLine();
+    private static int ID =0;
+    public enum Update {AVATAR, NAME}
     
     /**
      * Decodes an image string to be used in the streaming of video data.
@@ -81,5 +82,19 @@ public class MessageUtils {
 
         return new AudioFormat(sampleRate, 
                 sampleSizeInBits, channels, signed, bigEndian);
+    }
+    
+    private static synchronized int getAndIncrementID() {
+        return ID++;
+    }
+    
+    public static synchronized String getID(int ID) {
+        return ID+""+getAndIncrementID();
+    }
+    
+    public static int[] intToArray(int value) {
+        int[] result =new int[1];
+        result[0] =value;
+        return result;
     }
 }

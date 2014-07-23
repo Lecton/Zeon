@@ -13,10 +13,9 @@ import server.clientConnection;
  * @author Lecton
  */
 public class Greeting extends Message {
-    public String name = "";
-    public int[] colleagueIDs;
-    public String[] colleagueNames;
-    public int size;
+    private int[] colleagueIDs;
+    private String[] colleagueNames;
+    private int size;
     
     /**
      * Constructor to create and initialize a message of the type Greeting.
@@ -27,11 +26,10 @@ public class Greeting extends Message {
      * @param colleagueNames - the names of the client's colleagues.
      * @param Sender - the sender of the message.
      */
-    public Greeting(String name, int ID, int size, int[] colleagueIDs, String[] colleagueNames, String Sender) {
-        this.name = name;
+    public Greeting(String name, int ID, int size, int[] colleagueIDs, String[] colleagueNames) {
+        this.Sender = name;
         this.ID = ID;
         this.size = size;
-        this.Sender = Sender;
         this.Title = "Greeting";
         this.colleagueIDs = colleagueIDs;
         this.colleagueNames = colleagueNames;
@@ -44,7 +42,7 @@ public class Greeting extends Message {
      */
     @Override
     public String getMessage() {
-        return "Greetings "+this.name+".\n"+"ID "+this.ID+".";
+        return "Greetings "+this.Sender+".\n"+"ID "+this.ID+".";
     }
 
     
@@ -57,11 +55,11 @@ public class Greeting extends Message {
     public void handle(GUI userInterface) {
         System.out.println(getMessage());
         
-        userInterface.ID = this.ID;
-        userInterface.getContactPane().addContact(userInterface.ID, userInterface.name, userInterface.name);
+        userInterface.setID(this.ID);
+        userInterface.getContactPane().addContact(userInterface.getID(), userInterface.getUsername());
 
         for (int i = 0; i < this.size; i++) {
-            userInterface.getContactPane().addContact(this.colleagueIDs[i], this.colleagueNames[i], this.colleagueNames[i]);
+            userInterface.getContactPane().addContact(this.colleagueIDs[i], this.colleagueNames[i]);
         }
     }
     

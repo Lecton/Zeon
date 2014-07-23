@@ -4,8 +4,8 @@
  */
 package Messages;
 
+import client.Colleague;
 import client.GUI.GUI;
-import java.util.ArrayList;
 import server.clientConnection;
 
 /**
@@ -13,18 +13,21 @@ import server.clientConnection;
  * @author Lecton
  */
 public class UpdateUser extends Message {
-    public String name = "";
+    private MessageUtils.Update type;
+    private String update;
     
     /**
      * Constructor that creates a message specifying to the system that a user of
      * a specific ID and name has been updated with new information
      * @param ID
-     * @param name 
+     * @param update 
+     * @param type 
      */
-    public UpdateUser(int ID, String name) {
+    public UpdateUser(int ID, int targetID, String update, MessageUtils.Update type) {
         this.ID = ID;
-        this.name = name;
-        this.Sender = name;
+        this.to = targetID;
+        this.update = update;
+        this.type =type;
         this.Title = "User Update";
     }
     
@@ -35,7 +38,7 @@ public class UpdateUser extends Message {
      */
     @Override
     public String getMessage() {
-        return "My name is "+this.name+". My ID is "+this.ID+".";
+        return "My name is "+this.Sender+". My ID is "+this.ID+".";
     }
 
     /**
@@ -45,7 +48,24 @@ public class UpdateUser extends Message {
      */
     @Override
     public void handle(GUI userInterface) {
-        userInterface.getContactPane().updateUser(this);
+        System.out.println("User updated "+type);
+//        userInterface.getContactPane().updateUser(this);
+        Colleague person =userInterface.getContactPane().getColleague(ID);
+        if (person != null) {
+            switch (type) {
+                case NAME:
+                    person.setUsername(update);
+                    break;
+                default:
+                    System.out.println("Unknown update");
+                    break;
+            }
+        }
+        userInterface.getContactPane().updateList();
+    }
+    
+    private void nameUpdate(Colleague person) {
+        person.setUsername(update);
     }
 
     @Override

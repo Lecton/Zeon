@@ -13,14 +13,13 @@ import server.clientConnection;
  * @author Lecton
  */
 public class ClientInit extends Message {
-    public String name = "";
     
     /**
      * Constructor to create and initialize a client.
      * @param name - the name of the client.
      */
     public ClientInit(String name) {
-        this.name = name;
+        this.Sender = name;
     }
     
     /**
@@ -30,7 +29,7 @@ public class ClientInit extends Message {
      */
     @Override
     public String getMessage() {
-        return "ClientInit: "+name+".";
+        return "ClientInit: "+Sender+".";
     }
 
     @Override
@@ -40,7 +39,7 @@ public class ClientInit extends Message {
 
     @Override
     public Message repackage(clientConnection cc) {
-        cc.setName(name);
-        return new UpdateUser(cc.getID(), name);
+        cc.setName(Sender);
+        return new UpdateUser(cc.getID(), -1, Sender, MessageUtils.Update.NAME);
     }
 }

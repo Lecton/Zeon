@@ -10,6 +10,7 @@ import Messages.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -23,11 +24,14 @@ public class RelayServer {
     private ConcurrentLinkedQueue<clientConnection> clients = null;
     private int idIncrementor = -1;
     
+    private ArrayList<StreamProperties> streams;
+    
     public RelayServer(int port) throws IOException {
         System.out.println("Server Started");
         this.PORT =port;
         this.ss =new ServerSocket(PORT);
         clients =new ConcurrentLinkedQueue<>();
+        streams =new ArrayList<>();
     }
     
     public void start() {
@@ -66,7 +70,7 @@ public class RelayServer {
         }
     }
     
-    private int[] getAllIDs() {
+    protected int[] getAllIDs() {
         int[] IDs =new int[clients.size()];
         
         int index =0;
@@ -79,7 +83,7 @@ public class RelayServer {
         return IDs;
     }
     
-    private String[] getAllNames() {
+    protected String[] getAllNames() {
         String[] Names =new String[clients.size()];
         
         int index =0;
@@ -93,7 +97,7 @@ public class RelayServer {
     }
     
     public void acceptMessage(clientConnection cc) throws IOException{
-        cc.send(new Greeting(cc.getName(), cc.getID(), clients.size(), getAllIDs(), getAllNames(),"Server"));
+        cc.send(new Greeting(cc.getName(), cc.getID(), clients.size(), getAllIDs(), getAllNames()));
         
         for (clientConnection client: clients)
         {
@@ -106,22 +110,7 @@ public class RelayServer {
     }
     
     public void relayMessage(clientConnection cc, Message mess) throws IOException {
-        
-        
-        if (mess.getTo() == -1) {
-            for (clientConnection client: clients) {
-                if (!client.equals(cc)){
-                    client.send(mess);
-                }
-            }
-        } else {
-            for (clientConnection client: clients) {
-                if (client.getID() == mess.getTo()) {
-                    client.send(mess);
-                    break;
-                }
-            }
-        }
+        mess.relay(clients, cc);
     }
     
     public void closeConnection(clientConnection cc) throws IOException {
@@ -130,5 +119,22 @@ public class RelayServer {
             client.send(new RemoveUser(cc.getID(), clients.size()-1, "Server"));
         }
         System.out.println("Clients: " + clients.size());
-    }  
+    }
+    
+    public StreamProperties getStreamProperties(String StreamID) {
+        for (StreamProperties sp: streams) {
+            if (sp.compareID(StreamID)) {
+                return sp;
+            }
+        }
+        return null;
+    }
+    
+    public void addStreamProperty(int ID, String StreamID, int[] allowedID) {
+        if (allowedID.length == 1 && allowedID[0] == -1) {
+            allowedID =getAllIDs();
+        }
+        StreamProperties sp =new StreamProperties(ID, StreamID, allowedID);
+        streams.add(sp);
+    }
 }

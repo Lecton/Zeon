@@ -7,13 +7,8 @@
 package MediaStreaming.Audio;
 
 import Messages.AudioStream;
-import Messages.MessageUtils;
 import client.Connection;
 import java.io.IOException;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
 /**
@@ -30,12 +25,12 @@ public class Stream implements Runnable {
     private Connection con = null;
   
     /**
-     * Constructor to initialize the audio stream capture object.
+     * Constructor to initialize the audio stream object.
      * Streaming audio is identified as a set of data lines and the format is 
      * determined once the first line is retrieved.
-     * @param oos - the object output stream.
-     * @param _name - the name of this specific audio stream.
-     * @param _ID - the ID of this specific audio stream.
+     * @param con
+     * @param as
+     * @param al 
      */
     public Stream(Connection con, AudioStream as, AudioLine al)
     {
@@ -50,12 +45,11 @@ public class Stream implements Runnable {
         running = true;
         try {
             while (running) {
-                System.out.println("Hello");
                 this.as = new AudioStream(as);
                 this.as.buffer = new byte[bufferSize];
                 int count = line.read(as.buffer, 0, as.buffer.length);
                 if (count > 0) {
-                    System.out.println("Sending");
+//                    System.out.println("STREAM - StreamID: "+as.getStreamID());
                     con.write(as);
                 }
             }

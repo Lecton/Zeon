@@ -9,19 +9,9 @@ package client.GUI;
 import Messages.StringMessage;
 import Messages.UpdateUser;
 import client.Colleague;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.util.ArrayList;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.LayoutStyle;
-import javax.swing.ListCellRenderer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -31,7 +21,7 @@ import javax.swing.event.ListSelectionListener;
  * @author Zenadia
  */
 public class Contacts extends JScrollPane {
-    public ArrayList<Colleague> colleagues = new ArrayList<>();
+    private ArrayList<Colleague> colleagues = new ArrayList<>();
     private GUI userInterface;
     private JList list;
     
@@ -48,7 +38,7 @@ public class Contacts extends JScrollPane {
         this.userInterface = userInterface;
         list = new JList();
         list.setVisibleRowCount(10);
-        list.setCellRenderer(new CellRenderer());
+        list.setCellRenderer(new ContactProfiler(userInterface));
         setViewportView(list);
         list.setSelectionMode(list.getSelectionModel().SINGLE_SELECTION);
         list.addListSelectionListener(new ListSelection());
@@ -79,10 +69,10 @@ public class Contacts extends JScrollPane {
         int index = getSelectedIndex();
         if (index == -1) {
             return -2;
-        } else if (colleagues.get(index).ID == userInterface.ID) {
+        } else if (colleagues.get(index).getID() == userInterface.getID()) {
             return -1;
         } else {
-            return colleagues.get(index).ID;
+            return colleagues.get(index).getID();
         }
     }
     
@@ -93,9 +83,9 @@ public class Contacts extends JScrollPane {
      * @param ID - ID the colleague to find
      * @return the colleague index or -1 if no one has that ID
      */
-    private int find(int ID) {
+    public int find(int ID) {
         for (int i=0; i<colleagues.size(); i++) {
-            if (colleagues.get(i).ID == ID) {
+            if (colleagues.get(i).getID() == ID) {
                 return i;
             }
         }
@@ -107,7 +97,7 @@ public class Contacts extends JScrollPane {
      * @param ID - ID of the colleague to find. 
      * @return 
      */
-    private Colleague getColleague(int ID) {
+    public Colleague getColleague(int ID) {
         int index =find(ID);
         if (index != -1) {
             return colleagues.get(index);
@@ -119,14 +109,13 @@ public class Contacts extends JScrollPane {
      * Allows the user to add a contact to their list of contacts. 
      * @param ID - ID of the contact to be added
      * @param name - Name of the contact to be added
-     * @param localname - Local name of the contact to be added
      */
-    public void addContact(int ID, String name, String localname) {
+    public void addContact(int ID, String name) {
         System.out.println("User added");
-        Colleague coll =new Colleague(ID, name, localname);
+        Colleague coll =new Colleague(ID, name);
         coll.initializeStreams(userInterface.getConnection(), userInterface.getUsername(), userInterface.getID());
         colleagues.add(coll);
-        list.setListData(colleagues.toArray());
+        updateList();
     }
     
     /**
@@ -141,7 +130,7 @@ public class Contacts extends JScrollPane {
         } else {
             System.err.println("Error removing colleague with ID: "+colleagueID);
         }
-        list.setListData(colleagues.toArray());
+        updateList();
     }
 
     /**
@@ -150,11 +139,14 @@ public class Contacts extends JScrollPane {
      * @param uu - the user update message.
      */
     public void updateUser(UpdateUser uu) {
-        System.out.println("User updated");
         int index = -1;
         if ((index =find(uu.getID())) != -1) {
-            colleagues.get(index).setName(uu.name);
+            colleagues.get(index).setUsername(uu.getSender());
         }
+    }
+    
+    public void updateList() {
+        System.out.println("Contacts Updated");
         list.setListData(colleagues.toArray());
     }
     
@@ -165,26 +157,24 @@ public class Contacts extends JScrollPane {
      */
     public void acceptMessage(StringMessage sm) {
         if(sm.getTo() == -1){
-            Colleague me =getColleague(userInterface.ID);
+            Colleague me =getColleague(userInterface.getID());
             me.addMessage(sm);
             if (getSelectedID() == -1) {
                 userInterface.appendChatMessage(sm);
             }
-        }
-        else if(userInterface.ID == sm.getID()){
+        } else if(userInterface.getID() == sm.getID()) {
             Colleague receiver = getColleague(sm.getTo());
             if(receiver != null){
                 receiver.addMessage(sm);
-                if(receiver.ID == getSelectedID()){
+                if(receiver.getID() == getSelectedID()){
                     userInterface.appendChatMessage(sm);
                 }
             }
-        }
-        else{
+        } else {
             Colleague sender = getColleague(sm.getID());
             if (sender != null) {
                 sender.addMessage(sm);
-                if(sender.ID == getSelectedID()){
+                if(sender.getID() == getSelectedID()){
                     userInterface.appendChatMessage(sm);
                 }
             }
@@ -201,94 +191,16 @@ public class Contacts extends JScrollPane {
         @Override
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
-                if (list.getSelectedIndex() == -1) {
-                    //Do nothing. 
-                } 
-                else {
-//                    System.out.println(lastSelected+" --> "+list.getSelectedIndex());
-                    
+                if (list.getSelectedIndex() != -1) {
                     if (lastSelected != list.getSelectedIndex()) {
                         lastSelected =list.getSelectedIndex();
                         //update ChatText
                         Colleague selectedColleague =(Colleague)getSelectedValue();
-                        System.out.println("Selected Person: "+selectedColleague.name);
+                        System.out.println("Selected Person: "+selectedColleague.getUsername());
                         userInterface.setChatHistory(selectedColleague.getMessages());
                     }
                 }
             }
         }
     }
-    
-
-    private class CellRenderer extends JPanel implements ListCellRenderer<Colleague> {
-        private final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
-
-        private JLabel name;
-        private JLabel avatar;
-        private JButton button1;
-        private JButton button2;
-        private GroupLayout layout;
-
-        /**
-        * Renders the cells in the list whenever a change is made to the list of
-        * contacts.
-        */
-        public CellRenderer() {
-            setOpaque(true);
-            this.setLayout(new BorderLayout());
-            name =new JLabel("User");
-            avatar =new JLabel();
-            layout = new GroupLayout(this);
-            
-            button1 = new JButton();
-            button2 = new JButton();
-
-            name.setText("Name");
-
-            button1.setBackground(new Color(51, 255, 0));
-            button2.setBackground(new Color(255, 0, 0));
-
-            setLayout(layout);
-            layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(avatar, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(name, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(button1, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(button2, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-                            .addGap(0, 29, Short.MAX_VALUE))))
-            );
-            layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(avatar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(name, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(button2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(button1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-            );
-        }
-
-        @Override
-        public Component getListCellRendererComponent(JList<? extends Colleague> list, Colleague value,
-            int index, boolean isSelected, boolean cellHasFocus) {
-                name.setText(value.name);
-                avatar.setIcon(new ImageIcon("./default.png"));
-//                name.setText(value.getTitle());
-//                name.setIcon(value.getImage());
-                if (isSelected) {
-                    setBackground(HIGHLIGHT_COLOR);
-                    setForeground(Color.white);
-                } else {
-                    setBackground(Color.white);
-                    setForeground(Color.black);
-                }
-                return this;
-            }
-        }
 }

@@ -12,7 +12,7 @@ import server.clientConnection;
  * @author Lecton
  */
 public class RemoveUser extends Message {
-    public int size =0;
+    private int size =0;
     
     /**
      * Constructor that creates a message specifying to the system that a user of

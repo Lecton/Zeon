@@ -13,7 +13,7 @@ import server.clientConnection;
  * @author Lecton
  */
 public class StringMessage extends Message {
-    public String mess ="";
+    private String mess ="";
     
     /**
      * Constructor that creates a string message to be sent.
