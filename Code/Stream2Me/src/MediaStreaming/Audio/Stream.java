@@ -6,7 +6,7 @@
 
 package MediaStreaming.Audio;
 
-import Messages.AudioStream;
+import Messages.Media.AudioStream;
 import client.Connection;
 import java.io.IOException;
 import javax.sound.sampled.TargetDataLine;

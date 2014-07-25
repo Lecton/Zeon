@@ -4,6 +4,7 @@
  */
 package Messages;
 
+import Messages.UpdateUser.UpdateUsername;
 import client.GUI.GUI;
 import server.clientConnection;
 
@@ -40,6 +41,6 @@ public class ClientInit extends Message {
     @Override
     public Message repackage(clientConnection cc) {
         cc.setName(Sender);
-        return new UpdateUser(cc.getID(), -1, Sender, MessageUtils.Update.NAME);
+        return new UpdateUsername(cc.getID(), -1, Sender);
     }
 }

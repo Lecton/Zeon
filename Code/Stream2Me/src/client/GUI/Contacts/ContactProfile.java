@@ -4,52 +4,63 @@
  * and open the template in the editor.
  */
 
-package client.GUI;
+package client.GUI.Contacts;
 
-import Messages.MessageUtils;
+import Messages.StringMessage;
+import Utils.*;
 import client.Colleague;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
-import javax.swing.ListCellRenderer;
 
 /**
  *
  * @author Bernhard
  */
-public class ContactProfiler extends JPanel implements ListCellRenderer<Colleague> {
-    private final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
+public class ContactProfile extends JPanel {
+    private Contacts contactPane;
+    private Colleague colleague;
+    
+    
+    private final Color HIGHLIGHT_COLOR = new Color(0, 0, 158);
 
     private JLabel name;
     private JLabel avatar;
     private JButton acceptAudioStream;
     private JButton acceptVideoStream;
     private GroupLayout layout;
-    private GUI userInterface;
+    
+    private boolean selected =false;
 
     /**
     * Renders the cells in the list whenever a change is made to the list of
     * contacts.
     */
-    public ContactProfiler(GUI userInterface) {
-        this.userInterface =userInterface;
+    public ContactProfile(Contacts contactPane, Colleague colleague) {
+        this.contactPane =contactPane;
+        this.colleague =colleague;
         
         setOpaque(true);
+        setFocusable(true);
+        setBackground(Color.WHITE);
+        setForeground(Color.BLACK);
+        
+        addMouseListener(new ContactSelectionListener());
+        
         this.setLayout(new BorderLayout());
-        name =new JLabel("User");
+        name =new JLabel();
         avatar =new JLabel();
         layout = new GroupLayout(this);
 
@@ -90,47 +101,115 @@ public class ContactProfiler extends JPanel implements ListCellRenderer<Colleagu
                     .addComponent(acceptVideoStream, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(acceptAudioStream, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
+        
+        setup();
     }
-
-    @Override
-    public Component getListCellRendererComponent(JList<? extends Colleague> list, Colleague value,
-        int index, boolean isSelected, boolean cellHasFocus) {
-        name.setText(value.getUsername());
-        acceptAudioStream.setEnabled(value.getIncomingAudio());
-        acceptVideoStream.setEnabled(value.getIncomingVideo());
+    
+    private void setup() {
+        name.setText(colleague.getUsername());
         setAvatar("");
-    //                name.setText(value.getTitle());
-    //                name.setIcon(value.getImage());
-        if (isSelected) {
-            setBackground(HIGHLIGHT_COLOR);
-            setForeground(Color.white);
-        } else {
-            setBackground(Color.white);
-            setForeground(Color.black);
-        }
-        return this;
     }
     
     private class acceptAudioStreamBtnActionPerformed implements ActionListener {                                    
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            contactPane.audioResponse(true, colleague.getStreamID());
         }
-        
     }
 
-    public void setAvatar(String URL) {
+    private void setAvatar(String URL) {
         try {
-            setAvatar(ImageIO.read(new File(".\\assests\\"+URL)));
+            setAvatar(ImageIO.read(new File(colleague.getCustomURLPath()+URL)));
         } catch (IOException e) {
             try {
-                setAvatar(ImageIO.read(new File(".\\assests\\default_profile.png")));
+                setAvatar(ImageIO.read(new File(colleague.getDefaultURL())));
             } catch (IOException ex) {}
         }
     }
 
-    public void setAvatar(BufferedImage image) {
-        avatar.setIcon(new ImageIcon(image.getScaledInstance(64, 64, BufferedImage.SCALE_FAST)));
+    protected void setAvatar(BufferedImage image) {
+        updateAvatar(image);
+        
+        contactPane.updateAvatar(ImageUtils.encodeToString(image, "png"));
+    }
+    
+    public void updateAvatar(BufferedImage image) {
+        saveImage(image, colleague.getCustomURL());
+        avatar.setIcon(ImageUtils.resizeConvert(image, 64, 64, BufferedImage.SCALE_FAST));
+    }
+    
+    private boolean saveImage(BufferedImage image, String url) {
+        try {
+            File f =new File(colleague.getCustomURL());
+            ImageIO.write(image, "png", f);
+        } catch (IOException ex) {
+            return false;
+        }
+        return true;
+    }
+    
+    public int getID() {
+        return colleague.getID();
+    }
+    
+    public Colleague getColleague() {
+        return colleague;
+    }
+    
+    public void setUsername(String username) {
+        colleague.setUsername(username);
+        name.setText(username);
+        refresh();
+        System.out.println("Hello "+name.getText());
+    }
+    
+    public void unSelect() {
+        setBackground(Color.WHITE);
+        setForeground(Color.BLACK);
+        selected =false;
+        
+        System.out.println("Unselected Person: "+colleague.getUsername());
+        contactPane.setChatHistory(new ArrayList<StringMessage>());
+    }
+    
+    public void select() {
+        setBackground(HIGHLIGHT_COLOR);
+        setForeground(Color.WHITE);
+        selected =true;
+        
+        System.out.println("Selected Person: "+colleague.getUsername());
+        contactPane.setChatHistory(colleague.getMessages());
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+    
+    public void toggleSelected() {
+        if (!isSelected()) {
+            contactPane.select(this);
+        } else {
+            contactPane.unselect(this);
+        }
+        
+        refresh();
+    }
+    
+    public void refresh() {
+        validate();
+        repaint();
+    }
+    
+    //userInterface.getConnection().writeSafe(new AudioResponse(myID, this.streamID, true));
+    public void setIncomingAudio(boolean incomingAudio, String streamID) {
+        colleague.setIncomingAudio(incomingAudio, streamID);
+        acceptAudioStream.setEnabled(incomingAudio);
+        
+    }
+    
+    public void setIncomingVideo(boolean incomingVideo, String streamID) {
+        colleague.setIncomingVideo(incomingVideo);
+        acceptVideoStream.setEnabled(incomingVideo);
     }
 }

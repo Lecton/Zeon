@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package Messages;
+package Messages.Media;
 
+import Messages.Message;
 import client.GUI.GUI;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;

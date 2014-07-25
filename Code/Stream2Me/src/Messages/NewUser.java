@@ -13,6 +13,7 @@ import server.clientConnection;
  */
 public class NewUser extends Message {
     private int size =0;
+    private String username ="User";
     
     /**
      * COnstructor to define the message notifying the system that a new user
@@ -26,6 +27,7 @@ public class NewUser extends Message {
         this.size = size;
         this.ID = ID;
         this.Sender = Sender;
+        this.username =name;
         this.Title = "New User";
     }
     
@@ -48,7 +50,7 @@ public class NewUser extends Message {
     @Override
     public void handle(GUI userInterface) {
         if (this.ID != userInterface.getID()) {
-            userInterface.getContactPane().addContact(this.ID, this.Sender);
+            userInterface.getContactPane().addContact(this.ID, this.username);
         }
     }
 

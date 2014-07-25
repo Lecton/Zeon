@@ -56,7 +56,7 @@ public class Greeting extends Message {
         System.out.println(getMessage());
         
         userInterface.setID(this.ID);
-        userInterface.getContactPane().addContact(userInterface.getID(), userInterface.getUsername());
+        userInterface.setupMyContactData();
 
         for (int i = 0; i < this.size; i++) {
             userInterface.getContactPane().addContact(this.colleagueIDs[i], this.colleagueNames[i]);

@@ -6,7 +6,7 @@
 
 package client.GUI.audio;
 
-import Messages.MessageUtils;
+import Utils.MessageUtils;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;

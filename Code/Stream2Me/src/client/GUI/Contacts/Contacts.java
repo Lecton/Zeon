@@ -4,31 +4,30 @@
  * and open the template in the editor.
  */
 
-package client.GUI;
+package client.GUI.Contacts;
 
+import Messages.Media.AudioResponse;
 import Messages.StringMessage;
-import Messages.UpdateUser;
+import Messages.UpdateUser.*;
 import client.Colleague;
+import client.GUI.GUI;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.ArrayList;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.JPanel;
 
-/**
- *
- * @author Bernhard
- * @author Zenadia
- */
-public class Contacts extends JScrollPane {
-    private ArrayList<Colleague> colleagues = new ArrayList<>();
+public class Contacts extends JPanel {
     private GUI userInterface;
-    private JList list;
+    private int selectedIndex =-1;
+    private ArrayList<ContactProfile> colleagues =new ArrayList<>();
+    private GridBagConstraints gbcContactProfile;
     
     /**
      * Default constructor to create a blank list of contacts.
      */
-    public Contacts() {}
+    public Contacts() {
+        setup();
+    }
     
     /**
      * Constructor that creates a list of contacts.
@@ -36,12 +35,23 @@ public class Contacts extends JScrollPane {
      */
     public Contacts(GUI userInterface) {
         this.userInterface = userInterface;
-        list = new JList();
-        list.setVisibleRowCount(10);
-        list.setCellRenderer(new ContactProfiler(userInterface));
-        setViewportView(list);
-        list.setSelectionMode(list.getSelectionModel().SINGLE_SELECTION);
-        list.addListSelectionListener(new ListSelection());
+        setup();
+        
+    }
+    
+    private void setup() {
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        add(new JPanel(), gbc);
+        
+        
+        gbcContactProfile = new GridBagConstraints();
+        gbcContactProfile.gridwidth = GridBagConstraints.REMAINDER;
+        gbcContactProfile.weightx = 1;
+        gbcContactProfile.fill = GridBagConstraints.HORIZONTAL;
     }
     
     /**
@@ -50,15 +60,25 @@ public class Contacts extends JScrollPane {
      * @return 
      */
     public int getSelectedIndex() {
-        return list.getSelectedIndex();
+        return selectedIndex;
     }
     
     /**
      * Returns the selected value or item in the list of contacts.
      * @return 
      */
-    public Object getSelectedValue() {
-        return list.getSelectedValue();
+    public ContactProfile getSelectedValue() {
+        if (selectedIndex == -1) {
+            return null;
+        }
+        return colleagues.get(selectedIndex);
+    }
+    
+    public Colleague getSelectedColleague() {
+        if (selectedIndex == -1) {
+            return null;
+        }
+        return colleagues.get(selectedIndex).getColleague();
     }
     
     /**
@@ -76,8 +96,6 @@ public class Contacts extends JScrollPane {
         }
     }
     
-    
-    
     /**
      * Finds the colleague with the same ID as provided and returns his index
      * @param ID - ID the colleague to find
@@ -92,15 +110,23 @@ public class Contacts extends JScrollPane {
         return -1;
     }
     
+    public ContactProfile getContactProfile(int ID) {
+        int index =find(ID);
+        if (index != -1) {
+            return colleagues.get(index);
+        }
+        return null;
+    }
+    
     /**
      * Returns the colleague with the same ID as provided.
      * @param ID - ID of the colleague to find. 
      * @return 
      */
-    public Colleague getColleague(int ID) {
-        int index =find(ID);
-        if (index != -1) {
-            return colleagues.get(index);
+    private Colleague getColleague(int ID) {
+        ContactProfile cp =getContactProfile(ID);
+        if (cp != null) {
+            return cp.getColleague();
         }
         return null;
     }
@@ -110,12 +136,17 @@ public class Contacts extends JScrollPane {
      * @param ID - ID of the contact to be added
      * @param name - Name of the contact to be added
      */
-    public void addContact(int ID, String name) {
+    public ContactProfile addContact(int ID, String name) {
         System.out.println("User added");
         Colleague coll =new Colleague(ID, name);
         coll.initializeStreams(userInterface.getConnection(), userInterface.getUsername(), userInterface.getID());
-        colleagues.add(coll);
+        ContactProfile cp =new ContactProfile(this, coll);
+        colleagues.add(cp);
+        
+        add(cp, gbcContactProfile, 0);
+        
         updateList();
+        return cp;
     }
     
     /**
@@ -124,12 +155,14 @@ public class Contacts extends JScrollPane {
      */
     public void removeContact(int colleagueID) {
         System.out.println("User removed");
-        Colleague toRemove =getColleague(colleagueID);
+        ContactProfile toRemove =getContactProfile(colleagueID);
         if (toRemove != null) {
             colleagues.remove(toRemove);
         } else {
             System.err.println("Error removing colleague with ID: "+colleagueID);
         }
+        remove(toRemove);
+        
         updateList();
     }
 
@@ -138,7 +171,7 @@ public class Contacts extends JScrollPane {
      * information changes.
      * @param uu - the user update message.
      */
-    public void updateUser(UpdateUser uu) {
+    public void updateUser(UpdateUsername uu) {
         int index = -1;
         if ((index =find(uu.getID())) != -1) {
             colleagues.get(index).setUsername(uu.getSender());
@@ -147,7 +180,8 @@ public class Contacts extends JScrollPane {
     
     public void updateList() {
         System.out.println("Contacts Updated");
-        list.setListData(colleagues.toArray());
+        validate();
+        repaint();
     }
     
     /**
@@ -181,26 +215,36 @@ public class Contacts extends JScrollPane {
         }
     }
     
-    /**
-     * Allows the user to select a specific colleague or contact on his/her list
-     * of contacts.
-     */
-    private class ListSelection implements ListSelectionListener {
-        int lastSelected =-1;
-        
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-            if (!e.getValueIsAdjusting()) {
-                if (list.getSelectedIndex() != -1) {
-                    if (lastSelected != list.getSelectedIndex()) {
-                        lastSelected =list.getSelectedIndex();
-                        //update ChatText
-                        Colleague selectedColleague =(Colleague)getSelectedValue();
-                        System.out.println("Selected Person: "+selectedColleague.getUsername());
-                        userInterface.setChatHistory(selectedColleague.getMessages());
-                    }
-                }
-            }
+    protected void select(ContactProfile cp) {
+        if (selectedIndex != -1) {
+            colleagues.get(selectedIndex).unSelect();
         }
+        
+        selectedIndex =find(cp.getID());
+        cp.select();
+    }
+    
+    protected void unselect(ContactProfile cp) {
+        int index =find(cp.getID());
+        if (index == selectedIndex) {
+            selectedIndex =-1;
+        }
+        cp.unSelect();
+    }
+    
+    protected void setChatHistory(ArrayList<StringMessage> messageHistory) {
+        userInterface.setChatHistory(messageHistory);
+    }
+    
+    protected void audioResponse(boolean response, String streamID) {
+        userInterface.getConnection().writeSafe(new AudioResponse(userInterface.getID(), streamID, response));
+    }
+    
+    protected void videoResponse(boolean response, String streamID) {
+//        userInterface.getConnection().writeSafe(new VideoResponse(userInterface.getID(), streamID, response));
+    }
+    
+    protected void updateAvatar(String avatar) {
+        userInterface.getConnection().writeSafe(new UpdateAvatar(userInterface.getID(),avatar));
     }
 }

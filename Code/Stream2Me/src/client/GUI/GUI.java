@@ -1,10 +1,14 @@
 package client.GUI;
 
+import client.GUI.Contacts.UserProfile;
+import client.GUI.Contacts.Contacts;
 import client.GUI.audio.AudioPlayer;
 import Messages.ClientInit;
 import Messages.StringMessage;
 import client.Client;
+import client.Colleague;
 import client.Connection;
+import client.GUI.Contacts.ContactProfile;
 import client.inStream;
 import java.awt.Color;
 import java.io.IOException;
@@ -32,6 +36,7 @@ public class GUI extends JFrame {
     
     private String username ="User";
     private int ID =-1;
+    private ContactProfile myContactData;
     
     private AudioPlayer audio;
 
@@ -65,12 +70,12 @@ public class GUI extends JFrame {
     private void initComponents() {
 
         DetailsPanel = new javax.swing.JPanel();
-        userProfile1 = new client.GUI.UserProfile();
-        userProfile2 = new client.GUI.UserProfile();
         MainSplit = new javax.swing.JSplitPane();
         ControlPanel = new javax.swing.JPanel();
-        ContactPane = new client.GUI.Contacts(this);
-        userProfileControl = new client.GUI.UserProfile(this);
+        userProfileControl = new client.GUI.Contacts.UserProfile(this);
+        ContactContainer = new javax.swing.JPanel();
+        ContactScroller = new javax.swing.JScrollPane();
+        ContactPane = new client.GUI.Contacts.Contacts(this);
         InterfacePanel = new javax.swing.JPanel();
         InterfaceSplit = new javax.swing.JSplitPane();
         ChatPanel = new javax.swing.JPanel();
@@ -111,28 +116,40 @@ public class GUI extends JFrame {
         ControlPanel.setBackground(new java.awt.Color(255, 255, 255));
         ControlPanel.setForeground(new java.awt.Color(255, 255, 255));
 
-        ContactPane.setBackground(new java.awt.Color(255, 255, 255));
-        ContactPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 85, 0)));
-        ContactPane.setForeground(new java.awt.Color(255, 255, 255));
+        ContactContainer.setLayout(new java.awt.BorderLayout());
+
+        ContactScroller.setViewportView(ContactPane);
+
+        javax.swing.GroupLayout ContactContainerLayout = new javax.swing.GroupLayout(ContactContainer);
+        ContactContainer.setLayout(ContactContainerLayout);
+        ContactContainerLayout.setHorizontalGroup(
+            ContactContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(ContactScroller)
+        );
+        ContactContainerLayout.setVerticalGroup(
+            ContactContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(ContactScroller, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout ControlPanelLayout = new javax.swing.GroupLayout(ControlPanel);
         ControlPanel.setLayout(ControlPanelLayout);
         ControlPanelLayout.setHorizontalGroup(
             ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ControlPanelLayout.createSequentialGroup()
-                .addComponent(ContactPane, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                .addGap(22, 22, 22))
-            .addGroup(ControlPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(userProfileControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
+            .addGroup(ControlPanelLayout.createSequentialGroup()
+                .addComponent(ContactContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         ControlPanelLayout.setVerticalGroup(
             ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ControlPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(userProfileControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ContactPane, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(ContactContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         MainSplit.setLeftComponent(ControlPanel);
@@ -267,7 +284,7 @@ public class GUI extends JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(MainSplit, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
+                .addComponent(MainSplit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -357,10 +374,21 @@ public class GUI extends JFrame {
     public AudioPlayer getAudio() {
         return audio;
     }
+
+    public void setupMyContactData() {
+        //add me
+        myContactData =ContactPane.addContact(getID(), getUsername());
+    }
+
+    public ContactProfile getMyContactData() {
+        return myContactData;
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ChatPanel;
-    private client.GUI.Contacts ContactPane;
+    private javax.swing.JPanel ContactContainer;
+    private client.GUI.Contacts.Contacts ContactPane;
+    private javax.swing.JScrollPane ContactScroller;
     private javax.swing.JPanel ControlPanel;
     private javax.swing.JPanel DetailsPanel;
     private javax.swing.JPanel InterfacePanel;
@@ -376,9 +404,7 @@ public class GUI extends JFrame {
     private javax.swing.JMenu menuEdit;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenuItem mmuUpdateList;
-    private client.GUI.UserProfile userProfile1;
-    private client.GUI.UserProfile userProfile2;
-    private client.GUI.UserProfile userProfileControl;
+    private client.GUI.Contacts.UserProfile userProfileControl;
     // End of variables declaration//GEN-END:variables
    
 }

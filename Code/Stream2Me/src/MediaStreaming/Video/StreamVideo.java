@@ -6,9 +6,9 @@
 
 package MediaStreaming.Video;
 
-import Messages.MessageUtils;
-import Messages.UpdateUser;
-import Messages.VideoStream;
+import Utils.MessageUtils;
+import Messages.UpdateUser.UpdateUsername;
+import Messages.Media.VideoStream;
 import client.Connection;
 
 /**

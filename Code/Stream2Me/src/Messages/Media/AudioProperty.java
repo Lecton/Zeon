@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package Messages.Media;
 
-package Messages;
-
+import Messages.Message;
 import client.GUI.GUI;
 import server.clientConnection;
 
@@ -35,8 +30,9 @@ public class AudioProperty extends Message {
         System.out.println("Audio Stream Property parsed");
         int myID =userInterface.getID();
         if (contained(myID)) {
-            userInterface.getContactPane().getColleague(myID).setIncomingAudio(type == 1);
-            userInterface.getConnection().writeSafe(new AudioResponse(myID, this.streamID, true));
+            userInterface.getContactPane().getContactProfile(myID).setIncomingAudio(type == 1, this.streamID);
+        } else {
+            System.out.println("I am not on the list");
         }
     }
 

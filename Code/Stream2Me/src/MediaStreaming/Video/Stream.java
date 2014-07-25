@@ -6,8 +6,8 @@
 
 package MediaStreaming.Video;
 
-import Messages.MessageUtils;
-import Messages.VideoStream;
+import Utils.*;
+import Messages.Media.VideoStream;
 import client.Connection;
 import java.io.IOException;
 
@@ -46,7 +46,7 @@ class Stream implements Runnable{
     public void run() {
         while (!isStopped()) {
             if (isPlaying()) {
-                img =MessageUtils.encodeToString(screen.getScreenImage(), "png");
+                img =ImageUtils.encodeToString(screen.getScreenImage(), "png");
                 previousMessage =new VideoStream(previousMessage);
                 //System.out.println(img);
                 previousMessage.setImg(img);

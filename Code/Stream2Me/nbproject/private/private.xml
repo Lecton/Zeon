@@ -3,29 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/client/Client.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/Messages/AudioStream.java</file>
+            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/Messages/UpdateUser/UpdateAvatar.java</file>
             <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/client/Colleague.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/Messages/UpdateUser.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/client/GUI/Contacts.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/MediaStreaming/Video/StreamVideo.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/server/RelayServer.java</file>
             <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/Messages/Message.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/Messages/MessageUtils.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/MediaStreaming/Audio/AudioLine.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/Messages/ClientInit.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/client/Connection.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/Messages/AudioResponse.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/server/StreamProperties.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/client/GUI/ContactProfiler.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/server/Connection.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/client/GUI/GUI.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/MediaStreaming/Audio/AudioCapture.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/client/GUI/UserProfile.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/server/clientConnection.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/Messages/Greeting.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/MediaStreaming/Audio/Stream.java</file>
-            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/Messages/AudioProperty.java</file>
+            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/Utils/MessageUtils.java</file>
+            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/Utils/ImageUtils.java</file>
+            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/client/GUI/Contacts/Contacts.java</file>
+            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/Messages/Media/VideoStream.java</file>
+            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/client/GUI/Contacts/ContactProfile.java</file>
+            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/client/GUI/Contacts/UserProfile.java</file>
+            <file>file:/C:/Users/Bernhard/Documents/GitHub/Zeon/Code/Stream2Me/src/MediaStreaming/Video/Stream.java</file>
         </group>
     </open-files>
 </project-private>

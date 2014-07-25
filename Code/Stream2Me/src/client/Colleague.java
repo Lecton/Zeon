@@ -7,9 +7,9 @@ package client;
 import MediaStreaming.Audio.AudioCapture;
 import MediaStreaming.Video.ScreenCapture;
 import MediaStreaming.Video.StreamVideo;
-import Messages.AudioStream;
+import Messages.Media.AudioStream;
 import Messages.StringMessage;
-import Messages.VideoStream;
+import Messages.Media.VideoStream;
 import java.util.ArrayList;
 
 /**
@@ -23,9 +23,13 @@ public class Colleague {
     private String username ="";
     private AudioCapture ac;
     private StreamVideo sv;
-    private String avatarURL;
+    private String defaultURLName;
+    private String customURLName;
+    private final String defaultURLPath =".\\assests\\";
+    private final String customURLPath =".\\assests\\profile\\";
     private boolean incomingAudio =false;
     private boolean incomingVideo =false;
+    private String streamID ="";
 //    public String content = "This is the label";
     
     private ArrayList<StringMessage> chatHistory;
@@ -35,15 +39,16 @@ public class Colleague {
      */
     public Colleague() {
         chatHistory =new ArrayList<StringMessage>();
-        avatarURL ="default_profile.png";
+        defaultURLName ="default_profile.png";
+        customURLName ="default_profile.png";
     }
     
     public Colleague(int ID, String name) {
         chatHistory =new ArrayList<StringMessage>();
         this.ID =ID;
         this.username =name;
-        avatarURL ="default_profile.png";
-//        avatarURL ="profile\\" + ID + ".png";
+        defaultURLName ="default_profile.png";
+        customURLName =ID + ".png";
     }
     
     /**
@@ -107,12 +112,36 @@ public class Colleague {
         return username;
     }
 
-    public String getAvatarURL() {
-        return avatarURL;
+    public String getDefaultURL() {
+        return getDefaultURLPath()+defaultURLName;
     }
 
-    public void setAvatarURL(String avatarURL) {
-        this.avatarURL = avatarURL;
+    public void setDefaultURLName(String defaultURL) {
+        this.defaultURLName = defaultURL;
+    }
+
+    public String getCustomURL() {
+        return getCustomURLPath()+customURLName;
+    }
+
+    public void setCustomURLName(String customURL) {
+        this.customURLName = customURL;
+    }
+    
+    public String getCustomURLPath() {
+        return customURLPath;
+    }
+    
+    public String getDefaultURLPath() {
+        return defaultURLPath;
+    }
+
+    public String getDefaultURLName() {
+        return defaultURLName;
+    }
+
+    public String getCustomURLName() {
+        return customURLName;
     }
     
     public void initializeStreams(Connection con, String name, int ID) {
@@ -145,8 +174,14 @@ public class Colleague {
         sv.stop();
     }
 
-    public void setIncomingAudio(boolean incomingAudio) {
+    public void setIncomingAudio(boolean incomingAudio, String streamID) {
         this.incomingAudio = incomingAudio;
+        
+        if (incomingAudio) {
+            this.streamID =streamID;
+        } else {
+            this.streamID ="";
+        }
     }
 
     public void setIncomingVideo(boolean incomingVideo) {
@@ -159,5 +194,9 @@ public class Colleague {
 
     public boolean getIncomingVideo() {
         return incomingVideo;
+    }
+
+    public String getStreamID() {
+        return streamID;
     }
 }

@@ -1,8 +1,8 @@
 package MediaStreaming.Audio;
 
-import Messages.AudioProperty;
-import Messages.AudioStream;
-import Messages.MessageUtils;
+import Messages.Media.AudioProperty;
+import Messages.Media.AudioStream;
+import Utils.MessageUtils;
 import client.Connection;
 
 /**

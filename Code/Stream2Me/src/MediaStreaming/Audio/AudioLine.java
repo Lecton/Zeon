@@ -6,7 +6,7 @@
 
 package MediaStreaming.Audio;
 
-import Messages.MessageUtils;
+import Utils.MessageUtils;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;

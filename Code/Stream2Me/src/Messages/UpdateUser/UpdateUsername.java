@@ -1,10 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package Messages;
+package Messages.UpdateUser;
+
+import Messages.Message;
+import Utils.MessageUtils;
 
 import client.Colleague;
+import client.GUI.Contacts.ContactProfile;
 import client.GUI.GUI;
 import server.clientConnection;
 
@@ -12,9 +12,7 @@ import server.clientConnection;
  *
  * @author Lecton
  */
-public class UpdateUser extends Message {
-    private MessageUtils.Update type;
-    private String update;
+public class UpdateUsername extends Message {
     
     /**
      * Constructor that creates a message specifying to the system that a user of
@@ -23,11 +21,10 @@ public class UpdateUser extends Message {
      * @param update 
      * @param type 
      */
-    public UpdateUser(int ID, int targetID, String update, MessageUtils.Update type) {
+    public UpdateUsername(int ID, int targetID, String username) {
         this.ID = ID;
         this.to = targetID;
-        this.update = update;
-        this.type =type;
+        this.Sender = username;
         this.Title = "User Update";
     }
     
@@ -48,24 +45,17 @@ public class UpdateUser extends Message {
      */
     @Override
     public void handle(GUI userInterface) {
-        System.out.println("User updated "+type);
+        System.out.println("User updated");
 //        userInterface.getContactPane().updateUser(this);
-        Colleague person =userInterface.getContactPane().getColleague(ID);
+        ContactProfile person =userInterface.getContactPane().getContactProfile(ID);
         if (person != null) {
-            switch (type) {
-                case NAME:
-                    person.setUsername(update);
-                    break;
-                default:
-                    System.out.println("Unknown update");
-                    break;
-            }
+            person.setUsername(Sender);
         }
         userInterface.getContactPane().updateList();
     }
     
     private void nameUpdate(Colleague person) {
-        person.setUsername(update);
+        person.setUsername(Sender);
     }
 
     @Override
