@@ -1,12 +1,11 @@
 package client.GUI;
 
+import Messages.Factory;
+import Messages.StringMessage;
 import client.GUI.Contacts.UserProfile;
 import client.GUI.Contacts.Contacts;
 import client.GUI.audio.AudioPlayer;
-import Messages.ClientInit;
-import Messages.StringMessage;
 import client.Client;
-import client.Colleague;
 import client.Connection;
 import client.GUI.Contacts.ContactProfile;
 import client.inStream;
@@ -16,17 +15,6 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Lecton
- * @author Bernhard
- * @author Zenadia
- */
 public class GUI extends JFrame {
     private enum Action {REMOVE, ADD, UPDATE}
     
@@ -39,10 +27,7 @@ public class GUI extends JFrame {
     private ContactProfile myContactData;
     
     private AudioPlayer audio;
-
-    /**
-     * Creates new form GUI
-     */
+    
     public GUI(String name, int PORT, Client client) {
         this.client =client;
         this.username =name;
@@ -294,7 +279,7 @@ public class GUI extends JFrame {
     private void menuConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConnectActionPerformed
         try {
             con.makeConnection();
-            con.write(new ClientInit(username));
+            con.write(Factory.getLogin(username, username));
             input.setInputStream(con);
             (new Thread(input)).start();
             menuConnect.setEnabled(false);
@@ -306,11 +291,9 @@ public class GUI extends JFrame {
     }//GEN-LAST:event_menuConnectActionPerformed
 
     private void chatSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chatSendActionPerformed
-
         if(!chatText.getText().isEmpty()){
-            StringMessage sm = new StringMessage(username +" :\t"+ chatText.getText() + "\n", ID);
-            sm.setTo(ContactPane.getSelectedID());
-            if (sm.getTo() != -2) {
+            StringMessage sm =Factory.getStringMessage(ID, ContactPane.getSelectedID(), username +" :\t"+ chatText.getText() + "\n");
+            if (sm.getTargetID()!= -2) {
                 con.writeSafe(sm);
                 ContactPane.acceptMessage(sm);
             }

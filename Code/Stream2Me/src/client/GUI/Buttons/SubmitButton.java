@@ -1,17 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package client.GUI.Buttons;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 
-/**
- *
- * @author Lecton
- */
 public class SubmitButton extends Button{
     public SubmitButton(){
         super("submit.png");
@@ -29,6 +21,6 @@ public class SubmitButton extends Button{
                     }
                 }
             });
-        setIcon(new ImageIcon("./assests/" + bname));
+        setIcon(new ImageIcon(Path + bname));
     }
 }

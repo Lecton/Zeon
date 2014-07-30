@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package client;
 
 import java.io.IOException;
@@ -13,11 +7,6 @@ import java.net.Socket;
 
 import Messages.Message;
 
-/**
- *
- * @author Bernhard
- * @author Zenadia
- */
 public class Connection {
     private int PORT;
     private String address;
@@ -25,76 +14,40 @@ public class Connection {
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     
-    /**
-     * Constructor to assign a default IP address and port number.
-     */
     public Connection() {
         PORT =2000;
         address ="127.0.0.1";
     }
     
-    /**
-     * Sets a specific port number for this connection.
-     * @param PORT - the port number to set the original port to.
-     */
     public void setPORT(int PORT) {
         this.PORT =PORT;
     }
     
-    /**
-     * Sets a specific IP address for this connection.
-     * @param address 
-     */
     public void setAddress(String address) {
         this.address =address;
     }
     
-    /**
-     * Establishes the connection between a client and the server.
-     * @throws IOException 
-     */
     public void makeConnection() throws IOException {
         soc =new Socket(address, PORT);
         oos =new ObjectOutputStream((soc.getOutputStream()));
         ois =new ObjectInputStream((soc.getInputStream()));
     }
     
-//    /**
-//     * Returns the object output stream and its associated messages for this
-//     * connection.
-//     * @return
-//     * @throws IOException 
-//     */
-//    public ObjectOutputStream getOutputStream() throws IOException {
-//        return oos;
-//    }
-    
-//    /**
-//     * Returns the object input stream and its associated messages for this
-//     * connection.
-//     * @return
-//     * @throws IOException 
-//     */
-//    public ObjectInputStream getInputStream() throws IOException {
-//        return ois;
-//    }
-    
     public Message read() throws IOException, ClassNotFoundException {
-        return (Message)ois.readObject();
+        Message m =(Message)ois.readObject();
+        System.out.println("Reading: "+m.handle()+" userID: "+m.getUserID()+" TargetID: "+m.getTargetID());
+        return m;
     }
     
-    /**
-     * Writes the message being passed to it via the connection 
-     * by identifying the type and determining the appropriate way of handling
-     * that specific message type.
-     * @param m - message to be sent.
-     */
-    public synchronized void write(Message m) throws IOException {
-        if (m.getTo() != -2) {
-            oos.writeObject(m);
-            oos.flush();
+    public void write(Message m) throws IOException {
+        if (m.getTargetID()!= -2) {
+            System.out.println("Writing: "+m.handle());
+            synchronized (oos) {
+                oos.writeObject(m);
+                oos.flush();
+            }
         } else {
-            System.out.println("Not sending: "+m.getTo());
+            System.out.println("Not sending: "+m.getTargetID());
         }
     }
     

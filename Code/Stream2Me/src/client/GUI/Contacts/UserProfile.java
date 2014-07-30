@@ -12,21 +12,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Lecton
- */
 public class UserProfile extends javax.swing.JPanel {
     GUI userInterface =null;
     
-    /**
-     * Creates new form UserProfile
-     */
     public UserProfile() {
         initComponents();
     }

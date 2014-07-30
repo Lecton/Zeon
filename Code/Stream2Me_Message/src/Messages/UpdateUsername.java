@@ -12,6 +12,10 @@ public class UpdateUsername extends Message {
         return "My name is "+this.Sender+". My ID is "+this.userID+".";
     }
 
+    public String getUsername() {
+        return Sender;
+    }
+
     @Override
     public MessageType handle() {
         return MessageType.updateName;

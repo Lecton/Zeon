@@ -7,10 +7,10 @@ import Messages.Message;
  * @author Bernhard
  * @author Lecton
  */
-public class Logon extends Message {
+public class Login extends Message {
     private String passwordHash ="";
     
-    public Logon(String email, String passwordHash) {
+    public Login(String email, String passwordHash) {
         this.Sender = email;
         this.passwordHash =passwordHash;
     }
@@ -20,8 +20,12 @@ public class Logon extends Message {
         return "ClientInit: "+Sender+".";
     }
 
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
     @Override
     public MessageType handle() {
-        return MessageType.logon;
+        return MessageType.login;
     }
 }

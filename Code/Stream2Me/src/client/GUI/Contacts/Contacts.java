@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package client.GUI.Contacts;
 
-import Messages.Media.AudioResponse;
+import Messages.Factory;
 import Messages.StringMessage;
-import Messages.UpdateUser.*;
+import Messages.UpdateUsername;
 import client.Colleague;
 import client.GUI.GUI;
 import java.awt.GridBagConstraints;
@@ -22,17 +16,10 @@ public class Contacts extends JPanel {
     private ArrayList<ContactProfile> colleagues =new ArrayList<>();
     private GridBagConstraints gbcContactProfile;
     
-    /**
-     * Default constructor to create a blank list of contacts.
-     */
     public Contacts() {
         setup();
     }
     
-    /**
-     * Constructor that creates a list of contacts.
-     * @param userInterface 
-     */
     public Contacts(GUI userInterface) {
         this.userInterface = userInterface;
         setup();
@@ -54,19 +41,10 @@ public class Contacts extends JPanel {
         gbcContactProfile.fill = GridBagConstraints.HORIZONTAL;
     }
     
-    /**
-     * Returns the selected index or item in the list of contacts - i.e. selecting
-     * a contact one wishes to send a message to. 
-     * @return 
-     */
     public int getSelectedIndex() {
         return selectedIndex;
     }
     
-    /**
-     * Returns the selected value or item in the list of contacts.
-     * @return 
-     */
     public ContactProfile getSelectedValue() {
         if (selectedIndex == -1) {
             return null;
@@ -81,12 +59,9 @@ public class Contacts extends JPanel {
         return colleagues.get(selectedIndex).getColleague();
     }
     
-    /**
-     * Returns the selected ID or item in the list of contacts.
-     * @return 
-     */
     public int getSelectedID() {
         int index = getSelectedIndex();
+        System.out.println("Index: "+index);
         if (index == -1) {
             return -2;
         } else if (colleagues.get(index).getID() == userInterface.getID()) {
@@ -96,11 +71,6 @@ public class Contacts extends JPanel {
         }
     }
     
-    /**
-     * Finds the colleague with the same ID as provided and returns his index
-     * @param ID - ID the colleague to find
-     * @return the colleague index or -1 if no one has that ID
-     */
     public int find(int ID) {
         for (int i=0; i<colleagues.size(); i++) {
             if (colleagues.get(i).getID() == ID) {
@@ -118,11 +88,6 @@ public class Contacts extends JPanel {
         return null;
     }
     
-    /**
-     * Returns the colleague with the same ID as provided.
-     * @param ID - ID of the colleague to find. 
-     * @return 
-     */
     private Colleague getColleague(int ID) {
         ContactProfile cp =getContactProfile(ID);
         if (cp != null) {
@@ -131,11 +96,6 @@ public class Contacts extends JPanel {
         return null;
     }
     
-    /**
-     * Allows the user to add a contact to their list of contacts. 
-     * @param ID - ID of the contact to be added
-     * @param name - Name of the contact to be added
-     */
     public ContactProfile addContact(int ID, String name) {
         System.out.println("User added");
         Colleague coll =new Colleague(ID, name);
@@ -149,10 +109,6 @@ public class Contacts extends JPanel {
         return cp;
     }
     
-    /**
-     * Compares and removes a contact from the list according to its specified ID.
-     * @param colleagueID - the ID of the colleague to be removed.
-     */
     public void removeContact(int colleagueID) {
         System.out.println("User removed");
         ContactProfile toRemove =getContactProfile(colleagueID);
@@ -166,14 +122,9 @@ public class Contacts extends JPanel {
         updateList();
     }
 
-    /**
-     * Updates the information of a user in the contact list if/when their 
-     * information changes.
-     * @param uu - the user update message.
-     */
     public void updateUser(UpdateUsername uu) {
         int index = -1;
-        if ((index =find(uu.getID())) != -1) {
+        if ((index =find(uu.getUserID())) != -1) {
             colleagues.get(index).setUsername(uu.getSender());
         }
     }
@@ -184,20 +135,15 @@ public class Contacts extends JPanel {
         repaint();
     }
     
-    /**
-     * Allows the user to accept a string message from one of the colleagues on his/her 
-     * contacts list.
-     * @param sm - the string message to be accepted.
-     */
     public void acceptMessage(StringMessage sm) {
-        if(sm.getTo() == -1){
-            Colleague me =getColleague(userInterface.getID());
-            me.addMessage(sm);
+        if(sm.getTargetID()== -1){
+            System.out.println("Target was -1");
+            userInterface.getMyContactData().getColleague().addMessage(sm);
             if (getSelectedID() == -1) {
                 userInterface.appendChatMessage(sm);
             }
-        } else if(userInterface.getID() == sm.getID()) {
-            Colleague receiver = getColleague(sm.getTo());
+        } else if(userInterface.getID() == sm.getUserID()) {
+            Colleague receiver = getColleague(sm.getTargetID());
             if(receiver != null){
                 receiver.addMessage(sm);
                 if(receiver.getID() == getSelectedID()){
@@ -205,7 +151,7 @@ public class Contacts extends JPanel {
                 }
             }
         } else {
-            Colleague sender = getColleague(sm.getID());
+            Colleague sender = getColleague(sm.getUserID());
             if (sender != null) {
                 sender.addMessage(sm);
                 if(sender.getID() == getSelectedID()){
@@ -237,14 +183,13 @@ public class Contacts extends JPanel {
     }
     
     protected void audioResponse(boolean response, String streamID) {
-        userInterface.getConnection().writeSafe(new AudioResponse(userInterface.getID(), streamID, response));
+        userInterface.getConnection().writeSafe(Factory.getStreamResponse(userInterface.getID(), streamID, response));
     }
-    
     protected void videoResponse(boolean response, String streamID) {
-//        userInterface.getConnection().writeSafe(new VideoResponse(userInterface.getID(), streamID, response));
+        userInterface.getConnection().writeSafe(Factory.getStreamResponse(userInterface.getID(), streamID, response));
     }
     
     protected void updateAvatar(String avatar) {
-        userInterface.getConnection().writeSafe(new UpdateAvatar(userInterface.getID(),avatar));
+        userInterface.getConnection().writeSafe(Factory.getUpdateAvatar(userInterface.getID(),avatar));
     }
 }

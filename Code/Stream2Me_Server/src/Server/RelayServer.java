@@ -7,7 +7,7 @@
 package Server;
 
 import Messages.UserConnection.Logout;
-import Messages.*;
+import Messages.UserConnection.NewUser;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -23,12 +23,13 @@ public class RelayServer {
     private int PORT =2000;
     private ServerSocket ss =null;
     private ConcurrentLinkedQueue<Client> clients = null;
-    private int idIncrementor = -1;
+    private Database DB;
     
     private ArrayList<StreamProperties> streams;
     
     public RelayServer(int port) throws IOException {
         System.out.println("Server Started");
+        this.DB =new Database();
         this.PORT =port;
         this.ss =new ServerSocket(PORT);
         clients =new ConcurrentLinkedQueue<>();
@@ -43,11 +44,10 @@ public class RelayServer {
                     System.out.println("New client connection");
                     
                     Connection client =new Connection(soc);
-                    idIncrementor = ++idIncrementor;
-                    Client cConnection =new Client(client, this, idIncrementor);
+                    Client cConnection =new Client(client, this);
                     (new Thread(cConnection)).start();
                     
-                    System.out.println(cConnection.getName() + " joined");
+                    System.out.println(cConnection.getUsername() + " joined");
                 } catch (IOException e) {
                     System.err.println("Connection error");
                     e.printStackTrace();
@@ -55,6 +55,24 @@ public class RelayServer {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    
+    public void relayDefault(Client cc, Messages.Message m) {
+        System.out.println("Relay "+m.getClass().getSimpleName()+" to: "+m.getTargetID());
+        if (m.getTargetID() == -1) {
+            for (Client c: clients) {
+                if (!c.equals(cc)){
+                    c.send(m);
+                }
+            }
+        } else {
+            for (Client c: clients) {
+                if (c.getID() == m.getTargetID()) {
+                    c.send(m);
+                    break;
+                }
+            }
         }
     }
     
@@ -81,5 +99,22 @@ public class RelayServer {
         }
         StreamProperties sp =new StreamProperties(ID, StreamID, allowedID);
         streams.add(sp);
+    }
+
+    public NewUser userLogin(Client c, String username, String passwordHash) {
+        int ID =DB.login(username, passwordHash);
+        c.setID(ID);
+        System.out.println("USERLOGIN - ID: "+ID);
+        if (ID != -1) {
+            clients.add(c);
+            return DB.getNewUser(ID);
+        }
+        return null;
+    }
+    
+    public void updateUserConnection(Client cc) {
+        for (Client c: clients) {
+            cc.send(DB.getNewUser(c.getID()));
+        }
     }
 }

@@ -1,23 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package client;
 
 import MediaStreaming.Audio.AudioCapture;
 import MediaStreaming.Video.ScreenCapture;
 import MediaStreaming.Video.StreamVideo;
-import Messages.Media.AudioStream;
+import Messages.Factory;
 import Messages.StringMessage;
-import Messages.Media.VideoStream;
 import java.util.ArrayList;
 
-/**
- *
- * @author Bernhard
- * @author Lecton
- * @author Zenadia
- */
 public class Colleague {
     private int ID =-1;
     private String username ="";
@@ -25,18 +14,14 @@ public class Colleague {
     private StreamVideo sv;
     private String defaultURLName;
     private String customURLName;
-    private final String defaultURLPath =".\\assests\\";
-    private final String customURLPath =".\\assests\\profile\\";
+    private final String defaultURLPath =".\\assets\\";
+    private final String customURLPath =".\\assets\\profile\\";
     private boolean incomingAudio =false;
     private boolean incomingVideo =false;
     private String streamID ="";
-//    public String content = "This is the label";
     
     private ArrayList<StringMessage> chatHistory;
     
-    /**
-     * Create a new Colleague and set its default panel content
-     */
     public Colleague() {
         chatHistory =new ArrayList<StringMessage>();
         defaultURLName ="default_profile.png";
@@ -51,27 +36,14 @@ public class Colleague {
         customURLName =ID + ".png";
     }
     
-    /**
-     * Adds a message to the colleague's message history.
-     * @param sm - the message to be added to the chat history.
-     */
     public void addMessage(StringMessage sm) {
         chatHistory.add(sm);
     }
     
-    /**
-     * Retrieves the sent messages for a colleague.
-     * @return 
-     */
     public ArrayList<StringMessage> getMessages() {
         return chatHistory;
     }
-
-    /**
-     * Checks if the current colleague is contained in the list
-     * @param list Array of colleague objects
-     * @return index if list if contained. -1 if not
-     */
+    
     public int contained(ArrayList<Colleague> list) {
         for (int i=0; i<list.size(); i++) {
             if (list.get(i).ID == ID) {
@@ -80,13 +52,7 @@ public class Colleague {
         }
         return -1;
     }
-
-    /**
-     * Updates the other colleague object with the details in the current one 
-     * if the current one has the same ID and the other one
-     * @param other Colleague to update
-     * @return true if successfully update. false if not
-     */
+    
     public boolean update(Colleague other) {
         if (other.ID == ID) {
             other.username = username;
@@ -95,11 +61,7 @@ public class Colleague {
             return false;
         }
     }
-
-    /**
-     * Changes the colleague's name and updates it.
-     * @param name - the name of the colleague.
-     */
+    
     public void setUsername(String name) {
         this.username =name;
     }
@@ -150,8 +112,8 @@ public class Colleague {
             target = -1;
         }
         
-        ac = new AudioCapture(con, new AudioStream(name, ID));
-        sv = new StreamVideo(new VideoStream(name, ID, target), 1, new ScreenCapture(), con);
+        ac = new AudioCapture(con, Factory.getAudioStream(name, ID, -1));
+        sv = new StreamVideo(Factory.getVideoStream(name, ID, target), 1, new ScreenCapture(), con);
     }
     
     public void startAudioStream(int[] allowed) {

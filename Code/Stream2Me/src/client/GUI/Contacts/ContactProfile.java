@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package client.GUI.Contacts;
 
 import Messages.StringMessage;
@@ -19,16 +13,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 
-/**
- *
- * @author Bernhard
- */
 public class ContactProfile extends JPanel {
     private Contacts contactPane;
     private Colleague colleague;
@@ -44,10 +33,6 @@ public class ContactProfile extends JPanel {
     
     private boolean selected =false;
 
-    /**
-    * Renders the cells in the list whenever a change is made to the list of
-    * contacts.
-    */
     public ContactProfile(Contacts contactPane, Colleague colleague) {
         this.contactPane =contactPane;
         this.colleague =colleague;
@@ -169,7 +154,7 @@ public class ContactProfile extends JPanel {
         setForeground(Color.BLACK);
         selected =false;
         
-        System.out.println("Unselected Person: "+colleague.getUsername());
+//        System.out.println("Unselected Person: "+colleague.getUsername());
         contactPane.setChatHistory(new ArrayList<StringMessage>());
     }
     
@@ -178,7 +163,7 @@ public class ContactProfile extends JPanel {
         setForeground(Color.WHITE);
         selected =true;
         
-        System.out.println("Selected Person: "+colleague.getUsername());
+//        System.out.println("Selected Person: "+colleague.getUsername());
         contactPane.setChatHistory(colleague.getMessages());
     }
 
@@ -201,7 +186,6 @@ public class ContactProfile extends JPanel {
         repaint();
     }
     
-    //userInterface.getConnection().writeSafe(new AudioResponse(myID, this.streamID, true));
     public void setIncomingAudio(boolean incomingAudio, String streamID) {
         colleague.setIncomingAudio(incomingAudio, streamID);
         acceptAudioStream.setEnabled(incomingAudio);

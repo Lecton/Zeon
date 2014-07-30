@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Utils;
 
 import java.awt.image.BufferedImage;
@@ -15,18 +9,7 @@ import javax.swing.ImageIcon;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-/**
- *
- * @author Bernhard
- */
 public class ImageUtils {
-    
-    
-    /**
-     * Decodes an image string to be used in the streaming of video data.
-     * @param imageString - the image defines as a string which needs decoding.
-     * @return 
-     */
     public static BufferedImage decodeToImage(String imageString) {
         BufferedImage image = null;
         byte[] imageByte;

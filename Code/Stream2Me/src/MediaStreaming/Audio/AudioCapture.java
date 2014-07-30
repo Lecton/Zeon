@@ -1,34 +1,25 @@
 package MediaStreaming.Audio;
 
-import Messages.Media.AudioProperty;
+import Messages.Factory;
 import Messages.Media.AudioStream;
 import Utils.MessageUtils;
 import client.Connection;
 
-/**
- * 
- * @author Bernhard
- */
 public class AudioCapture {
     private AudioStream as;
     private Connection con = null;
     private Stream audio;
     private Thread audioThread;
     private String streamID;
-  
-    /**
-     * Constructor to initialize the audio stream capture object.
-     * @param con
-     * @param as 
-     */
+    
     public AudioCapture(Connection con, AudioStream as)
     {
         this.as = as;
         this.con = con;
-        this.streamID =MessageUtils.getID(as.getID());
-//        System.out.println("StreamID: "+as.getID());
+        this.streamID =MessageUtils.getID(as.getUserID());
         as.setStreamID(streamID);
         audio =new Stream(con, as, MessageUtils.getAudioLine());
+        
     }
 
     public AudioStream getAudioStream() {
@@ -40,9 +31,8 @@ public class AudioCapture {
     }
     
     public void start(int[] allowed) {
-        AudioProperty ap =new AudioProperty(as.getID(), as.getTo(), streamID, 1);
-        ap.setAllowed(allowed);
-        con.writeSafe(ap);
+        con.writeSafe(Factory.getStreamProperty(as.getUserID(), as.getTargetID(), streamID, 1, allowed));
+        
         audioThread =new Thread(audio);
 //        System.out.println("AS StreamID: "+as.getStreamID());
         audioThread.start();
@@ -50,7 +40,7 @@ public class AudioCapture {
     }
 
     public void stop(){
-        con.writeSafe(new AudioProperty(as.getID(), as.getTo(), streamID, 0));
+        con.writeSafe(Factory.getStreamProperty(as.getUserID(), as.getTargetID(), streamID, 0, null));
         audio.stop();
         System.out.println("Audio Stream stopped");
     }

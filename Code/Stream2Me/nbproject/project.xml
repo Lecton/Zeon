@@ -5,8 +5,8 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>Stream2Me</name>
             <source-roots>
-                <root id="src.assests.dir"/>
                 <root id="src.dir"/>
+                <root id="src.assets.dir"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>
@@ -15,5 +15,6 @@
         <libraries xmlns="http://www.netbeans.org/ns/ant-project-libraries/1">
             <definitions>lib\nblibraries.properties</definitions>
         </libraries>
+        <references xmlns="http://www.netbeans.org/ns/ant-project-references/1"/>
     </configuration>
 </project>

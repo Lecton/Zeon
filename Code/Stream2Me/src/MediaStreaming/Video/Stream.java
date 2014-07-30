@@ -1,20 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package MediaStreaming.Video;
 
-import Utils.*;
+import Messages.Factory;
 import Messages.Media.VideoStream;
+import Utils.*;
 import client.Connection;
 import java.io.IOException;
 
-/**
- *
- * @author Bernhard
- */
 class Stream implements Runnable{
     private Connection con = null;
     private ScreenCapture screen = null;
@@ -23,14 +14,6 @@ class Stream implements Runnable{
     private VideoStream previousMessage = null;
     private long interval = 0;
     
-    /**
-     * Constructor that defines a stream when an object output stream, frames per
-     * second, sender, ID, and screenshot is already specified.
-     * @param oos -  the object output stream.
-     * @param sc - the screen capture.
-     * @param fps - the frames per second.
-     * @param vs - the VideoStream message object
-     */
     public Stream(Connection con, ScreenCapture sc,
                                     long fps, VideoStream vs) {
         this.con =con;
@@ -38,16 +21,13 @@ class Stream implements Runnable{
         previousMessage =vs;
         this.interval =fps/1000;
     }
-
-    /**
-     * 
-     */
+    
     @Override
     public void run() {
         while (!isStopped()) {
             if (isPlaying()) {
                 img =ImageUtils.encodeToString(screen.getScreenImage(), "png");
-                previousMessage =new VideoStream(previousMessage);
+                previousMessage =Factory.cloneVideoStream(previousMessage);
                 //System.out.println(img);
                 previousMessage.setImg(img);
             }
@@ -64,10 +44,6 @@ class Stream implements Runnable{
         }
     }
     
-    /**
-     * 
-     * @param m 
-     */
     private void send(VideoStream m) {
         try {
             con.write(m);
@@ -81,47 +57,26 @@ class Stream implements Runnable{
     static private enum state {PLAY, PAUSE, STOP};
     public state video =state.STOP;
     
-    /**
-     * Changes the video sequence's state to Playing.
-     */
     public synchronized void start() {
         video =state.PLAY;
     }
     
-    /**
-     * Changes the video sequence's state to Stopped.
-     */
     public synchronized void stop() {
         video =state.STOP;
     }
     
-    /**
-     * Changes the video sequence's state to Paused.
-     */
     public synchronized void pause() {
         video = state.PAUSE;
     }
     
-    /**
-     * Checks if the video sequence's state is Playing.
-     * @return 
-     */
     public synchronized boolean isPlaying() {
         return (video == state.PLAY);
     }
     
-    /**
-     * Checks if the video sequence's state is Paused.
-     * @return 
-     */
     public synchronized boolean isPaused() {
         return (video == state.PAUSE);
     }
     
-    /**
-     * Checks if the video sequence's state is Stopped.
-     * @return 
-     */
     public synchronized boolean isStopped() {
         return (video == state.STOP);
     }

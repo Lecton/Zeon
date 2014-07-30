@@ -35,6 +35,10 @@ public class NewUser extends Message {
     public String getEmail() {
         return email;
     }
+    
+    public String getUsername() {
+        return Sender;
+    }
 
     @Override
     public MessageType handle() {

@@ -13,6 +13,10 @@ public class UpdateAvatar extends Message {
         return this.getClass().getSimpleName()+" - ID: "+userID;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
     @Override
     public MessageType handle() {
         return MessageType.updateAvatar;

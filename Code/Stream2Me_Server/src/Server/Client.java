@@ -16,18 +16,21 @@ import java.io.IOException;
 public class Client implements Runnable {
     private Connection con =null;
     private RelayServer relay = null;
-    private String name = null;
-    private int id = -1; 
+    private String username = null;
+    private int ID = -1; 
     
-    public Client(Connection con, RelayServer rs,int _id) throws IOException, ClassNotFoundException {
-        name = con.getHostName();
+    public Client(Connection con, RelayServer rs) throws IOException, ClassNotFoundException {
+        username = con.getHostName();
         this.con =con;
         relay =rs;
-        id = _id;
     }
     
-    public void setName(String name) {
-        this.name =name;
+    public void setName(String username) {
+        this.username =username;
+    }
+    
+    public void setID(int ID) {
+        this.ID =ID;
     }
     
     @Override
@@ -50,16 +53,20 @@ public class Client implements Runnable {
         }
     }
     
-    public String getName() {
-        return this.name;
+    public String getUsername() {
+        return this.username;
     }
     
     public Integer getID() {
-        return this.id;
+        return this.ID;
     }
     
-    public void send(Message m) throws IOException {
-        con.write(m);
+    public void send(Message m) {
+        try {
+            con.write(m);
+        } catch (IOException e) {
+            
+        }
     }
     
     public StreamProperties getStreamProperties(String StreamID) {
@@ -67,6 +74,6 @@ public class Client implements Runnable {
     }
     
     public void addStreamProperty(String StreamID, int[] allowedID) {
-        relay.addStreamProperty(id, StreamID, allowedID);
+        relay.addStreamProperty(ID, StreamID, allowedID);
     }
 }

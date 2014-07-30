@@ -32,10 +32,13 @@ public class Connection {
     }
     
     public Message read() throws IOException, ClassNotFoundException {
-        return (Message)ois.readObject();
+        Message m =(Message)ois.readObject();
+        System.out.println("Reading: "+m.handle());
+        return m;
     }
     
     public void write(Message m) throws IOException {
+        System.out.println("Writing: "+m.handle());
         synchronized (oos) {
             oos.writeObject(m);
             oos.flush();

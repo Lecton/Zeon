@@ -12,9 +12,9 @@ import java.io.Serializable;
  */
 
 public abstract class Message implements Serializable {
-    public static enum MessageType {logon, logout, disconnect, newUser, 
+    public static enum MessageType {login, logout, disconnect, newUser, 
                                     updateName, updateAvatar, string, 
-                                    streamProperties, auido, video, 
+                                    streamProperty, auido, video, 
                                     streamReply, greeting};
     
     protected String Sender ="";
