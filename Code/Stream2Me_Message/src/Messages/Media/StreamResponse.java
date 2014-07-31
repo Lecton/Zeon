@@ -20,6 +20,7 @@ public class StreamResponse extends Message {
         this.userID =userID;
         this.streamID = streamID;
         this.accept =accept;
+        this.targetID =Message.SERVER;
     }
 
     public void setStreamID(String streamID) {

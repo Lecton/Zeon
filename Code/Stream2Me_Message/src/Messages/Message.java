@@ -12,17 +12,22 @@ import java.io.Serializable;
  */
 
 public abstract class Message implements Serializable {
-    public static enum MessageType {login, logout, disconnect, newUser, 
-                                    updateName, updateAvatar, string, 
-                                    streamProperty, auido, video, 
+    public static enum MessageType {login, logout, newUser, notify,
+                                    updateName, updateAvatar, updateList, 
+                                    string, streamProperty, streamUpdate, 
+                                    streamNotify, auido, video, 
                                     streamReply, greeting};
+    public static int SERVER =-10;
+    public static int ALL =-11;
+    public static int ERROR =-15;
+    public static int IGNORE =-1;
     
     protected String Sender ="";
-    protected int userID =-1;
+    protected int userID =IGNORE;
     protected String Title ="";
     protected String timestamp =null;
     protected transient int SSN;
-    protected int targetID =-1; //-1 send to ALL
+    protected int targetID =IGNORE;
     
     public abstract String getMessage();
     

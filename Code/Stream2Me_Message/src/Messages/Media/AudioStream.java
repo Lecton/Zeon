@@ -8,20 +8,13 @@ import Messages.Message;
  * @author Lecton
  */
 public class AudioStream extends Message {
-    private int bufferSize = 0;
-    public byte[] buffer = new byte[bufferSize];
+    public byte[] buffer = new byte[0];
     private String streamID ="";
     
-    /**
-     * Constructor which initializes and creates the audio stream that transfers
-     * the chosen audio to its location.
-     * @param Sender - the name of the sender that is streaming the audio.
-     * @param ID - the ID of the sender that is streaming the audio.
-     */
-    public AudioStream(String Sender, int userID, int targetID) {
-        this.Sender = Sender;
+    public AudioStream(int userID, int targetID, String streamID) {
         this.userID = userID;
         this.targetID =targetID;
+        this.streamID =streamID;
     }
     
     /**
@@ -30,14 +23,9 @@ public class AudioStream extends Message {
      * @param clone - an audio stream object that we wish to clone in this one.
      */
     public AudioStream(AudioStream clone) {
-        this.Sender = clone.Sender;
         this.userID = clone.userID;
         this.targetID = clone.targetID;
         this.streamID = clone.streamID;
-    }
-
-    public void setStreamID(String streamID) {
-        this.streamID = streamID;
     }
 
     public String getStreamID() {
@@ -56,9 +44,9 @@ public class AudioStream extends Message {
     @Override
     public String getMessage() {
         String result ="Audio Message {\n";
-        result +="\tSender: "+Sender+"\n";
         result +="\tUser ID: "+userID+"\n";
-        result +="\tBuffer Size: "+bufferSize+"\n";
+        result +="\tStream ID: "+streamID+"\n";
+        result +="\tBuffer Size: "+buffer.length+"\n";
         result +="}";
         
         return result;

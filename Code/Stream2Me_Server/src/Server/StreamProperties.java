@@ -18,43 +18,30 @@ public class StreamProperties {
     private ArrayList<Integer> acceptedID;
     private ArrayList<Integer> allowedID;
 
-    public StreamProperties(int ownerID, String ID, int[] allowedID) {
+    public StreamProperties(int ownerID, String ID) {
         this.ownerID = ownerID;
         this.ID = ID;
         this.allowedID = new ArrayList<>();
         this.acceptedID = new ArrayList<>();
-        
-        addAll(allowedID);
-    }
-    
-    private void addAll(int[] add) {
-        for (int addID: add) {
-            allowedID.add(addID);
-        }
     }
     
     public boolean compareID(String StreamID) {
         return ID.equals(StreamID);
     }
     
-    public boolean accept(int ID) {
+    public boolean accept(int userID) {
         for (int allowed: allowedID) {
-            if (allowed == ID) {
-                acceptedID.add(ID);
+            if (allowed == userID) {
+                acceptedID.add(userID);
                 return true;
             }
         }
         return false;
     }
     
-    /**
-     * ID has accepted and now does not want it anymore
-     * @param ID
-     * @return 
-     */
-    public boolean refuse(int ID) {
+    public boolean refuse(int userID) {
         for (int accepted: acceptedID) {
-            if (accepted == ID) {
+            if (accepted == userID) {
                 acceptedID.remove(accepted);
                 return true;
             }
@@ -62,15 +49,21 @@ public class StreamProperties {
         return false;
     }
     
-    public boolean remove(int ID) {
-        refuse(ID);
+    public boolean remove(int ownerID, int userID) {
+        refuse(userID);
         for (int allowed: allowedID) {
-            if (allowed == ID) {
+            if (allowed == userID) {
                 allowedID.remove(allowed);
                 return true;
             }
         }
         return false;
+    }
+    
+    public void add(int ownerID, int userID) {
+        if (ownerID == this.ownerID) {
+            allowedID.add(userID);
+        }
     }
     
     public int[] getTargets() {

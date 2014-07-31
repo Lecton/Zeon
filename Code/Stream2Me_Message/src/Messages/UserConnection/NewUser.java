@@ -15,7 +15,7 @@ public class NewUser extends Message {
         this.Sender = username;
         this.email = email;
         this.avatar = avatar;
-        this.Title = "New User";
+        this.targetID =Message.ALL;
     }
     
     /**

@@ -3,12 +3,17 @@ package Messages;
 public class StringMessage extends Message {
     private String message ="";
     
-    public StringMessage(int userID, int targetID, String message) {
-        this.message =message;
+    public StringMessage(int userID, int targetID, String Sender, String message) {
         this.userID =userID;
-        this.Title ="String Message";
+        this.targetID =targetID;
+        this.Sender =Sender;
+        this.message =message;
 //        this.timestamp = d.getHours()+
 //                         ":"+d.getMinutes();
+    }
+    
+    public String getUsername() {
+        return Sender;
     }
     
     @Override

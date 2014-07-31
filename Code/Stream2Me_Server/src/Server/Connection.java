@@ -7,6 +7,7 @@
 package Server;
 
 import Messages.Message;
+import Utils.Log;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -23,8 +24,12 @@ public class Connection {
     
     public Connection(Socket soc) throws IOException {
         this.soc =soc;
-        this.oos =new ObjectOutputStream((soc.getOutputStream()));
-        this.ois =new ObjectInputStream((soc.getInputStream()));
+        createStreams(soc);
+    }
+    
+    public void createStreams(Socket soc) throws IOException {
+        oos =new ObjectOutputStream((soc.getOutputStream()));
+        ois =new ObjectInputStream((soc.getInputStream()));
     }
     
     public String getHostName() {
@@ -33,15 +38,22 @@ public class Connection {
     
     public Message read() throws IOException, ClassNotFoundException {
         Message m =(Message)ois.readObject();
-        System.out.println("Reading: "+m.handle());
         return m;
     }
     
     public void write(Message m) throws IOException {
-        System.out.println("Writing: "+m.handle());
-        synchronized (oos) {
-            oos.writeObject(m);
-            oos.flush();
+            Log.write(this, "Sending "+m.handle());
+        if (m.getTargetID() == Messages.Message.IGNORE) {
+            Log.error(this, "Ignoring: "+m.handle());
+        } else if (m.getTargetID() == Messages.Message.SERVER) {
+            Log.error(this, "Server: "+m.handle());
+        } else if (m.getTargetID() == Messages.Message.ERROR) {
+            Log.error(this, "Error: "+m.handle());
+        } else {
+            synchronized (oos) {
+                oos.writeObject(m);
+                oos.flush();
+            }
         }
     }
     
@@ -55,6 +67,7 @@ public class Connection {
         try {
             write(m);
         } catch (IOException e) {
+            Log.write(this, "Write Stack Trace Exception");
             e.printStackTrace();
         }
     }

@@ -13,6 +13,7 @@ public class Login extends Message {
     public Login(String email, String passwordHash) {
         this.Sender = email;
         this.passwordHash =passwordHash;
+        this.targetID =Message.SERVER;
     }
     
     @Override

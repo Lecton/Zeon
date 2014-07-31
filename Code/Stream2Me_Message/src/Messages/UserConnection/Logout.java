@@ -8,10 +8,14 @@ import Messages.Message;
  */
 public class Logout extends Message {
 
-    public Logout(int userID, String Sender) {
+    public Logout(int userID) {
         this.userID = userID;
-        this.Sender = Sender;
-        this.Title = "User left";
+        this.targetID =Message.SERVER;
+    }
+    
+    public Logout(int userID, int targetID) {
+        this.userID =userID;
+        this.targetID =targetID;
     }
     
     @Override

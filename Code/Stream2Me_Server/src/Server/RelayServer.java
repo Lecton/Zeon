@@ -6,11 +6,15 @@
 
 package Server;
 
+import User.Client;
+import Messages.UserConnection.Greeting;
 import Messages.UserConnection.Logout;
-import Messages.UserConnection.NewUser;
+import Utils.Log;
+import DatabaseBuilder.MessageBuilder;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -25,6 +29,8 @@ public class RelayServer {
     private ConcurrentLinkedQueue<Client> clients = null;
     private Database DB;
     
+    private boolean running =false;
+    
     private ArrayList<StreamProperties> streams;
     
     public RelayServer(int port) throws IOException {
@@ -36,36 +42,61 @@ public class RelayServer {
         streams =new ArrayList<>();
     }
     
+    public void stop() {
+        DB.close();
+        running =false;
+    }
+    
     public void start() {
-        try{
-            while(true) {
+        running =true;
+        try {
+            while(running) {
                 try {
-                    Socket soc =ss.accept();
-                    System.out.println("New client connection");
                     
-                    Connection client =new Connection(soc);
-                    Client cConnection =new Client(client, this);
-                    (new Thread(cConnection)).start();
+                    try {
+                        Socket soc =ss.accept();
+                        Log.write(this, "New client connection accepted");
+
+                        Connection client =new Connection(soc);
+                        Client cConnection =new Client(client, this);
+                        (new Thread(cConnection)).start();
+
+                        Log.write(this, "User joined");
+                    } catch (SocketException se) {
+                        Log.error(this, "Client connection unsucessful");
+                    }
                     
-                    System.out.println(cConnection.getUsername() + " joined");
+                    
+                    
                 } catch (IOException e) {
-                    System.err.println("Connection error");
+                    Log.error(this, "Connection error");
                     e.printStackTrace();
                 }
             }
         } catch (Exception e) {
+            Log.error(this, "Server error");
             e.printStackTrace();
+        } finally {
+            this.DB.close();
         }
     }
     
     public void relayDefault(Client cc, Messages.Message m) {
-        System.out.println("Relay "+m.getClass().getSimpleName()+" to: "+m.getTargetID());
-        if (m.getTargetID() == -1) {
+        Log.write(this, "Relay "+m.getClass().getSimpleName()+" to: "+m.getTargetID());
+        
+        if (m.getTargetID() == Messages.Message.IGNORE) {
+        } else if (m.getTargetID() == Messages.Message.SERVER) {
+            Log.write(this, "Server message received");
+        } else if (m.getTargetID() == Messages.Message.ERROR) {
+            Log.error(this, "Error in message relay on message type "+m.handle());
+        } else if (m.getTargetID() == Messages.Message.ALL) {
             for (Client c: clients) {
                 if (!c.equals(cc)){
                     c.send(m);
                 }
             }
+        } else if (m.getTargetID() < 0) {
+            Log.error(this, "Unknown target type "+m.getTargetID());
         } else {
             for (Client c: clients) {
                 if (c.getID() == m.getTargetID()) {
@@ -77,11 +108,17 @@ public class RelayServer {
     }
     
     public void closeConnection(Client cc) throws IOException {
-        clients.remove(cc);
-        for (Client client: clients) {
-            client.send(new Logout(cc.getID(), "Server"));
+        if (cc.isLoggedIn()) {
+            clients.remove(cc);
+            for (Client client: clients) {
+                client.send(new Logout(cc.getID(), Messages.Message.ALL));
+            }
+
+            DB.logoff(cc.getID());
+            cc.setLoggedIn(false);
+
+            Log.write(this, "Clients: " + clients.size());
         }
-        System.out.println("Clients: " + clients.size());
     }
     
     public StreamProperties getStreamProperties(String StreamID) {
@@ -93,28 +130,49 @@ public class RelayServer {
         return null;
     }
     
-    public void addStreamProperty(int ID, String StreamID, int[] allowedID) {
-        if (allowedID.length == 1 && allowedID[0] == -1) {
-//            allowedID =getAllIDs();
-        }
-        StreamProperties sp =new StreamProperties(ID, StreamID, allowedID);
+    public void createStreamProperty(int userID, String StreamID) {
+        StreamProperties sp =new StreamProperties(userID, StreamID);
         streams.add(sp);
     }
 
-    public NewUser userLogin(Client c, String username, String passwordHash) {
+    public Greeting userLogin(Client c, String username, String passwordHash) {
         int ID =DB.login(username, passwordHash);
         c.setID(ID);
-        System.out.println("USERLOGIN - ID: "+ID);
-        if (ID != -1) {
+        
+        Log.write(this, "USERLOGIN - ID: "+ID+" - "+c.isLoggedIn());
+        
+        if (ID != Messages.Message.ERROR && !c.isLoggedIn()) {
             clients.add(c);
-            return DB.getNewUser(ID);
+            c.setLoggedIn(true);
+            relayDefault(c, MessageBuilder.generateNewUser(getUserProfile(c.getID())));
+            return MessageBuilder.generateGreeting(getUserProfile(ID), true);
         }
-        return null;
+        return new Greeting(false);
     }
     
     public void updateUserConnection(Client cc) {
         for (Client c: clients) {
-            cc.send(DB.getNewUser(c.getID()));
+            if (!c.equals(cc)) {
+                cc.send(DB.getNewUser(c.getID()));
+            }
+        }
+    }
+
+    public Database getDB() {
+        return DB;
+    }
+    
+    private User.Profile getUserProfile(int userID) {
+        return DB.getUserProfile(userID);
+    }
+
+    public void removeStreamProperty(int userID, String streamID) {
+        StreamProperties sp =getStreamProperties(streamID);
+        if (sp != null) {
+            streams.remove(sp);
+            
+            Log.error(this, "Implement notification of everyone on list");
+            //notify everyone
         }
     }
 }
