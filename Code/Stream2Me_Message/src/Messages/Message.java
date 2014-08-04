@@ -5,6 +5,7 @@
 package Messages;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  *
@@ -25,7 +26,7 @@ public abstract class Message implements Serializable {
     protected String Sender ="";
     protected int userID =IGNORE;
     protected String Title ="";
-    protected String timestamp =null;
+    protected String timestamp;
     protected transient int SSN;
     protected int targetID =IGNORE;
     
@@ -33,6 +34,13 @@ public abstract class Message implements Serializable {
     
     public String getSender() {
         return Sender;
+    }
+    
+    public String getTimestamp(){
+        java.util.Date date = new java.util.Date();
+        Timestamp ts = new Timestamp(date.getTime());
+        timestamp = ts.toString();
+        return this.timestamp;
     }
 
     public int getUserID() {
