@@ -155,7 +155,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
-                          <Component id="ContactScroller" pref="471" max="32767" attributes="0"/>
+                          <Component id="ContactScroller" pref="616" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -242,11 +242,11 @@
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Component id="chatText" pref="818" max="32767" attributes="0"/>
-                                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                                      <Component id="submitButton1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="chatText" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="submitBtn" min="-2" pref="55" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="chatMessages" max="32767" attributes="0"/>
+                                  <Component id="chatMessages" pref="899" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -255,11 +255,11 @@
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="chatMessages" pref="601" max="32767" attributes="0"/>
+                              <Component id="chatMessages" pref="381" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="chatText" alignment="1" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Component id="submitButton1" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="chatText" max="32767" attributes="0"/>
+                                  <Component id="submitBtn" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -281,14 +281,16 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                     </Container>
-                    <Component class="Interface.ClientGUI.Buttons.SubmitButton" name="submitButton1">
+                    <Component class="Interface.ClientGUI.Button" name="submitBtn">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/submit.png"/>
                         </Property>
+                        <Property name="borderPainted" type="boolean" value="false"/>
+                        <Property name="contentAreaFilled" type="boolean" value="false"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="submitButton1ActionPerformed"/>
+                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="submitBtnMouseClicked"/>
                       </Events>
                     </Component>
                   </SubComponents>

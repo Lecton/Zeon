@@ -5,17 +5,18 @@ import Interface.ClientGUI.GUI;
 import Utils.ImageUtils;
 import Utils.Log;
 import Utils.MessageFactory;
+import Utils.MessageUtils;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class UserProfile extends javax.swing.JPanel {
     private GUI userInterface =null;
     private Colleague user =null;
-    private int streamIDCount =0;
     
     private mediaStreaming.Video.VideoStream vStream;
     private mediaStreaming.Audio.AudioStream aStream;
@@ -37,14 +38,16 @@ public class UserProfile extends javax.swing.JPanel {
     public void setUser(Colleague user) {
         this.user =user;
         vStream.setStream(new Messages.Media.VideoStream(user.getUserID(), 
-                Messages.Message.SERVER, user.getEmail()+"vs"+(streamIDCount++)));
+                Messages.Message.SERVER, MessageUtils.generateStreamID(
+                        user.getEmail(), MessageUtils.StreamType.VIDEO)));
         aStream.setStream(new Messages.Media.AudioStream(user.getUserID(), 
-                Messages.Message.SERVER, user.getEmail()+"as"+(streamIDCount++)));
+                Messages.Message.SERVER, MessageUtils.generateStreamID(
+                        user.getEmail(), MessageUtils.StreamType.AUDIO)));
         
-        lblName.setText(user.getUsername());
+        lblUsername.setText(user.getUsername());
         lblEmail.setText(user.getEmail());
         lblID.setText(""+user.getUserID());
-        lblAvatar.setIcon(ImageUtils.resizeConvert(user.getAvatar(), 133, 133));
+        lblAvatar.setImage(user.getAvatar());
     }
     
     public int getUserID() {
@@ -61,7 +64,7 @@ public class UserProfile extends javax.swing.JPanel {
     
     public void formWindowClosing(java.awt.event.WindowEvent evt) {
         if (evt != null) {
-            if (videoBtn.isPressed()) {
+			if (videoBtn.isPressed()) {
                 vStream.stop();
             }
             if (audioBtn.isPressed()) {
@@ -85,12 +88,12 @@ public class UserProfile extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblAvatar = new javax.swing.JLabel();
-        lblName = new javax.swing.JLabel();
+        lblAvatar = new Interface.ClientGUI.ImageContainer();
+        lblUsername = new javax.swing.JLabel();
         lblEmail = new javax.swing.JLabel();
-        audioBtn = new Interface.ClientGUI.Buttons.AudioButton();
-        videoBtn = new Interface.ClientGUI.Buttons.VideoButton();
-        streamBtn = new Interface.ClientGUI.Buttons.StreamButton();
+        audioBtn = new Interface.ClientGUI.Button();
+        videoBtn = new Interface.ClientGUI.Button();
+        streamBtn = new Interface.ClientGUI.Button();
         lblID = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -100,38 +103,67 @@ public class UserProfile extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(208, 192));
         setRequestFocusEnabled(false);
 
-        lblAvatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/default_profile.png"))); // NOI18N
+        lblAvatar.setMaximumSize(new java.awt.Dimension(133, 133));
+        lblAvatar.setMinimumSize(new java.awt.Dimension(133, 133));
+        lblAvatar.setPreferredSize(new java.awt.Dimension(133, 133));
         lblAvatar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblAvatarMouseClicked(evt);
             }
         });
 
-        lblName.setText("User");
-        lblName.setToolTipText("");
+        lblUsername.setText("User");
+        lblUsername.setToolTipText("");
+        lblUsername.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblUsernameMouseClicked(evt);
+            }
+        });
 
         lblEmail.setText("Something");
 
+        audioBtn.setBackground(new java.awt.Color(255, 255, 255));
+        audioBtn.setBorder(null);
         audioBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unclicked-microphone.png"))); // NOI18N
+        audioBtn.setBorderPainted(false);
+        audioBtn.setContentAreaFilled(false);
+        audioBtn.setMaximumSize(new java.awt.Dimension(37, 37));
+        audioBtn.setMinimumSize(new java.awt.Dimension(37, 37));
+        audioBtn.setPreferredSize(new java.awt.Dimension(37, 37));
         audioBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 audioBtnActionPerformed(evt);
             }
         });
+        audioBtn.setUnclicked(new javax.swing.ImageIcon(getClass().getResource("/unclicked-microphone.png")));
+        audioBtn.setClicked(new javax.swing.ImageIcon(getClass().getResource("/clicked-microphone.png")));
 
+        videoBtn.setBackground(new java.awt.Color(255, 255, 255));
+        videoBtn.setBorder(null);
         videoBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unclicked-camera.png"))); // NOI18N
+        videoBtn.setBorderPainted(false);
+        videoBtn.setContentAreaFilled(false);
         videoBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 videoBtnActionPerformed(evt);
             }
         });
+        videoBtn.setUnclicked(new javax.swing.ImageIcon(getClass().getResource("/unclicked-camera.png")));
+        videoBtn.setClicked(new javax.swing.ImageIcon(getClass().getResource("/clicked-camera.png")));
 
+        streamBtn.setBackground(new java.awt.Color(255, 255, 255));
+        streamBtn.setBorder(null);
         streamBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unclicked-stream.png"))); // NOI18N
+        streamBtn.setBorderPainted(false);
+        streamBtn.setContentAreaFilled(false);
+        streamBtn.setEnabled(false);
         streamBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 streamBtnActionPerformed(evt);
             }
         });
+        streamBtn.setUnclicked(new javax.swing.ImageIcon(getClass().getResource("/unclicked-stream.png")));
+        streamBtn.setClicked(new javax.swing.ImageIcon(getClass().getResource("/clicked-stream.png")));
 
         lblID.setText("ID");
 
@@ -143,8 +175,8 @@ public class UserProfile extends javax.swing.JPanel {
                 .addGap(2, 2, 2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(audioBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(audioBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)
                         .addComponent(videoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(streamBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -152,8 +184,8 @@ public class UserProfile extends javax.swing.JPanel {
                         .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
-                            .addComponent(lblName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
+                            .addComponent(lblUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(9, 9, 9)))))
@@ -165,17 +197,17 @@ public class UserProfile extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(lblName)
+                        .addComponent(lblUsername)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblEmail)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblID))
                     .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(videoBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(audioBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(streamBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(videoBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(streamBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(audioBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(22, 22, 22))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -199,9 +231,10 @@ public class UserProfile extends javax.swing.JPanel {
         } else {
             aStream.stop();
             aStream.setStream(new Messages.Media.AudioStream(user.getUserID(), 
-                    Messages.Message.SERVER, user.getEmail()+"as"+(streamIDCount++)));
+                    Messages.Message.SERVER, MessageUtils.generateStreamID(
+                        user.getEmail(), MessageUtils.StreamType.AUDIO)));
         }
-//        }
+        audioBtn.togglePressed();
     }//GEN-LAST:event_audioBtnActionPerformed
 
     private void videoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_videoBtnActionPerformed
@@ -223,8 +256,10 @@ public class UserProfile extends javax.swing.JPanel {
         } else {
             vStream.stop();
             vStream.setStream(new Messages.Media.VideoStream(user.getUserID(), 
-                    Messages.Message.SERVER, user.getEmail()+"vs"+(streamIDCount++)));
+                    Messages.Message.SERVER, MessageUtils.generateStreamID(
+                        user.getEmail(), MessageUtils.StreamType.VIDEO)));
         }
+        videoBtn.togglePressed();
     }//GEN-LAST:event_videoBtnActionPerformed
 
     private void streamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_streamBtnActionPerformed
@@ -238,6 +273,7 @@ public class UserProfile extends javax.swing.JPanel {
 //                selectedColleague.stopVideoStream();
 //            }
 //        }
+//        streamBtn.togglePressed();
     }//GEN-LAST:event_streamBtnActionPerformed
 
     private void lblAvatarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAvatarMouseClicked
@@ -259,21 +295,37 @@ public class UserProfile extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_lblAvatarMouseClicked
+
+    private void lblUsernameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUsernameMouseClicked
+        if (evt.getButton() == 3) {
+            try {
+                String answer =(String)JOptionPane.showInputDialog(this, "Enter new name", "Name change", JOptionPane.QUESTION_MESSAGE, null, null, lblUsername.getText());
+                
+                if (!answer.equals(user.getUsername())) {
+                    userInterface.getConnection().writeSafe(
+                            MessageFactory.generateUpdateUsername(
+                                    user.getUserID(), answer));
+                }
+            } catch (ClassCastException cce) {
+                Log.error(this, "Cast exception during username retrieval");
+            }
+        }
+    }//GEN-LAST:event_lblUsernameMouseClicked
     
     private void setAvatar(BufferedImage image) {
-        lblAvatar.setIcon(ImageUtils.resizeConvert(image, 133, 133));
+        lblAvatar.setImage(image);
         userInterface.getConnection().writeSafe(
                 MessageFactory.generateUpdateAvatar(user.getUserID(), 
                         ImageUtils.encodeToString(image, "png")));
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private Interface.ClientGUI.Buttons.AudioButton audioBtn;
-    private javax.swing.JLabel lblAvatar;
+    private Interface.ClientGUI.Button audioBtn;
+    private Interface.ClientGUI.ImageContainer lblAvatar;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblID;
-    private javax.swing.JLabel lblName;
-    private Interface.ClientGUI.Buttons.StreamButton streamBtn;
-    private Interface.ClientGUI.Buttons.VideoButton videoBtn;
+    private javax.swing.JLabel lblUsername;
+    private Interface.ClientGUI.Button streamBtn;
+    private Interface.ClientGUI.Button videoBtn;
     // End of variables declaration//GEN-END:variables
 }

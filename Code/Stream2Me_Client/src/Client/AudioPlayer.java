@@ -1,6 +1,5 @@
 package Client;
 
-import Interface.ClientGUI.GUI;
 import Utils.Log;
 import java.io.IOException;
 import java.io.PipedInputStream;
@@ -88,7 +87,9 @@ public class AudioPlayer implements Runnable {
     
     public void write(byte[] buffer) {
         try {
-            pos.write(buffer);
+            synchronized (pos) {
+                pos.write(buffer);
+            }
         } catch (IOException ex) {
             Log.error(this, "Could not write to pipe buffer");
             dead =true;

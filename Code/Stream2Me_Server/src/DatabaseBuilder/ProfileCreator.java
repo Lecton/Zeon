@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import User.Profile;
+import Utils.ImageUtils;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

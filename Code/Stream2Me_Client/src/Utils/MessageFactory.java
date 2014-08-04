@@ -21,6 +21,12 @@ public class MessageFactory {
         return ua;
     }
 
+    public static Messages.Update.UpdateUsername generateUpdateUsername(int userID, String username) {
+        Messages.Update.UpdateUsername uu =new Messages.Update.UpdateUsername(userID, username);
+        uu.setTargetID(Messages.Message.ALL);
+        return uu;
+    }
+
     public static Messages.Update.UpdateList generateRefreshListRequest(int userID) {
         return new Messages.Update.UpdateList(userID);
     }

@@ -60,6 +60,8 @@ public class Connection {
             writeMessage(m);
         } else if (m.getTargetID() == Messages.Message.ERROR) {
             Log.error(this, "Message "+m.handle()+" error");
+        } else if (m.getTargetID() == Messages.Message.ALL) {
+            writeMessage(m);
         } else if (m.getTargetID() < 0) {
             Log.error(this, "Unknown message type on "+m.handle());
         } else {

@@ -142,7 +142,7 @@ public class streamListener implements Runnable {
                 sn.getUserID());
         if (cp != null) {
             //allow accepting
-            cp.incomingVideo(sn.getType() == 1, sn.getStreamID());
+            cp.setIncoming(sn.getType() == 1, sn.getStreamID());
         }
     }
 

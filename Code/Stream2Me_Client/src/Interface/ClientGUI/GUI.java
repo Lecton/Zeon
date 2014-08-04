@@ -72,7 +72,7 @@ public class GUI extends javax.swing.JFrame {
         ChatPanel = new javax.swing.JPanel();
         chatText = new java.awt.TextField();
         chatMessages = new Interface.ClientGUI.ChatArea();
-        submitButton1 = new Interface.ClientGUI.Buttons.SubmitButton();
+        submitBtn = new Interface.ClientGUI.Button();
         videoArea = new Interface.ClientGUI.VideoPane();
         mainMenu = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
@@ -113,7 +113,7 @@ public class GUI extends javax.swing.JFrame {
             ContactContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ContactContainerLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(ContactScroller, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE))
+                .addComponent(ContactScroller, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout ControlPanelLayout = new javax.swing.GroupLayout(ControlPanel);
@@ -156,10 +156,12 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        submitButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/submit.png"))); // NOI18N
-        submitButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                submitButton1ActionPerformed(evt);
+        submitBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/submit.png"))); // NOI18N
+        submitBtn.setBorderPainted(false);
+        submitBtn.setContentAreaFilled(false);
+        submitBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                submitBtnMouseClicked(evt);
             }
         });
 
@@ -170,20 +172,20 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(ChatPanelLayout.createSequentialGroup()
                 .addGroup(ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ChatPanelLayout.createSequentialGroup()
-                        .addComponent(chatText, javax.swing.GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE)
+                        .addComponent(chatText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(submitButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(submitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, 899, Short.MAX_VALUE))
                 .addContainerGap())
         );
         ChatPanelLayout.setVerticalGroup(
             ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ChatPanelLayout.createSequentialGroup()
-                .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
+                .addComponent(chatMessages, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
                 .addGap(10, 10, 10)
-                .addGroup(ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(chatText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(submitButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(ChatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(chatText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(submitBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -241,23 +243,12 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void submitButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButton1ActionPerformed
-        if(!chatText.getText().isEmpty()){
-            Messages.StringMessage sm = MessageFactory.generateStringMessage(
-                    getUserID(), contacts.getSelectedUserID(), 
-                    getUserProfile().getUsername(), 
-                    chatText.getText() + "\n");
-            if (sm.getTargetID() != Messages.Message.IGNORE) {
-                con.writeSafe(sm);
-                contacts.getSelectedProfile().addMessage(sm);
-                chatMessages.update();
-            }
-        }
-        chatText.setText("");
+        
     }//GEN-LAST:event_submitButton1ActionPerformed
 
     private void chatTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_chatTextKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
-            submitButton1ActionPerformed(null);
+            submitBtnMouseClicked(null);
         }
     }//GEN-LAST:event_chatTextKeyPressed
 
@@ -273,6 +264,21 @@ public class GUI extends javax.swing.JFrame {
         this.setVisible(false);
         parent.logoutCalled();
     }//GEN-LAST:event_mmuLogoutActionPerformed
+
+    private void submitBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitBtnMouseClicked
+        if(!chatText.getText().isEmpty()){
+            Messages.StringMessage sm = MessageFactory.generateStringMessage(
+                    getUserID(), contacts.getSelectedUserID(), 
+                    getUserProfile().getUsername(), 
+                    chatText.getText() + "\n");
+            if (sm.getTargetID() != Messages.Message.IGNORE) {
+                con.writeSafe(sm);
+                contacts.getSelectedProfile().addMessage(sm);
+                chatMessages.update();
+            }
+        }
+        chatText.setText("");
+    }//GEN-LAST:event_submitBtnMouseClicked
 
     private void setupGUI(Colleague me) {
         initComponents();
@@ -311,7 +317,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenu menuEdit;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenuItem mmuLogout;
-    private Interface.ClientGUI.Buttons.SubmitButton submitButton1;
+    private Interface.ClientGUI.Button submitBtn;
     private Interface.ClientGUI.Contacts.UserProfile userProfileControl;
     private Interface.ClientGUI.VideoPane videoArea;
     // End of variables declaration//GEN-END:variables
