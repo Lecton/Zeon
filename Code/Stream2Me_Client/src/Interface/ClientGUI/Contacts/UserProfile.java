@@ -47,7 +47,7 @@ public class UserProfile extends javax.swing.JPanel {
         lblUsername.setText(user.getUsername());
         lblEmail.setText(user.getEmail());
         lblID.setText(""+user.getUserID());
-        lblAvatar.setImage(user.getAvatar());
+        lblAvatar.setImage(user.getAvatar(),true);
     }
     
     public int getUserID() {
@@ -313,7 +313,7 @@ public class UserProfile extends javax.swing.JPanel {
     }//GEN-LAST:event_lblUsernameMouseClicked
     
     private void setAvatar(BufferedImage image) {
-        lblAvatar.setImage(image);
+        lblAvatar.setImage(image, true);
         userInterface.getConnection().writeSafe(
                 MessageFactory.generateUpdateAvatar(user.getUserID(), 
                         ImageUtils.encodeToString(image, "png")));

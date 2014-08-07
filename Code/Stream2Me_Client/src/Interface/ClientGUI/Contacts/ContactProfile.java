@@ -43,7 +43,7 @@ public class ContactProfile extends javax.swing.JPanel {
         lblEmail.setText(owner.getEmail());
         lblID.setText(""+owner.getUserID());
         
-        lblAvatar.setImage(owner.getAvatar());
+        lblAvatar.setImage(owner.getAvatar(),true);
     }
     
     public void setContactList(ContactList list) {
@@ -63,7 +63,7 @@ public class ContactProfile extends javax.swing.JPanel {
     }
     
     public void updateAvatar(String image) {
-        lblAvatar.setImage(image);
+        lblAvatar.setImage(image, true);
     }
     
     public void addMessage(Messages.StringMessage sm) {

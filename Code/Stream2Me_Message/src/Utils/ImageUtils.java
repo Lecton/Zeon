@@ -11,6 +11,7 @@ package Utils;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -113,7 +114,13 @@ public class ImageUtils {
         return new ImageIcon(image.getScaledInstance(size.width, size.height, BufferedImage.SCALE_SMOOTH));
     }
     
-    private static Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
+    public static BufferedImage resize(BufferedImage image, Dimension boundary) {
+        Dimension size =getScaledDimension(new Dimension(image.getWidth(), image.getHeight()), boundary);
+//        System.out.println("Resized: "+size+"\n");
+        return convert(image.getScaledInstance(size.width, size.height, BufferedImage.SCALE_SMOOTH));
+    }
+    
+    public static Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
         int original_width = imgSize.width;
         int original_height = imgSize.height;
         int bound_width = boundary.width;
@@ -133,11 +140,35 @@ public class ImageUtils {
         return new Dimension(new_width, new_height);
     }
     
+    public static Dimension getFillDimension(Dimension imgSize, Dimension boundary) {
+        int new_height, new_width;
+        
+        if (imgSize.width > imgSize.height) {
+            new_height = boundary.height;
+            new_width = (int)(imgSize.width * ((float)new_height/(float)imgSize.height));
+        } else {
+            new_width = boundary.width;
+            new_height = (int)(imgSize.height * ((float)new_width/(float)imgSize.width));
+        }
+
+        return new Dimension(new_width, new_height);
+    }
+    
     public static BufferedImage convert(Icon icon) {
         BufferedImage bi =new BufferedImage(icon.getIconWidth(), 
                 icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics g =bi.getGraphics();
         icon.paintIcon(null, g, 0, 0);
+        g.dispose();
+        
+        return bi;
+    }
+    
+    public static BufferedImage convert(Image icon) {
+        BufferedImage bi =new BufferedImage(icon.getWidth(null), 
+                icon.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics g =bi.getGraphics();
+        g.drawImage(icon, 0, 0, null);
         g.dispose();
         
         return bi;

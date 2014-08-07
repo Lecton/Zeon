@@ -7,7 +7,11 @@
 package Interface.ClientGUI;
 
 import Utils.ImageUtils;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -20,17 +24,18 @@ import javax.swing.ImageIcon;
  */
 public class ImageContainer extends javax.swing.JPanel {
     ImageIcon icon;
+    boolean fill;
     
     public ImageContainer() {
         initComponents();
     }
     
-    public void setImage(String base64Image) {
-        setImage(ImageUtils.decodeToImage(base64Image));
+    public void setImage(String base64Image, boolean fill) {
+        setImage(ImageUtils.decodeToImage(base64Image), fill);
     }
     
-    public void setImage(URL filename) throws IOException {
-        setImage(ImageIO.read(filename));
+    public void setImage(URL filename, boolean fill) throws IOException {
+        setImage(ImageIO.read(filename), fill);
     }
     
     public void clear() {
@@ -39,14 +44,27 @@ public class ImageContainer extends javax.swing.JPanel {
         repaint();
     }
 
-    public void setImage(BufferedImage bi) {
-        int width =getPreferredSize().width;
-        int height =getPreferredSize().height;
-        
-        if (width != 0 && height != 0) {
-            this.icon =ImageUtils.resizeConvert(bi, new java.awt.Dimension(width,height));
-//            this.icon =ImageUtils.resizeConvert(base64Image, this.getSize());
+    public void setImage(BufferedImage bi, boolean fill) {
+//        this.fill = fill;
+//        
+        int width =getWidth();
+        int height =getHeight();
+//        
+        if (width == 0 || height == 0)
+        {
+            width = getPreferredSize().width;
+            height = getPreferredSize().height;
         }
+//        
+//        Dimension d;
+//        if (fill)
+//            d =ImageUtils.getFillDimension(new java.awt.Dimension(bi.getWidth(), bi.getHeight()), new java.awt.Dimension(width, height));
+//        else
+//            d =ImageUtils.getScaledDimension(new java.awt.Dimension(bi.getWidth(), bi.getHeight()), new java.awt.Dimension(width, height));
+//        
+//        this.icon =bi.getScaledInstance(d.width, d.height, BufferedImage.SCALE_SMOOTH);
+//        
+        this.icon =ImageUtils.resizeConvert(bi, new Dimension(width, height));
         
         validate();
         repaint();
@@ -79,9 +97,30 @@ public class ImageContainer extends javax.swing.JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g); //To change body of generated methods, choose Tools | Templates.
+        
         if (icon != null) {
-            g.drawImage(icon.getImage(), (this.getWidth()-icon.getIconWidth())/2, 
+//            if (fill) {
+//            int iw = icon.getWidth(this);
+//            int ih = icon.getHeight(this);
+//            int ix1, iy1, ix2, iy2;
+//            if (iw < ih) {
+//                ix1 = 0;
+//                iy1 = (ih-iw)/2;
+//                
+//                ix2 = iw;
+//                iy2 = iy1+iw;
+//            } else {
+//                ix1 = (iw-ih)/2;
+//                iy1 = 0;
+//                
+//                ix2 = ix1+ih;
+//                iy2 = ih;
+//            }
+//            g.drawImage(icon, 0, 0, getWidth(), getHeight(), ix1, iy1, ix2, iy2, this);
+//            } else {
+                g.drawImage(icon.getImage(), (this.getWidth()-icon.getIconWidth())/2, 
                     (this.getHeight()-icon.getIconHeight())/2, icon.getImageObserver());
+//            }
         }
     }
 }

@@ -22,7 +22,7 @@ public class VideoPane extends javax.swing.JPanel {
     public void setImage(String image) {
 //        lblVideo.setIcon(ImageUtils.resizeConvert(image, lblVideo.getWidth(), 
 //                lblVideo.getHeight()));
-        lblVideo.setImage(image);
+        lblVideo.setImage(image,false);
     }
     
     public void clear() {
