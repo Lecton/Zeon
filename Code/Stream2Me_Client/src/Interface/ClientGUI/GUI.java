@@ -2,7 +2,6 @@ package Interface.ClientGUI;
 
 import Client.Colleague;
 import Connection.Connection;
-import Connection.streamListener;
 import Interface.ClientGUI.Contacts.ContactList;
 import Interface.ClientGUI.Contacts.UserProfile;
 import Utils.MessageFactory;
@@ -10,7 +9,6 @@ import java.awt.Color;
 
 public class GUI extends javax.swing.JFrame {
     private Connection con;
-    private streamListener listener;
     private Client.Client parent;
     private Client.AudioPlayer audioPlayer;
     
@@ -19,7 +17,6 @@ public class GUI extends javax.swing.JFrame {
         
         setupBackend(con);
         setupGUI(me);
-        
         
         con.writeSafe(Utils.MessageFactory.generateRefreshListRequest(getUserID()));
     }
@@ -256,7 +253,7 @@ public class GUI extends javax.swing.JFrame {
         userProfileControl.formWindowClosing(evt);
         
         con.writeSafe(MessageFactory.generateLogout(getUserProfile().getUserID()));
-        listener.stop();
+        con.setHandlerLoggedOut();
     }//GEN-LAST:event_formWindowClosing
 
     private void mmuLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmuLogoutActionPerformed
@@ -298,7 +295,8 @@ public class GUI extends javax.swing.JFrame {
     private void setupBackend(Connection con) {
         this.con =con;        
         
-        this.listener =streamListener.start(con, this);
+        this.con.setHandlerUserInterface(this);
+//        this.listener =streamListener.start(con, this);
         this.audioPlayer =Client.AudioPlayer.start();
     }
     

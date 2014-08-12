@@ -22,6 +22,8 @@ public class Client {
     private boolean running;
     private boolean GUIrunning;
     
+    private GUI userInterface;
+    
     public static void main(String[] args){
         Client c =new Client();
     }
@@ -47,7 +49,7 @@ public class Client {
         try {
             connection =new Connection(Address, PORT);
             connection.makeConnection();
-        } catch (IOException e) {
+        } catch (InterruptedException e) {
             return false;
         }
         return true;
@@ -77,7 +79,7 @@ public class Client {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                GUI userInterface =new GUI(connection, myAccount, Client.this);
+                userInterface =new GUI(connection, myAccount, Client.this);
                 userInterface.setVisible(true);
                 GUIrunning =true;
             }

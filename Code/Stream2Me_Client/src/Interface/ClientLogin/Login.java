@@ -16,7 +16,6 @@ import Utils.MessageFactory;
 public class Login extends javax.swing.JFrame {
     private Connection.Connection con =null;
     private Client.Client parent =null;
-    private streamListener sl =null;
     private boolean success =false;
     
     /**
@@ -28,16 +27,15 @@ public class Login extends javax.swing.JFrame {
     
     public void setConnection(Connection.Connection con, Client.Client parent) {
         this.con =con;
+        this.con.setLoginOwner(this);
         this.parent =parent;
-        this.sl =new streamListener(con, this);
-        (new Thread(sl)).start();
     }
     
     public void setMyAccount(Client.Colleague myAccount) {
         parent.setMyAccount(myAccount);
     }
     
-    protected void setResponse(String text) {
+    public void setResponse(String text) {
         lblResponse.setText(text);
     }
     
@@ -45,7 +43,7 @@ public class Login extends javax.swing.JFrame {
         return success;
     }
     
-    protected void successful() {
+    public void successful() {
         success =true;
         this.setVisible(false);
     }

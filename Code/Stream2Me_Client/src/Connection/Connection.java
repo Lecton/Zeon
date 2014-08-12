@@ -6,12 +6,18 @@
 
 package Connection;
 
+import Interface.ClientGUI.GUI;
+import Interface.ClientLogin.Login;
 import Utils.Log;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import javax.net.ssl.SSLSocket;
 
 /**
  *
@@ -19,39 +25,38 @@ import javax.net.ssl.SSLSocket;
  */
 public class Connection {
     private int PORT;
-    private String address;
-    private Socket soc;
-    private ObjectOutputStream oos;
-    private ObjectInputStream ois;
+    private String host;
     
-    public Connection(String address, int PORT) {
-        this.address =address;
+    private EventLoopGroup group;
+    private Channel channel;
+    private ConnectionInitializer ci;
+    
+    public Connection(String host, int PORT) {
+        this.host =host;
         this.PORT =PORT;
     }
     
-    public void makeConnection() throws IOException {
-        soc =new Socket(address, PORT);
-        createStreams(soc);
+    public void makeConnection() throws InterruptedException {
+        group =new NioEventLoopGroup();
+        ci =new ConnectionInitializer();
+        
+        Bootstrap bootstrap =new Bootstrap()
+                .group(group)
+                .channel(NioSocketChannel.class)
+                .handler(ci);
+        channel =bootstrap.connect(host, PORT).sync().channel();
     }
     
-    public void createStreams(Socket soc) throws IOException {
-        oos =new ObjectOutputStream((soc.getOutputStream()));
-        ois =new ObjectInputStream((soc.getInputStream()));
+    public void setHandlerUserInterface(GUI userInterface) {
+        ci.getHandler().setUserInterface(userInterface);
     }
     
-    public String getHostName() {
-        return soc.getInetAddress().getHostName();
+    public void close() {
+        group.shutdownGracefully();
     }
     
-    public Messages.Message read() throws IOException, ClassNotFoundException {
-        return (Messages.Message)ois.readObject();
-    }
-    
-    private void writeMessage(Messages.Message m) throws IOException {
-        synchronized (oos) {
-            oos.writeObject(m);
-            oos.flush();
-        }
+    private void writeMessage(Messages.Message msg) {
+        channel.writeAndFlush(msg);
     }
     
     public void write(Messages.Message m) throws IOException {
@@ -83,5 +88,13 @@ public class Connection {
             Log.write(this, "Write Stack Trace Exception");
             e.printStackTrace();
         }
+    }
+
+    public void setHandlerLoggedOut() {
+        ci.getHandler().setPass(false);
+    }
+
+    public void setLoginOwner(Login loginOwner) {
+        ci.getHandler().setOwner(loginOwner);
     }
 }
