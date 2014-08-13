@@ -26,7 +26,6 @@ class ConnectionInitializer extends  ChannelInitializer<SocketChannel>{
         
         pipeline.addLast("decoder", new ObjectDecoder(ClassResolvers.cacheDisabled(getClass().getClassLoader())));
         pipeline.addLast("encoder", new ObjectEncoder());
-        
         pipeline.addLast("handler", ch);
     }
     

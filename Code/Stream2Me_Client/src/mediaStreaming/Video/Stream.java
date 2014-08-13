@@ -39,9 +39,12 @@ public class Stream implements Runnable {
                 String img =ImageUtils.encodeToString(screen.getScreenImage(), "png");
                 vs =MessageFactory.clone(vs);
                 vs.setImg(img);
-
                 con.writeSafe(vs);
-            } catch (NullPointerException npe) {}
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {}
+            } catch (NullPointerException npe) {
+            }
         }
     }
 }

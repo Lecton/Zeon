@@ -1,6 +1,7 @@
 package connection;
 
 
+import Messages.Message;
 import Server.Server;
 import Messages.UserConnection.Logout;
 import connection.messages.MessageHandler;
@@ -19,7 +20,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @author Bernhard
  */
 class ClientHandler extends SimpleChannelInboundHandler<Messages.Message> {
-    
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         Channel incomming =ctx.channel();

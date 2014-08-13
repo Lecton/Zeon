@@ -9,7 +9,6 @@ package Client;
 import Connection.Connection;
 import Interface.ClientGUI.GUI;
 import Interface.ClientLogin.Login;
-import java.io.IOException;
 import javax.swing.JOptionPane;
 
 /**

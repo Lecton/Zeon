@@ -38,7 +38,7 @@ public class AudioLine {
         return format;
     }
     
-    private AudioFormat createFormat() {
+    public static AudioFormat createFormat() {
         float sampleRate = 8000;
         int sampleSizeInBits = 8;
         int channels = 1;

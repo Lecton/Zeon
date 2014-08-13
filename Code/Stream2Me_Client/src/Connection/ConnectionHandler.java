@@ -25,9 +25,13 @@ class ConnectionHandler extends SimpleChannelInboundHandler<Messages.Message> {
     private GUI userInterface;
     private boolean pass =false;
     private Login owner;
-
+    private ConnectionPool pool;
+    
     public void setOwner(Login owner) {
         this.owner = owner;
+        pass =false;
+        pool =new ConnectionPool(this);
+        (new Thread(pool)).start();
     }
 
     public void setUserInterface(GUI userInterface) {
@@ -38,6 +42,14 @@ class ConnectionHandler extends SimpleChannelInboundHandler<Messages.Message> {
         this.pass = pass;
     }
 
+    public boolean isPass() {
+        if (userInterface == null) {
+            return false;
+        } else {
+            return pass && userInterface.isShowing();
+        }
+    }
+    
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
         if (pass) {
@@ -89,7 +101,8 @@ class ConnectionHandler extends SimpleChannelInboundHandler<Messages.Message> {
                     }
                     break;
                 default:
-                    Log.write(this, "Received unhandled message "+msg.handle());
+                    Log.write(this, "Received unhandled message "+msg.handle()+" added to pool");
+                    pool.add(ctx, msg);
                     break;
             }
         }

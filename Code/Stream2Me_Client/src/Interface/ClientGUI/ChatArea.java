@@ -18,7 +18,7 @@ import javax.swing.ListCellRenderer;
  */
 public class ChatArea extends JScrollPane {
     private ArrayList<StringMessage> chatMessages;
-    private JList list;
+    private final JList list;
     
     public ChatArea() {
         list = new JList();
@@ -49,9 +49,9 @@ public class ChatArea extends JScrollPane {
     
     private class CellRenderer extends JPanel implements ListCellRenderer<StringMessage> {
 
-        private JLabel name;
-        private JLabel timestamp;
-        private JTextArea message;
+        private final JLabel name;
+        private final JLabel timestamp;
+        private final JTextArea message;
 
         public CellRenderer() {
             setOpaque(true);

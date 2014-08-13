@@ -6,17 +6,14 @@ import Messages.UserConnection.Greeting;
 import Messages.UserConnection.Logout;
 import Messages.UserConnection.NewUser;
 import Utils.Log;
-import channel.group.ClientChannel;
 import channel.group.ClientChannelGroup;
 import client.Client;
 import connection.ServerHandler;
 import connection.messages.MessageBuilder;
-import connection.messages.MessageHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import java.io.IOException;
-import java.util.Iterator;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -88,16 +85,16 @@ public class Server {
         }
     }
     
-    public static Client getClient(int userID) {
-        for (Channel ch: clients) {
-            Client c =(Client)ch;
-            if (c.getUserID() == userID) {
-                return c;
-            }
-        }
-        
-        return null;
-    }
+//    public static Client getClient(int userID) {
+//        for (Channel ch: clients) {
+//            Client c =(Client)ch;
+//            if (c.getUserID() == userID) {
+//                return c;
+//            }
+//        }
+//        
+//        return null;
+//    }
     
     public static Client getClient(Channel channel) {
         for (Channel ch: clients) {
@@ -107,6 +104,10 @@ public class Server {
             }
         }
         return null;
+    }
+    
+    public static Database getDatabase() {
+        return DB;
     }
     
     public static Greeting userLogin(Channel ch, String username, String passwordHash) {
@@ -120,6 +121,8 @@ public class Server {
             
             NewUser newUserMessage =MessageBuilder.generateNewUser(DB.getUserProfile(userID));
             for (Channel channel: clients) {
+                Client cl =(Client)channel;
+                System.err.println(cl.getUserID() + " --> " + userID);
                 channel.writeAndFlush(newUserMessage);
             }
             return MessageBuilder.generateGreeting(DB.getUserProfile(userID), true);
@@ -149,6 +152,16 @@ public class Server {
             Log.write(new Server(), "Clients: " + clients.size());
         }
     }
+    
+    public static void updateUserConnection(Client client) {
+        for (Channel ch: clients) {
+            Client cl =(Client)ch;
+            if (!client.equals(cl)) {
+                client.writeAndFlush(DB.getNewUser(cl.getUserID()));
+            }
+        }
+    }
+
     
     public static void main(String[] args) {
         new ServerHandler(2014).run();

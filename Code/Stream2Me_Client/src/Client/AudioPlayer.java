@@ -9,6 +9,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+import mediaStreaming.Audio.AudioLine;
 
 /**
  *
@@ -29,7 +30,7 @@ public class AudioPlayer implements Runnable {
     private boolean dead =false;
 
     public AudioPlayer() {
-        format =createFormat();
+        format =AudioLine.createFormat();
         
         setupPipes();
         setupAudioLines();
@@ -62,19 +63,6 @@ public class AudioPlayer implements Runnable {
         }
     }
     
-    private AudioFormat createFormat() {
-        float sampleRate = 8000;
-        int sampleSizeInBits = 8;
-        int channels = 1;
-        boolean signed = true;
-        boolean bigEndian = true;
-
-        return new AudioFormat(sampleRate, 
-                sampleSizeInBits, channels, signed, bigEndian);
-    }
-    
-    
-    
     public static AudioPlayer start() {
         AudioPlayer player =new AudioPlayer();
         (new Thread(player)).start();
@@ -103,6 +91,7 @@ public class AudioPlayer implements Runnable {
             try {
                 buffer =new byte[bufferSize];
                 int count = pis.read(buffer, 0, buffer.length);
+                System.out.println("AudioPlayer: read count: "+count);
                 if (count > 0) {
                     line.write(buffer, 0, count);
                 }

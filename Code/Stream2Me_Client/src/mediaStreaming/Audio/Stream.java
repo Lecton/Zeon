@@ -41,6 +41,7 @@ public class Stream implements Runnable {
                     as = MessageFactory.clone(as);
                     as.buffer = new byte[audio.getBufferSize()];
                     int count = audio.read(as.buffer, 0, as.buffer.length);
+                    System.out.println("AudioStream: write count: "+count);
                     if (count > 0) {
                         con.write(as);
                     }
