@@ -105,7 +105,7 @@
 			    android:background="#EDEDED" >
 
 				<ImageButton
-				    android:id="@+id/DP"
+				    android:id="@+id/profilePicture"
 				    android:layout_width="250dp"
 				    android:layout_height="250dp"
 				    android:layout_alignParentBottom="true"
@@ -185,12 +185,13 @@
 						    
 							
 							<ImageButton
-							    android:id="@+id/imageButton4"
+							    android:id="@+id/sendMessage"
 							    android:layout_width="wrap_content"
 							    android:layout_height="wrap_content"
 							    android:layout_alignParentRight="true"
 							    android:layout_alignParentTop="true"
 							    android:src="@drawable/submit"
+				    			android:onClick="sendMessage"
 							    android:background="#EDEDED" />
 
 							<EditText

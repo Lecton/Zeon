@@ -30,8 +30,11 @@ public class LoginActivity extends Activity {
 	private static Greeting greet =null;
 	
 	public static void setGreetingMessage(Greeting greet) {
-		LoginActivity.greet = greet;
-		Log.v("Greeting",greet.getMessage());
+		
+		if(greet != null){
+			LoginActivity.greet = greet;
+			GUIActivity.greet = greet;
+		}
 	}
 	
 	/**
