@@ -34,7 +34,11 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
-            android:name="com.gui.GUI"
+            android:name="com.gui.GUIActivity"
+            android:label="@string/title_activity_gui" >
+        </activity>
+        <activity
+            android:name="com.gui.GUIActivity"
             android:label="@string/title_activity_gui" >
         </activity>
     </application>

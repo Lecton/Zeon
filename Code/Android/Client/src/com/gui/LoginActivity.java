@@ -31,6 +31,7 @@ public class LoginActivity extends Activity {
 	
 	public static void setGreetingMessage(Greeting greet) {
 		LoginActivity.greet = greet;
+		Log.v("Greeting",greet.getMessage());
 	}
 	
 	/**
@@ -246,7 +247,10 @@ public class LoginActivity extends Activity {
 
 			if (success) {
 				Log.v("onPostEecute","Calling finish() ");
+				getIntent().putExtra("TADA", "bla bla bla");
+				setResult(RESULT_OK, getIntent());				
 				finish();
+				
 			} else {
 				mPasswordView
 						.setError(getString(R.string.error_incorrect_password));
@@ -259,5 +263,6 @@ public class LoginActivity extends Activity {
 			mAuthTask = null;
 			showProgress(false);
 		}
+		
 	}
 }

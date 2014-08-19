@@ -1,6 +1,7 @@
 package com.stream2me;
 
 import com.activitytut.R;
+import com.gui.GUIActivity;
 import com.gui.LoginActivity;
 import com.stream2me.connection.Connection;
 
@@ -19,16 +20,20 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.os.Build;
+import android.preference.PreferenceManager.OnActivityResultListener;
 
 public class Client extends ActionBarActivity {
 
+	final int LOGIN_RESULT = 1;
+	final int GUI_RESULT = 2;
 	private static Connection connection = new Connection("10.0.2.2", 2014);
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		connection.makeConnection();
 
-		startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+		startActivityForResult(new Intent(getApplicationContext(),LoginActivity.class),LOGIN_RESULT);
+//		startActivity(new Intent(getApplicationContext(),LoginActivity.class));
 	}
 	
 	@Override
@@ -81,5 +86,28 @@ public class Client extends ActionBarActivity {
 	@Override
 	public void finishFromChild(Activity child) {
 		Log.v("Client",child.getClass().getSimpleName()+" finished");
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
+		
+		switch(requestCode){
+			case LOGIN_RESULT:
+					if(resultCode == RESULT_OK){
+						startActivityForResult(new Intent(getApplicationContext(),GUIActivity.class),GUI_RESULT);
+					}
+					break;
+		
+			case GUI_RESULT:
+					if(resultCode == RESULT_OK){
+						Log.v("GUI_RESULT","Close");
+					}
+					break;
+					
+			default:
+					Log.v("DEFAULT_RESULT","Called");
+					break;
+		}
+		
 	}
 }

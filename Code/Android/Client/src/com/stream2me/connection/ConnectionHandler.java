@@ -1,12 +1,11 @@
 package com.stream2me.connection;
-
-//import com.stream2me.gui.LoginActivity;
-
+import com.gui.GUIActivity;
 import com.gui.LoginActivity;
 
 import android.util.Log;
 import Messages.Message;
 import Messages.UserConnection.Greeting;
+import Messages.UserConnection.NewUser;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -16,6 +15,7 @@ public class ConnectionHandler extends SimpleChannelInboundHandler<Message> {
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
 		Log.v(this.getClass().getSimpleName(), "Connection exception");
+		cause.printStackTrace();
 	}
 
 	@Override
@@ -25,10 +25,13 @@ public class ConnectionHandler extends SimpleChannelInboundHandler<Message> {
 			case greeting:
 				LoginActivity.setGreetingMessage((Greeting)msg);
 				break;
+			case newUser:
+				GUIActivity.addRow((NewUser)msg);
+				
+				break;
 			default:
 					Log.e("Message Read", "Unhandled message "+msg.handle());
 					Log.v("Message Read",msg.getMessage());
 		}
-	}
-	
+	}	
 }
