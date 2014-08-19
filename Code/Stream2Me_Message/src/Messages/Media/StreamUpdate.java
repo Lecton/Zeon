@@ -39,7 +39,7 @@ public class StreamUpdate extends Message {
 
     @Override
     public String getMessage() {
-        return "Stream update of "+getStreamID()+" for "+getAffectedUserID();
+        return "Stream update of "+getStreamID()+" for "+getAffectedUserID()+" to "+action;
     }
 
     @Override

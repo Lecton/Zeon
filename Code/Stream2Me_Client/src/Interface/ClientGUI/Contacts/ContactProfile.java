@@ -11,6 +11,9 @@ import Utils.Log;
 import Utils.MessageFactory;
 import Utils.MessageUtils;
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.PopupMenu;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 /**
@@ -29,12 +32,21 @@ public class ContactProfile extends javax.swing.JPanel {
     private String videoStreamID;
     private String audioStreamID;
     private String streamStreamID;
+    
+    private boolean inAudio =false;
+    private boolean inVideo =false;
+    private boolean inStream =false;
+    
+    private ContactPopupMenu cpm;
 
     /**
-     * Creates new form Conta-ctProfile
+     * Creates new form ContactProfile
      */
     public ContactProfile() {
         initComponents();
+        
+        cpm =new ContactPopupMenu(this);
+        this.add(cpm);
     }
     
     public void setColleague(Colleague owner) {
@@ -65,6 +77,10 @@ public class ContactProfile extends javax.swing.JPanel {
     public void updateAvatar(String image) {
         lblAvatar.setImage(image, true);
     }
+
+    public ContactList getParent() {
+        return parent;
+    }
     
     public void addMessage(Messages.StringMessage sm) {
         owner.addMessage(sm);
@@ -93,6 +109,12 @@ public class ContactProfile extends javax.swing.JPanel {
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                formMouseReleased(evt);
             }
         });
 
@@ -192,12 +214,13 @@ public class ContactProfile extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        if (!selected) {
-            parent.select(this);
-        } else {
-            parent.unselect(this);
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            if (!selected) {
+                parent.select(this);
+            } else {
+                parent.unselect(this);
+            }
         }
-        
     }//GEN-LAST:event_formMouseClicked
 
     private void audioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioBtnActionPerformed
@@ -213,29 +236,42 @@ public class ContactProfile extends javax.swing.JPanel {
                             parent.getUserInterface().getUserID(), 
                             audioStreamID, false));
             acceptedAudio =false;
-            parent.getUserInterface().getAudioPlayer().stop();
         }
         audioBtn.togglePressed();
     }//GEN-LAST:event_audioBtnActionPerformed
 
     private void videoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_videoBtnActionPerformed
-        if (acceptedVideo) {
+        if (!acceptedVideo) {
             parent.getUserInterface().getConnection().writeSafe(
                     MessageFactory.generateStreamResponse(
                             parent.getUserInterface().getUserID(), 
                             videoStreamID, true));
-            acceptedVideo =false;
+            acceptedVideo =true;
         } else {
             parent.getUserInterface().getConnection().writeSafe(
                     MessageFactory.generateStreamResponse(
                             parent.getUserInterface().getUserID(), 
                             videoStreamID, false));
-            acceptedVideo =true;
+            acceptedVideo =false;
             parent.getUserInterface().getVideoArea().clear();
         }
         videoBtn.togglePressed();
     }//GEN-LAST:event_videoBtnActionPerformed
 
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        showPopupMenu(evt);
+    }//GEN-LAST:event_formMousePressed
+
+    private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
+        showPopupMenu(evt);
+    }//GEN-LAST:event_formMouseReleased
+    
+    private void showPopupMenu(MouseEvent evt) {
+        if (evt.isPopupTrigger()) {
+            cpm.show(this, evt.getX(), evt.getY());
+        }
+    }
+    
     protected void select() {
         setBackground(new Color(0, 0, 158));
         setForeground(Color.WHITE);
@@ -271,13 +307,39 @@ public class ContactProfile extends javax.swing.JPanel {
     private void incomingVideo(boolean incoming, String streamID) {
         videoStreamID =streamID;
         videoBtn.setEnabled(incoming);
+        
+        if (!incoming && videoBtn.isPressed()) {
+            videoBtn.togglePressed();
+            acceptedVideo =false;
+        }
     }
     
     private void incomingAudio(boolean incoming, String streamID) {
         audioStreamID =streamID;
         audioBtn.setEnabled(incoming);
+        
+        if (!incoming && audioBtn.isPressed()) {
+            audioBtn.togglePressed();
+            acceptedAudio =false;
+        }
     }
 
+    protected void setInAudio(boolean inAudio) {
+        this.inAudio = inAudio;
+    }
+
+    protected void setInVideo(boolean inVideo) {
+        this.inVideo = inVideo;
+    }
+
+    protected boolean inAudio() {
+        return inAudio;
+    }
+
+    protected boolean inVideo() {
+        return inVideo;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Interface.ClientGUI.Button audioBtn;
     private Interface.ClientGUI.ImageContainer lblAvatar;

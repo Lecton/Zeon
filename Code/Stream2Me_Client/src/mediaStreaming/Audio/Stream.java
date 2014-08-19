@@ -24,7 +24,6 @@ public class Stream implements Runnable {
     public void stop() {
         Log.write(this, "Stream "+as.getStreamID()+" stopped");
         running =false;
-        audio.getLine().close();
     }
 
     public boolean isRunning() {
@@ -35,13 +34,14 @@ public class Stream implements Runnable {
     public void run() {
         Log.write(this, "Stream "+as.getStreamID()+" started");
         running =true;
+        audio.open();
         
             while (running) {
                 try {
                     as = MessageFactory.clone(as);
                     as.buffer = new byte[audio.getBufferSize()];
                     int count = audio.read(as.buffer, 0, as.buffer.length);
-                    System.out.println("AudioStream: write count: "+count);
+//                    System.out.println("AudioStream: write count: "+count);
                     if (count > 0) {
                         con.write(as);
                     }
@@ -49,5 +49,7 @@ public class Stream implements Runnable {
                     ex.printStackTrace();
                 }
             }
+            
+        audio.close();
     }
 }

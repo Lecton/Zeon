@@ -23,6 +23,8 @@ public class UserProfile extends javax.swing.JPanel {
     
     public UserProfile() {
         initComponents();
+        
+        streamBtn.setVisible(false);
     }
     
     public void setUserInterface(GUI userInterface) {
@@ -225,6 +227,8 @@ public class UserProfile extends javax.swing.JPanel {
                         MessageFactory.generateStreamUpdate(user.getUserID(), 
                                 Messages.Message.SERVER, aStream.getStreamID(),
                                 selectedUID, 1));
+                
+                userInterface.getContactList().getSelectedProfile().setInAudio(true);
             }
             
             aStream.start();
@@ -250,6 +254,8 @@ public class UserProfile extends javax.swing.JPanel {
                         MessageFactory.generateStreamUpdate(user.getUserID(), 
                                 Messages.Message.SERVER, vStream.getStreamID(),
                                 selectedUID, 1));
+                
+                userInterface.getContactList().getSelectedProfile().setInVideo(true);
             }
             
             vStream.start();
@@ -317,6 +323,22 @@ public class UserProfile extends javax.swing.JPanel {
         userInterface.getConnection().writeSafe(
                 MessageFactory.generateUpdateAvatar(user.getUserID(), 
                         ImageUtils.encodeToString(image, "png")));
+    }
+    
+    public boolean isAudioStream() {
+        return audioBtn.isPressed();
+    }
+    
+    public boolean isVideoStream() {
+        return videoBtn.isPressed();
+    }
+    
+    protected String getVideoStreamID() {
+        return vStream.getStreamID();
+    }
+    
+    protected String getAudioStreamID() {
+        return aStream.getStreamID();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -69,9 +69,9 @@ public class AudioPlayer implements Runnable {
         return player;
     }
     
-    public void stop() {
-        running =false;
-    }
+//    public void stop() {
+//        running =false;
+//    }
     
     public void write(byte[] buffer) {
         try {
@@ -91,7 +91,7 @@ public class AudioPlayer implements Runnable {
             try {
                 buffer =new byte[bufferSize];
                 int count = pis.read(buffer, 0, buffer.length);
-                System.out.println("AudioPlayer: read count: "+count);
+//                System.out.println("AudioPlayer: read count: "+count);
                 if (count > 0) {
                     line.write(buffer, 0, count);
                 }

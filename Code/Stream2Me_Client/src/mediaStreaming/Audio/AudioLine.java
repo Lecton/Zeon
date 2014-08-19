@@ -1,5 +1,8 @@
 package mediaStreaming.Audio;
 
+import Utils.Log;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
@@ -20,14 +23,22 @@ public class AudioLine {
             this.format =createFormat();
             info = new DataLine.Info(TargetDataLine.class, format);
             line = (TargetDataLine) AudioSystem.getLine(info);
-            line.open(format);
-            line.start();
         } catch (LineUnavailableException ex) {
+            Log.error(this, "Line unavailable");
         }
     }
     
-    public TargetDataLine getLine() {
-        return line;
+    public void open() {
+        try {
+            line.open(format);
+            line.start();
+        } catch (LineUnavailableException ex) {
+            Log.error(this, "Line unavailable. Could not open");
+        }
+    }
+    
+    public void close() {
+        line.close();
     }
     
     public int getBufferSize() {

@@ -23,6 +23,7 @@ public class VideoPane extends javax.swing.JPanel {
 //        lblVideo.setIcon(ImageUtils.resizeConvert(image, lblVideo.getWidth(), 
 //                lblVideo.getHeight()));
         lblVideo.setImage(image,false);
+        this.paintImmediately(this.getBounds());
     }
     
     public void clear() {
