@@ -14,25 +14,26 @@ import java.util.ArrayList;
  */
 public class StreamProperties {
     private int ownerID;
-    private String ID;
-    private ArrayList<Integer> acceptedID;
-    private ArrayList<Integer> allowedID;
+    private String streamID;
+    private ArrayList<String> acceptedID;
+    private ArrayList<String> allowedID;
 
-    public StreamProperties(int ownerID, String ID) {
+    public StreamProperties(int ownerID, String streamID) {
         this.ownerID = ownerID;
-        this.ID = ID;
-        this.allowedID = new ArrayList<>();
-        this.acceptedID = new ArrayList<>();
+        this.streamID = streamID;
+        this.allowedID = new ArrayList<String>();
+        this.acceptedID = new ArrayList<String>();
     }
     
     public boolean compareID(String StreamID) {
-        return ID.equals(StreamID);
+        return streamID.equals(StreamID);
     }
     
     public boolean accept(int userID) {
-        for (int allowed: allowedID) {
+        for (String a: allowedID) {
+            int allowed =Integer.parseInt(a);
             if (allowed == userID) {
-                acceptedID.add(userID);
+                acceptedID.add(""+userID);
                 return true;
             }
         }
@@ -40,9 +41,10 @@ public class StreamProperties {
     }
     
     public boolean refuse(int userID) {
-        for (int accepted: acceptedID) {
+        for (String a: acceptedID) {
+            int accepted =Integer.parseInt(a);
             if (accepted == userID) {
-                acceptedID.remove(accepted);
+                acceptedID.remove(""+accepted);
                 return true;
             }
         }
@@ -51,9 +53,10 @@ public class StreamProperties {
     
     public boolean remove(int ownerID, int userID) {
         refuse(userID);
-        for (int allowed: allowedID) {
+        for (String a: allowedID) {
+            int allowed =Integer.parseInt(a);
             if (allowed == userID) {
-                allowedID.remove(allowed);
+                allowedID.remove(""+allowed);
                 return true;
             }
         }
@@ -62,14 +65,14 @@ public class StreamProperties {
     
     public void add(int ownerID, int userID) {
         if (ownerID == this.ownerID) {
-            allowedID.add(userID);
+            allowedID.add(""+userID);
         }
     }
     
     public int[] getTargets() {
         int[] result =new int[acceptedID.size()];
         for (int i=0; i<result.length; i++) {
-            result[i] =acceptedID.get(i);
+            result[i] =Integer.parseInt(acceptedID.get(i));
         }
         return result;
     }
