@@ -9,6 +9,7 @@ package User;
 /**
  *
  * @author Bernhard
+ * @author Zenadia
  */
 public class Profile {
     private int userID;
@@ -16,32 +17,38 @@ public class Profile {
     private String email;
     private String avatar;
     private String password; 
+    private String title;
 
-    public Profile(int userID, String username, String email, String avatar) {
+    public Profile(int userID, String username, String email, String avatar, String title) {
         this.userID = userID;
         this.username = username;
         this.email = email;
         this.avatar = avatar;
+        this.title = title;
     }
 
     public int getUserID() {
-        return userID;
+        return this.userID;
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public String getAvatar() {
-        return avatar;
+        return this.avatar;
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
+    }
+    
+    public String getTitle(){
+        return this.title;
     }
 
     public void setUsername(String username) {
@@ -54,5 +61,9 @@ public class Profile {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+    
+    public void setTitle(String title){
+        this.title = title;
     }
 }

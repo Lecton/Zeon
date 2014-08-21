@@ -10,13 +10,14 @@ import java.util.ArrayList;
 /**
  *
  * @author Bernhard
+ * @author Zenadia
  */
 public class Database {
     private ObjectContainer db;
     private ArrayList<Integer> loggedIn =new ArrayList<>();
     
     public Database() {
-        db =Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "stream2Me.db");
+        db = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "stream2Me.db");
                                             
         ObjectSet<Profile> result =db.queryByExample(Profile.class);
         System.out.println("Profile count: "+result.size());
@@ -51,7 +52,7 @@ public class Database {
     }
     
     public void updateUsername(int userID, String username) {
-        Profile person =getUserProfile(userID);
+        Profile person = getUserProfile(userID);
         if (person != null) {
             person.setUsername(username);
             db.store(person);
@@ -59,15 +60,23 @@ public class Database {
     }
     
     public void updateAvatar(int userID, String avatar) {
-        Profile person =getUserProfile(userID);
+        Profile person = getUserProfile(userID);
         if (person != null) {
             person.setAvatar(avatar);
             db.store(person);
         }
     }
     
+    public void updateTitle(int userID, String newTitle){
+        Profile person = getUserProfile(userID);
+        if(person != null){
+            person.setTitle(newTitle);
+            db.store(person);
+        }
+    }
+    
     protected Profile getUserProfile(int userID) {
-        ObjectSet<Profile> result =db.queryByExample(new Profile(userID, null, null, null));
+        ObjectSet<Profile> result = db.queryByExample(new Profile(userID, null, null, null, null));
         
         for(Profile p: result) {
             if (p.getUserID() == userID) {
@@ -79,7 +88,7 @@ public class Database {
     }
     
     public NewUser getNewUser(int userID) {
-        Profile p =getUserProfile(userID);
+        Profile p = getUserProfile(userID);
         
         if (p != null) {
             return new NewUser(p.getUserID(), p.getUsername(), p.getEmail(), p.getAvatar());
