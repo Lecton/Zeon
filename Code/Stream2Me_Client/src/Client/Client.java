@@ -7,6 +7,8 @@
 package Client;
 
 import Connection.Connection;
+import Connection.MessageLog.ConnectionObserver;
+import Connection.MessageLog.MessageLog;
 import Interface.ClientGUI.GUI;
 import Interface.ClientLogin.Login;
 import javax.swing.JOptionPane;
@@ -24,6 +26,9 @@ public class Client {
     private GUI userInterface;
     
     public static void main(String[] args){
+        
+        (new Thread(new ConnectionObserver())).start();
+                
         Client c =new Client();
     }
     

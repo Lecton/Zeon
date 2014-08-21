@@ -6,6 +6,7 @@
 
 package Connection;
 
+import Connection.ConnectionHandler;
 import Messages.Message;
 import Utils.Log;
 import io.netty.channel.ChannelHandlerContext;

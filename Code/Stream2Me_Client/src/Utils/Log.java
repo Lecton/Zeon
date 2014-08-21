@@ -13,7 +13,7 @@ package Utils;
 public class Log {
     
     public static void write(Object parentComponent, String message) {
-        System.out.println(parentComponent.getClass().getSimpleName()+" - "+message);
+//        System.out.println(parentComponent.getClass().getSimpleName()+" - "+message);
     }
     
     public static void error(Object parentComponent, String message) {

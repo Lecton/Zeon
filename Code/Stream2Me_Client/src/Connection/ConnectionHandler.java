@@ -6,6 +6,7 @@
 
 package Connection;
 
+import Connection.MessageLog.ConnectionObserver;
 import Client.Colleague;
 import Interface.ClientGUI.Contacts.ContactProfile;
 import Interface.ClientGUI.GUI;
@@ -53,6 +54,7 @@ class ConnectionHandler extends SimpleChannelInboundHandler<Messages.Message> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
         if (pass) {
+            ConnectionObserver.write(msg);
             switch (msg.handle()) {
                 case newUser:
                     handleNewUser((Messages.UserConnection.NewUser)msg);
@@ -99,6 +101,8 @@ class ConnectionHandler extends SimpleChannelInboundHandler<Messages.Message> {
                     } else {
                         owner.setResponse("Invalid username or password");
                     }
+                    
+                    ConnectionObserver.write(msg);
                     break;
                 default:
                     Log.write(this, "Received unhandled message "+msg.handle()+" added to pool");

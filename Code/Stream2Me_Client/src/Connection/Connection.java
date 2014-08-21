@@ -6,6 +6,7 @@
 
 package Connection;
 
+import Connection.MessageLog.ConnectionObserver;
 import Interface.ClientGUI.GUI;
 import Interface.ClientLogin.Login;
 import Utils.Log;
@@ -42,6 +43,7 @@ public class Connection {
                 .channel(NioSocketChannel.class)
                 .handler(ci);
         channel =bootstrap.connect(host, PORT).sync().channel();
+        
     }
     
     public void setHandlerUserInterface(GUI userInterface) {
