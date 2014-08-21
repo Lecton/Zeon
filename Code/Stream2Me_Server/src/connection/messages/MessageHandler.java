@@ -103,11 +103,15 @@ public class MessageHandler {
         Server.relay(msg, ctx.channel());
         Log.write(new MessageHandler(), "Update username");
     }
+    
+   /* private static void handleUpdateTitle(ChannelHandlerContext ctx, UpdateTitle msg){
+        
+    }*/
 
     private static void handleListRequest(ChannelHandlerContext ctx, UpdateList msg) {
         Log.write(new MessageHandler(), "Update list request");
         try {
-            Client client =Server.getClient(ctx.channel());
+            Client client = Server.getClient(ctx.channel());
             if (client.isLoggedIn()) {
                 Server.updateUserConnection(client);
             }

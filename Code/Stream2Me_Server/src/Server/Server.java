@@ -45,8 +45,8 @@ public class Server {
 
     public static boolean clientContains(Channel incomming) {
         if (!connections.contains(incomming)) {
-            Object[] o =clients.toArray();
-            for (int i=0; i<o.length; i++) {
+            Object[] o = clients.toArray();
+            for (int i = 0; i < o.length; i++) {
                 Client c =(Client)o[i];
                 if (c.getChannel() == incomming) {
                     return true;
@@ -111,7 +111,7 @@ public class Server {
     }
     
     public static Greeting userLogin(Channel ch, String username, String passwordHash) {
-        int userID =DB.login(username, passwordHash);
+        int userID = DB.login(username, passwordHash);
         
         Log.write(new Server(), "USERLOGIN - ID: "+userID);
         

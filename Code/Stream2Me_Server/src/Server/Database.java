@@ -91,7 +91,7 @@ public class Database {
         Profile p = getUserProfile(userID);
         
         if (p != null) {
-            return new NewUser(p.getUserID(), p.getUsername(), p.getEmail(), p.getAvatar());
+            return new NewUser(p.getUserID(), p.getUsername(), p.getEmail(), p.getAvatar(), p.getTitle());
         } else {
             return null;
         }

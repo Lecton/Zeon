@@ -5,17 +5,20 @@ import Messages.Message;
 /**
  *
  * @author Lecton
+ * @author Zenadia
  */
 public class NewUser extends Message {
-    private String avatar ="";
-    private String email ="";
+    private String avatar = "";
+    private String email = "";
+    private String title = "";
     
-    public NewUser(int userID, String username, String email, String avatar) {
+    public NewUser(int userID, String username, String email, String avatar, String title) {
         this.userID = userID;
         this.Sender = username;
         this.email = email;
         this.avatar = avatar;
-        this.targetID =Message.ALL;
+        this.targetID = Message.ALL;
+        this.title = title;
     }
     
     /**
@@ -29,17 +32,21 @@ public class NewUser extends Message {
     }
 
     public String getAvatar() {
-        return avatar;
+        return this.avatar;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
     
     public String getUsername() {
-        return Sender;
+        return this.Sender;
     }
 
+    public String getTitle() {
+        return this.title;
+    }
+    
     @Override
     public MessageType handle() {
         return MessageType.newUser;
