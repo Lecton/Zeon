@@ -1,6 +1,7 @@
 package com.gui.utils;
 
 import java.io.File;
+import java.io.Serializable;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,27 +10,36 @@ import android.media.Image;
 import android.util.Base64;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class Contact{
-
-	 private Bitmap image;
+public class Contact implements Serializable {
+	
+	 private static final long serialVersionUID = 1L;
+	 private String image;
 	 private String name;
 	 private String email;
-	 private int ID;
+	 private int UserID;
+	 
+	 public Contact(Messages.UserConnection.Greeting message) {
+		  this.name = message.getSender();
+		  this.email = message.getEmail();
+		  this.UserID = message.getUserID();
+		  
+		  image = message.getAvatar();
+	 }
 
 	 public Contact(Messages.UserConnection.NewUser message) {
 		  this.name = message.getSender();
 		  this.email = message.getEmail();
-		  this.ID = message.getUserID();
+		  this.UserID = message.getUserID();
 		  
-		  image = getImageBitMap(message.getAvatar());
+		  image = message.getAvatar();
 	 }
 
-	 public int getID() {
-		 return ID;
+	 public int getUserID() {
+		 return UserID;
 	 }
 	 
 	 public Bitmap getImage(){
-		 return image;
+		 return getImageBitMap(image);
 	 }
 
 	 public String getName() {
@@ -49,7 +59,11 @@ public class Contact{
 	 }
 
 	 public void setImage(String si){
-		 
+		 this.image =si;
+	 }
+	 
+	 public void setUserID(int userID) {
+		 UserID = userID;
 	 }
 	 
 	 public static Bitmap getImageBitMap(String message){

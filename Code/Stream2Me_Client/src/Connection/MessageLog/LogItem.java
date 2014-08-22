@@ -115,6 +115,18 @@ public class LogItem extends javax.swing.JPanel {
 
     }//GEN-LAST:event_formMouseReleased
 
+    @Override
+    public String toString() {
+        String result ="";
+        
+        result +=lblTimeIn.getText()+",";
+        result +=lblTimeOut.getText()+",";
+        result +=lblMsgType.getText()+",";
+        result +=lblDelay.getText();
+        
+        return result;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblDelay;
     private javax.swing.JLabel lblMsgType;

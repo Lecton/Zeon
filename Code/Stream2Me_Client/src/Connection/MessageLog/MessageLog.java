@@ -6,6 +6,11 @@
 
 package Connection.MessageLog;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Bernhard
@@ -33,6 +38,11 @@ public class MessageLog extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Message Log");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jScrollPane1.setViewportView(logList2);
 
@@ -49,6 +59,23 @@ public class MessageLog extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter("output.csv");
+            pw.println("Time In,Time Out,Delay,Type");
+            Object[] list =logList2.list.toArray();
+            for (int i=0; i<list.length; i++) {
+                LogItem li =(LogItem)list[i];
+                pw.println(li);
+            }
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } finally {
+            pw.close();
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     public void add(TimeStampedMessage msg) {
         logList2.addItem(msg);

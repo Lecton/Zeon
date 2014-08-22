@@ -3,6 +3,7 @@ package com.stream2me;
 import com.activitytut.R;
 import com.gui.GUIActivity;
 import com.gui.LoginActivity;
+import com.gui.utils.Contact;
 import com.stream2me.connection.Connection;
 
 import android.support.v7.app.ActionBarActivity;
@@ -26,7 +27,7 @@ public class Client extends ActionBarActivity {
 
 	final int LOGIN_RESULT = 1;
 	final int GUI_RESULT = 2;
-	private static Connection connection = new Connection("10.0.2.2", 2014);
+	public static Connection connection = new Connection("10.0.2.2", 2014);
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -94,7 +95,11 @@ public class Client extends ActionBarActivity {
 		switch(requestCode){
 			case LOGIN_RESULT:
 					if(resultCode == RESULT_OK){
-						startActivityForResult(new Intent(getApplicationContext(),GUIActivity.class),GUI_RESULT);
+						Contact me =(Contact)arg2.getExtras().getSerializable("LoggedInUser");
+						
+						Intent i =new Intent(getApplicationContext(),GUIActivity.class);
+						i.putExtra("LoggedInUser", me);
+						startActivityForResult(i,GUI_RESULT);
 					}
 					break;
 		
