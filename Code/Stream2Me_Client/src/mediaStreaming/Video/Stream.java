@@ -40,9 +40,9 @@ public class Stream implements Runnable {
                 vs =MessageFactory.clone(vs);
                 vs.setImg(img);
                 con.writeSafe(vs);
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException e) {}
+//                try {
+//                    Thread.sleep(1500);
+//                } catch (InterruptedException e) {}
             } catch (NullPointerException npe) {
             }
         }
