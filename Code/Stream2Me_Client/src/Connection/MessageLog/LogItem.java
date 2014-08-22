@@ -6,6 +6,8 @@
 
 package Connection.MessageLog;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Timestamp;
 
 /**
@@ -27,15 +29,64 @@ public class LogItem extends javax.swing.JPanel {
         li.lblTimeOut.setText("Time Out");
         li.lblDelay.setText("Delay");
         li.lblMsgType.setText("Type");
+        li.lblSize.setText("Size (byte)");
         return li;
     }
     
     public void setStampedMessage(TimeStampedMessage msg) {
-        lblTimeIn.setText(msg.timestamp.toString());
-        lblTimeOut.setText(msg.msg.getTimestamp());
-        lblMsgType.setText(msg.msg.handle().name());
-        
-        lblDelay.setText(getDelay(Timestamp.valueOf(msg.msg.getTimestamp()), msg.timestamp));
+        setTimeIn(msg);
+        setTimeOut(msg);
+        setMsgType(msg);
+        setDelay(msg);
+        setSize(msg);
+    }
+    
+    private void setTimeIn(TimeStampedMessage msg) {
+        try {
+            lblTimeIn.setText(msg.timestamp.toString());
+        } catch (Exception e) {
+            
+        }
+    }
+    
+    private void setTimeOut(TimeStampedMessage msg) {
+        try {
+            lblTimeOut.setText(msg.msg.getTimestamp());
+        } catch (Exception e) {
+            
+        }
+    }
+    
+    private void setMsgType(TimeStampedMessage msg) {
+        try {
+            lblMsgType.setText(msg.msg.handle().name());
+        } catch (Exception e) {
+            
+        }
+    }
+    
+    private void setDelay(TimeStampedMessage msg) {
+        try {
+            lblDelay.setText(getDelay(Timestamp.valueOf(msg.msg.getTimestamp()), msg.timestamp));
+        } catch (Exception e) {
+            
+        }
+    }
+    
+    private void setSize(TimeStampedMessage msg) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(msg.msg);
+            oos.close();
+            
+            int bytes =baos.size();
+            double kb =bytes/1024.0;
+            
+            lblSize.setText(""+kb);
+        } catch (Exception e) {
+            
+        }
     }
     
     private String getDelay(Timestamp outTime, Timestamp inTime) {
@@ -67,6 +118,7 @@ public class LogItem extends javax.swing.JPanel {
         lblTimeIn = new javax.swing.JLabel();
         lblDelay = new javax.swing.JLabel();
         lblMsgType = new javax.swing.JLabel();
+        lblSize = new javax.swing.JLabel();
 
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -88,14 +140,17 @@ public class LogItem extends javax.swing.JPanel {
                 .addGap(2, 2, 2)
                 .addComponent(lblTimeIn, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblTimeOut, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblTimeOut, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblDelay, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblDelay, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblMsgType, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
+                .addComponent(lblMsgType, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblSize, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblSize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lblTimeOut, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(lblMsgType, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(lblDelay, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -130,6 +185,7 @@ public class LogItem extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblDelay;
     private javax.swing.JLabel lblMsgType;
+    private javax.swing.JLabel lblSize;
     private javax.swing.JLabel lblTimeIn;
     private javax.swing.JLabel lblTimeOut;
     // End of variables declaration//GEN-END:variables

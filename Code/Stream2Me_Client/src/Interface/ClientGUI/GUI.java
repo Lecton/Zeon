@@ -2,6 +2,7 @@ package Interface.ClientGUI;
 
 import Client.Colleague;
 import Connection.Connection;
+import Connection.MessageLog.ConnectionObserver;
 import Interface.ClientGUI.Contacts.ContactList;
 import Interface.ClientGUI.Contacts.UserProfile;
 import Utils.MessageFactory;
@@ -259,6 +260,8 @@ public class GUI extends javax.swing.JFrame {
         
         con.writeSafe(MessageFactory.generateLogout(getUserProfile().getUserID()));
         con.setHandlerLoggedOut();
+        
+        ConnectionObserver.close();
     }//GEN-LAST:event_formWindowClosing
 
     private void mmuLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mmuLogoutActionPerformed

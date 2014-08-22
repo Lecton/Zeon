@@ -25,16 +25,19 @@
               <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
               <Component id="lblTimeIn" min="-2" pref="149" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="lblTimeOut" min="-2" pref="149" max="-2" attributes="0"/>
+              <Component id="lblTimeOut" min="-2" pref="137" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="lblDelay" min="-2" pref="107" max="-2" attributes="0"/>
+              <Component id="lblDelay" min="-2" pref="93" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="lblMsgType" pref="106" max="32767" attributes="0"/>
+              <Component id="lblMsgType" pref="66" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lblSize" min="-2" pref="60" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="lblSize" alignment="0" max="32767" attributes="0"/>
           <Component id="lblTimeOut" min="-2" pref="25" max="-2" attributes="0"/>
           <Component id="lblMsgType" min="-2" pref="25" max="-2" attributes="0"/>
           <Component id="lblDelay" min="-2" pref="25" max="-2" attributes="0"/>
@@ -50,6 +53,8 @@
     <Component class="javax.swing.JLabel" name="lblDelay">
     </Component>
     <Component class="javax.swing.JLabel" name="lblMsgType">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblSize">
     </Component>
   </SubComponents>
 </Form>

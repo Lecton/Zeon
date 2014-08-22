@@ -6,10 +6,6 @@
 
 package Connection.MessageLog;
 
-import Interface.ClientGUI.Contacts.*;
-import Client.Colleague;
-import Interface.ClientGUI.GUI;
-import Utils.Log;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;

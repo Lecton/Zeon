@@ -8,8 +8,6 @@ package Connection.MessageLog;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -60,11 +58,14 @@ public class MessageLog extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void close() {
+        formWindowClosing(null);
+    }
+    
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         PrintWriter pw = null;
         try {
-            pw = new PrintWriter("output.csv");
-            pw.println("Time In,Time Out,Delay,Type");
+            pw = new PrintWriter("output"+(new java.util.Date()).getTime()+".csv");
             Object[] list =logList2.list.toArray();
             for (int i=0; i<list.length; i++) {
                 LogItem li =(LogItem)list[i];
