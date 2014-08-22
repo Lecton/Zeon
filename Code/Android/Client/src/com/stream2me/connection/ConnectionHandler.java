@@ -26,8 +26,13 @@ public class ConnectionHandler extends SimpleChannelInboundHandler<Message> {
 				LoginActivity.setGreetingMessage((Greeting)msg);
 				break;
 			case newUser:
-				GUIActivity.addRow((NewUser)msg);
-				
+				GUIActivity.handleNewUser((NewUser)msg);
+				break;
+			case string:
+				GUIActivity.handleStringMessage((Messages.StringMessage)msg);
+				break;
+			case streamNotify:
+				GUIActivity.handleStreamNotification((Messages.Media.StreamNotify)msg);
 				break;
 			default:
 					Log.e("Message Read", "Unhandled message "+msg.handle());

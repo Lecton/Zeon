@@ -1,6 +1,7 @@
 package com.gui;
 
 import com.activitytut.R;
+import com.gui.utils.Contact;
 import com.stream2me.Client;
 
 import Messages.UserConnection.Greeting;
@@ -33,7 +34,6 @@ public class LoginActivity extends Activity {
 		
 		if(greet != null){
 			LoginActivity.greet = greet;
-			GUIActivity.greet = greet;
 		}
 	}
 	
@@ -250,8 +250,9 @@ public class LoginActivity extends Activity {
 
 			if (success) {
 				Log.v("onPostEecute","Calling finish() ");
-				getIntent().putExtra("TADA", "bla bla bla");
-				setResult(RESULT_OK, getIntent());				
+				
+				getIntent().putExtra("LoggedInUser", new Contact(greet));
+				setResult(RESULT_OK, getIntent());		
 				finish();
 				
 			} else {

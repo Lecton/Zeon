@@ -57,8 +57,8 @@ public class ClientAdapter extends BaseAdapter {
 	  LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 	  
 	  if (convertView == null) 
-	  {
-		   convertView = mInflater.inflate(R.layout.list_item, null);
+	  { 
+		   convertView = mInflater.inflate(R.layout.contact_list, null);
 		   holder = new ViewHolder();
 	
 		   holder.cName = (TextView) convertView.findViewById(R.id.member_name);

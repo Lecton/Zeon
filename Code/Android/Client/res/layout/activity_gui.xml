@@ -4,6 +4,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+	android:background="?android:attr/activatedBackgroundIndicator"    
     tools:context="com.gui.GUIActivity"
     tools:ignore="MergeRootFrame">
     
@@ -17,7 +18,6 @@
 	    android:background="#FFFFFF" >
 		
 <!-- 		   User Layout  -->
-
 			<RelativeLayout
 			    android:id="@+id/userLayout"
 			    android:layout_width="130dp"
@@ -46,8 +46,7 @@
 				    <ListView    
 				        android:id="@+id/contactList"
 				        android:layout_width="300dp"
-				        android:layout_height="400dp"
-     				/>
+				        android:layout_height="400dp"/>
 			</RelativeLayout>
 
 			<RelativeLayout
@@ -157,7 +156,6 @@
 			    android:background="#FFFFFF" >
 			    
 <!-- 						chat view Layout -->
-
 						<RelativeLayout
 						    android:id="@+id/chatViewLayout"
 						    android:layout_width="410dp"
@@ -166,8 +164,14 @@
 						    android:layout_alignParentLeft="true"
 						    android:layout_alignParentRight="true"
 						    android:layout_alignParentTop="true"
-    						android:background="@drawable/video_rounded_corner" 
-    						>
+    						android:background="@drawable/video_rounded_corner">
+
+						    <ListView
+						        android:id="@+id/chatList"
+						        android:layout_width="410dp"
+						        android:layout_height="match_parent"
+						        android:layout_alignParentLeft="true"
+						        android:layout_alignParentRight="true" />
 
 						</RelativeLayout>			
 						
@@ -195,15 +199,15 @@
 							    android:background="#EDEDED" />
 
 							<EditText
-							    android:id="@+id/createChat"
+							    android:id="@+id/createArea"
 							    android:layout_width="wrap_content"
 							    android:layout_height="wrap_content"
-							    android:layout_alignBottom="@+id/imageButton4"
+							    android:layout_alignBottom="@+id/sendMessage"
 							    android:layout_alignParentLeft="true"
 							    android:layout_alignParentTop="true"
-							    android:layout_toLeftOf="@+id/imageButton4"
-							    android:ems="10"
-							    android:background="#FFFFFF" >
+							    android:layout_toLeftOf="@+id/sendMessage"
+							    android:background="#FFFFFF"
+							    android:ems="10" >
 
 							    <requestFocus />
 							</EditText>

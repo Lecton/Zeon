@@ -110,7 +110,7 @@ public class GUI extends javax.swing.JFrame {
             ContactContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ContactContainerLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(ContactScroller, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE))
+                .addComponent(ContactScroller, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout ControlPanelLayout = new javax.swing.GroupLayout(ControlPanel);
@@ -159,6 +159,11 @@ public class GUI extends javax.swing.JFrame {
         submitBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 submitBtnMouseClicked(evt);
+            }
+        });
+        submitBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitBtnActionPerformed(evt);
             }
         });
 
@@ -276,6 +281,10 @@ public class GUI extends javax.swing.JFrame {
         }
         chatText.setText("");
     }//GEN-LAST:event_submitBtnMouseClicked
+
+    private void submitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_submitBtnActionPerformed
 
     private void setupGUI(Colleague me) {
         initComponents();

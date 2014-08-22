@@ -47,6 +47,12 @@ public class Connection {
 		channel.writeAndFlush(msg);
 	}
 	
+    public void writeSafe(Messages.Message m) {
+        try {
+            write(m);
+        } catch (Exception ignored) {}
+    }	
+	
 	public ConnectionInitialiser getInitialiser() {
 		return ci;
 	}
