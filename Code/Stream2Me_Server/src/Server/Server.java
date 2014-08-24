@@ -1,11 +1,12 @@
-package Server;
+package server;
 
 
+import server.database.Database;
 import Messages.Message;
 import Messages.UserConnection.Greeting;
 import Messages.UserConnection.Logout;
 import Messages.UserConnection.NewUser;
-import Utils.Log;
+import utils.Log;
 import channel.group.ClientChannelGroup;
 import client.Client;
 import connection.ServerHandler;
@@ -98,7 +99,7 @@ public class Server {
     
     public static Client getClient(Channel channel) {
         for (Channel ch: clients) {
-            Client c =(Client)ch;
+            Client c = (Client)ch;
             if (c.getChannel() == channel) {
                 return c;
             }
@@ -119,9 +120,9 @@ public class Server {
             connections.remove(ch);
             clients.add(new Client(userID, ch));
             
-            NewUser newUserMessage =MessageBuilder.generateNewUser(DB.getUserProfile(userID));
+            NewUser newUserMessage = MessageBuilder.generateNewUser(DB.getUserProfile(userID));
             for (Channel channel: clients) {
-                Client cl =(Client)channel;
+                Client cl = (Client)channel;
                 System.err.println(cl.getUserID() + " --> " + userID);
                 channel.writeAndFlush(newUserMessage);
             }
@@ -132,7 +133,7 @@ public class Server {
     }
     
     public static void closeConnection(Channel ch) throws IOException {
-        Client user =getClient(ch);
+        Client user = getClient(ch);
         
         if (user == null) {
             System.err.println("ehhhhhhhhhh");

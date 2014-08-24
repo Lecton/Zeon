@@ -20,10 +20,10 @@ import Messages.Update.UpdateUsername;
 import Messages.UserConnection.Greeting;
 import Messages.UserConnection.Login;
 import Messages.UserConnection.Logout;
-import Server.Server;
-import Server.StreamHandler;
-import Server.StreamProperties;
-import Utils.Log;
+import server.Server;
+import server.StreamHandler;
+import server.StreamProperties;
+import utils.Log;
 import client.Client;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -78,7 +78,7 @@ public class MessageHandler {
     }
     
     private static void handleLogin(ChannelHandlerContext ctx, Login msg) {
-        Greeting g =Server.userLogin(ctx.channel(), msg.getSender(), msg.getPasswordHash());
+        Greeting g = Server.userLogin(ctx.channel(), msg.getSender(), msg.getPasswordHash());
         ctx.channel().writeAndFlush(g);
     }
     
@@ -105,7 +105,9 @@ public class MessageHandler {
     }
     
    /* private static void handleUpdateTitle(ChannelHandlerContext ctx, UpdateTitle msg){
-        
+        Server.getDatabase().updateTitle(msg.getUserID(), msg.getUsername());
+        Server.relay(msg, ctx.channel());
+        * Log.write(new MessageHandler(), "Update username");
     }*/
 
     private static void handleListRequest(ChannelHandlerContext ctx, UpdateList msg) {

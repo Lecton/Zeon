@@ -14,7 +14,7 @@ package connection.messages;
  */
 public class MessageBuilder {
     
-    public static Messages.UserConnection.Greeting generateGreeting(User.Profile person, boolean success) {
+    public static Messages.UserConnection.Greeting generateGreeting(server.database.Profile person, boolean success) {
         Messages.UserConnection.Greeting g;
         
         g = new Messages.UserConnection.Greeting(success);
@@ -23,12 +23,11 @@ public class MessageBuilder {
         g.setEmail(person.getEmail());
         g.setAvatar(person.getAvatar());
         g.setTargetID(person.getUserID());
-        g.setTitle(person.getTitle());
         
         return g;
     }
 
-    public static Messages.UserConnection.NewUser generateNewUser(User.Profile userProfile) {
+    public static Messages.UserConnection.NewUser generateNewUser(server.database.Profile userProfile) {
         return new Messages.UserConnection.NewUser(userProfile.getUserID(), 
                 userProfile.getUsername(), userProfile.getEmail(), 
                 userProfile.getAvatar(), userProfile.getTitle());

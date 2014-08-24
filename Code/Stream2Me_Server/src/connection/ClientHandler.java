@@ -2,7 +2,7 @@ package connection;
 
 
 import Messages.Message;
-import Server.Server;
+import server.Server;
 import Messages.UserConnection.Logout;
 import connection.messages.MessageHandler;
 import io.netty.channel.Channel;
