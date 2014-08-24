@@ -47,11 +47,12 @@ public class Database {
     }
     
     public void addMessageHistory(){
-        
+        MessageHistory mh = new MessageHistory();
+        database.store(mh);
     }
     
     public void addStreamProperties(){
-        
+        StreamProperty sp = new StreamProperty(ownerID, streamID);
     }
         
 }

@@ -1,24 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package Server;
+package server.database;
 
 import java.util.ArrayList;
 
 /**
  *
- * @author Bernhard
+ * @author Zenadia
  */
-public class StreamProperties {
+public class StreamProperty {
     private int ownerID;
     private String streamID;
     private ArrayList<String> acceptedID;
     private ArrayList<String> allowedID;
-
-    public StreamProperties(int ownerID, String streamID) {
+    
+    public StreamProperty(int ownerID, String streamID) {
         this.ownerID = ownerID;
         this.streamID = streamID;
         this.allowedID = new ArrayList<String>();
@@ -31,9 +25,9 @@ public class StreamProperties {
     
     public boolean accept(int userID) {
         for (String a: allowedID) {
-            int allowed =Integer.parseInt(a);
+            int allowed = Integer.parseInt(a);
             if (allowed == userID) {
-                acceptedID.add(""+userID);
+                acceptedID.add("" + userID);
                 return true;
             }
         }
@@ -42,9 +36,9 @@ public class StreamProperties {
     
     public boolean refuse(int userID) {
         for (String a: acceptedID) {
-            int accepted =Integer.parseInt(a);
+            int accepted = Integer.parseInt(a);
             if (accepted == userID) {
-                acceptedID.remove(""+accepted);
+                acceptedID.remove("" + accepted);
                 return true;
             }
         }
@@ -54,9 +48,9 @@ public class StreamProperties {
     public boolean remove(int ownerID, int userID) {
         refuse(userID);
         for (String a: allowedID) {
-            int allowed =Integer.parseInt(a);
+            int allowed = Integer.parseInt(a);
             if (allowed == userID) {
-                allowedID.remove(""+allowed);
+                allowedID.remove("" + allowed);
                 return true;
             }
         }
@@ -65,16 +59,15 @@ public class StreamProperties {
     
     public void add(int ownerID, int userID) {
         if (ownerID == this.ownerID) {
-            allowedID.add(""+userID);
+            allowedID.add("" + userID);
         }
     }
     
     public int[] getTargets() {
-        int[] result =new int[acceptedID.size()];
-        for (int i=0; i<result.length; i++) {
-            result[i] =Integer.parseInt(acceptedID.get(i));
+        int[] result = new int[acceptedID.size()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = Integer.parseInt(acceptedID.get(i));
         }
         return result;
     }
-    
 }
