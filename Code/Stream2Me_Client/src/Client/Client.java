@@ -4,13 +4,12 @@
  * and open the template in the editor.
  */
 
-package Client;
+package client;
 
-import Connection.Connection;
-import Connection.MessageLog.ConnectionObserver;
-import Connection.MessageLog.MessageLog;
-import Interface.ClientGUI.GUI;
-import Interface.ClientLogin.Login;
+import connection.Connection;
+import connection.messageLog.ConnectionObserver;
+import userInterface.clientGUI.GUI;
+import userInterface.clientLogin.Login;
 import javax.swing.JOptionPane;
 
 /**

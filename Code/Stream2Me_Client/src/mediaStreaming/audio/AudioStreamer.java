@@ -1,20 +1,21 @@
-package mediaStreaming.Audio;
+package mediaStreaming.audio;
 
-import Utils.Log;
+import connection.Connection;
+import utils.Log;
 
 
 /**
  *
  * @author Bernhard
  */
-public class AudioStream {
+public class AudioStreamer {
     private Stream transmitter;
     private Messages.Media.AudioStream as =null;
-    private final mediaStreaming.Audio.AudioLine audio;
-    private final Connection.Connection con;
+    private final AudioLine audio;
+    private final Connection con;
 
-    public AudioStream(mediaStreaming.Audio.AudioLine audio, Connection.Connection con) {
-        this.audio = audio;
+    public AudioStreamer(Connection con) {
+        this.audio = new AudioLine();
         this.con = con;
     }
     

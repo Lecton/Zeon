@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Connection;
+package connection;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

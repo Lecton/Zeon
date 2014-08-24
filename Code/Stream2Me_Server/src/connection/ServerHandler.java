@@ -24,8 +24,10 @@ public class ServerHandler {
     }
     
     public void run() {
-        EventLoopGroup bossGroup =new NioEventLoopGroup();
-        EventLoopGroup workerGroup =new NioEventLoopGroup();
+        EventLoopGroup bossGroup =new NioEventLoopGroup(5);
+        EventLoopGroup workerGroup =new NioEventLoopGroup(1000);
+        
+        
         
         try {
             ServerBootstrap bootstrap =new ServerBootstrap()

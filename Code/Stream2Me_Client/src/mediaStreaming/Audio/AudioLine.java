@@ -1,8 +1,6 @@
-package mediaStreaming.Audio;
+package mediaStreaming.audio;
 
-import Utils.Log;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import utils.Log;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;

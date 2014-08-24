@@ -4,19 +4,20 @@
  * and open the template in the editor.
  */
 
-package Connection;
+package connection;
 
-import Connection.MessageLog.ConnectionObserver;
-import Client.Colleague;
-import Interface.ClientGUI.Contacts.ContactProfile;
-import Interface.ClientGUI.GUI;
-import Interface.ClientLogin.Login;
+import connection.messageLog.ConnectionObserver;
+import client.Colleague;
+import userInterface.clientGUI.contacts.ContactProfile;
+import userInterface.clientGUI.GUI;
+import userInterface.clientLogin.Login;
 import Messages.Message;
 import Messages.UserConnection.Greeting;
-import Utils.Log;
-import Utils.MessageFactory;
+import utils.Log;
+import utils.MessageFactory;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -28,7 +29,29 @@ class ConnectionHandler extends SimpleChannelInboundHandler<Messages.Message> {
     private Login owner;
     private ConnectionPool pool;
     
+    static final AtomicInteger count =new AtomicInteger(0);
+    
+    private class ob implements Runnable {
+        AtomicInteger c1 =new AtomicInteger(0);
+        
+        @Override
+        public void run() {
+            while (true) {
+                System.out.println(ConnectionHandler.count.get());
+                
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    
+                }
+            }
+        }
+    }
+    
     public void setOwner(Login owner) {
+        (new Thread(new ob())).start();
+        
+        
         this.owner = owner;
         pass =false;
         pool =new ConnectionPool(this);
@@ -53,8 +76,9 @@ class ConnectionHandler extends SimpleChannelInboundHandler<Messages.Message> {
     
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
+        count.getAndIncrement();
         if (pass) {
-            ConnectionObserver.write(msg);
+//            ConnectionObserver.write(msg);
             switch (msg.handle()) {
                 case newUser:
                     handleNewUser((Messages.UserConnection.NewUser)msg);
@@ -110,8 +134,10 @@ class ConnectionHandler extends SimpleChannelInboundHandler<Messages.Message> {
                     break;
             }
         }
+        
     }
         
+    
     private void handleNewUser(Messages.UserConnection.NewUser nu) {
         Log.write(this, "New user");
         if (nu.getUserID() != userInterface.getUserID()) {

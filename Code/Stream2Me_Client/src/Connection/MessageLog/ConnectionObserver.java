@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Connection.MessageLog;
+package connection.messageLog;
 
 import Messages.Message;
 import java.util.ArrayList;

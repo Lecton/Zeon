@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Connection.MessageLog;
+package connection.messageLog;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -32,7 +32,7 @@ public class MessageLog extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        logList2 = new Connection.MessageLog.LogList();
+        logList2 = new connection.messageLog.LogList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Message Log");
@@ -115,6 +115,6 @@ public class MessageLog extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private Connection.MessageLog.LogList logList2;
+    private connection.messageLog.LogList logList2;
     // End of variables declaration//GEN-END:variables
 }

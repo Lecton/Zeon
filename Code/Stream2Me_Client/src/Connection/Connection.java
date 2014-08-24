@@ -4,12 +4,11 @@
  * and open the template in the editor.
  */
 
-package Connection;
+package connection;
 
-import Connection.MessageLog.ConnectionObserver;
-import Interface.ClientGUI.GUI;
-import Interface.ClientLogin.Login;
-import Utils.Log;
+import userInterface.clientGUI.GUI;
+import userInterface.clientLogin.Login;
+import utils.Log;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -35,7 +34,7 @@ public class Connection {
     }
     
     public void makeConnection() throws InterruptedException {
-        group =new NioEventLoopGroup();
+        group =new NioEventLoopGroup(100);
         ci =new ConnectionInitializer();
         
         Bootstrap bootstrap =new Bootstrap()

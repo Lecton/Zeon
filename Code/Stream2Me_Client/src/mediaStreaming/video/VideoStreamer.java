@@ -1,20 +1,21 @@
-package mediaStreaming.Video;
+package mediaStreaming.video;
 
-import Utils.Log;
+import connection.Connection;
+import utils.Log;
 
 
 /**
  *
  * @author Bernhard
  */
-public class VideoStream {
+public class VideoStreamer {
     private Stream transmitter;
     private Messages.Media.VideoStream vs =null;
-    private final mediaStreaming.Video.ScreenCapture screen;
-    private final Connection.Connection con;
+    private final ScreenCapture screen;
+    private final Connection con;
 
-    public VideoStream(ScreenCapture screen, Connection.Connection con) {
-        this.screen = screen;
+    public VideoStreamer(Connection con) {
+        this.screen = new ScreenCapture();
         this.con = con;
     }
     

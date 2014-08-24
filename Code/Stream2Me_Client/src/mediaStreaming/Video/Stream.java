@@ -1,21 +1,22 @@
-package mediaStreaming.Video;
+package mediaStreaming.video;
 
 import Utils.ImageUtils;
-import Utils.Log;
-import Utils.MessageFactory;
+import connection.Connection;
+import utils.Log;
+import utils.MessageFactory;
 
 /**
  *
  * @author Bernhard
  */
 public class Stream implements Runnable {
-    private final Connection.Connection con;
+    private final Connection con;
     private Messages.Media.VideoStream vs;
-    private final mediaStreaming.Video.ScreenCapture screen;
+    private final ScreenCapture screen;
     
     private boolean running =false;
 
-    public Stream(Connection.Connection con, Messages.Media.VideoStream vs, mediaStreaming.Video.ScreenCapture screen) {
+    public Stream(Connection con, Messages.Media.VideoStream vs, ScreenCapture screen) {
         this.con = con;
         this.vs = vs;
         this.screen = screen;

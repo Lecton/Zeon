@@ -1,4 +1,4 @@
-package mediaStreaming.Video;
+package mediaStreaming.video;
 
 import java.awt.AWTException;
 import java.awt.Dimension;
