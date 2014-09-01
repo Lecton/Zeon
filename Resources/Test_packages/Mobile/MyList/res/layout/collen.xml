@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+<!--     Left Layout -->
+
+	<RelativeLayout
+	    android:id="@+id/lefLayout"
+	    android:layout_width="300dp"
+	    android:layout_height="match_parent"
+	    android:layout_alignParentBottom="true"
+	    android:layout_alignParentLeft="true"
+	    android:background="#030f04" >
+		
+<!-- 		   User Layout  -->
+
+			<RelativeLayout
+			    android:id="@+id/userLayout"
+			    android:layout_width="130dp"
+			    android:layout_height="150dp"
+			    android:layout_below="@+id/contactsLayout"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentRight="true"
+			    android:layout_alignParentTop="true"
+			    android:background="#000FFF" >
+
+<!-- 			    user Picture Layout-->	
+						
+<!-- 			    user Picture Layout-->							
+
+			</RelativeLayout>		
+			
+<!-- 		     Contacts Layout -->
+
+			<RelativeLayout
+			    android:id="@+id/contactsLayout"
+			    android:layout_width="130dp"
+			    android:layout_height="400dp"
+			    android:layout_alignParentBottom="true"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentRight="true"
+			    android:background="#66FFFF" >
+				    <ListView    
+				        android:id="@+id/contact"
+				        android:layout_width="300dp"
+				        android:layout_height="400dp"
+     				/>
+			</RelativeLayout>
+
+			<RelativeLayout
+			    android:id="@+id/userControlLayout"
+			    android:layout_width="130dp"
+			    android:layout_height="80dp"
+			    android:layout_above="@+id/contactsLayout"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentRight="true"
+			    android:background="#FFFFFF" >
+
+				<ImageButton
+				    android:id="@+id/imageButton3"
+				    android:layout_width="100dp"
+				    android:layout_height="70dp"
+				    android:layout_alignParentTop="true"
+				    android:layout_toRightOf="@+id/imageButton2"
+				    android:background="#FFFFFF"
+				    android:src="@drawable/unclicked_stream" />
+
+				<ImageButton
+				    android:id="@+id/imageButton2"
+				    android:layout_width="100dp"
+				    android:layout_height="70dp"
+				    android:layout_alignParentTop="true"
+				    android:layout_centerHorizontal="true"
+				    android:background="#FFFFFF"
+				    android:src="@drawable/unclicked_camera" />
+
+				<ImageButton
+				    android:id="@+id/imageButton1"
+				    android:layout_width="100dp"
+				    android:layout_height="70dp"
+				    android:layout_alignParentTop="true"
+				    android:layout_toLeftOf="@+id/imageButton2"
+				    android:background="#FFFFFF"
+				    android:src="@drawable/unclicked_microphone" />
+			    
+			</RelativeLayout>
+
+			<RelativeLayout
+			    android:id="@+id/userPicLayout"
+			    android:layout_width="130dp"
+			    android:layout_height="300dp"			    
+			    android:layout_above="@+id/userControlLayout"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentRight="true"
+			    android:background="#FFF000" >
+
+				<ImageView
+				    android:id="@+id/imageView1"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_alignParentBottom="true"
+				    android:layout_alignParentLeft="true"
+				    android:layout_alignParentRight="true"
+				    android:layout_alignParentTop="true"
+				    android:clickable="true"
+				    android:src="@drawable/default_profile" />
+
+			</RelativeLayout>
+					
+	</RelativeLayout>
+	
+<!-- 	Right Layout -->
+
+	<RelativeLayout
+	    android:id="@+id/rightLayout"
+	    android:layout_width="410dp"
+	    android:layout_height="match_parent"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentTop="true"
+	    android:layout_toRightOf="@+id/lefLayout"
+	    android:background="#f30fff" >
+			
+<!-- 		video Layout --> 
+
+			<RelativeLayout
+			    android:id="@+id/videoLayout"
+			    android:layout_width="410dp"
+			    android:layout_height="180dp"
+			    android:layout_above="@+id/chatLayout"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentRight="true"
+			    android:layout_alignParentTop="true"
+			    android:background="#6666FF" >
+
+			</RelativeLayout>
+			
+<!-- 		 	chat Layout --> 
+
+			<RelativeLayout
+			    android:id="@+id/chatLayout"
+			    android:layout_width="410dp"
+			    android:layout_height="200dp"
+			    android:layout_alignParentBottom="true"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentRight="true"
+			    android:background="#66FF33" >
+			    
+<!-- 						chat view Layout -->
+
+						<RelativeLayout
+						    android:id="@+id/chatViewLayout"
+						    android:layout_width="410dp"
+						    android:layout_height="50dp"
+						    android:layout_above="@+id/chatMakeLayout"
+						    android:layout_alignParentLeft="true"
+						    android:layout_alignParentRight="true"
+						    android:layout_alignParentTop="true"
+						    android:background="#FF100F" >
+
+						</RelativeLayout>			
+						
+<!-- 						chat make Layout -->
+
+						<RelativeLayout
+						    android:id="@+id/chatMakeLayout"
+						    android:layout_width="410dp"
+						    android:layout_height="50dp"
+						    android:layout_alignParentBottom="true"
+						    android:layout_alignParentLeft="true"
+						    android:layout_alignParentRight="true"
+						    android:background="#F200F0" >
+						    
+						    
+							
+							<ImageButton
+							    android:id="@+id/imageButton4"
+							    android:layout_width="wrap_content"
+							    android:layout_height="wrap_content"
+							    android:layout_alignParentRight="true"
+							    android:layout_alignParentTop="true"
+							    android:background="#FFFFFF"
+							    android:src="@drawable/submit" />
+
+							<EditText
+							    android:id="@+id/editText1"
+							    android:layout_width="wrap_content"
+							    android:layout_height="wrap_content"
+							    android:layout_alignBottom="@+id/imageButton4"
+							    android:layout_alignParentLeft="true"
+							    android:layout_alignParentTop="true"
+							    android:layout_toLeftOf="@+id/imageButton4"
+							    android:background="#FFFFFF"
+							    android:ems="10" >
+
+							    <requestFocus />
+							</EditText>
+
+						</RelativeLayout>
+								    
+			</RelativeLayout>			
+	</RelativeLayout>
+	
+</RelativeLayout>
