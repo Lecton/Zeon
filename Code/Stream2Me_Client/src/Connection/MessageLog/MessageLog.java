@@ -4,7 +4,10 @@
  * and open the template in the editor.
  */
 
-package Connection.MessageLog;
+package connection.messageLog;
+
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 /**
  *
@@ -29,10 +32,15 @@ public class MessageLog extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        logList2 = new Connection.MessageLog.LogList();
+        logList2 = new connection.messageLog.LogList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Message Log");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jScrollPane1.setViewportView(logList2);
 
@@ -49,6 +57,26 @@ public class MessageLog extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    public void close() {
+        formWindowClosing(null);
+    }
+    
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter("output"+(new java.util.Date()).getTime()+".csv");
+            Object[] list =logList2.list.toArray();
+            for (int i=0; i<list.length; i++) {
+                LogItem li =(LogItem)list[i];
+                pw.println(li);
+            }
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } finally {
+            pw.close();
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     public void add(TimeStampedMessage msg) {
         logList2.addItem(msg);
@@ -87,6 +115,6 @@ public class MessageLog extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private Connection.MessageLog.LogList logList2;
+    private connection.messageLog.LogList logList2;
     // End of variables declaration//GEN-END:variables
 }

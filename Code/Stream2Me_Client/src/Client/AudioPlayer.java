@@ -1,6 +1,6 @@
-package Client;
+package client;
 
-import Utils.Log;
+import utils.Log;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -9,7 +9,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
-import mediaStreaming.Audio.AudioLine;
+import mediaStreaming.audio.AudioLine;
 
 /**
  *

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Connection.MessageLog;
+package connection.messageLog;
 
 import Messages.Message;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class ConnectionObserver implements Runnable {
     static final ArrayList<TimeStampedMessage> messages =new ArrayList<TimeStampedMessage>();
     static int size =0;
     
-    private MessageLog log;
+    private static MessageLog log =new MessageLog();
     
     private boolean runnable =true;
     
@@ -29,8 +29,7 @@ public class ConnectionObserver implements Runnable {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                log =new MessageLog();
-                log.setLocation(1250, 0);
+                log.setLocation(1000, 0);
                 log.setVisible(true);
             }
         });
@@ -50,6 +49,10 @@ public class ConnectionObserver implements Runnable {
                 Thread.sleep(100);
             } catch (InterruptedException e){}
         }
+    }
+    
+    public static void close() {
+        log.close();
     }
     
     public static void write(Message msg) {

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Utils;
+package utils;
 
 /**
  *
@@ -67,7 +67,7 @@ public class MessageFactory {
     
     
     
-    public static Client.Colleague generateColleague(Messages.UserConnection.NewUser nu) {
-        return new Client.Colleague(nu.getUserID(), nu.getUsername(), nu.getEmail(), nu.getAvatar());
+    public static client.Colleague generateColleague(Messages.UserConnection.NewUser nu) {
+        return new client.Colleague(nu.getUserID(), nu.getUsername(), nu.getEmail(), nu.getAvatar());
     }
 }

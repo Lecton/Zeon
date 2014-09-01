@@ -4,10 +4,9 @@
  * and open the template in the editor.
  */
 
-package Client;
+package client;
 
 import Messages.StringMessage;
-import Utils.Log;
 import java.util.ArrayList;
 
 /**

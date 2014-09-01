@@ -1,7 +1,8 @@
-package mediaStreaming.Audio;
+package mediaStreaming.audio;
 
-import Utils.Log;
-import Utils.MessageFactory;
+import connection.Connection;
+import utils.Log;
+import utils.MessageFactory;
 import java.io.IOException;
 
 /**
@@ -9,13 +10,13 @@ import java.io.IOException;
  * @author Bernhard
  */
 public class Stream implements Runnable {
-    private final Connection.Connection con;
+    private final Connection con;
     private Messages.Media.AudioStream as;
-    private final mediaStreaming.Audio.AudioLine audio;
+    private final AudioLine audio;
     
     private boolean running =false;
 
-    public Stream(Connection.Connection con, Messages.Media.AudioStream as, mediaStreaming.Audio.AudioLine audio) {
+    public Stream(Connection con, Messages.Media.AudioStream as, AudioLine audio) {
         this.con = con;
         this.as = as;
         this.audio = audio;

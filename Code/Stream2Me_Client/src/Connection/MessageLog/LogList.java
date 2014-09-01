@@ -4,12 +4,8 @@
  * and open the template in the editor.
  */
 
-package Connection.MessageLog;
+package connection.messageLog;
 
-import Interface.ClientGUI.Contacts.*;
-import Client.Colleague;
-import Interface.ClientGUI.GUI;
-import Utils.Log;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
@@ -21,7 +17,7 @@ import javax.swing.JPanel;
  */
 public class LogList extends JPanel {
     private GridBagConstraints gbcLog;
-    private ArrayList<LogItem> list;
+    public ArrayList<LogItem> list;
     
     public LogList() {
         setLayout(new GridBagLayout());
@@ -41,7 +37,7 @@ public class LogList extends JPanel {
         
         LogItem li =LogItem.getHeader();
         list.add(li);
-        add(li, gbcLog, list.size()-1);
+        add(li, gbcLog, 0);
         update();
     }
     
@@ -54,7 +50,7 @@ public class LogList extends JPanel {
         LogItem li =new LogItem();
         li.setStampedMessage(msg);
         list.add(li);
-        add(li, gbcLog, list.size()-1);
+        add(li, gbcLog, 1);
         update();
     }
     

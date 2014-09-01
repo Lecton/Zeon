@@ -4,15 +4,12 @@
  * and open the template in the editor.
  */
 
-package Connection;
+package connection;
 
-import Connection.ConnectionHandler;
 import Messages.Message;
-import Utils.Log;
+import utils.Log;
 import io.netty.channel.ChannelHandlerContext;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

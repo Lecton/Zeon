@@ -42,10 +42,6 @@ public abstract class Message implements Serializable {
         return userID;
     }
 
-    public String getTitle() {
-        return Title;
-    }
-
     public String getTimestamp() {
         return timestamp;
     }
@@ -60,10 +56,6 @@ public abstract class Message implements Serializable {
 
     public void setUserID(int userID) {
         this.userID = userID;
-    }
-
-    public void setTitle(String Title) {
-        this.Title = Title;
     }
 
     public void setTimestamp(String timestamp) {
