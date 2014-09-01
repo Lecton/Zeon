@@ -9,3 +9,4 @@
 /Code/Stream2Me_Client/dist/
 /Resources/Code/Stream2Me_Server/build/
 *.db
+/Code/Stream2Me_Server/dist/
