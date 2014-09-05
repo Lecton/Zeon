@@ -1,4 +1,4 @@
-package Messages;
+package messages;
 
 public class StringMessage extends Message {
     private String message ="";

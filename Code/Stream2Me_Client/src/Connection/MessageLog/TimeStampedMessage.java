@@ -6,7 +6,7 @@
 
 package connection.messageLog;
 
-import Messages.Message;
+import messages.Message;
 import java.sql.Timestamp;
 
 /**

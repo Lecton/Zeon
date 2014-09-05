@@ -41,7 +41,7 @@ public class AudioPlayer implements Runnable {
             pos =new PipedOutputStream();
             pis =new PipedInputStream(pos);
         } catch (IOException ex) {
-            Log.error(this, "Pipes could not be created");
+            Log.error(this.getClass(), "Pipes could not be created");
             dead =true;
         }
     }
@@ -58,7 +58,7 @@ public class AudioPlayer implements Runnable {
             line.open(format);
             line.start();
         } catch (LineUnavailableException ex) {
-            Log.error(this, "Audio Player could not open the audio line.");
+            Log.error(this.getClass(), "Audio Player could not open the audio line.");
             dead =true;
         }
     }
@@ -79,7 +79,7 @@ public class AudioPlayer implements Runnable {
                 pos.write(buffer);
             }
         } catch (IOException ex) {
-            Log.error(this, "Could not write to pipe buffer");
+            Log.error(this.getClass(), "Could not write to pipe buffer");
             dead =true;
         }
     }
@@ -100,7 +100,7 @@ public class AudioPlayer implements Runnable {
                     line.drain();
                 }
             } catch (IOException ex) {
-                Log.error(this, "Could not read data from pipes");
+                Log.error(this.getClass(), "Could not read data from pipes");
                 dead =true;
             }
             buffer =new byte[bufferSize];

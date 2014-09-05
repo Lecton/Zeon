@@ -1,9 +1,10 @@
 package mediaStreaming.audio;
 
 import connection.Connection;
+import java.io.IOException;
+import messages.media.AudioStreamMessage;
 import utils.Log;
 import utils.MessageFactory;
-import java.io.IOException;
 
 /**
  *
@@ -11,19 +12,19 @@ import java.io.IOException;
  */
 public class Stream implements Runnable {
     private final Connection con;
-    private Messages.Media.AudioStream as;
+    private AudioStreamMessage as;
     private final AudioLine audio;
     
     private boolean running =false;
 
-    public Stream(Connection con, Messages.Media.AudioStream as, AudioLine audio) {
+    public Stream(Connection con, AudioStreamMessage as, AudioLine audio) {
         this.con = con;
         this.as = as;
         this.audio = audio;
     }
     
     public void stop() {
-        Log.write(this, "Stream "+as.getStreamID()+" stopped");
+        Log.write(this.getClass(), "Stream "+as.getStreamID()+" stopped");
         running =false;
     }
 
@@ -33,7 +34,7 @@ public class Stream implements Runnable {
 
     @Override
     public void run() {
-        Log.write(this, "Stream "+as.getStreamID()+" started");
+        Log.write(this.getClass(), "Stream "+as.getStreamID()+" started");
         running =true;
         audio.open();
         

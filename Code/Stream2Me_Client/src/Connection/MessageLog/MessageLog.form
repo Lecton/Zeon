@@ -27,21 +27,21 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jScrollPane1" alignment="0" pref="556" max="32767" attributes="0"/>
+          <Component id="spnLogScroll" alignment="0" pref="556" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jScrollPane1" alignment="0" pref="509" max="32767" attributes="0"/>
+          <Component id="spnLogScroll" alignment="0" pref="509" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+    <Container class="javax.swing.JScrollPane" name="spnLogScroll">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="connection.messageLog.LogList" name="logList2">
+        <Component class="connection.messageLog.LogList" name="lgtLogList">
         </Component>
       </SubComponents>
     </Container>

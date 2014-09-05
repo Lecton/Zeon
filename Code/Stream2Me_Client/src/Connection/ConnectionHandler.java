@@ -6,52 +6,37 @@
 
 package connection;
 
-import connection.messageLog.ConnectionObserver;
 import client.Colleague;
-import userInterface.clientGUI.contacts.ContactProfile;
-import userInterface.clientGUI.GUI;
-import userInterface.clientLogin.Login;
-import Messages.Message;
-import Messages.UserConnection.Greeting;
-import utils.Log;
-import utils.MessageFactory;
+import connection.messageLog.ConnectionObserver;
+import userInterface.generalUI.GUI;
+import userInterface.authentication.Login;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import java.util.concurrent.atomic.AtomicInteger;
+import messages.Message;
+import messages.StringMessage;
+import messages.media.AudioStreamMessage;
+import messages.media.StreamNotifyMessage;
+import messages.media.VideoStreamMessage;
+import messages.update.UpdateAvatarMessage;
+import messages.update.UpdateNameMessage;
+import messages.userConnection.GreetingMessage;
+import messages.userConnection.LogoutMessage;
+import messages.userConnection.NewUserMessage;
+import userInterface.generalUI.contacts.ContactProfile;
+import utils.Log;
+import utils.MessageFactory;
 
 /**
  *
  * @author Bernhard
  */
-class ConnectionHandler extends SimpleChannelInboundHandler<Messages.Message> {
+class ConnectionHandler extends SimpleChannelInboundHandler<Message> {
     private GUI userInterface;
     private boolean pass =false;
     private Login owner;
     private ConnectionPool pool;
     
-    static final AtomicInteger count =new AtomicInteger(0);
-    
-    private class ob implements Runnable {
-        AtomicInteger c1 =new AtomicInteger(0);
-        
-        @Override
-        public void run() {
-            while (true) {
-                System.out.println(ConnectionHandler.count.get());
-                
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    
-                }
-            }
-        }
-    }
-    
     public void setOwner(Login owner) {
-        (new Thread(new ob())).start();
-        
-        
         this.owner = owner;
         pass =false;
         pool =new ConnectionPool(this);
@@ -76,52 +61,49 @@ class ConnectionHandler extends SimpleChannelInboundHandler<Messages.Message> {
     
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-        count.getAndIncrement();
         if (pass) {
-//            ConnectionObserver.write(msg);
+            ConnectionObserver.write(msg);
             switch (msg.handle()) {
                 case newUser:
-                    handleNewUser((Messages.UserConnection.NewUser)msg);
+                    handleNewUser((NewUserMessage)msg);
                     break;
                 case updateAvatar:
-                    handleUpdateAvatar((Messages.Update.UpdateAvatar)msg);
+                    handleUpdateAvatar((UpdateAvatarMessage)msg);
                     break;
                 case updateName:
-                    handleUpdateUsername(
-                            (Messages.Update.UpdateUsername)msg);
+                    handleUpdateName((UpdateNameMessage)msg);
                     break;
                 case logout:
-                    handleRemoveUser((Messages.UserConnection.Logout)msg);
+                    handleRemoveUser((LogoutMessage)msg);
                     break;
                 case notify:
                     break;
 
                 case string:
-                    handleStringMessage((Messages.StringMessage)msg);
+                    handleStringMessage((StringMessage)msg);
                     break;
                 case streamNotify:
-                    handleStreamNotification(
-                            (Messages.Media.StreamNotify)msg);
+                    handleStreamNotification((StreamNotifyMessage)msg);
                     break;
                 case auido:
-                    handleAudioStream((Messages.Media.AudioStream)msg);
+                    handleAudioStream((AudioStreamMessage)msg);
                     break;
                 case video:
-                    handleVideoStream((Messages.Media.VideoStream)msg);
+                    handleVideoStream((VideoStreamMessage)msg);
                     break;
                 default:
-                    Log.error(this, "Unknown type: "+msg.handle());
+                    Log.error(this.getClass(), "Unknown type: "+msg.handle());
                     break;
             }
         } else {
             switch (msg.handle()) {
                 case greeting:
-                    Greeting greet =(Greeting)msg;
+                    GreetingMessage greet =(GreetingMessage)msg;
                     pass =greet.isSuccessful();
                     if (greet.isSuccessful()) {
                         owner.setResponse("Success");
-                        owner.setMyAccount(new Colleague(greet.getUserID(), greet.getUsername(), greet.getEmail(), greet.getAvatar()));
-                        owner.successful();
+                        owner.setMyAccount(new Colleague(greet.getUserID(), greet.getName(), greet.getSurname(), greet.getEmail(), greet.getAvatar()));
+                        owner.setMessage(greet);
                     } else {
                         owner.setResponse("Invalid username or password");
                     }
@@ -129,63 +111,73 @@ class ConnectionHandler extends SimpleChannelInboundHandler<Messages.Message> {
                     ConnectionObserver.write(msg);
                     break;
                 default:
-                    Log.write(this, "Received unhandled message "+msg.handle()+" added to pool");
+                    Log.write(this.getClass(), "Received unhandled message "+msg.handle()+" added to pool");
                     pool.add(ctx, msg);
                     break;
             }
         }
-        
     }
         
-    
-    private void handleNewUser(Messages.UserConnection.NewUser nu) {
-        Log.write(this, "New user");
+    private void handleNewUser(NewUserMessage nu) {
+        Log.write(this.getClass(), "New user");
         if (nu.getUserID() != userInterface.getUserID()) {
-            userInterface.getContactList().addProfile(
+            userInterface.addProfile(
                     MessageFactory.generateColleague(nu));
         } else {
-            Log.write(this, "Me, myself and I");
+            Log.write(this.getClass(), "Me, myself and I");
         }
     }
     
-    private void handleRemoveUser(Messages.UserConnection.Logout l) {
-        Log.write(this, "User "
-                +userInterface.getContactList().getContactProfile(
-                        l.getUserID()).getUsername()
-                +" logged out");
+    private void handleRemoveUser(LogoutMessage l) {
+        Colleague c =userInterface.getContactProfile(
+                        l.getUserID());
+        if (c != null) {
+            Log.write(this.getClass(), "User "
+                    +c.getEmail()
+                    +" logged out");
+        } else {
+            Log.error(this.getClass(), "User to be removed, "
+                    + "but cannot be found.");
+        }
+        userInterface.removeProfile(l.getUserID());
+    }
+    
+    private void handleUpdateName(UpdateNameMessage uu) {
+        Colleague c =userInterface.getContactList().getProfile(
+                        uu.getUserID());
         
-        userInterface.getContactList().removeProfile(l.getUserID());
+        if (c != null) {
+            Log.write(this.getClass(), "User "
+                    +c.getFullName()
+                    +" updated username to "+uu.getName()+ " " + uu.getSurname());
+            c.setName(uu.getName());
+            c.setSurname(uu.getSurname());
+        } else {
+            Log.error(this.getClass(), "User to be updated, "
+                    + "but cannot be found.");
+        }
     }
     
-    private void handleUpdateUsername(Messages.Update.UpdateUsername uu) {
-        Log.write(this, "User "
-                +userInterface.getContactList().getContactProfile(
-                        uu.getUserID()).getUsername()
-                +" updated username to "+uu.getUsername());
-        userInterface.getContactList().getContactProfile(
-                uu.getUserID()).setUsername(uu.getUsername());
-    }
-    
-    private void handleUpdateAvatar(Messages.Update.UpdateAvatar ua) {
-        Log.write(this, "Avatar updated");
+    private void handleUpdateAvatar(UpdateAvatarMessage ua) {
+        Log.write(this.getClass(), "Avatar updated");
         userInterface.getContactList().getContactProfile(
                 ua.getUserID()).updateAvatar(ua.getAvatar());
     }
     
-    private void handleStringMessage(Messages.StringMessage sm) {
-        Log.write(this, "String message");
-        if(sm.getTargetID() == Messages.Message.ALL) {
-            userInterface.getUserProfile().addMessage(sm);
+    private void handleStringMessage(StringMessage sm) {
+        Log.write(this.getClass(), "String message from: "+sm.getUserID()+" to:"+sm.getTargetID());
+        if(sm.getTargetID() == Message.ALL) {
+            userInterface.getUser().addMessage(sm);
         } else {
-            userInterface.getContactList().getContactProfile(
+            userInterface.getContactList().getProfile(
                     sm.getUserID()).addMessage(sm);
         }
         
-        userInterface.getChatArea().update();
+        userInterface.updateChatArea(sm.getTargetID(), sm.getUserID());
     }
 
-    private void handleStreamNotification(Messages.Media.StreamNotify sn) {
-        Log.write(this, sn.getMessage());
+    private void handleStreamNotification(StreamNotifyMessage sn) {
+        Log.write(this.getClass(), sn.getMessage());
         ContactProfile cp =userInterface.getContactList().getContactProfile(
                 sn.getUserID());
         if (cp != null) {
@@ -194,11 +186,11 @@ class ConnectionHandler extends SimpleChannelInboundHandler<Messages.Message> {
         }
     }
 
-    private void handleVideoStream(Messages.Media.VideoStream vs) {
-        userInterface.getVideoArea().setImage(vs.getImg());
+    private void handleVideoStream(VideoStreamMessage vs) {
+        userInterface.writetoVideoBuffer(vs.getStreamID(), vs.getImg());
     }
 
-    private void handleAudioStream(Messages.Media.AudioStream as) {
-        userInterface.getAudioPlayer().write(as.buffer);
+    private void handleAudioStream(AudioStreamMessage as) {
+        userInterface.writetoAudioBuffer(as.buffer);
     }
 }

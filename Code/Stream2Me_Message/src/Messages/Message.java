@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Messages;
+package messages;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -25,7 +25,6 @@ public abstract class Message implements Serializable {
     
     protected String Sender ="";
     protected int userID =IGNORE;
-    protected String Title ="";
     protected String timestamp =(new Timestamp((new java.util.Date()).getTime())).toString();
     protected transient int SSN;
     protected int targetID =IGNORE;

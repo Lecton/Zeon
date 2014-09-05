@@ -22,7 +22,7 @@ public class AudioLine {
             info = new DataLine.Info(TargetDataLine.class, format);
             line = (TargetDataLine) AudioSystem.getLine(info);
         } catch (LineUnavailableException ex) {
-            Log.error(this, "Line unavailable");
+            Log.error(this.getClass(), "Line unavailable");
         }
     }
     
@@ -31,7 +31,7 @@ public class AudioLine {
             line.open(format);
             line.start();
         } catch (LineUnavailableException ex) {
-            Log.error(this, "Line unavailable. Could not open");
+            Log.error(this.getClass(), "Line unavailable. Could not open");
         }
     }
     

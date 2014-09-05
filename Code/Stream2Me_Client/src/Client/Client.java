@@ -8,9 +8,9 @@ package client;
 
 import connection.Connection;
 import connection.messageLog.ConnectionObserver;
-import userInterface.clientGUI.GUI;
-import userInterface.clientLogin.Login;
 import javax.swing.JOptionPane;
+import userInterface.generalUI.GUI;
+import userInterface.authentication.Login;
 
 /**
  *
@@ -32,6 +32,19 @@ public class Client {
     }
     
     public Client() {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+        } catch (InstantiationException ex) {
+        } catch (IllegalAccessException ex) {
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        }
+        
         running =true;
         String address ="127.0.0.1";
         int PORT =2014;
@@ -107,6 +120,5 @@ public class Client {
     
     public void setMyAccount(Colleague me) {
         myAccount =me;
-//        System.out.println(me.getAvatar());
     }
 }

@@ -31,8 +31,8 @@ public class MessageLog extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        logList2 = new connection.messageLog.LogList();
+        spnLogScroll = new javax.swing.JScrollPane();
+        lgtLogList = new connection.messageLog.LogList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Message Log");
@@ -42,17 +42,17 @@ public class MessageLog extends javax.swing.JFrame {
             }
         });
 
-        jScrollPane1.setViewportView(logList2);
+        spnLogScroll.setViewportView(lgtLogList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+            .addComponent(spnLogScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
+            .addComponent(spnLogScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
         );
 
         pack();
@@ -66,7 +66,7 @@ public class MessageLog extends javax.swing.JFrame {
         PrintWriter pw = null;
         try {
             pw = new PrintWriter("output"+(new java.util.Date()).getTime()+".csv");
-            Object[] list =logList2.list.toArray();
+            Object[] list =lgtLogList.list.toArray();
             for (int i=0; i<list.length; i++) {
                 LogItem li =(LogItem)list[i];
                 pw.println(li);
@@ -79,42 +79,11 @@ public class MessageLog extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     public void add(TimeStampedMessage msg) {
-        logList2.addItem(msg);
-    }
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MessageLog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MessageLog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MessageLog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MessageLog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        
+        lgtLogList.addItem(msg);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private connection.messageLog.LogList logList2;
+    private connection.messageLog.LogList lgtLogList;
+    private javax.swing.JScrollPane spnLogScroll;
     // End of variables declaration//GEN-END:variables
 }

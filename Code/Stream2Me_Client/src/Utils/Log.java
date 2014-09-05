@@ -12,16 +12,31 @@ package utils;
  */
 public class Log {
     
-    public static void write(Object parentComponent, String message) {
-//        System.out.println(parentComponent.getClass().getSimpleName()+" - "+message);
+    public static void write(final Class parentClass, final String message) {
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(parentClass.getSimpleName()+" - "+message);
+            }
+        })).start();
     }
     
-    public static void error(Object parentComponent, String message) {
-        System.err.println(parentComponent.getClass().getSimpleName()+" - "+message);
+    public static void error(final Class parentClass, final String message) {
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.err.println(parentClass.getSimpleName()+" - "+message);
+            }
+        })).start();
     }
     
-    public static void error(Object parentComponent, int message) {
-        System.err.println(parentComponent.getClass().getSimpleName()+" - "+message);
+    public static void error(final Class parentClass, final int message) {
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+        System.err.println(parentClass.getSimpleName()+" - "+message);
+            }
+        })).start();
     }
 
     public static void blank() {

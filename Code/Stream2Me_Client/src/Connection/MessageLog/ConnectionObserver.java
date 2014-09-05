@@ -6,8 +6,8 @@
 
 package connection.messageLog;
 
-import Messages.Message;
 import java.util.ArrayList;
+import messages.Message;
 
 /**
  *
@@ -30,7 +30,7 @@ public class ConnectionObserver implements Runnable {
             @Override
             public void run() {
                 log.setLocation(1000, 0);
-                log.setVisible(true);
+//                log.setVisible(true);
             }
         });
         

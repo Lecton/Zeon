@@ -6,10 +6,10 @@
 
 package connection;
 
-import Messages.Message;
-import utils.Log;
 import io.netty.channel.ChannelHandlerContext;
 import java.util.ArrayList;
+import messages.Message;
+import utils.Log;
 
 /**
  *
@@ -33,7 +33,7 @@ public class ConnectionPool implements Runnable {
     
     @Override
     public void run() {
-        Log.write(this, "Connection Pool started");
+        Log.write(this.getClass(), "Connection Pool started");
         while (!ch.isPass()) {
             try {
                 Thread.sleep(100);
@@ -42,7 +42,7 @@ public class ConnectionPool implements Runnable {
         open =false;
         
         
-        Log.write(this, "Emptying pool "+pool.size());
+        Log.write(this.getClass(), "Emptying pool "+pool.size());
         while (!pool.isEmpty()) {
             MessageEntries poolMsg =pool.remove(0);
             try {
@@ -59,7 +59,7 @@ public class ConnectionPool implements Runnable {
                 }
             }
         }
-        Log.write(this, "Message pool closed");
+        Log.write(this.getClass(), "Message pool closed");
     }
     
     private class MessageEntries {

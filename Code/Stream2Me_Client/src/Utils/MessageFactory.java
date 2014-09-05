@@ -6,68 +6,83 @@
 
 package utils;
 
+import client.Colleague;
+import messages.Message;
+import messages.StringMessage;
+import messages.media.AudioStreamMessage;
+import messages.media.StreamPropertyMessage;
+import messages.media.StreamResponseMessage;
+import messages.media.StreamUpdateMessage;
+import messages.media.VideoStreamMessage;
+import messages.update.UpdateAvatarMessage;
+import messages.update.UpdateListMessage;
+import messages.update.UpdateNameMessage;
+import messages.userConnection.LoginMessage;
+import messages.userConnection.LogoutMessage;
+import messages.userConnection.NewUserMessage;
+
 /**
  *
  * @author Bernhard
  */
 public class MessageFactory {
-    public static Messages.UserConnection.Login generateLogin(String email, String passwordHash) {
-        return new Messages.UserConnection.Login(email, passwordHash);
+    public static LoginMessage generateLogin(String email, String passwordHash) {
+        return new LoginMessage(email, passwordHash);
     }
 
-    public static Messages.Message generateUpdateAvatar(int userID, String avatar) {
-        Messages.Update.UpdateAvatar ua =new Messages.Update.UpdateAvatar(userID, avatar);
-        ua.setTargetID(Messages.Message.ALL);
+    public static UpdateAvatarMessage generateUpdateAvatar(int userID, String avatar) {
+        UpdateAvatarMessage ua =new UpdateAvatarMessage(userID, avatar);
+        ua.setTargetID(Message.ALL);
         return ua;
     }
 
-    public static Messages.Update.UpdateUsername generateUpdateUsername(int userID, String username) {
-        Messages.Update.UpdateUsername uu =new Messages.Update.UpdateUsername(userID, username);
-        uu.setTargetID(Messages.Message.ALL);
+    public static UpdateNameMessage generateUpdateName(int userID, String name, String surname) {
+        UpdateNameMessage uu =new UpdateNameMessage(userID, name, surname);
+        uu.setTargetID(Message.ALL);
         return uu;
     }
 
-    public static Messages.Update.UpdateList generateRefreshListRequest(int userID) {
-        return new Messages.Update.UpdateList(userID);
+    public static UpdateListMessage generateRefreshListRequest(int userID) {
+        return new UpdateListMessage(userID);
     }
     
-    public static Messages.StringMessage generateStringMessage(int userID, int targetID, String username, String message) {
-        return new Messages.StringMessage(userID, targetID, username, message);
+    public static StringMessage generateStringMessage(int userID, int targetID, String username, String message) {
+        return new StringMessage(userID, targetID, username, message);
     }
     
-    public static Messages.UserConnection.Logout generateLogout(int userID) {
-        return new Messages.UserConnection.Logout(userID);
+    public static LogoutMessage generateLogout(int userID) {
+        return new LogoutMessage(userID);
     }
      
-    public static Messages.Media.StreamUpdate generateStreamUpdate(int userID, int targetID, String streamID, int affectedUserID, int action) {
-        return new Messages.Media.StreamUpdate(userID, targetID, streamID, affectedUserID, action);
+    public static StreamUpdateMessage generateStreamUpdate(int userID, int targetID, String streamID, int affectedUserID, int action) {
+        return new StreamUpdateMessage(userID, targetID, streamID, affectedUserID, action);
     }
     
-    public static Messages.Media.StreamProperty generateStreamProperty(int userID, int targetID, String streamID, boolean turnOn) {
-        return new Messages.Media.StreamProperty(userID, targetID, streamID, (turnOn?1:0));
-    }
-
-    public static Messages.Media.StreamResponse generateStreamResponse(int userID, String videoStreamID, boolean response) {
-        return new Messages.Media.StreamResponse(userID, videoStreamID, response);
-    }
-            
-            
-            
-            
-    
-    public static Messages.Media.VideoStream clone(Messages.Media.VideoStream vs) {
-        return new Messages.Media.VideoStream(vs);
+    public static StreamPropertyMessage generateStreamProperty(int userID, int targetID, String streamID, boolean turnOn) {
+        return new StreamPropertyMessage(userID, targetID, streamID, (turnOn?1:0));
     }
 
-    public static Messages.Media.AudioStream clone(Messages.Media.AudioStream as) {
-        return new Messages.Media.AudioStream(as);
+    public static StreamResponseMessage generateStreamResponse(int userID, String videoStreamID, boolean response) {
+        return new StreamResponseMessage(userID, videoStreamID, response);
+    }
+            
+            
+            
+            
+    
+    public static VideoStreamMessage clone(VideoStreamMessage vs) {
+        return new VideoStreamMessage(vs);
+    }
+
+    public static AudioStreamMessage clone(AudioStreamMessage as) {
+        return new AudioStreamMessage(as);
     }
     
     
     
     
     
-    public static client.Colleague generateColleague(Messages.UserConnection.NewUser nu) {
-        return new client.Colleague(nu.getUserID(), nu.getUsername(), nu.getEmail(), nu.getAvatar());
+    public static Colleague generateColleague(NewUserMessage nu) {
+        return new Colleague(nu.getUserID(), nu.getName(), nu.getSurname(), nu.getEmail(), nu.getAvatar());
     }
 }

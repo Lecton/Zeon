@@ -6,8 +6,9 @@
 
 package client;
 
-import Messages.StringMessage;
+import utils.Log;
 import java.util.ArrayList;
+import messages.StringMessage;
 
 /**
  *
@@ -15,23 +16,26 @@ import java.util.ArrayList;
  */
 public class Colleague {
     private int userID =-10;
-    private String username ="User";
+    private String name ="User";
+    private String surname ="User";
     private String email ="User@user.com";
     private String avatar ="";
     
     private ArrayList<StringMessage> chatHistory;
 
-    public Colleague(int userID, String username, String email) {
+    public Colleague(int userID, String name, String surname, String email) {
         this.userID =userID;
-        this.username =username;
+        this.name =name;
+        this.surname =surname;
         this.email =email;
         this.avatar ="";
         this.chatHistory =new ArrayList<>();
     }
 
-    public Colleague(int userID, String username, String email, String avatar) {
+    public Colleague(int userID, String name, String surname, String email, String avatar) {
         this.userID =userID;
-        this.username =username;
+        this.name =name;
+        this.surname =surname;
         this.email =email;
         this.avatar =avatar;
         this.chatHistory =new ArrayList<>();
@@ -41,8 +45,12 @@ public class Colleague {
         return userID;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
+    }
+    
+    public String getSurname() {
+        return surname;
     }
 
     public ArrayList<StringMessage> getMessageHistory() {
@@ -65,11 +73,19 @@ public class Colleague {
         this.email = email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
     
     public void addMessage(StringMessage sm) {
         chatHistory.add(sm);
+    }
+
+    public String getFullName() {
+        return name + " " + surname;
     }
 }
