@@ -10,3 +10,5 @@
 /Resources/Code/Stream2Me_Server/build/
 *.db
 /Code/Stream2Me_Server/dist/
+/Code/VideoManagement/nbproject/private/
+/Code/VideoManagement/build/
