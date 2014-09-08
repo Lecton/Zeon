@@ -1,9 +1,12 @@
 package com.mobile;
 
+import messages.update.UpdateListMessage;
+
 import com.connection.Connection;
 import com.gui.LoginWindow;
 import com.gui.MainWindow;
 import com.gui.MessageWindow;
+import com.gui.ProfileWindow;
 import com.gui.SplashWindow;
 import com.gui.utils.Contact;
 
@@ -25,6 +28,8 @@ public class Client extends ActionBarActivity {
 	final int LOGIN_RESULT = 2;
 	final int MAIN_RESULT = 3;
 	final int MESSAGE_RESULT = 4;
+	final int PROFILE_RESULT = 5;
+
 	public static Connection connection = new Connection("10.0.2.2", 2014);
 
 	@Override
@@ -107,28 +112,38 @@ public class Client extends ActionBarActivity {
 			case LOGIN_RESULT:
 					if(resultCode == RESULT_OK){
 						Contact loggedUser = (Contact)in.getExtras().getSerializable("LoggedInUser");
+						ClientHandler.setUser(loggedUser);
 						Intent i = new Intent(getApplicationContext(),MainWindow.class);
-						i.putExtra("UserDetails", loggedUser);
+//						i.putExtra("UserDetails", loggedUser);
+						Client.connection.writeSafe(new UpdateListMessage(loggedUser.getUserID()));
 						startActivityForResult(i,MAIN_RESULT);
 					}
 					break;
 					
 			case MAIN_RESULT:
 					if(resultCode == RESULT_OK){
-						Contact client = (Contact)in.getExtras().getSerializable("Client");
-						Contact user = (Contact)in.getExtras().getSerializable("User");
+						boolean s_result = false;
+						s_result = in.getExtras().getBoolean("UserProfile");
+						if(s_result){
+							Intent i = new Intent(getApplicationContext(),ProfileWindow.class);
+							startActivityForResult(i,MESSAGE_RESULT);							
+						}else{
+						int clientID = in.getExtras().getInt("ClientID");
+//						Contact user = (Contact)in.getExtras().getSerializable("User");
 						Intent i = new Intent(getApplicationContext(),MessageWindow.class);
-						i.putExtra("Client", client);
-						i.putExtra("User", user);
+						i.putExtra("ClientID", clientID);
+//						i.putExtra("User", user);
 						startActivityForResult(i,MESSAGE_RESULT);
-						
+						}
 					}
 					break;
 			case MESSAGE_RESULT:
 				if(resultCode == RESULT_OK){
-					Contact user = (Contact)in.getExtras().getSerializable("User");
+//					Contact user = (Contact)in.getExtras().getSerializable("User");
+//					Contact client = (Contact)in.getExtras().getSerializable("Client");
 					Intent i = new Intent(getApplicationContext(),MainWindow.class);
-					i.putExtra("User", user);
+//					i.putExtra("UserDetails", user);
+//					i.putExtra("Client", client);
 					startActivityForResult(i,MAIN_RESULT);
 				}
 				break;

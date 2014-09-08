@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import messages.Message;
 import messages.StringMessage;
 import messages.update.UpdateListMessage;
 import messages.userConnection.GreetingMessage;
@@ -16,6 +17,7 @@ import com.gui.utils.ChatMessages;
 import com.gui.utils.ClientAdapter;
 import com.gui.utils.Contact;
 import com.mobile.Client;
+import com.mobile.ClientHandler;
 import com.mobile.R;
 import com.mobile.R.id;
 import com.mobile.R.layout;
@@ -32,6 +34,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,14 +42,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.os.Build;
 
 public class MainWindow extends Activity {
 
-
 	public static ListView listClients = null;
-	public static List<Contact> contacts;
-	public static Contact user = null;
 	public static Context baseContext;
 	public static ClientAdapter clientAdapter;
 	public static Handler UIHandler;
@@ -67,45 +68,49 @@ public class MainWindow extends Activity {
 		setContentView(R.layout.activity_main_window);
 		activity = this;
 
-		if(user == null){
-			Serializable userd = getIntent().getSerializableExtra("UserDetails");
+		if(ClientHandler.getUser() != null){
+//			Serializable userd = getIntent().getSerializableExtra("UserDetails");
 			Log.v("user","Main user");
-			if(userd != null){
-				user = (Contact)userd;
-				MessageWindow.chatHistory = new ArrayList<>();
-			}else{
-				//Logout / Kick user
-				Log.v("On GUIActivity create","User got here without valid login path");
-			} 
+		} else {
+			//Logout / Kick user
+			Log.v("On GUIActivity create","User got here without valid login path");
 		}
 		
+//		Serializable clientS = getIntent().getSerializableExtra("Client");
+//		if (clientS != null) {
+//			for (Contact c: contacts) {
+//				if (c.getUserID() == ((Contact)clientS).getUserID()) {
+//					c =(Contact)clientS;
+//					break;
+//				}
+//			}
+//		}
+		
 		baseContext = getBaseContext();
-		contacts = new ArrayList<>();
 		listClients = (ListView) findViewById(R.id.contactList);
-		Client.connection.writeSafe(new UpdateListMessage(user.getUserID()));
-
+		updateClientList();
 	}
 
-	@Override
+	@Override 
 	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_window, menu);
-		return true;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.items, menu);
+        return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+		super.onOptionsItemSelected(item);
+		
+        switch(item.getItemId()){
+        case R.id.profile:
+			getIntent().putExtra("UserProfile", true);
+    		setResult(RESULT_OK, getIntent());		
+    		finish();
+            break;
+        }		
+		return true;
 	}
-
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
@@ -124,39 +129,48 @@ public class MainWindow extends Activity {
 	}
 
 	public static void handleNewUser(NewUserMessage message){
-		
-		if(message != null && user != null){
-			Contact c = new Contact(message);
-			
-			if(!(contacts.contains(c))){
-				contacts.add(c);
-				updateClientList();
-			}
-		}
+		ClientHandler.handleNewUserMessage(message);
+		updateClientList();
+//		if(message != null && user != null){
+//			Contact c = new Contact(message);
+//			
+//			if(!(contacts.contains(c))){
+//				contacts.add(c);
+//				updateClientList();
+//			}
+//		}
 	}
 	
 
 	public static void handleLogoutUser(LogoutMessage message){
-		
-		for (Iterator<Contact> it = contacts.iterator(); it.hasNext(); ) {
-			Contact c = it.next();
-		    if (message.getUserID() == c.getUserID()) {
-		        it.remove();
-		        updateClientList();
-		    }
-		}
+		ClientHandler.handleLogoutMessage(message);
+		updateClientList();
+//		for (Iterator<Contact> it = contacts.iterator(); it.hasNext(); ) {
+//			Contact c = it.next();
+//		    if (message.getUserID() == c.getUserID()) {
+//		        it.remove();
+//		        updateClientList();
+//		    }
+//		}
 	}
 	
-	public static void handleStringMessage(StringMessage messages){
-		MessageWindow.handleStringMessage(messages,false);
+	public static void handleStringMessage(StringMessage message){
+		boolean result =MessageWindow.handleStringMessage(message);
+		if (!result) {
+			ClientHandler.handleStringMessage(message);
+		}
 	}
 	
 	public static void updateClientList(){
 		
 		MainWindow.runOnUI(new Runnable() {
 		     @Override
-		     public void run() {		    		
-		 		clientAdapter = new ClientAdapter(baseContext,contacts);
+		     public void run() {	
+		    	if (listClients == null) {
+		    		return;
+		    	}
+		    	 
+		 		clientAdapter = new ClientAdapter(baseContext,ClientHandler.getContacts());
 		 		listClients.setAdapter(clientAdapter);
 		 		listClients.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		 		listClients.setOnItemClickListener(new OnItemClickListener(){
@@ -165,10 +179,9 @@ public class MainWindow extends Activity {
 		 			public void onItemClick(AdapterView<?> parent, View view,
 		 					int position, long id) {
 		 				
-		 				Log.v(contacts.get(position).getName(), "ID: " + contacts.get(position).getUserID());
-		 				Contact c = contacts.get(position);	
-		 				activity.getIntent().putExtra("Client", c);
-		 				activity.getIntent().putExtra("User", user);
+		 				Log.v(ClientHandler.get(position).getName(), "ID: " + ClientHandler.get(position).getUserID());
+		 				Contact c = ClientHandler.get(position);	
+		 				activity.getIntent().putExtra("ClientID", c.getUserID());
 		 				activity.setResult(RESULT_OK, activity.getIntent());		
 		 				activity.finish();
 		 				

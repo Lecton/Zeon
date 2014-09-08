@@ -4,13 +4,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import messages.Message;
 import messages.StringMessage;
 
 import com.gui.utils.ChatAdapter;
 import com.gui.utils.ChatMessages;
 import com.gui.utils.ClientAdapter;
 import com.gui.utils.Contact;
+import com.gui.utils.MessageFactory;
 import com.mobile.Client;
+import com.mobile.ClientHandler;
 import com.mobile.R;
 import com.mobile.R.id;
 import com.mobile.R.layout;
@@ -29,6 +32,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +40,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 import android.os.Build;
 
 public class MessageWindow extends Activity {
@@ -45,8 +50,7 @@ public class MessageWindow extends Activity {
 	public static Handler UIHandler;
 	public static Context baseContext;
 	public static ChatAdapter chatAdapter;
-	private static Contact user;
-	private static Contact client;
+	private static int clientID =-1;
 
 	static 
 	{
@@ -62,16 +66,28 @@ public class MessageWindow extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_message_window);
 
-		Serializable c = getIntent().getSerializableExtra("Client");
-		Serializable u = getIntent().getSerializableExtra("User");
+//		Serializable c = getIntent().getSerializableExtra("Client");
+//		Serializable u = getIntent().getSerializableExtra("User");
 		
-		if(c != null && u != null){
-			user = (Contact)u;
-			client = (Contact)c;
-			setTitle(client.getName());
-			BitmapDrawable icon = new BitmapDrawable(getResources(),client.getImage());
+		int uid = getIntent().getIntExtra("ClientID", -1);
+		
+//		if(c != null && u != null){
+//			user = (Contact)u;
+//			client = (Contact)c;
+//			setTitle(client.getName());
+//			BitmapDrawable icon = new BitmapDrawable(getResources(),client.getImage());
+//			listChats = (ListView) findViewById(R.id.chatList);
+//			getActionBar().setIcon(icon);
+//		}
+		if(uid != -1){
+			clientID =uid;
+			setTitle(ClientHandler.getFromUserID(clientID).getName());
+			BitmapDrawable icon = new BitmapDrawable(getResources(),ClientHandler.getFromUserID(clientID).getImage());
 			listChats = (ListView) findViewById(R.id.chatList);
 			getActionBar().setIcon(icon);
+		} else {
+			//back or something
+			Log.e("MessageWindow", "ClientID not received.");
 		}
 
 		baseContext = getBaseContext();
@@ -80,22 +96,23 @@ public class MessageWindow extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.message_window, menu);
-		return true;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.items, menu);
+        return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+		super.onOptionsItemSelected(item);
+		
+        switch(item.getItemId()){
+        case R.id.profile:
+			getIntent().putExtra("UserProfile", true);
+    		setResult(RESULT_OK, getIntent());		
+    		finish();
+            break;
+        }		
+		return true;
 	}
 
 	/**
@@ -116,13 +133,36 @@ public class MessageWindow extends Activity {
 	}
 
 
-	public static void handleStringMessage(StringMessage messages,boolean owner){
-		chatHistory.add(new ChatMessages(messages,owner));
-		updateChatList();
+	public static boolean handleStringMessage(StringMessage message){
+		if (ClientHandler.getFromUserID(clientID) != null) {
+			if (message.getTargetID() != Message.ALL) {
+				if (ClientHandler.getFromUserID(clientID).getUserID() == message.getUserID()) {
+					ClientHandler.getFromUserID(clientID).addMessage(message);
+					updateChatList();
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				if (ClientHandler.getUser() != null 
+						&& ClientHandler.getFromUserID(clientID).getUserID() == ClientHandler.getUser().getUserID()) {
+					ClientHandler.getFromUserID(clientID).addMessage(message);
+					updateChatList();
+					return true;
+				} else {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+//		chatHistory.add(new ChatMessages(messages,owner));
 	}
 	
 	@Override
 	public void onBackPressed() {
+//		getIntent().putExtra("User", user);
+//		getIntent().putExtra("Client", client);
 		setResult(RESULT_OK, getIntent());		
 		finish();
 	}	
@@ -134,18 +174,21 @@ public class MessageWindow extends Activity {
 		     public void run() {
 		    	
 		    	if(listChats != null){
-		    		Log.v("Lengtht","" + chatHistory.size());
-		    		List<ChatMessages> shortList = new ArrayList<>();
+		    		List<ChatMessages> shortList = ClientHandler.getFromUserID(clientID).getMessageHistory();
+		    		Log.v("Lengtht","" + shortList.size());
 		    		
-		    		for(ChatMessages ch : chatHistory){
-		    			if((ch.getUserID() == user.getUserID() && ch.getTargetID() == client.getUserID()) ||
-		    			  (ch.getUserID() == client.getUserID() && ch.getTargetID() == user.getUserID())){
-		    				shortList.add(ch); 
-		    			}
-		    		}
+		    		
+//		    		for(ChatMessages ch : chatHistory){
+//		    			if((ch.getUserID() == user.getUserID() && ch.getTargetID() == client.getUserID()) ||
+//		    			  (ch.getUserID() == client.getUserID() && ch.getTargetID() == user.getUserID())){
+//		    				shortList.add(ch); 
+//		    			}
+//		    		}
 		    		
 			 		chatAdapter = new ChatAdapter(baseContext,shortList);
 			 		listChats.setAdapter(chatAdapter);
+		    	} else {
+		    		Log.e("MessageWindow - updateChatList()", "listChat is null");
 		    	}
 			 }
 		});
@@ -155,8 +198,14 @@ public class MessageWindow extends Activity {
 		EditText text = (EditText) findViewById(R.id.textMessage);
 		String message = text.getText().toString();
 		text.setText("");
-		StringMessage stringMessage = new StringMessage(user.getUserID(),client.getUserID(),user.getEmail(),message);
-		handleStringMessage(stringMessage,true);
-		Client.connection.writeSafe(stringMessage);
+		StringMessage sm = MessageFactory.generateStringMessage(
+                ClientHandler.getUser().getUserID(), ClientHandler.getFromUserID(clientID).getUserID(), 
+                ClientHandler.getUser().getEmail(), 
+                message + "\n");
+		
+//		handleStringMessage(sm);
+		ClientHandler.getFromUserID(clientID).addMessage(sm);
+		updateChatList();
+		Client.connection.writeSafe(sm);
 	}
 }

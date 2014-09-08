@@ -47,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/sign_in_button"
+        		android:background="@drawable/send_button"
                 android:layout_marginTop="21dp"
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
@@ -98,6 +99,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/password"
                 android:layout_marginTop="25dp"
+        		android:background="@drawable/send_button"
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
                 android:text="Login" />

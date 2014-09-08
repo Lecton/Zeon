@@ -7,5 +7,8 @@
     <string name="title_activity_client">Client</string>
     <string name="title_activity_main_window">MainWindow</string>
     <string name="title_activity_message_window">MessageWindow</string>
+    <string name="profile">Profile</string>
+    <string name="title_activity_profile_window">ProfileWindow</string>
+    <string name="title_activity_contact_window">ContactWindow</string>
 
 </resources>
