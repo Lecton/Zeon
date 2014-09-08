@@ -8,18 +8,18 @@ import messages.Message;
  */
 public class VideoStreamMessage extends Message {
     private String img;
-    private String streamID ="";
+    private String streamName ="";
     
-    public VideoStreamMessage(int userID, int targetID, String streamID) {
+    public VideoStreamMessage(int userID, int targetID, String streamName) {
         this.userID =userID;
         this.targetID =targetID;
-        this.streamID =streamID;
+        this.streamName =streamName;
     }
     
     public VideoStreamMessage(VideoStreamMessage clone) {
         this.userID =clone.userID;
         this.targetID =clone.targetID;
-        this.streamID =clone.streamID;
+        this.streamName =clone.streamName;
     }
 
     @Override
@@ -29,8 +29,8 @@ public class VideoStreamMessage extends Message {
         return value;
     }
 
-    public String getStreamID() {
-        return streamID;
+    public String getStreamName() {
+        return streamName;
     }
 
     public void setImg(String img) {

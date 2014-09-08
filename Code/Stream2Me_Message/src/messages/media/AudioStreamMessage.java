@@ -9,12 +9,12 @@ import messages.Message;
  */
 public class AudioStreamMessage extends Message {
     public byte[] buffer = new byte[0];
-    private String streamID ="";
+    private String streamName ="";
     
-    public AudioStreamMessage(int userID, int targetID, String streamID) {
+    public AudioStreamMessage(int userID, int targetID, String streamName) {
         this.userID = userID;
         this.targetID =targetID;
-        this.streamID =streamID;
+        this.streamName =streamName;
     }
     
     /**
@@ -25,11 +25,11 @@ public class AudioStreamMessage extends Message {
     public AudioStreamMessage(AudioStreamMessage clone) {
         this.userID = clone.userID;
         this.targetID = clone.targetID;
-        this.streamID = clone.streamID;
+        this.streamName = clone.streamName;
     }
 
-    public String getStreamID() {
-        return streamID;
+    public String getStreamName() {
+        return streamName;
     }
 
     public byte[] getBuffer() {
@@ -45,7 +45,7 @@ public class AudioStreamMessage extends Message {
     public String getMessage() {
         String result ="Audio Message {\n";
         result +="\tUser ID: "+userID+"\n";
-        result +="\tStream ID: "+streamID+"\n";
+        result +="\tStream ID: "+streamName+"\n";
         result +="\tBuffer Size: "+buffer.length+"\n";
         result +="}";
         

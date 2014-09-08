@@ -9,10 +9,13 @@ import messages.Message;
  */
 public class GreetingMessage extends Message {
     private boolean success;
+    private String username;
     private String name;
     private String surname;
     private String email;
     private String avatar;
+    private String title;
+    private String aboutMe;
     
     public GreetingMessage(boolean success) {
         this.success =success;
@@ -32,6 +35,10 @@ public class GreetingMessage extends Message {
         return success;
     }
 
+    public String getUsername() {
+        return username;
+    }
+    
     public String getName() {
         return name;
     }
@@ -48,6 +55,10 @@ public class GreetingMessage extends Message {
         return avatar;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
     public void setName(String name) {
         this.name = name;
     }
@@ -62,5 +73,13 @@ public class GreetingMessage extends Message {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
     }
 }

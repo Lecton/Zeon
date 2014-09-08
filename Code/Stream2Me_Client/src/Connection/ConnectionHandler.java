@@ -7,7 +7,7 @@
 package connection;
 
 import client.Colleague;
-import connection.messageLog.ConnectionObserver;
+import connection.messageLogCore.ConnectionObserver;
 import userInterface.generalUI.GUI;
 import userInterface.authentication.Login;
 import io.netty.channel.ChannelHandlerContext;

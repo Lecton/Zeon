@@ -41,22 +41,6 @@ public class StringMessageTest {
     }
 
     /**
-     * Test of getUsername method, of class StringMessage.
-     */
-    @Test
-    public void testGetUsername() {
-        System.out.println("getUsername");
-        
-        int userID =1;
-        int targetID =2;
-        String Sender ="Person";
-        String Message ="Message this is.";
-        
-        StringMessage instance = new StringMessage(userID, targetID, Sender, Message);
-        assertEquals("Username did not get set.", Sender, instance.getUsername());
-    }
-
-    /**
      * Test of getMessage method, of class StringMessage.
      */
     @Test
@@ -65,10 +49,9 @@ public class StringMessageTest {
         
         int userID =1;
         int targetID =2;
-        String Sender ="Person";
         String Message ="Message this is.";
         
-        StringMessage instance = new StringMessage(userID, targetID, Sender, Message);
+        StringMessage instance = new StringMessage(userID, targetID, Message);
         assertEquals("Message did not get set.", Message, instance.getMessage());
     }
 
@@ -81,10 +64,9 @@ public class StringMessageTest {
         
         int userID =1;
         int targetID =2;
-        String Sender ="Person";
         String Message ="Message this is.";
         
-        StringMessage instance = new StringMessage(userID, targetID, Sender, Message);
+        StringMessage instance = new StringMessage(userID, targetID, Message);
         assertEquals("Messagt type is incorrect.", messages.Message.MessageType.string, instance.handle());
     }
 }

@@ -23,20 +23,14 @@ public abstract class Message implements Serializable {
     public static int ERROR =-15;
     public static int IGNORE =-1;
     
-    protected String Sender ="";
     protected int userID =IGNORE;
     protected String timestamp =(new Timestamp((new java.util.Date()).getTime())).toString();
     protected transient int SSN;
     protected int targetID =IGNORE;
-    
-    
+    protected int targetGroupID =IGNORE;
     
     public abstract String getMessage();
     
-    public String getSender() {
-        return Sender;
-    }
-
     public int getUserID() {
         return userID;
     }
@@ -49,20 +43,20 @@ public abstract class Message implements Serializable {
         return targetID;
     }
 
-    public void setSender(String Sender) {
-        this.Sender = Sender;
+    public int getTargetGroupID() {
+        return targetGroupID;
     }
 
     public void setUserID(int userID) {
         this.userID = userID;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
     public void setTargetID(int targetID) {
         this.targetID = targetID;
+    }
+
+    public void setTargetGroupID(int targetGroupID) {
+        this.targetGroupID = targetGroupID;
     }
     
     public abstract MessageType handle();

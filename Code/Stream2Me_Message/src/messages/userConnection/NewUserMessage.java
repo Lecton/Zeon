@@ -9,18 +9,21 @@ import messages.Message;
  * @author Zenadia
  */
 public class NewUserMessage extends Message {
-    private String avatar = "";
-    private String email = "";
-    private String name ="";
-    private String surname ="";
-    
-    public NewUserMessage(int userID, String name, String surname, String email, String avatar) {
+    private String name;
+    private String surname;
+    private String email;
+    private String avatar;
+    private String title;
+    private String aboutMe;
+
+    public NewUserMessage(int userID, String name, String surname, String email, String avatar, String title, String aboutMe) {
         this.userID = userID;
-        this.Sender = email;
         this.name =name;
         this.surname =surname;
         this.email = email;
         this.avatar = avatar;
+        this.title =title;
+        this.aboutMe =aboutMe;
         this.targetID = Message.ALL;
     }
     
@@ -31,15 +34,7 @@ public class NewUserMessage extends Message {
      */
     @Override
     public String getMessage() {
-        return "New User " + ":" + Sender;
-    }
-
-    public String getAvatar() {
-        return this.avatar;
-    }
-
-    public String getEmail() {
-        return this.email;
+        return "New User " + ":" + name+" "+surname;
     }
 
     public String getName() {
@@ -48,6 +43,22 @@ public class NewUserMessage extends Message {
 
     public String getSurname() {
         return surname;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getAvatar() {
+        return this.avatar;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
     }
 
     @Override

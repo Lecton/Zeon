@@ -51,18 +51,6 @@ public class MessageTest {
     }
 
     /**
-     * Test of getSender method, of class Message.
-     */
-    @Test
-    public void testGetSender() {
-        System.out.println("getSender");
-        Message instance = new MessageImpl();
-        String expResult = "";
-        String result = instance.getSender();
-        assertTrue("The sender has been set and is not blank.", expResult.equals(result));
-    }
-
-    /**
      * Test of getUserID method, of class Message.
      */
     @Test
@@ -99,18 +87,6 @@ public class MessageTest {
     }
 
     /**
-     * Test of setSender method, of class Message.
-     */
-    @Test
-    public void testSetSender() {
-        System.out.println("setSender");
-        String Sender = "This is a Sender";
-        Message instance = new MessageImpl();
-        instance.setSender(Sender);
-        assertEquals("The Message sender did not get set.", instance.getSender(), Sender);
-    }
-
-    /**
      * Test of setUserID method, of class Message.
      */
     @Test
@@ -120,17 +96,6 @@ public class MessageTest {
         Message instance = new MessageImpl();
         instance.setUserID(userID);
         assertEquals("The user ID did not get set.", instance.getUserID(), userID);
-    }
-    /**
-     * Test of setTimestamp method, of class Message.
-     */
-    @Test
-    public void testSetTimestamp() {
-        System.out.println("setTimestamp");
-        String timestamp = "2014/08/30 17:26:00";
-        Message instance = new MessageImpl();
-        instance.setTimestamp(timestamp);
-        assertEquals("The timestamp did not get set.", instance.getTimestamp(), timestamp);
     }
 
     /**

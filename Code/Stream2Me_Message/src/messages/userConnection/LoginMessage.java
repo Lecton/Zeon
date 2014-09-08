@@ -8,17 +8,22 @@ import messages.Message;
  * @author Lecton
  */
 public class LoginMessage extends Message {
-    private String passwordHash ="";
+    private String passwordHash;
+    private String username;
     
-    public LoginMessage(String email, String passwordHash) {
-        this.Sender = email;
+    public LoginMessage(String username, String passwordHash) {
+        this.username =username;
         this.passwordHash =passwordHash;
         this.targetID =Message.SERVER;
     }
     
     @Override
     public String getMessage() {
-        return "ClientInit: "+Sender+".";
+        return "ClientInit: "+username+".";
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getPasswordHash() {

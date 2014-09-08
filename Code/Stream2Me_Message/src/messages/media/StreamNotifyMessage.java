@@ -13,17 +13,17 @@ import messages.Message;
  * @author Bernhard
  */
 public class StreamNotifyMessage extends Message {
-    String streamID;
+    int streamID;
     int type;
 
-    public StreamNotifyMessage(int userID, int targetID, String streamID, int type) {
+    public StreamNotifyMessage(int userID, int targetID, int streamID, int type) {
         this.userID =userID;
         this.targetID =targetID;
         this.streamID = streamID;
         this.type = type;
     }
 
-    public String getStreamID() {
+    public int getStreamID() {
         return streamID;
     }
 

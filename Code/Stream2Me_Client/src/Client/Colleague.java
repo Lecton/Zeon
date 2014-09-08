@@ -6,7 +6,6 @@
 
 package client;
 
-import utils.Log;
 import java.util.ArrayList;
 import messages.StringMessage;
 

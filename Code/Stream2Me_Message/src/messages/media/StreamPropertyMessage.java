@@ -4,12 +4,12 @@ import messages.Message;
 
 public class StreamPropertyMessage extends Message {
     int type =0; //1 on  -  0 off
-    String streamID ="";
+    String streamName ="";
 
-    public StreamPropertyMessage(int userID, int targetID, String streamID, int type) {
+    public StreamPropertyMessage(int userID, int targetID, String streamName, int type) {
         this.userID =userID;
         this.targetID =targetID;
-        this.streamID =streamID;
+        this.streamName =streamName;
         this.type =type;
     }
 
@@ -18,8 +18,8 @@ public class StreamPropertyMessage extends Message {
         return "Stream Property";
     }
 
-    public String getStreamID() {
-        return streamID;
+    public String getStreamName() {
+        return streamName;
     }
     
     public int getType() {

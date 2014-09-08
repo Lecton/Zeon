@@ -5,7 +5,7 @@ import client.AudioPlayer;
 import client.Client;
 import client.Colleague;
 import connection.Connection;
-import connection.messageLog.ConnectionObserver;
+import connection.messageLogCore.ConnectionObserver;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.WindowEvent;

@@ -7,7 +7,7 @@
 package client;
 
 import connection.Connection;
-import connection.messageLog.ConnectionObserver;
+import connection.messageLogCore.ConnectionObserver;
 import javax.swing.JOptionPane;
 import userInterface.generalUI.GUI;
 import userInterface.authentication.Login;
@@ -46,7 +46,7 @@ public class Client {
         }
         
         running =true;
-        String address ="127.0.0.1";
+        String address ="127.0.0.1"; //41.132.30.38
         int PORT =2014;
         
         if (connect(address, PORT)) {
