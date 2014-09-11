@@ -1,5 +1,6 @@
 package com.gui.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,6 +24,9 @@ public class Contact implements Serializable {
 	 private String name;
 	 private String surname;
 	 private String email;
+	 private boolean [] notification = {false, // video notificatioon[0]
+			 							false, // audio notificatioon[1]
+			 							false}; //string notificatioon [2]
 	 private int UserID;
 	 
 	 private ArrayList<StringMessage> messageHistory;
@@ -70,6 +74,48 @@ public class Contact implements Serializable {
 		 return email;
 	 }
 
+	 public boolean setVideoNoticationOn(){
+		 
+		 return (notification[0] = true);
+	 }
+
+	 public boolean setAudioNoticationOn(){
+		 
+		 return (notification[1] = true);
+	 }
+	 
+	 public boolean setStringNoticationOn(){
+		 
+		 return (notification[2] = true);
+	 }
+
+	 public boolean setVideoNoticationOff(){
+		 
+		 return !(notification[0] = false);
+	 }
+
+	 public boolean setAudioNoticationOff(){
+		 
+		 return !(notification[1] = false);
+	 }
+	 
+	 public boolean setStringNoticationOff(){
+		 
+		 return !(notification[2] = false);
+	 }	 
+	 
+	 public boolean getVideoNotification(){
+		 return notification[0];
+	 }	 
+	 
+	 public boolean getAudioNotification(){
+		 return notification[1];
+	 }	 
+	 
+	 public boolean getStringNotification(){
+		 return notification[2];
+	 }
+	 
 	 public void setName(String n) {
 		 this.name = n;
 	 }
@@ -121,11 +167,11 @@ public class Contact implements Serializable {
 	        float scaleWidth = ((float) newWidth) / width;
 	        float scaleHeight = ((float) newHeight) / height;
 	        // CREATE A MATRIX FOR THE MANIPULATION
-	        Matrix matrix = new Matrix();
-	        // RESIZE THE BIT MAP
-	        matrix.postScale(scaleWidth, scaleHeight);
-
-	        // "RECREATE" THE NEW BITMAP
+			Matrix matrix = new Matrix();
+			// RESIZE THE BIT MAP
+			matrix.postScale(scaleWidth, scaleHeight);
+			
+			// "RECREATE" THE NEW BITMAP
 	        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
 	        return resizedBitmap;
 	  }		 

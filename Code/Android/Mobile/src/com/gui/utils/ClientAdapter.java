@@ -45,6 +45,9 @@ public class ClientAdapter extends BaseAdapter {
 	 /* private view holder class */
 	 private class ViewHolder {
 		  ImageView profile_pic;
+		  ImageView video_icon;
+		  ImageView audio_icon;
+		  ImageView string_icon;
 		  TextView cName;
 	 }
 
@@ -61,12 +64,35 @@ public class ClientAdapter extends BaseAdapter {
 	
 		   holder.cName = (TextView) convertView.findViewById(R.id.member_name);
 		   holder.profile_pic = (ImageView) convertView.findViewById(R.id.profile_pic);
-	
-		   Contact row_pos = rowItems.get(position);
-	
-		   holder.profile_pic.setImageBitmap(row_pos.getImage());
-		   holder.cName.setText(row_pos.getName());
-	
+		   holder.video_icon = (ImageView) convertView.findViewById(R.id.video_icon);
+		   holder.audio_icon = (ImageView) convertView.findViewById(R.id.sound_icon);
+		   holder.string_icon = (ImageView) convertView.findViewById(R.id.message_icon);
+
+		   Contact contact = rowItems.get(position);
+
+		   holder.profile_pic.setImageBitmap(contact.getImage());
+		   holder.cName.setText(contact.getName());
+		   
+		   if(contact.getVideoNotification()){
+			   holder.video_icon.setVisibility(View.VISIBLE);
+		   }else{
+			   holder.video_icon.setVisibility(View.GONE);
+		   }
+		   
+
+		   if(contact.getAudioNotification()){
+			   holder.audio_icon.setVisibility(View.VISIBLE);
+		   }else{
+			   holder.audio_icon.setVisibility(View.GONE);
+		   }
+		   
+
+		   if(contact.getStringNotification()){
+			   holder.string_icon.setVisibility(View.VISIBLE);
+		   }else{
+			   holder.string_icon.setVisibility(View.GONE);
+		   }
+		   
 		   convertView.setTag(holder);
 	  } 
 	  else

@@ -1,15 +1,20 @@
 package com.mobile;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import messages.Message;
 import messages.StringMessage;
+import messages.media.StreamNotifyMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
+import android.graphics.Bitmap;
+import android.util.Base64;
 import android.util.Log;
 
+import com.gui.MainWindow;
 import com.gui.utils.Contact;
 
 public class ClientHandler {
@@ -57,8 +62,20 @@ public class ClientHandler {
 		return null;
 	}
 	
+	public static void setClientNotifocation(StreamNotifyMessage msg){
+		Contact c = getFromUserID(msg.getUserID());
+		
+		if(c != null){
+			c.setVideoNoticationOn();
+			MainWindow.updateClientList();
+		}else{
+			Log.v("ClientHandler","client does not exist.");
+		}
+		
+	}
+	
 	public static boolean updateContact(Contact client) {
-		for (Iterator<Contact> it = contacts.iterator(); it.hasNext(); ) {
+		for (Iterator<Contact> it = contacts.iterator(); it.hasNext();) {
 			Contact c = it.next();
 			if (c.getUserID() == client.getUserID()) {
 				c =client;
@@ -79,6 +96,16 @@ public class ClientHandler {
 		} else {
 			return false;
 		}
+	}
+	
+	public static boolean handleGroupMessage(StringMessage message){
+		if(contacts != null && contacts.size() > 0){
+			for (Iterator<Contact> it = contacts.iterator(); it.hasNext(); ) {
+				Contact c = it.next();
+				c.addMessage(message);
+			}
+		}
+		return false;
 	}
 	
 	public static boolean handleLogoutMessage(LogoutMessage message) {
@@ -105,5 +132,13 @@ public class ClientHandler {
 			}
 		}
 		return false;
+	}
+	
+	public static String BitMapToString(Bitmap bitmap){
+	     ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+	     bitmap.compress(Bitmap.CompressFormat.JPEG,10, baos);
+	     byte [] b=baos.toByteArray();
+	     String temp=Base64.encodeToString(b, Base64.DEFAULT);
+	     return temp;
 	}
 }

@@ -37,9 +37,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -52,7 +54,6 @@ public class MainWindow extends Activity {
 	public static ClientAdapter clientAdapter;
 	public static Handler UIHandler;
 	public static Activity activity;
-	
 	static 
 	{
 	    UIHandler = new Handler(Looper.getMainLooper());
@@ -88,6 +89,29 @@ public class MainWindow extends Activity {
 		
 		baseContext = getBaseContext();
 		listClients = (ListView) findViewById(R.id.contactList);
+		Button groupBtn = (Button) findViewById(R.id.groupBtn);
+		
+		groupBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				EditText et = (EditText) findViewById(R.id.group_message);
+				String text = et.getText().toString().trim();
+				
+				if(text != null && (text.compareTo("") != 0)){
+					et.setText("");
+					StringMessage message = new StringMessage(ClientHandler.getUser().getUserID(),
+															  Message.ALL,ClientHandler.getUser().getEmail(),text + "\n");
+					
+					ClientHandler.handleGroupMessage(message);
+					Client.getConnection().writeSafe(message);
+				}else{
+					Log.v("MainWindow","onCreate");
+				}
+				
+			}
+		});
+		
 		updateClientList();
 	}
 
@@ -131,14 +155,6 @@ public class MainWindow extends Activity {
 	public static void handleNewUser(NewUserMessage message){
 		ClientHandler.handleNewUserMessage(message);
 		updateClientList();
-//		if(message != null && user != null){
-//			Contact c = new Contact(message);
-//			
-//			if(!(contacts.contains(c))){
-//				contacts.add(c);
-//				updateClientList();
-//			}
-//		}
 	}
 	
 
@@ -155,7 +171,7 @@ public class MainWindow extends Activity {
 	}
 	
 	public static void handleStringMessage(StringMessage message){
-		boolean result =MessageWindow.handleStringMessage(message);
+		boolean result =ContactWindow.handleStringMessage(message);
 		if (!result) {
 			ClientHandler.handleStringMessage(message);
 		}

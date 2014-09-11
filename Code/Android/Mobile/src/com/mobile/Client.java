@@ -5,7 +5,7 @@ import messages.update.UpdateListMessage;
 import com.connection.Connection;
 import com.gui.LoginWindow;
 import com.gui.MainWindow;
-import com.gui.MessageWindow;
+import com.gui.ContactWindow;
 import com.gui.ProfileWindow;
 import com.gui.SplashWindow;
 import com.gui.utils.Contact;
@@ -122,29 +122,38 @@ public class Client extends ActionBarActivity {
 					
 			case MAIN_RESULT:
 					if(resultCode == RESULT_OK){
-						boolean s_result = false;
-						s_result = in.getExtras().getBoolean("UserProfile");
-						if(s_result){
-							Intent i = new Intent(getApplicationContext(),ProfileWindow.class);
-							startActivityForResult(i,MESSAGE_RESULT);							
+						boolean u_result = false;
+						u_result = in.getExtras().getBoolean("UserProfile");
+
+						if(u_result){
+								Intent i = new Intent(getApplicationContext(),ProfileWindow.class);
+								startActivityForResult(i,MESSAGE_RESULT);
 						}else{
-						int clientID = in.getExtras().getInt("ClientID");
-//						Contact user = (Contact)in.getExtras().getSerializable("User");
-						Intent i = new Intent(getApplicationContext(),MessageWindow.class);
-						i.putExtra("ClientID", clientID);
-//						i.putExtra("User", user);
-						startActivityForResult(i,MESSAGE_RESULT);
+							int clientID = in.getExtras().getInt("ClientID");
+	//						Contact user = (Contact)in.getExtras().getSerializable("User");
+							Intent i = new Intent(getApplicationContext(),ContactWindow.class);
+							i.putExtra("ClientID", clientID);
+	//						i.putExtra("User", user);
+							startActivityForResult(i,MESSAGE_RESULT);
 						}
 					}
 					break;
 			case MESSAGE_RESULT:
 				if(resultCode == RESULT_OK){
-//					Contact user = (Contact)in.getExtras().getSerializable("User");
-//					Contact client = (Contact)in.getExtras().getSerializable("Client");
-					Intent i = new Intent(getApplicationContext(),MainWindow.class);
-//					i.putExtra("UserDetails", user);
-//					i.putExtra("Client", client);
-					startActivityForResult(i,MAIN_RESULT);
+					boolean c_result = in.getExtras().getBoolean("ClientProfile");
+					Log.v("c_result","" + c_result);
+					
+					if(c_result){
+						Intent i = new Intent(getApplicationContext(),ClientProfileWindow.class);
+						startActivityForResult(i,MAIN_RESULT);
+					}else{
+	//					Contact user = (Contact)in.getExtras().getSerializable("User");
+	//					Contact client = (Contact)in.getExtras().getSerializable("Client");
+						Intent i = new Intent(getApplicationContext(),MainWindow.class);
+	//					i.putExtra("UserDetails", user);
+	//					i.putExtra("Client", client);
+						startActivityForResult(i,MAIN_RESULT);
+					}
 				}
 				break;
 			default:

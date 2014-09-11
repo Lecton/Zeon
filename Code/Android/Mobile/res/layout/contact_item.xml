@@ -35,6 +35,7 @@
 		    android:id="@+id/message_icon"
 		    android:layout_width="20dp"
 		    android:layout_height="wrap_content"
+		    android:visibility="gone"
 		    android:layout_alignParentRight="true"
 		    android:layout_alignParentTop="true"
 		    android:src="@drawable/message_icon" />
@@ -43,6 +44,7 @@
 		    android:id="@+id/sound_icon"
 		    android:layout_width="20dp"
 		    android:layout_height="wrap_content"
+		    android:visibility="gone"
 		    android:layout_alignParentTop="true"
 		    android:layout_marginRight="15dp"
 		    android:layout_toLeftOf="@+id/message_icon"
@@ -52,6 +54,7 @@
 		    android:id="@+id/video_icon"
 		    android:layout_width="20dp"
 		    android:layout_height="wrap_content"
+		    android:visibility="gone"
 		    android:layout_alignParentTop="true"
 		    android:layout_marginRight="14dp"
 		    android:layout_toLeftOf="@+id/sound_icon"

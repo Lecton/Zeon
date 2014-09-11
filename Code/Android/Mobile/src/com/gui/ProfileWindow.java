@@ -1,5 +1,10 @@
 package com.gui;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateNameMessage;
 
 import com.mobile.Client;
@@ -13,7 +18,12 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,13 +36,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.os.Build;
+import android.provider.MediaStore.MediaColumns;
 
 public class ProfileWindow extends Activity {
 
 	protected ImageButton profileImage = null;
 	protected EditText eName = null;
-	protected EditText eSurname = null;
-	private int SELECT_PHOTO = 1;
+	protected EditText eSurname = null; 
+	private final int SELECT_PHOTO = 1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,18 +117,48 @@ public class ProfileWindow extends Activity {
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
-//	public static class PlaceholderFragment extends Fragment {
-//
-//		public PlaceholderFragment() {
-//		}
-//
-//		@Override
-//		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//				Bundle savedInstanceState) {
-//			View rootView = inflater.inflate(R.layout.fragment_profile_window,
-//					container, false);
-//			return rootView;
-//		}
-//	}
+	public static class PlaceholderFragment extends Fragment {
+
+		public PlaceholderFragment() {
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_profile_window,
+					container, false);
+			return rootView;
+		}
+	}
+	
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent in) { 
+        super.onActivityResult(requestCode, resultCode, in); 
+ 
+        switch(requestCode) { 
+        case SELECT_PHOTO:
+            if(resultCode == RESULT_OK){
+				Uri selectedImageUri = in.getData();
+				String tempPath = getPath(selectedImageUri, ProfileWindow.this);
+				Bitmap bm;
+				BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
+				bm = BitmapFactory.decodeFile(tempPath, btmapOptions);
+				profileImage.setImageBitmap(bm);
+				Client.getConnection().writeSafe(new UpdateAvatarMessage(ClientHandler.getUser().getUserID(),ClientHandler.BitMapToString(bm)));
+ 
+            }
+        }
+    }
+    
+
+    public String getPath(Uri uri, Activity activity) {
+		String[] projection = { MediaColumns.DATA };
+		Cursor cursor = activity
+				.managedQuery(uri, projection, null, null, null);
+		int column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
+		cursor.moveToFirst();
+		return cursor.getString(column_index);
+	}    
+	
 
 }

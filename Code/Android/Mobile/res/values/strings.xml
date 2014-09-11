@@ -10,5 +10,6 @@
     <string name="profile">Profile</string>
     <string name="title_activity_profile_window">ProfileWindow</string>
     <string name="title_activity_contact_window">ContactWindow</string>
+    <string name="title_activity_client_profile_window">ClientProfileWindow</string>
 
 </resources>
