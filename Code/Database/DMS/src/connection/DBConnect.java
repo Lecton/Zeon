@@ -6,7 +6,11 @@ package connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,39 +22,34 @@ public class DBConnect{
     private String database;//stream2me
     private String username;//postgres
     private String password;//root
-
+    private Connection connection;
     public DBConnect(String host, int port, String database, String username, String password) {
         this.host = host;
         this.port = port;
         this.database = database;
         this.username = username;
         this.password = password;
+        this.connection = null;
     }
     
     public boolean connect(){
 
                 if(checkDrivers()){
-		Connection connection = null;
- 
-		try {
- 
-			connection = DriverManager.getConnection(
-                                                    "jdbc:postgresql://"+this.host+":"+this.port+"/"+this.database, 
-                                                    this.username,this.password);
-                        
+                    try {
+                            connection = DriverManager.getConnection(
+                                            "jdbc:postgresql://"+this.host+":"+this.port+"/"+this.database, 
+                                            this.username,this.password);
+                        if (connection != null) {
+                            return true;
+                        }                         
 
- 
-                    if (connection != null) {
-                        return true;
-                    }                         
- 
-		} catch (SQLException e) {
- 
-			System.out.println("Connection Failed! Check output console");
-			e.printStackTrace();
-			return false;
- 
-		}     
+                    } catch (SQLException e) {
+
+                            System.out.println("Connection Failed! Check output console");
+                            e.printStackTrace();
+                            return false;
+
+                    }     
         }  
         return false;
     }
@@ -65,6 +64,24 @@ public class DBConnect{
             e.printStackTrace();
             return false;
         }        
+    }
+    
+    public PreparedStatement getPreparedStatement(String statement){
+        try {
+            return connection.prepareStatement(statement);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnect.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+//    
+    public Statement getStatment(){
+        try {
+            return connection.createStatement();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnect.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
 }
