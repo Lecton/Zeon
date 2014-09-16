@@ -14,18 +14,18 @@ import io.netty.channel.Channel;
  * @author Bernhard
  */
 public class ClientGroup extends ClientMatcher {
-    public ClientGroup(int groupID) {
+    public ClientGroup(String groupID) {
         super(groupID);
     }
 
-    public int getGroupID() {
+    public String getGroupID() {
         return targetID;
     }
     
     @Override
     public boolean matches(Channel channel) {
         if (channel instanceof ClientChannel) {
-            if (((ClientChannel)channel).getGroupID() == targetID) {
+            if (((ClientChannel)channel).getGroupID().equals(targetID)) {
                 return true;
             }
         }

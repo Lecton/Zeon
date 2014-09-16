@@ -15,7 +15,7 @@ import messages.userConnection.NewUserMessage;
  * @author Bernhard
  */
 public class MessageBuilder {
-    public static GreetingMessage generateGreeting(User person, boolean success) {
+    public static GreetingMessage generateGreeting(User person, boolean success, String response) {
         GreetingMessage msg =new GreetingMessage(success);
         if (success) {
             msg.setUserID(person.getUserID());
@@ -26,8 +26,8 @@ public class MessageBuilder {
             msg.setTitle(person.getTitle());
             msg.setAboutMe(person.getAboutMe());
             msg.setAvatar(person.getAvatar());
-                    
         }
+        msg.setResponse(response);
         return msg;
     }
 

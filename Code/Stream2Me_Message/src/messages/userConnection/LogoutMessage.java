@@ -8,12 +8,12 @@ import messages.Message;
  */
 public class LogoutMessage extends Message {
 
-    public LogoutMessage(int userID) {
-        this.userID = userID;
+    public LogoutMessage(String userID) {
+        this.userID =userID;
         this.targetID =Message.SERVER;
     }
-    
-    public LogoutMessage(int userID, int targetID) {
+
+    public LogoutMessage(String userID, String targetID) {
         this.userID =userID;
         this.targetID =targetID;
     }

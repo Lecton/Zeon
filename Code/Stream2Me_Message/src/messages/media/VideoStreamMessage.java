@@ -10,7 +10,7 @@ public class VideoStreamMessage extends Message {
     private String img;
     private String streamName ="";
     
-    public VideoStreamMessage(int userID, int targetID, String streamName) {
+    public VideoStreamMessage(String userID, String targetID, String streamName) {
         this.userID =userID;
         this.targetID =targetID;
         this.streamName =streamName;

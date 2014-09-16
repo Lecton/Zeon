@@ -6,6 +6,7 @@
 
 package messageUtils;
 
+import utils.MessageUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

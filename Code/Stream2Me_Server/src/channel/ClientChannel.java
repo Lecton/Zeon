@@ -25,20 +25,20 @@ import java.net.SocketAddress;
  */
 public class ClientChannel implements Channel {
     private final Channel  ch;
-    private final int userID;
-    private int groupID;
+    private final String userID;
+    private String groupID;
 
-    public ClientChannel(Channel channel, int userID, int groupID) {
+    public ClientChannel(Channel channel, String userID, String groupID) {
         this.ch =channel;
         this.userID =userID;
         this.groupID =groupID;
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public int getGroupID() {
+    public String getGroupID() {
         return groupID;
     }
 
@@ -46,7 +46,7 @@ public class ClientChannel implements Channel {
         return ch;
     }
 
-    public void setGroupID(int groupID) {
+    public void setGroupID(String groupID) {
         this.groupID = groupID;
     }
 

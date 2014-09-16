@@ -11,7 +11,7 @@ public class AudioStreamMessage extends Message {
     public byte[] buffer = new byte[0];
     private String streamName ="";
     
-    public AudioStreamMessage(int userID, int targetID, String streamName) {
+    public AudioStreamMessage(String userID, String targetID, String streamName) {
         this.userID = userID;
         this.targetID =targetID;
         this.streamName =streamName;

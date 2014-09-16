@@ -6,7 +6,7 @@ public class StreamPropertyMessage extends Message {
     int type =0; //1 on  -  0 off
     String streamName ="";
 
-    public StreamPropertyMessage(int userID, int targetID, String streamName, int type) {
+    public StreamPropertyMessage(String userID, String targetID, String streamName, int type) {
         this.userID =userID;
         this.targetID =targetID;
         this.streamName =streamName;

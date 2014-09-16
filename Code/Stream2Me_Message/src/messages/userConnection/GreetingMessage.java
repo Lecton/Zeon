@@ -17,6 +17,8 @@ public class GreetingMessage extends Message {
     private String title;
     private String aboutMe;
     
+    private String response;
+    
     public GreetingMessage(boolean success) {
         this.success =success;
     }
@@ -81,5 +83,13 @@ public class GreetingMessage extends Message {
 
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
     }
 }

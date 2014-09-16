@@ -7,6 +7,8 @@
 package core;
 
 import connection.bootstrap.Initialiser;
+import core.database.Database;
+import core.database.UserHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -22,6 +24,7 @@ public class Server implements Runnable {
     public static void main(String[] argv) {
         System.out.println("Starting Server");
         Thread serverThread =new Thread(new Server(2014));
+        Database.INSTANCE.connect();
         serverThread.start();
     }
 
@@ -31,6 +34,8 @@ public class Server implements Runnable {
 
     @Override
     public void run() {
+        UserHandler.generateGroups();
+        
         EventLoopGroup bossGroup =new NioEventLoopGroup();
         EventLoopGroup workerGroup =new NioEventLoopGroup();
         

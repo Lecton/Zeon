@@ -7,12 +7,16 @@
 package connection.bootstrap;
 
 import connection.messageChannel.MessageHandler;
+import core.database.Database;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import messages.Message;
 
 /**
@@ -25,7 +29,9 @@ public class Handler extends SimpleChannelInboundHandler<Message> {
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         Channel incomming =ctx.channel();
-        connections.add(incomming);
+        final SslHandler sslHandler =ctx.pipeline().get(SslHandler.class);
+        System.out.println("Attempting handshake");
+        sslHandler.handshakeFuture().addListener(new Authentication(sslHandler));
     }
     
     @Override
@@ -48,6 +54,8 @@ public class Handler extends SimpleChannelInboundHandler<Message> {
     
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
+        Logger.getLogger(Handler.class.getName()).log(Level.INFO, 
+                "Received message: "+msg.handle());
         Channel incomming =ctx.channel();
         MessageHandler.handle(ctx, msg);
     }

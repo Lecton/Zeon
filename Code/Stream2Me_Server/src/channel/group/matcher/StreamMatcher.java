@@ -14,16 +14,16 @@ import io.netty.channel.Channel;
  * @author Bernhard
  */
 public class StreamMatcher extends ClientMatcher {
-    int[] targetIDs;
+    String[] targetIDs;
 
-    public StreamMatcher(int streamID, int[] targetIDs) {
+    public StreamMatcher(String streamID, String[] targetIDs) {
         super(streamID);
         this.targetIDs =targetIDs;
     }
     
-    private boolean contains(int userID) {
+    private boolean contains(String userID) {
         for (int i=0; i<targetIDs.length; i++) {
-            if (targetIDs[i] == userID) {
+            if (targetIDs[i].equals(userID)) {
                 return true;
             }
         }

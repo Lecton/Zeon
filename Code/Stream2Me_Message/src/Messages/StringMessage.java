@@ -3,7 +3,7 @@ package messages;
 public class StringMessage extends Message {
     private String message ="";
     
-    public StringMessage(int userID, int targetID, String message) {
+    public StringMessage(String userID, String targetID, String message) {
         this.userID =userID;
         this.targetID =targetID;
         this.message =message;

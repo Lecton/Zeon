@@ -16,7 +16,7 @@ public class NewUserMessage extends Message {
     private String title;
     private String aboutMe;
 
-    public NewUserMessage(int userID, String name, String surname, String email, String avatar, String title, String aboutMe) {
+    public NewUserMessage(String userID, String name, String surname, String email, String avatar, String title, String aboutMe) {
         this.userID = userID;
         this.name =name;
         this.surname =surname;

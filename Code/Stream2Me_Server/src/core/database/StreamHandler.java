@@ -23,7 +23,7 @@ public class StreamHandler {
      * @param userID - ID of the stream owner
      * @param streamName - Name of the stream
      */
-    public static void createStreamProperty(int userID, String streamName) {
+    public static void createStreamProperty(String userID, String streamName) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -37,7 +37,7 @@ public class StreamHandler {
      * @param streamName - Name of the stream
      * @return StreamProperty with the required stream data for notifying everyone of removal
      */
-    public static StreamProperty removeStreamProperty(int userID, String streamName) {
+    public static StreamProperty removeStreamProperty(String userID, String streamName) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -49,7 +49,7 @@ public class StreamHandler {
      * @param response - User response to the stream
      * @return success of the response
      */
-    public static boolean respondStream(int streamID, int userID, boolean response) {
+    public static boolean respondStream(String streamID, String userID, boolean response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -60,9 +60,9 @@ public class StreamHandler {
      * @param ownerID - Owner of the stream
      * @param affectedUserID - User affected by the update
      * @param action - Add or remove flag. 0 - Remove. 1 - Add
-     * @return ID of the stream or -1 if not found or error
+     * @return ID of the stream or null if not found or error
      */
-    public static int updateStream(String streamName, int ownerID, int affectedUserID, int action) {
+    public static String updateStream(String streamName, String ownerID, String affectedUserID, int action) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -73,7 +73,7 @@ public class StreamHandler {
      * @param streamName - Name of the stream
      * @return Stream Property for the found stream. Empty stream property if nothing found
      */
-    public static StreamProperty getStreamProperty(int ownerID, String streamName) {
+    public static StreamProperty getStreamProperty(String ownerID, String streamName) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

@@ -9,41 +9,74 @@ package channel;
 import channel.group.ClientChannelGroup;
 import channel.group.matcher.ClientGroup;
 import channel.group.matcher.ClientMatcher;
-import io.netty.channel.Channel;
+import core.database.Database;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import io.netty.util.internal.ConcurrentSet;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import messages.Message;
-import messages.update.UpdateAvatarMessage;
-import utils.Log;
 
 /**
  *
  * @author Bernhard
  */
 public class ClientHandler {
-    static ClientChannelGroup serverGroup = new ClientChannelGroup(GlobalEventExecutor.INSTANCE);
-
+    static final Map<String, ClientChannelGroup> serverGroup = new HashMap<>();
+    
+    static {
+        serverGroup.put("default", new ClientChannelGroup(GlobalEventExecutor.INSTANCE));
+    }
+    
     public static boolean add(ClientChannel channel) {
-        Log.write(ClientHandler.class, "Clients: " + serverGroup.size());
-        return serverGroup.add(channel);
+//        Logger.getLogger(ClientHandler.class.getName()).log(Level.INFO, 
+//                "Clients: " + serverGroup.size());
+        ClientChannelGroup ccg =serverGroup.get(channel.getGroupID());
+        if (ccg != null) {
+            return ccg.add(channel);
+        } else {
+            Logger.getLogger(ClientHandler.class.getName()).log(Level.INFO, 
+                    "Group not found.");
+            return false;
+        }
     }
     
-    public static boolean remove(Channel channel) {
-        Log.write(ClientHandler.class, "Clients: " + serverGroup.size());
-        return serverGroup.remove(channel);
+    public static boolean remove(ClientChannel channel) {
+        Logger.getLogger(ClientHandler.class.getName()).log(Level.INFO, 
+                "Clients: " + serverGroup.size());
+        ClientChannelGroup ccg =serverGroup.get(channel.getGroupID());
+        if (ccg != null) {
+            return ccg.remove(channel);
+        } else {
+            return serverGroup.get("default").remove(channel);
+        }
     }
     
-    public static void removeGroup(int groupID) {
-        serverGroup.deregister(new ClientGroup(groupID));
+    public static void removeGroup(String groupID) {
+        ClientChannelGroup ccg =serverGroup.get(groupID);
+        if (ccg != null) {
+            ccg.deregister(new ClientGroup(groupID));
+            serverGroup.remove(groupID);
+        }
     }
     
-    public static void writeAndFlush(Message message) {
+    public static void writeAndFlush(String groupID, Message message) {
         ClientMatcher matcher =ClientMatcher.generateMatcher(message);
-        serverGroup.writeAndFlush(message, matcher);
+        ClientChannelGroup ccg =serverGroup.get(groupID);
+        if (ccg != null) {
+            ccg.writeAndFlush(message, matcher);
+        }
     }
     
-    public static void writeAndFlush(Message message, ClientMatcher matcher) {
-        serverGroup.writeAndFlush(message, matcher);
+    public static void writeAndFlush(String groupID, Message message, ClientMatcher matcher) {
+        ClientChannelGroup ccg =serverGroup.get(groupID);
+        if (ccg != null) {
+            ccg.writeAndFlush(message, matcher);
+        }
+    }
+
+    public static void createGroup(String groupID) {
+        ClientChannelGroup ccg =new ClientChannelGroup(groupID, GlobalEventExecutor.INSTANCE);
+        serverGroup.put(groupID, ccg);
     }
 }

@@ -17,21 +17,22 @@ public abstract class Message implements Serializable {
                                     updateName, updateAvatar, updateList, 
                                     string, streamProperty, streamUpdate, 
                                     streamNotify, auido, video, 
-                                    streamReply, greeting};
-    public static int SERVER =-10;
-    public static int ALL =-11;
-    public static int ERROR =-15;
-    public static int IGNORE =-1;
+                                    streamReply, greeting, console};
     
-    protected int userID =IGNORE;
+    public static String SERVER ="SERVER";
+    public static String ALL ="ALL";
+    public static String ERROR ="ERROR";
+    public static String IGNORE ="IGNORE";
+    
+    protected String userID =IGNORE;
     protected String timestamp =(new Timestamp((new java.util.Date()).getTime())).toString();
     protected transient int SSN;
-    protected int targetID =IGNORE;
-    protected int targetGroupID =IGNORE;
+    protected String targetID =IGNORE;
+    protected String targetGroupID =IGNORE;
     
     public abstract String getMessage();
     
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
@@ -39,23 +40,23 @@ public abstract class Message implements Serializable {
         return timestamp;
     }
 
-    public int getTargetID() {
+    public String getTargetID() {
         return targetID;
     }
 
-    public int getTargetGroupID() {
+    public String getTargetGroupID() {
         return targetGroupID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 
-    public void setTargetID(int targetID) {
+    public void setTargetID(String targetID) {
         this.targetID = targetID;
     }
 
-    public void setTargetGroupID(int targetGroupID) {
+    public void setTargetGroupID(String targetGroupID) {
         this.targetGroupID = targetGroupID;
     }
     

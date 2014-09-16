@@ -14,7 +14,7 @@ import messages.Message;
  */
 public class UpdateListMessage extends Message {
     
-    public UpdateListMessage(int userID) {
+    public UpdateListMessage(String userID) {
         this.userID =userID;
         this.targetID =Message.SERVER;
     }

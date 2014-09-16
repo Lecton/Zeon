@@ -6,7 +6,7 @@ public class UpdateNameMessage extends Message {
     private String name;
     private String surname;
     
-    public UpdateNameMessage(int userID, String name, String surname) {
+    public UpdateNameMessage(String userID, String name, String surname) {
         this.userID = userID;
         this.name = name;
         this.surname =surname;

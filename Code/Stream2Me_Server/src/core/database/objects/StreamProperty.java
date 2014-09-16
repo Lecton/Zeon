@@ -14,19 +14,19 @@ import channel.group.matcher.StreamMatcher;
  * @author Bernhard
  */
 public class StreamProperty {
-    final int[] targetIDs;
-    final int streamID;
+    final String[] targetIDs;
+    final String streamID;
 
-    public StreamProperty(int[] targetIDs, int streamID) {
+    public StreamProperty(String[] targetIDs, String streamID) {
         this.targetIDs = targetIDs;
         this.streamID = streamID;
     }
 
-    public int[] getTargetIDs() {
+    public String[] getTargetIDs() {
         return targetIDs;
     }
 
-    public int getStreamID() {
+    public String getStreamID() {
         return streamID;
     }
 

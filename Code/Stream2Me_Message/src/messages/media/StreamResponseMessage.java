@@ -13,21 +13,21 @@ import messages.Message;
  * @author Bernhard
  */
 public class StreamResponseMessage extends Message {
-    int streamID;
+    String streamID;
     boolean accept =false;
 
-    public StreamResponseMessage(int userID, int streamID, boolean accept) {
+    public StreamResponseMessage(String userID, String streamID, boolean accept) {
         this.userID =userID;
         this.streamID = streamID;
         this.accept =accept;
         this.targetID =Message.SERVER;
     }
 
-    public void setStreamID(int streamID) {
+    public void setStreamID(String streamID) {
         this.streamID = streamID;
     }
 
-    public int getStreamID() {
+    public String getStreamID() {
         return streamID;
     }
 

@@ -16,13 +16,13 @@ import messages.Message;
  * @author Bernhard
  */
 public class ClientMatcher implements ChannelMatcher {
-    private static final ClientGroup ALL_MATCHER = new ClientGroup(-1) {
+    private static final ClientGroup ALL_MATCHER = new ClientGroup("ALL") {
         @Override
         public boolean matches(Channel channel) {
             return true;
         }
     };
-    private static final ClientGroup NON_MATCHER = new ClientGroup(-1) {
+    private static final ClientGroup NON_MATCHER = new ClientGroup("IGNORE") {
         @Override
         public boolean matches(Channel channel) {
             return false;
@@ -38,44 +38,44 @@ public class ClientMatcher implements ChannelMatcher {
     }
     
     public static ClientMatcher generateMatcher(Message message) {
-        if (message.getTargetID() == Message.ALL) {
-            if (message.getTargetGroupID() == Message.IGNORE) {
+        if (message.getTargetID().equals(Message.ALL)) {
+            if (message.getTargetGroupID().equals(Message.IGNORE)) {
                 return ClientMatcher.non();
-            }else if (message.getTargetGroupID() == Message.IGNORE) {
+            }else if (message.getTargetGroupID().equals(Message.IGNORE)) {
                 return ClientMatcher.non();
-            } else if (message.getTargetGroupID() == Message.ERROR) {
+            } else if (message.getTargetGroupID().equals(Message.ERROR)) {
                 return ClientMatcher.non();
-            } else if (message.getTargetGroupID() == Message.SERVER) {
+            } else if (message.getTargetGroupID().equals(Message.SERVER)) {
                 return ClientMatcher.non();
             } else {
-                return new ClientGroup(message.getTargetID());
+                return new ClientGroup(message.getTargetGroupID());
             }
-        } else if (message.getTargetID() == Message.IGNORE) {
+        } else if (message.getTargetID().equals(Message.IGNORE)) {
             return ClientMatcher.non();
-        } else if (message.getTargetID() == Message.ERROR) {
+        } else if (message.getTargetID().equals(Message.ERROR)) {
             return ClientMatcher.non();
-        } else if (message.getTargetID() == Message.SERVER) {
+        } else if (message.getTargetID().equals(Message.SERVER)) {
             return ClientMatcher.non();
         } else {
             return new ClientMatcher(message.getTargetID());
         }
     }
     
-    public static final int DEFAULTGROUP =-111;
-    protected final int targetID;
+    public static final String DEFAULTGROUP ="default";
+    protected final String targetID;
 
-    public ClientMatcher(int targetID) {
+    public ClientMatcher(String targetID) {
         this.targetID = targetID;
     }
 
-    public int getTargetID() {
+    public String getTargetID() {
         return targetID;
     }
     
     @Override
     public boolean matches(Channel channel) {
         if (channel instanceof ClientChannel) {
-            if (((ClientChannel)channel).getUserID() == targetID) {
+            if (((ClientChannel)channel).getUserID().equals(targetID)) {
                 return true;
             }
         }

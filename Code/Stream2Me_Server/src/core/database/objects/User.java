@@ -13,9 +13,9 @@ import java.sql.Date;
  * @author Bernhard
  */
 public class User {
-    final int userID;
+    final String userID;
     String username;
-    int groupID;
+    String groupID;
     String name;
     String surname;
     String email;
@@ -24,7 +24,7 @@ public class User {
     String avatar;
     boolean LoggedIn =false;
 
-    public User(int userID, String username, int groupID, String name, String surname, String email, String title, String aboutMe, String avatar) {
+    public User(String userID, String username, String groupID, String name, String surname, String email, String title, String aboutMe, String avatar) {
         this.userID = userID;
         this.username = username;
         this.groupID = groupID;
@@ -36,7 +36,7 @@ public class User {
         this.avatar = avatar;
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
@@ -60,7 +60,7 @@ public class User {
         return avatar;
     }
 
-    public int getGroupID() {
+    public String getGroupID() {
         return groupID;
     }
 
@@ -88,7 +88,7 @@ public class User {
         this.email = email;
     }
 
-    public void setGroupID(int groupID) {
+    public void setGroupID(String groupID) {
         this.groupID = groupID;
     }
 

@@ -14,10 +14,10 @@ import messages.Message;
  */
 public class StreamUpdateMessage extends Message {
     private final String streamID;
-    private final int affectedUserID;
+    private final String affectedUserID;
     private final int action; //0 remove; 1 add
 
-    public StreamUpdateMessage(int userID, int targetID, String streamID, int affectedUserID, int action) {
+    public StreamUpdateMessage(String userID, String targetID, String streamID, String affectedUserID, int action) {
         this.userID =userID;
         this.targetID =targetID;
         this.streamID = streamID;
@@ -29,7 +29,7 @@ public class StreamUpdateMessage extends Message {
         return streamID;
     }
 
-    public int getAffectedUserID() {
+    public String getAffectedUserID() {
         return affectedUserID;
     }
 
