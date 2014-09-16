@@ -10,8 +10,10 @@ import communication.Connection;
 import javax.swing.JFrame;
 import messages.Message;
 import mvc.controller.message.LoginHandler;
+import mvc.controller.message.MessageFactory;
 import mvc.controller.message.MessageHandler;
-import mvc.view.Login;
+import mvc.model.Model;
+import mvc.view.authentication.Login;
 import mvc.view.generalUI.GUI;
 
 /**
@@ -20,18 +22,26 @@ import mvc.view.generalUI.GUI;
  */
 public class Control {
     protected static Control INSTANCE =new Control();
-    private static JFrame window;
     private static MessageHandler msgHandler =new LoginHandler();
     
+//    private static ArrayList<
+    
     private Connection con;
+    private JFrame window;
     
     private Control() {}
-
+    
     public Control(String HOST, int PORT) throws InterruptedException {
         con =new Connection(HOST, PORT);
-//        con.makeConnection();
+        con.makeConnection();
     }
-
+    
+    public void close() {
+        con.writeMessage(MessageFactory.generateLogout(Model.INSTANCE.getUserID()));
+        con.close();
+        UpdateControl.INSTANCE.stop();
+    }
+    
     public static boolean handleMessage(Message msg) {
         return msgHandler.handle(msg);
     }
@@ -60,8 +70,8 @@ public class Control {
                         break;
                     case 2:
                         window =new GUI();
+                        ((GUI)window).setupControls();
                         msgHandler =new MessageHandler();
-        //                window =new GUI();
                         break;
                 }
                 if (window != null) {

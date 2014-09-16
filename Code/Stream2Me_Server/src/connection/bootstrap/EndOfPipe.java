@@ -9,6 +9,7 @@ package connection.bootstrap;
 import core.database.Database;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.ssl.NotSslRecordException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,8 +21,11 @@ public class EndOfPipe extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        Logger.getLogger(EndOfPipe.class.getName()).log(Level.SEVERE, 
-                "Exception at end of pipe: ", cause);
+        if (cause instanceof NotSslRecordException) {
+        } else {
+            Logger.getLogger(EndOfPipe.class.getName()).log(Level.SEVERE, 
+                    "Exception at end of pipe: ", cause);
+        }
         ctx.close();
     }
 

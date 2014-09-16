@@ -4,24 +4,20 @@
  * and open the template in the editor.
  */
 
-package userInterface.generalUI;
+package mvc.view.generalUI;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 /**
  *
  * @author Bernhard
  */
 public class HideArrow extends JButton {
-    public static int MINWIDTH =33;
-    
-    boolean Right;
-    JComponent dependant =null;
+    private boolean rightDirection =false;
+    private JComponent dependant =null;
 //    JPanel parent;
 //    Dimension prefSize;
     
@@ -31,14 +27,11 @@ public class HideArrow extends JButton {
     public HideArrow() {
         initComponents();
         this.setBackground(Color.WHITE);
-        this.setPreferredSize(new Dimension(MINWIDTH, 736));
     }
     
     public void setPosition(JComponent dependant, boolean Right) {
-        this.Right =Right;
+        this.rightDirection =Right;
         this.dependant =dependant;
-//        this.parent =parent;
-//        this.prefSize =parent.getPreferredSize();
     }
 
     public JComponent getDependant() {
@@ -66,22 +59,21 @@ public class HideArrow extends JButton {
     public void paint(Graphics g) {
         super.paint(g); //To change body of generated methods, choose Tools | Templates.
         
-        int height =80;
-        int gap =4;
-        int width =23;
+        int topY =210;
+        int topX =10;
         
-        int leftX =gap*3;
-        int rightX =width-gap;
-        int topY =gap*2+this.getHeight()/2-height;
-        int bottomY =topY+height;
-        int centreY =topY+(bottomY-topY)/2;
+        int centreY =250;
+        int centreX =3;
+        
+        int bottomY =290;
+        int bottomX =10;
         
         if (dependant != null) {
-            if (Right) {
+            if (rightDirection) {
                 if (dependant.isVisible()) {
-                    int temp =leftX;
-                    leftX =rightX;
-                    rightX =temp;
+                    topX =3;
+                    centreX =10;
+                    bottomX =3;
                 } else {
 
                 }
@@ -89,17 +81,48 @@ public class HideArrow extends JButton {
                 if (dependant.isVisible()) {
 
                 } else {
-                    int temp =leftX;
-                    leftX =rightX;
-                    rightX =temp;
+                    topX =3;
+                    centreX =10;
+                    bottomX =3;
                 }
             }
         }
+//        int gap =2;
+//        int width =13;
         
+        
+        
+//        
+//        int leftX =gap*3;
+//        int rightX =width-gap;
+//        int topY =gap*2+this.getHeight()/2-height;
+//        int bottomY =topY+height;
+//        int centreY =topY+(bottomY-topY)/2;
+//        
+//        if (dependant != null) {
+//            if (Right) {
+//                if (dependant.isVisible()) {
+//                    int temp =leftX;
+//                    leftX =rightX;
+//                    rightX =temp;
+//                } else {
+//
+//                }
+//            } else {
+//                if (dependant.isVisible()) {
+//
+//                } else {
+//                    int temp =leftX;
+//                    leftX =rightX;
+//                    rightX =temp;
+//                }
+//            }
+//        }
+//        
         int[] xPoints =new int[3];
-        xPoints[0] =leftX;
-        xPoints[1] =rightX;
-        xPoints[2] =leftX;
+        xPoints[0] =topX;
+        xPoints[1] =centreX;
+        xPoints[2] =bottomX;
         
         int[] yPoints =new int[3];
         yPoints[0] =topY;
@@ -107,9 +130,9 @@ public class HideArrow extends JButton {
         yPoints[2] =bottomY;
         g.setColor(Color.BLUE);
         g.fillPolygon(xPoints, yPoints, 3);
-        
-        g.drawLine(leftX, topY, leftX, bottomY);
-        g.drawLine(leftX, topY, rightX, centreY);
-        g.drawLine(rightX, centreY, leftX, bottomY);
+//        
+        g.drawLine(topX, topY, bottomX, bottomY);
+        g.drawLine(topX, topY, centreX, centreY);
+        g.drawLine(centreX, centreY, bottomX, bottomY);
     }
 }

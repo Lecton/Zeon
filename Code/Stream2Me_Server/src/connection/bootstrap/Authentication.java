@@ -38,8 +38,10 @@ public class Authentication implements GenericFutureListener<Future<Channel>> {
             future.get().flush();
             Handler.connections.add(future.get());
         } else {
-            if (future.get().isOpen()) {
+            try {
                 future.get().close();
+            } catch (Exception e) {
+                
             }
         }
     }

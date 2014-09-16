@@ -59,8 +59,8 @@ public class ImageContainer extends javax.swing.JPanel {
             height = getPreferredSize().height;
         }
         
-        System.out.println("W: "+width);
-        System.out.println("H: "+height);
+//        System.out.println("W: "+width);
+//        System.out.println("H: "+height);
         
 //        Dimension d;
 //        if (fill)
@@ -75,7 +75,7 @@ public class ImageContainer extends javax.swing.JPanel {
         
 //        getGraphics().drawImage(ii.getImage(), (this.getWidth()-ii.getIconWidth())/2, 
 //            (this.getHeight()-ii.getIconHeight())/2, ii.getImageObserver());
-        System.out.println("Drawing");
+//        System.out.println("Drawing");
         revalidate();
         repaint();
     }

@@ -4,16 +4,10 @@
  * and open the template in the editor.
  */
 
-package userInterface.generalUI;
+package mvc.view.generalUI;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Transparency;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -27,26 +21,20 @@ public class NotificationIcon extends javax.swing.JPanel {
     public static enum iconType {MESSAGE, VIDEO, AUDIO};
     private double w =200, h =200;
     private static int gap =3;
-    private boolean flash;
     private int t =0;
     
-    iconType type;
+    iconType type =iconType.MESSAGE;
 
     /**
      * Creates new form NotificationIcon
      */
     public NotificationIcon() {
         initComponents();
-        flash =false;
         type =iconType.MESSAGE;
     }
 
     public void setType(iconType type) {
         this.type = type;
-    }
-    
-    public void setFlash(boolean flash) {
-        this.flash =flash;
     }
 
     /**
@@ -128,11 +116,11 @@ public class NotificationIcon extends javax.swing.JPanel {
     private BufferedImage getImage() throws IOException {
         switch (type) {
             case MESSAGE:
-                return ImageIO.read((getClass().getResource("/notificationIcons/message_icon.png")));
+                return ImageIO.read((getClass().getResource("/notification_Icons/message_icon.png")));
             case VIDEO:
-                return ImageIO.read((getClass().getResource("/notificationIcons/video_icon.png")));
+                return ImageIO.read((getClass().getResource("/notification_Icons/video_icon.png")));
             case AUDIO:
-                return ImageIO.read((getClass().getResource("/notificationIcons/audio_icon.png")));
+                return ImageIO.read((getClass().getResource("/notification_Icons/audio_icon.png")));
             default:
                 return null;
         }

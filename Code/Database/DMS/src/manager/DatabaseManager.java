@@ -40,7 +40,7 @@ public class DatabaseManager {
         if(email != null){
             PreparedStatement statement;
             ResultSet result = null;
-            String query = "SELECT userid " +
+            String query = "SELECT avatar " +
                             "FROM client " +
                             "WHERE email = ?";
             statement = dbconnect.getPreparedStatement(query);
@@ -75,7 +75,7 @@ public class DatabaseManager {
             PreparedStatement statement;
 
             String query = "INSERT INTO client(userid,groupid,name,surname,username,email,"+
-                                "avatar,title,registrationdate,loggedin) VALUES(?,?,?,?,?,?,?,?,?,?)";
+                                "title,registrationdate,loggedin, password) VALUES(?,?,?,?,?,?,?,?,?,?)";
             statement = dbconnect.getPreparedStatement(query);
             int i = 1;
               try {
@@ -85,10 +85,10 @@ public class DatabaseManager {
                   statement.setString(i++, user.getSurname());
                   statement.setString(i++, user.getUsername());
                   statement.setString(i++, user.getEmail());
-                  statement.setString(i++, user.getAvatar());
                   statement.setString(i++, user.getTitle());
                   statement.setDate(i++, user.getRegistration());
                   statement.setBoolean(i++, user.isLoggedIn());
+                  statement.setString(i++, "cos301");
                   statement.executeUpdate();
               } catch (SQLException ex) {
                   Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);

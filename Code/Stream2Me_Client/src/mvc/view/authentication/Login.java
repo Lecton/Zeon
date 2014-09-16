@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package mvc.view;
+package mvc.view.authentication;
 
 import mvc.controller.LoginControl;
 

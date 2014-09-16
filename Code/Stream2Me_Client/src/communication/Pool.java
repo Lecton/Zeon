@@ -28,10 +28,11 @@ public class Pool implements Runnable {
     
     private static boolean add(ChannelHandlerContext ctx, Message msg, int counter) {
         System.out.println(counter);
-        if (counter == 10) {
+        if (counter >= 10) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
+                System.out.println("Error sleeping");
             }
             return pool.add(new PoolEntry(ctx, msg, counter+1));
         } else if (counter >= 30) {

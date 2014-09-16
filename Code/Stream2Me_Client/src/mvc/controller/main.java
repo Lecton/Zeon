@@ -14,6 +14,6 @@ public class main {
     public static void main(String[] args) throws InterruptedException {
         Control c =new Control("localhost", 2014);
         Control.INSTANCE =c;
-        c.initiate(2);
+        c.initiate(0);
     }
 }

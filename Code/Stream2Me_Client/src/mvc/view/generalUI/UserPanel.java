@@ -18,9 +18,12 @@ public class UserPanel extends javax.swing.JPanel {
         initComponents();
     }
     
-    public void setUser(String avatar, String name) {
-//        imgAvatar.setImage(avatar, true);
+    public void setName(String name) {
         lblName.setText(name);
+    }
+    
+    public void setAvatar(String avatar) {
+        imgAvatar.setImage(avatar, true);
     }
 
     /**
@@ -33,9 +36,11 @@ public class UserPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         lblName = new javax.swing.JLabel();
+        imgAvatar = new mvc.view.generalUI.ImageContainer();
 
         setMaximumSize(new java.awt.Dimension(325, 69));
-        setMinimumSize(new java.awt.Dimension(325, 69));
+        setMinimumSize(new java.awt.Dimension(10, 69));
+        setPreferredSize(new java.awt.Dimension(10, 69));
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
@@ -44,17 +49,30 @@ public class UserPanel extends javax.swing.JPanel {
 
         lblName.setText("Name");
 
+        javax.swing.GroupLayout imgAvatarLayout = new javax.swing.GroupLayout(imgAvatar);
+        imgAvatar.setLayout(imgAvatarLayout);
+        imgAvatarLayout.setHorizontalGroup(
+            imgAvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 69, Short.MAX_VALUE)
+        );
+        imgAvatarLayout.setVerticalGroup(
+            imgAvatarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(79, 79, 79)
+                .addComponent(imgAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblName)
-                .addGap(0, 219, Short.MAX_VALUE))
+                .addGap(0, 175, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(imgAvatar, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblName)
@@ -68,6 +86,7 @@ public class UserPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private mvc.view.generalUI.ImageContainer imgAvatar;
     private javax.swing.JLabel lblName;
     // End of variables declaration//GEN-END:variables
 }

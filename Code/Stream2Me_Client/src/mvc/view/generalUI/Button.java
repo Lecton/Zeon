@@ -1,3 +1,9 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package mvc.view.generalUI;
 
 import java.awt.Dimension;
@@ -6,11 +12,6 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import utils.ImageUtils;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
@@ -32,12 +33,12 @@ public class Button extends JButton {
     @Override
     public void setIcon(Icon defaultIcon) {
         icon =defaultIcon;
-        int _width =getBoundsWidth();
-        int _height =getBoundsHeight();
-        
-        if (_width != 0 && _height != 0) {
-            super.setIcon(ImageUtils.resizeConvert(ImageUtils.convert(defaultIcon),
-                    new Dimension(_width, _height)));
+        int width =getBoundsWidth();
+        int height =getBoundsHeight();
+        if (width != 0 && height != 0) {
+            super.setIcon(ImageUtils.resizeConvert(
+                    ImageUtils.convert(defaultIcon),
+                    new Dimension(width, height)));
         }
     }
 
@@ -55,7 +56,6 @@ public class Button extends JButton {
         } else if (clicked != null) {
             setIcon(clicked);
         }
-        
         pressed =!pressed;
     }
 
@@ -64,11 +64,11 @@ public class Button extends JButton {
     }
     
     private int getBoundsWidth() {
-        return getBounds().width-getInsets().left-getInsets().right;
+        return getBounds().width-getInsets().left-getInsets().right-10;
     }
     
     private int getBoundsHeight() {
-        return getBounds().height-getInsets().top-getInsets().bottom;
+        return getBounds().height-getInsets().top-getInsets().bottom-10;
     }
 
     @Override

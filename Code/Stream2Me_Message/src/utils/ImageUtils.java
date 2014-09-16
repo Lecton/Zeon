@@ -121,17 +121,20 @@ public class ImageUtils {
         int original_height = imgSize.height;
         int bound_width = boundary.width;
         int bound_height = boundary.height;
-        int new_width = original_width;
-        int new_height = original_height;
-
-        float ratio =(float)original_width/(float)original_height;
-        if (ratio > 1) {
-            new_width =bound_width;
-            new_height =(int) (bound_height/ratio);
-        } else {
-            new_height =bound_height;
-            new_width =(int) (bound_width*ratio);
-        }
+        int new_width;
+        int new_height;
+        
+        float wRatio =(float)original_width/(float)bound_width;
+        float hRatio =(float)original_height/(float)bound_height;
+        
+//        System.out.println("wR: "+wRatio);
+//        System.out.println("hR: "+hRatio);
+//        System.out.println("Image: "+imgSize);
+//        System.out.println("bounds: "+boundary);
+        
+        float ratio =(wRatio>hRatio?wRatio:hRatio);
+        new_height =(int)(original_height/ratio);
+        new_width =(int)(original_width/ratio);
 
         return new Dimension(new_width, new_height);
     }

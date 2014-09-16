@@ -57,6 +57,14 @@ public class GreetingMessage extends Message {
         return avatar;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }

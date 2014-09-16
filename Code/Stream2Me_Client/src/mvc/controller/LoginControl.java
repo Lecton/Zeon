@@ -7,14 +7,14 @@
 package mvc.controller;
 
 import mvc.controller.message.MessageFactory;
-import mvc.view.Login;
+import mvc.view.authentication.Login;
 
 /**
  *
  * @author Bernhard
  */
 public class LoginControl {
-    static Login view;
+    private static Login view;
     
     public static void register(Login loginView) {
         view =loginView;
@@ -37,7 +37,7 @@ public class LoginControl {
         view.setResponse(response);
         if (result) {
             view.dispose();
-            Control.INSTANCE.initiate(1);
+            Control.INSTANCE.initiate(2);
         }
     }
 }

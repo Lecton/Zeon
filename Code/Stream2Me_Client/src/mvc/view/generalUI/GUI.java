@@ -1,20 +1,41 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package mvc.view.generalUI;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.WindowEvent;
-import javax.swing.GroupLayout;
-import javax.swing.JComponent;
-import messages.Message;
-//import mvc.view.generalUI.contacts.ContactProfile;
-//import mvc.view.generalUI.messages.MessagePanel;
+import java.awt.Rectangle;
+import mvc.controller.ContactListControl;
+import mvc.controller.GUIControl;
+import mvc.controller.UserControl;
 
+/**
+ *
+ * @author Bernhard
+ */
 public class GUI extends javax.swing.JFrame {
-    
+
+    /**
+     * Creates new form GUI
+     */
     public GUI() {
         initComponents();
+        
+        setupGUI();
     }
     
+    private void printBounds(String name, Rectangle r) {
+        System.out.println(name+": ");
+        System.out.println("\tX: "+r.x);
+        System.out.println("\tY: "+r.y);
+        System.out.println("\tWidth: "+r.width);
+        System.out.println("\tHeight: "+r.height);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -24,193 +45,232 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnLeftArrow = new userInterface.generalUI.HideArrow();
-        pnlControls = new javax.swing.JPanel();
-        btnSettings = new javax.swing.JButton();
-        btnLogout = new javax.swing.JButton();
-        btnExit = new javax.swing.JButton();
-        pnlPeople = new javax.swing.JPanel();
-        pnlContent = new javax.swing.JPanel();
-        btnRightArrow = new userInterface.generalUI.HideArrow();
+        leftArrow = new mvc.view.generalUI.HideArrow();
+        rightArrow = new mvc.view.generalUI.HideArrow();
+        controls = new javax.swing.JPanel();
+        streamVideo = new mvc.view.generalUI.Button();
+        streamAudio = new mvc.view.generalUI.Button();
+        acceptAudio = new mvc.view.generalUI.Button();
+        acceptVideo = new mvc.view.generalUI.Button();
+        logout = new mvc.view.generalUI.Button();
+        settings = new mvc.view.generalUI.Button();
+        people = new javax.swing.JPanel();
+        user = new mvc.view.generalUI.UserPanel();
+        contactsScroll = new javax.swing.JScrollPane();
+        contacts = new mvc.view.generalUI.contacts.ContactList();
+        content = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(991, 550));
-        setMinimumSize(new java.awt.Dimension(419, 500));
-        setName("mainFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(1028, 500));
+        setTitle("Stream2Me");
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
 
-        btnLeftArrow.setPreferredSize(new java.awt.Dimension(33, 500));
-        btnLeftArrow.addActionListener(new java.awt.event.ActionListener() {
+        leftArrow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLeftArrowActionPerformed(evt);
+                leftArrowActionPerformed(evt);
             }
         });
 
-        pnlControls.setBackground(new java.awt.Color(255, 255, 255));
-        pnlControls.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        pnlControls.setPreferredSize(new java.awt.Dimension(89, 500));
-
-        btnSettings.setText("Settings");
-        btnSettings.addActionListener(new java.awt.event.ActionListener() {
+        rightArrow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSettingsActionPerformed(evt);
+                rightArrowActionPerformed(evt);
             }
         });
 
-        btnLogout.setText("Logout");
+        controls.setBackground(new java.awt.Color(255, 255, 255));
+        controls.setMaximumSize(new java.awt.Dimension(62, 500));
+        controls.setMinimumSize(new java.awt.Dimension(62, 500));
+        controls.setName(""); // NOI18N
+        controls.setPreferredSize(new java.awt.Dimension(62, 500));
 
-        btnExit.setText("Exit");
-        btnExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExitActionPerformed(evt);
-            }
-        });
+        streamVideo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/streaming_Icons/unclicked-camera.png"))); // NOI18N
+        streamVideo.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        streamVideo.setMaximumSize(new java.awt.Dimension(58, 58));
+        streamVideo.setMinimumSize(new java.awt.Dimension(58, 58));
+        streamVideo.setPreferredSize(new java.awt.Dimension(58, 58));
 
-        javax.swing.GroupLayout pnlControlsLayout = new javax.swing.GroupLayout(pnlControls);
-        pnlControls.setLayout(pnlControlsLayout);
-        pnlControlsLayout.setHorizontalGroup(
-            pnlControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlControlsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnSettings, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(pnlControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        streamAudio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/streaming_Icons/unclicked-microphone.png"))); // NOI18N
+        streamAudio.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        streamAudio.setMaximumSize(new java.awt.Dimension(58, 58));
+        streamAudio.setMinimumSize(new java.awt.Dimension(58, 58));
+        streamAudio.setPreferredSize(new java.awt.Dimension(58, 58));
+
+        acceptAudio.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        acceptAudio.setMaximumSize(new java.awt.Dimension(58, 58));
+        acceptAudio.setMinimumSize(new java.awt.Dimension(58, 58));
+        acceptAudio.setPreferredSize(new java.awt.Dimension(58, 58));
+
+        acceptVideo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/notification_Icons/video_icon.png"))); // NOI18N
+        acceptVideo.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        acceptVideo.setMaximumSize(new java.awt.Dimension(58, 58));
+        acceptVideo.setMinimumSize(new java.awt.Dimension(58, 58));
+        acceptVideo.setPreferredSize(new java.awt.Dimension(58, 58));
+
+        logout.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        logout.setMaximumSize(new java.awt.Dimension(58, 58));
+        logout.setMinimumSize(new java.awt.Dimension(58, 58));
+        logout.setPreferredSize(new java.awt.Dimension(58, 58));
+
+        settings.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        settings.setMaximumSize(new java.awt.Dimension(58, 58));
+        settings.setMinimumSize(new java.awt.Dimension(58, 58));
+        settings.setPreferredSize(new java.awt.Dimension(58, 58));
+
+        javax.swing.GroupLayout controlsLayout = new javax.swing.GroupLayout(controls);
+        controls.setLayout(controlsLayout);
+        controlsLayout.setHorizontalGroup(
+            controlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controlsLayout.createSequentialGroup()
+                .addGap(2, 2, 2)
+                .addGroup(controlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(logout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(acceptVideo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(streamVideo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(streamAudio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(acceptAudio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(settings, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(2, 2, 2))
         );
-        pnlControlsLayout.setVerticalGroup(
-            pnlControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlControlsLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSettings, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+        controlsLayout.setVerticalGroup(
+            controlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(controlsLayout.createSequentialGroup()
+                .addGap(2, 2, 2)
+                .addComponent(streamVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(streamAudio, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64)
+                .addComponent(acceptVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(acceptAudio, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(67, 67, 67)
+                .addComponent(settings, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2))
         );
 
-        pnlPeople.setBackground(new java.awt.Color(255, 255, 255));
-        pnlPeople.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        pnlPeople.setMaximumSize(new java.awt.Dimension(345, 500));
-        pnlPeople.setMinimumSize(new java.awt.Dimension(345, 500));
-        pnlPeople.setName(""); // NOI18N
-        pnlPeople.setPreferredSize(new java.awt.Dimension(345, 500));
+        user.setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout pnlPeopleLayout = new javax.swing.GroupLayout(pnlPeople);
-        pnlPeople.setLayout(pnlPeopleLayout);
-        pnlPeopleLayout.setHorizontalGroup(
-            pnlPeopleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 341, Short.MAX_VALUE)
+        contactsScroll.setBackground(new java.awt.Color(255, 255, 255));
+        contactsScroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        contactsScroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        contactsScroll.setViewportView(contacts);
+
+        javax.swing.GroupLayout peopleLayout = new javax.swing.GroupLayout(people);
+        people.setLayout(peopleLayout);
+        peopleLayout.setHorizontalGroup(
+            peopleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(user, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(contactsScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
         );
-        pnlPeopleLayout.setVerticalGroup(
-            pnlPeopleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        peopleLayout.setVerticalGroup(
+            peopleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(peopleLayout.createSequentialGroup()
+                .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(contactsScroll))
+        );
+
+        content.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout contentLayout = new javax.swing.GroupLayout(content);
+        content.setLayout(contentLayout);
+        contentLayout.setHorizontalGroup(
+            contentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 312, Short.MAX_VALUE)
+        );
+        contentLayout.setVerticalGroup(
+            contentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-
-        pnlContent.setBackground(new java.awt.Color(255, 255, 255));
-        pnlContent.setPreferredSize(new java.awt.Dimension(504, 500));
-
-        javax.swing.GroupLayout pnlContentLayout = new javax.swing.GroupLayout(pnlContent);
-        pnlContent.setLayout(pnlContentLayout);
-        pnlContentLayout.setHorizontalGroup(
-            pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 504, Short.MAX_VALUE)
-        );
-        pnlContentLayout.setVerticalGroup(
-            pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        btnRightArrow.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRightArrowActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(btnLeftArrow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(leftArrow, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(controls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlControls, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlPeople, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(people, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnRightArrow, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(content, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(rightArrow, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(btnLeftArrow, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlControls, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlPeople, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlContent, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btnRightArrow, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(leftArrow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(rightArrow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(controls, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(people, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(content, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-//        LogoutMessage lm =MessageFactory.generateLogout(pnlUser.getUserID());
-//        con.writeSafe(lm);
-//        con.setHandlerLoggedOut();
-//        
-//        ConnectionObserver.close();
-    }//GEN-LAST:event_formWindowClosing
+    private void leftArrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftArrowActionPerformed
+        Point p =getLocation();
+        Dimension currentSize =getSize();
+        if (leftArrow.getDependant().isVisible()) {
+            leftArrow.getDependant().setVisible(false);
+            currentSize.width -=leftArrow.getDependant().getWidth();
+            p.x +=leftArrow.getDependant().getWidth();
+        } else {
+            leftArrow.getDependant().setVisible(true);
+            leftArrow.getDependant().validate();
+            currentSize.width +=leftArrow.getDependant().getPreferredSize().width;
+            p.x -=leftArrow.getDependant().getPreferredSize().width;
+            if (p.x < 0) {
+                p.x =0;
+            }
+        }
 
-    private void btnLeftArrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeftArrowActionPerformed
+        setLocation(p);
+        setPreferredSize(currentSize);
+        setSize(currentSize);
+    }//GEN-LAST:event_leftArrowActionPerformed
 
-    }//GEN-LAST:event_btnLeftArrowActionPerformed
+    private void rightArrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightArrowActionPerformed
+        Dimension currentSize =getSize();
+        if (rightArrow.getDependant().isVisible()) {
+            rightArrow.getDependant().setVisible(false);
+            currentSize.width -=rightArrow.getDependant().getWidth();
+        } else {
+            rightArrow.getDependant().setVisible(true);
+            rightArrow.getDependant().validate();
+            currentSize.width +=rightArrow.getDependant().getPreferredSize().width;
+        }
+        
+        setSize(currentSize);
+    }//GEN-LAST:event_rightArrowActionPerformed
 
-    private void btnRightArrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRightArrowActionPerformed
-
-    }//GEN-LAST:event_btnRightArrowActionPerformed
-
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        this.processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-    }//GEN-LAST:event_btnExitActionPerformed
-
-    private void btnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingsActionPerformed
-
-    }//GEN-LAST:event_btnSettingsActionPerformed
-
-    private void btnVideoStreamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVideoStreamActionPerformed
-
-    }//GEN-LAST:event_btnVideoStreamActionPerformed
-
-    private void btnVideoAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVideoAcceptActionPerformed
-
-    }//GEN-LAST:event_btnVideoAcceptActionPerformed
-
-    private void btnAudioAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAudioAcceptActionPerformed
-
-    }//GEN-LAST:event_btnAudioAcceptActionPerformed
-
-    private void btnAudioStreamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAudioStreamActionPerformed
-
-    }//GEN-LAST:event_btnAudioStreamActionPerformed
+    private void setupGUI() {
+        leftArrow.setPosition(controls, true);
+        rightArrow.setPosition(content, false);
+    }
+    
+    public void setupControls() {
+        ContactListControl.register(contacts);
+        UserControl.register(user);
+        GUIControl.register(this);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnExit;
-    private userInterface.generalUI.HideArrow btnLeftArrow;
-    private javax.swing.JButton btnLogout;
-    private userInterface.generalUI.HideArrow btnRightArrow;
-    private javax.swing.JButton btnSettings;
-    private javax.swing.JPanel pnlContent;
-    private javax.swing.JPanel pnlControls;
-    private javax.swing.JPanel pnlPeople;
+    private mvc.view.generalUI.Button acceptAudio;
+    private mvc.view.generalUI.Button acceptVideo;
+    private mvc.view.generalUI.contacts.ContactList contacts;
+    private javax.swing.JScrollPane contactsScroll;
+    private javax.swing.JPanel content;
+    private javax.swing.JPanel controls;
+    private mvc.view.generalUI.HideArrow leftArrow;
+    private mvc.view.generalUI.Button logout;
+    private javax.swing.JPanel people;
+    private mvc.view.generalUI.HideArrow rightArrow;
+    private mvc.view.generalUI.Button settings;
+    private mvc.view.generalUI.Button streamAudio;
+    private mvc.view.generalUI.Button streamVideo;
+    private mvc.view.generalUI.UserPanel user;
     // End of variables declaration//GEN-END:variables
 }
