@@ -7,6 +7,7 @@
 package mvc.controller;
 
 import mvc.model.Colleague;
+import mvc.model.ColleagueList;
 import mvc.view.generalUI.contacts.ContactList;
 import mvc.view.generalUI.contacts.ContactProfile;
 
@@ -15,22 +16,26 @@ import mvc.view.generalUI.contacts.ContactProfile;
  * @author Bernhard
  */
 public class ContactListControl {
-    public static ContactListControl INSTANCE =new ContactListControl();
+    protected static ContactListControl INSTANCE =new ContactListControl();
     private static ContactList view;
     
-    public static void register(ContactList list) {
-        view =list;
+    public static void register(ContactList viewList) {
+        view =viewList;
     }
     
-    public ContactProfile getContact(String userID) {
-        return view.getContactProfile(userID);
+    public static void addPerson(String userID, String name, String surname, String email, String avatar, String title, String aboutMe) {
+        
     }
     
-    public void addPerson(Colleague person, int position) {
-        view.addProfile(person.getUserID(), person.getFullname(), person.getAvatar(), position);
-    }
-    
-    public void removePerson(String userID) {
-        view.removeProfile(userID);
-    }
+//    public ContactProfile getContact(String userID) {
+//        return view.getContactProfile(userID);
+//    }
+//    
+//    public void addPerson(Colleague person, int position) {
+//        view.addProfile(person.getUserID(), person.getFullname(), person.getAvatar(), position);
+//    }
+//    
+//    public void removePerson(String userID) {
+//        view.removeProfile(userID);
+//    }
 }

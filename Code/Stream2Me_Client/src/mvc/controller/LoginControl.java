@@ -6,7 +6,10 @@
 
 package mvc.controller;
 
-import mvc.controller.message.MessageFactory;
+import communication.handlers.MessageFactory;
+import messages.userConnection.GreetingMessage;
+import mvc.model.Model;
+import mvc.model.User;
 import mvc.view.authentication.Login;
 
 /**
@@ -33,7 +36,18 @@ public class LoginControl {
 //        }
     }
     
-    public static void response(boolean result, String response) {
+    public static void response(boolean result, String response, GreetingMessage msg) {
+        String userID =msg.getUserID();
+        String username =msg.getUsername();
+        String name =msg.getName();
+        String surname =msg.getSurname();
+        String email =msg.getEmail();
+        String avatar =msg.getAvatar();
+        String title =msg.getTitle();
+        String aboutMe =msg.getAboutMe();
+        
+        Model.setUser(new User(userID, username, name, surname, email, avatar, title, aboutMe));
+        System.out.println(view == null);
         view.setResponse(response);
         if (result) {
             view.dispose();

@@ -9,9 +9,11 @@ package mvc.view.generalUI;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import javax.swing.JPanel;
 import mvc.controller.ContactListControl;
 import mvc.controller.GUIControl;
 import mvc.controller.UserControl;
+import mvc.view.generalUI.contacts.ContactList;
 
 /**
  *
@@ -250,13 +252,19 @@ public class GUI extends javax.swing.JFrame {
         leftArrow.setPosition(controls, true);
         rightArrow.setPosition(content, false);
     }
-    
-    public void setupControls() {
-        ContactListControl.register(contacts);
-        UserControl.register(user);
-        GUIControl.register(this);
+
+    public ContactList getContactList() {
+        return contacts;
     }
 
+    public UserPanel getUserPanel() {
+        return user;
+    }
+
+    public JPanel getContentPanel() {
+        return content;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private mvc.view.generalUI.Button acceptAudio;
     private mvc.view.generalUI.Button acceptVideo;

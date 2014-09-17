@@ -11,7 +11,7 @@ package mvc.model;
  * @author Bernhard
  */
 public class User {
-    private final String userID;
+    private String userID;
     private String username;
     private String name;
     private String surname;
@@ -19,6 +19,8 @@ public class User {
     private String avatar;
     private String title;
     private String aboutMe;
+    
+    public User(){}
 
     public User(String userID, String username, String name, String surname, String email, String avatar, String title, String aboutMe) {
         this.userID = userID;

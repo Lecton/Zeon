@@ -9,9 +9,10 @@ package mvc.controller;
 import communication.Connection;
 import javax.swing.JFrame;
 import messages.Message;
-import mvc.controller.message.LoginHandler;
-import mvc.controller.message.MessageFactory;
-import mvc.controller.message.MessageHandler;
+import communication.handlers.LoginHandler;
+import communication.handlers.MessageFactory;
+import communication.handlers.MessageHandler;
+import mvc.model.ColleagueList;
 import mvc.model.Model;
 import mvc.view.authentication.Login;
 import mvc.view.generalUI.GUI;
@@ -21,7 +22,7 @@ import mvc.view.generalUI.GUI;
  * @author Bernhard
  */
 public class Control {
-    protected static Control INSTANCE =new Control();
+    protected static Control INSTANCE;
     private static MessageHandler msgHandler =new LoginHandler();
     
 //    private static ArrayList<
@@ -29,15 +30,30 @@ public class Control {
     private Connection con;
     private JFrame window;
     
-    private Control() {}
+    private GUI ui;
+    private Login login;
+    
+//    private Control() {setup();}
     
     public Control(String HOST, int PORT) throws InterruptedException {
+        setup();
         con =new Connection(HOST, PORT);
         con.makeConnection();
     }
     
+    private void setup() {
+        login =new Login();
+        LoginControl.register(login);
+
+
+        ui =new GUI();
+        GUIControl.register(ui);
+        ContactListControl.register(ui.getContactList());
+        UserControl.register(ui.getUserPanel());
+    }
+    
     public void close() {
-        con.writeMessage(MessageFactory.generateLogout(Model.INSTANCE.getUserID()));
+        con.writeMessage(MessageFactory.generateLogout(UserControl.INSTANCE.getUserID()));
         con.close();
         UpdateControl.INSTANCE.stop();
     }
@@ -61,16 +77,14 @@ public class Control {
 
                 switch (windowID) {
                     case 0:
-                        window =new Login();
+                        window =login;
                         msgHandler =new LoginHandler();
-                        LoginControl.register((Login) window);
                         break;
                     case 1:
         //                window =new Registration();
                         break;
                     case 2:
-                        window =new GUI();
-                        ((GUI)window).setupControls();
+                        window =ui;
                         msgHandler =new MessageHandler();
                         break;
                 }

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package mvc.controller.message;
+package communication.handlers;
 
 import messages.Message;
 import messages.StringMessage;

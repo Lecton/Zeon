@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package mvc.controller.message;
+package communication.handlers;
 
 import messages.Message;
 import messages.StringMessage;
@@ -15,10 +15,7 @@ import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateNameMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
-import mvc.controller.UpdateControl;
-import mvc.model.Colleague;
-import mvc.model.ColleagueList;
-import mvc.model.Model;
+import mvc.controller.ContactListControl;
 
 /**
  *
@@ -66,33 +63,33 @@ public class MessageHandler {
         String avatar =msg.getAvatar();
         String title =msg.getTitle();
         String aboutMe =msg.getAboutMe();
-        Colleague person =new Colleague(userID, name, surname, email, avatar, title, aboutMe);
-        int pos =Model.INSTANCE.getColleagueList().add(person);
-        UpdateControl.INSTANCE.add(person, UpdateControl.NEWUSER, pos);
+//        ContactListControl.addPerson()
+//        Colleague person =new Colleague(userID, name, surname, email, avatar, title, aboutMe);
+//        int pos =Model.INSTANCE.getColleagueList().add(person);
+//        UpdateControl.INSTANCE.add(person, UpdateControl.NEWUSER, pos);
         return true;
     }
 
     private boolean handleUpdateAvatar(UpdateAvatarMessage msg) {
-        Colleague person =Model.INSTANCE.getColleagueList().get(msg.getUserID());
-        if (person != null) {
-            person.setAvatar(msg.getAvatar());
-            UpdateControl.INSTANCE.add(msg.getUserID(), UpdateControl.UPDATEAVATAR, msg.getAvatar());
-        }
+//        Colleague person =Model.INSTANCE.getColleagueList().get(msg.getUserID());
+//        if (person != null) {
+//            person.setAvatar(msg.getAvatar());
+//            UpdateControl.INSTANCE.add(msg.getUserID(), UpdateControl.UPDATEAVATAR, msg.getAvatar());
+//        }
         return true;
     }
 
     private boolean handleUpdateName(UpdateNameMessage msg) {
-        Colleague person =Model.INSTANCE.getColleagueList().get(msg.getUserID());
-        if (person != null) {
-            person.setName(msg.getName());
-            person.setSurname(msg.getSurname());
-            UpdateControl.INSTANCE.add(msg.getUserID(), UpdateControl.UPDATENAME, person.getFullname());
-        }
+//        Colleague person =Model.INSTANCE.getColleagueList().get(msg.getUserID());
+//        if (person != null) {
+//            person.setName(msg.getName());
+//            person.setSurname(msg.getSurname());
+//            UpdateControl.INSTANCE.add(msg.getUserID(), UpdateControl.UPDATENAME, person.getFullname());
+//        }
         return true;
     }
 
     private boolean handleRemoveUser(LogoutMessage msg) {
-        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

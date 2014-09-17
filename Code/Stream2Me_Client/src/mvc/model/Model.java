@@ -11,24 +11,18 @@ package mvc.model;
  * @author Bernhard
  */
 public class Model {
-    public static Model INSTANCE =new Model();
-    
-    private ColleagueList list;
-    private User user;
+    private static User user =new User();
+    private static ColleagueList colleagueList =new ColleagueList();
 
-    public Model() {
-        list =new ColleagueList();
-    }
-    
-    public ColleagueList getColleagueList() {
-        return list;
+    public static ColleagueList getColleagueList() {
+        return colleagueList;
     }
 
-    public String getUserID() {
-        return user.getUserID();
+    public static User getUser() {
+        return user;
     }
-    
-    public void setUser(String userID, String username, String name, String surname, String email, String avatar, String title, String aboutMe) {
-        user =new User(userID, username, name, surname, email, avatar, title, aboutMe);
+
+    public static void setUser(User newUser) {
+        user =newUser;
     }
 }

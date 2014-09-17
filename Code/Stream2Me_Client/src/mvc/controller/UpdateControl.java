@@ -6,11 +6,12 @@
 
 package mvc.controller;
 
+import mvc.controller.UserControl;
 import java.awt.Event;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import mvc.controller.ContactListControl;
 import mvc.model.Colleague;
-import mvc.model.Model;
 import mvc.view.generalUI.contacts.ContactProfile;
 
 /**
@@ -74,18 +75,18 @@ public class UpdateControl {
                                 UserControl.INSTANCE.setAvatar((String)e.arg);
                                 break;
                             case UpdateControl.UPDATENAME:
-                                ContactProfile nameProfile =ContactListControl.INSTANCE.getContact((String)e.target);
-                                nameProfile.setName((String)e.arg);
+//                                ContactProfile nameProfile =ContactListControl.INSTANCE.getContact((String)e.target);
+//                                nameProfile.setName((String)e.arg);
                                 break;
                             case UpdateControl.UPDATEAVATAR:
-                                ContactProfile avatarProfile =ContactListControl.INSTANCE.getContact((String)e.target);
-                                avatarProfile.setAvatar((String)e.arg);
+//                                ContactProfile avatarProfile =ContactListControl.INSTANCE.getContact((String)e.target);
+//                                avatarProfile.setAvatar((String)e.arg);
                                 break;
                             case UpdateControl.NEWUSER:
-                                ContactListControl.INSTANCE.addPerson((Colleague)e.target, (int)e.arg);
+//                                ContactListControl.INSTANCE.addPerson((Colleague)e.target, (int)e.arg);
                                 break;
                             case UpdateControl.REMOVEUSER:
-                                ContactListControl.INSTANCE.removePerson((String)e.target);
+//                                ContactListControl.INSTANCE.removePerson((String)e.target);
                                 break;
                             default:
                                 

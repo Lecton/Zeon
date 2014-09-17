@@ -11,11 +11,13 @@ import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
  *
@@ -26,12 +28,13 @@ public class SSLContextFactory {
     private static final SSLContext SERVER_CONTEXT;
     
     static {
+        Security.addProvider(new BouncyCastleProvider());
         SSLContext serverContext =null;
         
         TrustManagerFactory tmf;
         KeyManagerFactory kmf;
         try {
-            KeyStore ks =KeyStore.getInstance("JKS");
+            KeyStore ks =KeyStore.getInstance("BKS");
             ks.load(KeyStoreContainer.asInputStream(),
                     KeyStoreContainer.getKeyStorePassword());
             
