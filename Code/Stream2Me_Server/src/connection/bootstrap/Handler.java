@@ -6,6 +6,7 @@
 
 package connection.bootstrap;
 
+import channel.group.ClientChannelGroup;
 import connection.messageChannel.MessageHandler;
 import core.database.Database;
 import io.netty.channel.Channel;
@@ -24,7 +25,7 @@ import messages.Message;
  * @author Bernhard
  */
 public class Handler extends SimpleChannelInboundHandler<Message> {
-    public static final ChannelGroup connections =new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    public static final ChannelGroup connections =new ClientChannelGroup(GlobalEventExecutor.INSTANCE);
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
@@ -38,7 +39,7 @@ public class Handler extends SimpleChannelInboundHandler<Message> {
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         Channel incomming =ctx.channel();
         connections.remove(ctx.channel());
-        
+        System.out.println("Disconnected");
 //        if (Server.clientContains(incomming)) {
 //            Server.closeConnection(incomming);
 //        } else {

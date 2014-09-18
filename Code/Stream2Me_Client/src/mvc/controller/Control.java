@@ -53,7 +53,9 @@ public class Control {
     }
     
     public void close() {
-        con.writeMessage(MessageFactory.generateLogout(UserControl.INSTANCE.getUserID()));
+        if (UserControl.hasUser()) {
+            con.writeMessage(MessageFactory.generateLogout(UserControl.getUserID()));
+        }
         con.close();
         UpdateControl.INSTANCE.stop();
     }
@@ -77,6 +79,7 @@ public class Control {
 
                 switch (windowID) {
                     case 0:
+                        GUIControl.clear();
                         window =login;
                         msgHandler =new LoginHandler();
                         break;
@@ -89,6 +92,7 @@ public class Control {
                         break;
                 }
                 if (window != null) {
+                    window.pack();
                     window.setVisible(true);
                 }
             }

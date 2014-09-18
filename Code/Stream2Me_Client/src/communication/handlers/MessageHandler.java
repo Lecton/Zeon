@@ -63,10 +63,8 @@ public class MessageHandler {
         String avatar =msg.getAvatar();
         String title =msg.getTitle();
         String aboutMe =msg.getAboutMe();
-//        ContactListControl.addPerson()
-//        Colleague person =new Colleague(userID, name, surname, email, avatar, title, aboutMe);
-//        int pos =Model.INSTANCE.getColleagueList().add(person);
-//        UpdateControl.INSTANCE.add(person, UpdateControl.NEWUSER, pos);
+        
+        ContactListControl.addPerson(userID, name, surname, email, avatar, title, aboutMe);
         return true;
     }
 

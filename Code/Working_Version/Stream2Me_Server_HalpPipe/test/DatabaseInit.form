@@ -28,17 +28,19 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <Component id="imageContainer1" min="-2" pref="140" max="-2" attributes="0"/>
-                  <Component id="txtName" alignment="0" max="32767" attributes="0"/>
-                  <Component id="txtSurname" alignment="0" max="32767" attributes="0"/>
-                  <Component id="txtEmail" alignment="0" max="32767" attributes="0"/>
-                  <Component id="btnAdd" pref="229" max="32767" attributes="0"/>
-                  <Component id="txtPassword" alignment="0" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtName" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtSurname" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtEmail" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btnAdd" pref="229" max="32767" attributes="0"/>
+                      <Component id="txtPassword" alignment="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Component id="imageContainer1" min="-2" pref="150" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="92" max="32767" attributes="0"/>
           </Group>
@@ -47,9 +49,9 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-              <Component id="imageContainer1" min="-2" pref="140" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="imageContainer1" min="-2" pref="150" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="txtName" min="-2" max="-2" attributes="0"/>
@@ -73,24 +75,6 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="userInterface.generalUI.ImageContainer" name="imageContainer1">
-      <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="imageContainer1MouseClicked"/>
-      </Events>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="140" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="140" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-    </Container>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Name"/>
@@ -127,5 +111,23 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtPassword">
     </Component>
+    <Container class="utils.ImageContainer" name="imageContainer1">
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="imageContainer1MouseClicked"/>
+      </Events>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="150" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="150" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+    </Container>
   </SubComponents>
 </Form>

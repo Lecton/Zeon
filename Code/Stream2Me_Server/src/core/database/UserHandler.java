@@ -7,7 +7,7 @@
 package core.database;
 
 import channel.ClientChannel;
-import channel.ClientHandler;
+import channel.group.ClientHandler;
 import channel.group.matcher.ClientGroup;
 import connection.messageChannel.MessageBuilder;
 import core.database.objects.User;
@@ -167,33 +167,75 @@ public class UserHandler {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+
+    /**
+     * Iterates through the database and generates all the groups in the DB
+     */
     public static void generateGroups() {
         PreparedStatement statement;
         ResultSet result = null;
         String query = "SELECT groupid " +
                         "FROM collection";
         statement = Database.INSTANCE.getPreparedStatement(query);
-        try{
+        try {
             result = statement.executeQuery();
 
-            while(result.next()){
+            while (result.next()) {
                 String groupID =result.getString("groupid");
                 ClientHandler.createGroup(groupID);
             }
-          }catch (SQLException ex) {
+          } catch (SQLException ex) {
               Logger.getLogger(UserHandler.class.getName())
                       .log(Level.SEVERE, null, ex);
-          }finally{
-              try{
-                  if(statement != null){
+          } finally {
+              try {
+                  if(statement != null) {
                       statement.close();
                   }
-              }catch(SQLException ex){
+              } catch(SQLException ex) {
 //                      System.out.println("here2");
                   Logger.getLogger(UserHandler.class.getName())
                           .log(Level.SEVERE, null, ex);
               }
           }
+    }
 
+
+    /**
+     * Gets the groupID of the user provided and returns the ID. If the user
+     * could not be found then the Default Group Flag is returned
+     * @param userID - ID of the user to find
+     * @return users group ID.
+     */
+    public static String getGroupID(String userID) {
+        PreparedStatement statement;
+        ResultSet result = null;
+        String query = "SELECT groupid "
+                        + "FROM client "
+                        + "WHERE userid = ?";
+        statement = Database.INSTANCE.getPreparedStatement(query);
+        try{
+            statement.setString(1, userID);
+            result = statement.executeQuery();
+
+            while(result.next()) {
+                String groupID =result.getString("groupid");
+                return groupID;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserHandler.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if(statement != null) {
+                    statement.close();
+                }
+            } catch(SQLException ex) {
+          //                      System.out.println("here2");
+                Logger.getLogger(UserHandler.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
+        }
+        return "default";
     }
 }

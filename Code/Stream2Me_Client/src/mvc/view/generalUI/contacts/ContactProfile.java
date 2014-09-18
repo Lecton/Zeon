@@ -7,7 +7,10 @@
 package mvc.view.generalUI.contacts;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
+import mvc.controller.ContactControl;
 
 /**
  *
@@ -15,31 +18,19 @@ import java.awt.event.MouseEvent;
  */
 public class ContactProfile extends javax.swing.JPanel {
     private ContactList parent;
-    private String userID;
+    private final String userID;
     
-//    private boolean videoOut =false;
-//    private boolean audioOut =false;
-//    
-//    private String videoStreamID ="";
-//    private String audioStreamID ="";
-
     /**
      * Creates new form ContactProfile
      */
-    public ContactProfile() {
+    public ContactProfile(String userID) {
+        this.userID =userID;
         initComponents();
         setComponentPopupMenu(new ContactPopup(this));
-        
-//        ntiMessage.setVisible(false);
-//        ntiAudio.setVisible(false);
-//        ntiVideo.setVisible(false);
     }
 
-    public void setProfile(String userID, String fullname, String avatar) {
+    public void setProfile(String fullname, String avatar) {
         lblName.setText(fullname);
-        this.userID =userID;
-//        lblID.setText(userID);
-        
         imgAvatar.setImage(avatar, true);
     }
     
@@ -79,14 +70,6 @@ public class ContactProfile extends javax.swing.JPanel {
         setMaximumSize(new java.awt.Dimension(800, 69));
         setMinimumSize(new java.awt.Dimension(100, 69));
         setPreferredSize(new java.awt.Dimension(300, 69));
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                formMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                formMousePressed(evt);
-            }
-        });
 
         imgAvatar.setMaximumSize(new java.awt.Dimension(69, 69));
         imgAvatar.setMinimumSize(new java.awt.Dimension(69, 69));
@@ -194,14 +177,6 @@ public class ContactProfile extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-//        parent.mouseClicked(evt, this);
-    }//GEN-LAST:event_formMouseClicked
-
-    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
-        
-    }//GEN-LAST:event_formMousePressed
-
     private void showPopup(MouseEvent evt) {
         if (evt.isPopupTrigger()) {
             getComponentPopupMenu().show(this, evt.getX(), evt.getY());
@@ -231,6 +206,8 @@ public class ContactProfile extends javax.swing.JPanel {
         revalidate();
         repaint();
     }
+    
+    
 
 //    public void showMessages() {
 //        parent.showMessages(this);
@@ -340,4 +317,13 @@ public class ContactProfile extends javax.swing.JPanel {
 //            }
 //        }).start();
 //    }
+
+    @Override
+    public void paint(Graphics g) {
+        ntiVideo.setVisible(ContactControl.hasVideoNotify(userID));
+        ntiAudio.setVisible(ContactControl.hasAudioNotify(userID));
+        ntiMessage.setVisible(ContactControl.hasMessageNotify(userID));
+        
+        super.paint(g);
+    }
 }

@@ -9,12 +9,10 @@ package mvc.view.generalUI.contacts;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import messages.Message;
-import mvc.controller.ContactPopupController;
+import mvc.controller.ContactControl;
+import mvc.controller.UserControl;
 
 
 /**
@@ -22,71 +20,63 @@ import mvc.controller.ContactPopupController;
  * @author Bernhard
  */
 public class ContactPopup extends JPopupMenu {
-    JMenuItem viewProfile, showMessages;
+    JMenuItem viewProfile, viewMessages;
     JMenuItem audioControl, videoControl;
     final ContactProfile parent;
     
     public ContactPopup(ContactProfile parent) {
         this.parent =parent;
         
-        showMessages =new JMenuItem("Show Messages");
+        viewMessages =new JMenuItem("View Messages");
         viewProfile =new JMenuItem("View Profile");
         
-        showMessages.addActionListener(new showMessageEvent());
-        viewProfile.addActionListener(new showProfileEvent());
+        viewMessages.setActionCommand("viewMessages");
+        viewProfile.setActionCommand("viewProfile");
+        
+        viewMessages.addActionListener(ContactControl.INSTANCE);
+        viewProfile.addActionListener(ContactControl.INSTANCE);
         
         add(viewProfile);
-        add(showMessages);
+        add(viewMessages);
         
         audioControl =new JMenuItem("No audio stream");
         audioControl.addActionListener(new audioAction());
-        audioControl.setEnabled(false);
+        audioControl.setVisible(false);
         
         videoControl =new JMenuItem("No video stream");
         videoControl.addActionListener(new videoAction());
-        videoControl.setEnabled(false);
+        videoControl.setVisible(false);
         
         add(audioControl);
         add(videoControl);
     }
-    
-    public void setAudioControl(boolean visible, String text) {
-        audioControl.setVisible(visible);
-        audioControl.setText(text);
-    }
-    
-    public void setVideoControl(boolean visible, String text) {
-        videoControl.setVisible(visible);
-        videoControl.setText(text);
-    }
 
-//    @Override
-//    public void show(Component invoker, int x, int y) {
-//        super.show(invoker, x, y);
-//        if (ContactPopupController.streamingAudio()) {
-//            audioControl.setEnabled(true);
-//            if (ContactPopupController.gettingAudio(parent.getUserID())) {
-//                audioControl.setText("Remove from audio");
-//            } else {
-//                audioControl.setText("Invite to audio");
-//            }
-//        } else {
-//            audioControl.setText("No audio stream");
-//            audioControl.setEnabled(false);
-//        }
-//        
-//        if (ContactPopupController.streamingVideo()) {
-//            videoControl.setEnabled(true);
-//            if (ContactPopupController.gettingVideo(parent.getUserID())) {
-//                videoControl.setText("Remove from video");
-//            } else {
-//                videoControl.setText("Invite to video");
-//            }
-//        } else {
-//            videoControl.setText("No audio stream");
-//            videoControl.setEnabled(false);
-//        }
-//    }
+    @Override
+    public void show(Component invoker, int x, int y) {
+        super.show(invoker, x, y);
+        if (UserControl.streamingAudio()) {
+            audioControl.setVisible(true);
+            if (ContactControl.receivingAudio(parent.getUserID())) {
+                audioControl.setText("Remove from audio");
+            } else {
+                audioControl.setText("Invite to audio");
+            }
+        } else {
+            audioControl.setVisible(false);
+        }
+        
+        if (UserControl.streamingVideo()) {
+            videoControl.setVisible(true);
+            if (ContactControl.receivingVideo(parent.getUserID())) {
+                videoControl.setText("Remove from video");
+            } else {
+                videoControl.setText("Invite to video");
+            }
+        } else {
+            videoControl.setVisible(false);
+        }
+        pack();
+    }
     
     class showMessageEvent implements ActionListener {
         @Override

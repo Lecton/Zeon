@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import javax.swing.JPanel;
 import mvc.controller.ContactListControl;
+import mvc.controller.Control;
 import mvc.controller.GUIControl;
 import mvc.controller.UserControl;
 import mvc.view.generalUI.contacts.ContactList;
@@ -85,15 +86,20 @@ public class GUI extends javax.swing.JFrame {
         controls.setPreferredSize(new java.awt.Dimension(62, 500));
 
         streamVideo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/streaming_Icons/unclicked-camera.png"))); // NOI18N
+        streamVideo.setToolTipText("");
+        streamVideo.setActionCommand("streamVideo");
         streamVideo.setMargin(new java.awt.Insets(2, 2, 2, 2));
         streamVideo.setMaximumSize(new java.awt.Dimension(58, 58));
         streamVideo.setMinimumSize(new java.awt.Dimension(58, 58));
+        streamVideo.setName(""); // NOI18N
         streamVideo.setPreferredSize(new java.awt.Dimension(58, 58));
 
         streamAudio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/streaming_Icons/unclicked-microphone.png"))); // NOI18N
+        streamAudio.setActionCommand("streamAudio");
         streamAudio.setMargin(new java.awt.Insets(2, 2, 2, 2));
         streamAudio.setMaximumSize(new java.awt.Dimension(58, 58));
         streamAudio.setMinimumSize(new java.awt.Dimension(58, 58));
+        streamAudio.setName(""); // NOI18N
         streamAudio.setPreferredSize(new java.awt.Dimension(58, 58));
 
         acceptAudio.setMargin(new java.awt.Insets(2, 2, 2, 2));
@@ -251,6 +257,11 @@ public class GUI extends javax.swing.JFrame {
     private void setupGUI() {
         leftArrow.setPosition(controls, true);
         rightArrow.setPosition(content, false);
+        
+        addWindowListener(new GUIControl());
+        
+        streamVideo.addActionListener(new UserControl());
+        streamAudio.addActionListener(new UserControl());
     }
 
     public ContactList getContactList() {

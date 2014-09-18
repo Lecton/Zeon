@@ -28,15 +28,7 @@ public class LoginHandler extends MessageHandler {
                     java.awt.EventQueue.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-    //                        while (UserControl.unregistered()) {
-    //                            try {
-    //                                Thread.sleep(100);
-    //                            } catch (InterruptedException e) {
-    //                                
-    //                            }
-    //                        }
-                            UpdateControl.INSTANCE.add(message.getName()+" "
-                                    +message.getSurname(), UpdateControl.LOGIN, message.getAvatar());
+                            UpdateControl.INSTANCE.add(message.getUserID(), UpdateControl.LOGIN);
                         }
                     });
                 }

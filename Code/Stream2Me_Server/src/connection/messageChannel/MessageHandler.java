@@ -6,7 +6,7 @@
 
 package connection.messageChannel;
 
-import channel.ClientHandler;
+import channel.group.ClientHandler;
 import channel.ClientChannel;
 import connection.bootstrap.Handler;
 import core.database.StreamHandler;
@@ -45,36 +45,36 @@ public class MessageHandler {
                 handleLogin(ctx.channel(), (LoginMessage)msg);
                 break;
             case logout:
-                handleLogout((ClientChannel)ctx.channel(), (LogoutMessage)msg);
+                handleLogout(ctx.channel(), (LogoutMessage)msg);
                 break;
 
             case string: 
-                handleStringMessage((ClientChannel)ctx.channel(), (StringMessage)msg);
+                handleStringMessage(ctx.channel(), (StringMessage)msg);
                 break;
             case updateAvatar:
-                handleUpdateAvatar((ClientChannel)ctx.channel(), (UpdateAvatarMessage)msg);
+                handleUpdateAvatar(ctx.channel(), (UpdateAvatarMessage)msg);
                 break;
             case updateName:
-                handleUpdateName((ClientChannel)ctx.channel(), (UpdateNameMessage)msg);
+                handleUpdateName(ctx.channel(), (UpdateNameMessage)msg);
                 break;
             case updateList:
-                handleListRequest((ClientChannel)ctx.channel(), (UpdateListMessage)msg);
+                handleListRequest(ctx.channel(), (UpdateListMessage)msg);
                 break;
 
             case streamProperty:
-                handleStreamProperty((ClientChannel)ctx.channel(), (StreamPropertyMessage)msg);
+                handleStreamProperty(ctx.channel(), (StreamPropertyMessage)msg);
                 break;
             case streamReply:
-                handleStreamResponse((ClientChannel)ctx.channel(), (StreamResponseMessage)msg);
+                handleStreamResponse(ctx.channel(), (StreamResponseMessage)msg);
                 break;
             case streamUpdate:
-                handleStreamUpdate((ClientChannel)ctx.channel(), (StreamUpdateMessage)msg);
+                handleStreamUpdate(ctx.channel(), (StreamUpdateMessage)msg);
                 break;
             case auido:
-                handleAudioStream((ClientChannel)ctx.channel(), (AudioStreamMessage)msg);
+                handleAudioStream(ctx.channel(), (AudioStreamMessage)msg);
                 break;
             case video:
-                handleVideoStream((ClientChannel)ctx.channel(), (VideoStreamMessage)msg);
+                handleVideoStream(ctx.channel(), (VideoStreamMessage)msg);
                 break;
             default:
                 break;
@@ -91,7 +91,7 @@ public class MessageHandler {
         }
     }
     
-    private static void handleLogout(ClientChannel ch, LogoutMessage msg) {
+    private static void handleLogout(Channel ch, LogoutMessage msg) {
         User u =UserHandler.getUser(msg.getUserID());
         if (u == null) {
             Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
@@ -100,31 +100,31 @@ public class MessageHandler {
         }
 
         if (u.isLoggedIn()) {
-            ClientHandler.remove(ch);
-            Handler.connections.add(ch.getChannel());
+            ClientHandler.remove(ch, u.getUserID(), u.getGroupID());
+            Handler.connections.add(ch);
             LogoutMessage message =new LogoutMessage(u.getUserID(), messages.Message.ALL);
             message.setTargetGroupID(u.getGroupID());
-            ClientHandler.writeAndFlush(ch.getGroupID(), message);
+            ClientHandler.writeAndFlush(UserHandler.getGroupID(msg.getUserID()), message);
             
             UserHandler.logoff(u.getUserID());
         }
     }
     
-    private static void handleStringMessage(ClientChannel ch, StringMessage msg) {
+    private static void handleStringMessage(Channel ch, StringMessage msg) {
         Message message =StringMessageHandler.handleStringMessage(msg);
-        ClientHandler.writeAndFlush(ch.getGroupID(), message);
+        ClientHandler.writeAndFlush(UserHandler.getGroupID(msg.getUserID()), message);
     }
 
-    private static void handleUpdateAvatar(ClientChannel ch, UpdateAvatarMessage msg) {
+    private static void handleUpdateAvatar(Channel ch, UpdateAvatarMessage msg) {
         Message message =UserHandler.updateAvatar(msg);
-        ClientHandler.writeAndFlush(ch.getGroupID(), message);
+        ClientHandler.writeAndFlush(UserHandler.getGroupID(msg.getUserID()), message);
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                 "Update avatar.");
     }
 
-    private static void handleUpdateName(ClientChannel ch, UpdateNameMessage msg) {
+    private static void handleUpdateName(Channel ch, UpdateNameMessage msg) {
         Message message =UserHandler.updateName(msg);
-        ClientHandler.writeAndFlush(ch.getGroupID(), message);
+        ClientHandler.writeAndFlush(UserHandler.getGroupID(msg.getUserID()), message);
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                     "Update username.");
         
@@ -134,19 +134,20 @@ public class MessageHandler {
         
     }*/
 
-    private static void handleListRequest(ClientChannel ch, UpdateListMessage msg) {
+    private static void handleListRequest(Channel ch, UpdateListMessage msg) {
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                 "Update list request.");
         String groupUsers[] =UserHandler.getGroupUsers(msg.getUserID());
         for (String userID: groupUsers) {
             NewUserMessage message =UserHandler.getNewUserMessage(userID, msg.getUserID());
             if (message != null) {
-                ClientHandler.writeAndFlush(ch.getGroupID(), message);
+                ClientHandler.writeAndFlush(UserHandler.getGroupID(
+                        msg.getUserID()), message);
             }
         }
     }
 
-    private static void handleStreamProperty(ClientChannel ch, StreamPropertyMessage msg) {
+    private static void handleStreamProperty(Channel ch, StreamPropertyMessage msg) {
         if (msg.getType() == 1) {
             StreamHandler.createStreamProperty(msg.getUserID(), msg.getStreamName());
             Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
@@ -156,7 +157,9 @@ public class MessageHandler {
             if (sp != null) {
                 StreamNotifyMessage message =new StreamNotifyMessage(
                         msg.getUserID(), Message.ALL, sp.getStreamID(), 0);
-                ClientHandler.writeAndFlush(ch.getGroupID(), message, sp.generateMatcher());
+                ClientHandler.writeAndFlush(
+                        UserHandler.getGroupID(msg.getUserID()), 
+                        message, sp.generateMatcher());
                 Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                         "StreamProperty "+msg.getStreamName()+" removed.");
             } else {
@@ -166,7 +169,7 @@ public class MessageHandler {
         }
     }
 
-    private static void handleStreamResponse(ClientChannel ch, StreamResponseMessage msg) {
+    private static void handleStreamResponse(Channel ch, StreamResponseMessage msg) {
 //        Log.write(MessageHandler.class, msg.getMessage());
         boolean result =StreamHandler.respondStream(msg.getStreamID(), msg.getUserID(), msg.isAccept());
         if (!result) {
@@ -179,24 +182,25 @@ public class MessageHandler {
         }
     }
 
-    private static void handleStreamUpdate(ClientChannel ch, StreamUpdateMessage msg) {
+    private static void handleStreamUpdate(Channel ch, StreamUpdateMessage msg) {
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                     msg.getMessage()+".");
         String streamID =StreamHandler.updateStream(msg.getStreamID(), msg.getUserID(), msg.getAffectedUserID(), msg.getAction());
+        String groupID =UserHandler.getGroupID(msg.getUserID());
         
         if (streamID != null) {
-            ClientHandler.writeAndFlush(ch.getGroupID(), new StreamNotifyMessage(msg.getUserID(), 
+            ClientHandler.writeAndFlush(groupID, new StreamNotifyMessage(msg.getUserID(), 
                     msg.getAffectedUserID(), streamID,
                     msg.getAction()));
         }
     }
 
-    private static void handleAudioStream(ClientChannel ch, AudioStreamMessage msg) {
+    private static void handleAudioStream(Channel ch, AudioStreamMessage msg) {
 //        Log.write(MessageHandler.class, "Audio stream received on streamID: "
 //                +as.getStreamID());
         StreamProperty sp =StreamHandler.getStreamProperty(msg.getUserID(), msg.getStreamName());
         if (sp != null) {
-            ClientHandler.writeAndFlush(ch.getGroupID(), msg, sp.generateMatcher());
+            ClientHandler.writeAndFlush(sp.getGroupID(), msg, sp.generateMatcher());
         } else {
 //            Log.write(MessageHandler.class, 
 //                    "No Stream Property set for this audio stream. ID: "
@@ -204,12 +208,12 @@ public class MessageHandler {
         }
     }
 
-    private static void handleVideoStream(ClientChannel ch, VideoStreamMessage msg) {
+    private static void handleVideoStream(Channel ch, VideoStreamMessage msg) {
 //        Log.write(MessageHandler.class, "Video stream received on streamID: "
 //                +vs.getStreamID());
         StreamProperty sp =StreamHandler.getStreamProperty(msg.getUserID(), msg.getStreamName());
         if (sp != null) {
-            ClientHandler.writeAndFlush(ch.getGroupID(), msg, sp.generateMatcher());
+            ClientHandler.writeAndFlush(sp.getGroupID(), msg, sp.generateMatcher());
         } else {
 //            Log.write(MessageHandler.class, 
 //                    "No Stream Property set for this audio stream. ID: "

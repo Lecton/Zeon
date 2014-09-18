@@ -6,13 +6,9 @@
 
 package mvc.controller;
 
-import mvc.controller.UserControl;
 import java.awt.Event;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import mvc.controller.ContactListControl;
-import mvc.model.Colleague;
-import mvc.view.generalUI.contacts.ContactProfile;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -20,8 +16,20 @@ import mvc.view.generalUI.contacts.ContactProfile;
  */
 public class UpdateControl {
     public static UpdateControl INSTANCE =new UpdateControl();
+
+    static void clear() {
+        INSTANCE.updates.clear();
+        while (INSTANCE.usage.get() != 0) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+            }
+        }
+    }
+    
     private ConcurrentLinkedQueue<Event> updates =new ConcurrentLinkedQueue<>();
     private ConcurrentLinkedQueue<Observer> threadPool =new ConcurrentLinkedQueue<>();
+    private AtomicInteger usage =new AtomicInteger(0);
     
     public static final int LOGIN =0;
     public static final int UPDATENAME =1;
@@ -43,8 +51,8 @@ public class UpdateControl {
         }
     }
     
-    public void add(Object target, int action, Object arg) {
-        updates.add(new Event(target, action, arg));
+    public void add(Object target, int action) {
+        updates.add(new Event(target, action, null));
     }
     
     protected Event getEvent() {
@@ -68,32 +76,30 @@ public class UpdateControl {
                     } catch (InterruptedException ex) {
                     }
                 } else {
-//                    try {
-                        switch (e.id) {
-                            case UpdateControl.LOGIN:
-                                UserControl.INSTANCE.setName((String)e.target);
-                                UserControl.INSTANCE.setAvatar((String)e.arg);
-                                break;
-                            case UpdateControl.UPDATENAME:
+                    usage.incrementAndGet();
+                    switch (e.id) {
+                        case UpdateControl.LOGIN:
+                            String userID =(String)e.target;
+                            UserControl.INSTANCE.update(userID);
+                            break;
+                        case UpdateControl.NEWUSER:
+                            ContactListControl.INSTANCE.addPerson((String)e.target);
+                            break;
+                        case UpdateControl.UPDATENAME:
 //                                ContactProfile nameProfile =ContactListControl.INSTANCE.getContact((String)e.target);
 //                                nameProfile.setName((String)e.arg);
-                                break;
-                            case UpdateControl.UPDATEAVATAR:
+                            break;
+                        case UpdateControl.UPDATEAVATAR:
 //                                ContactProfile avatarProfile =ContactListControl.INSTANCE.getContact((String)e.target);
 //                                avatarProfile.setAvatar((String)e.arg);
-                                break;
-                            case UpdateControl.NEWUSER:
-//                                ContactListControl.INSTANCE.addPerson((Colleague)e.target, (int)e.arg);
-                                break;
-                            case UpdateControl.REMOVEUSER:
+                            break;
+                        case UpdateControl.REMOVEUSER:
 //                                ContactListControl.INSTANCE.removePerson((String)e.target);
-                                break;
-                            default:
-                                
-                        }
-//                    } catch (Exception ex) {
-//                        UpdateControl.INSTANCE.add(e.target, e.id, e.arg);
-//                    }
+                            break;
+                        default:
+
+                    }
+                    usage.decrementAndGet();
                 }
             }
         }

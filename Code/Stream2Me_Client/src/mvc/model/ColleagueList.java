@@ -6,30 +6,26 @@
 
 package mvc.model;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author Bernhard
  */
 public class ColleagueList {
-    private ArrayList<Colleague> colleagues =new ArrayList<>();
+    private final Map<String, Colleague> colleagues =Collections.synchronizedMap(new HashMap<String, Colleague>());
     
-    public int add(Colleague person) {
-        colleagues.add(person);
-        return colleagues.indexOf(person);
+    public void add(Colleague person) {
+        colleagues.put(person.getUserID(), person);
     }
     
     public void remove(Colleague person) {
-        colleagues.remove(person);
+        colleagues.remove(person.getUserID());
     }
     
     public Colleague get(String userID) {
-        for (Colleague person: colleagues) {
-            if (person.getUserID().equals(userID)) {
-                return person;
-            }
-        }
-        return null;
+        return colleagues.get(userID);
     }
 }

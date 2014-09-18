@@ -6,7 +6,9 @@
 
 package mvc.controller;
 
-import mvc.model.Model;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JComponent;
 import mvc.model.User;
 import mvc.view.generalUI.UserPanel;
 
@@ -14,31 +16,77 @@ import mvc.view.generalUI.UserPanel;
  *
  * @author Bernhard
  */
-public class UserControl {
+public class UserControl implements ActionListener {
     protected static UserControl INSTANCE =new UserControl();
     private static UserPanel view;
+    private static User model;
 
     public static void register(UserPanel viewUser) {
         view = viewUser;
     }
-    
-    public String getName() {
-        return Model.getUser().getName();
+
+    protected static void setUser(String userID, String username, String name, String surname, String email, String avatar, String title, String aboutMe) {
+        model =new User(userID, username, name, surname, email, avatar, title, aboutMe);
     }
     
-    public String getAvatar() {
-        return Model.getUser().getAvatar();
+    protected static void clear() {
+        model =null;
+    }
+
+    protected static boolean hasUser() {
+        return model != null;
+    }
+
+    public static boolean streamingAudio() {
+        return model.isStreamingAudio();
+    }
+
+    public static boolean streamingVideo() {
+        return model.isStreamingVideo();
+    }
+
+    protected static String getUserID() {
+        return model.getUserID();
+    }
+
+    protected void update(String userID) {
+        view.setAvatar(model.getAvatar());
+        view.setName(model.getFullname());
     }
     
-    public void setName(String name) {
+    protected void setName(String name) {
         view.setName(name);
     }
     
-    public void setAvatar(String avatar) {
+    protected void setAvatar(String avatar) {
         view.setAvatar(avatar);
     }
 
-    public String getUserID() {
-        return Model.getUser().getUserID();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command =e.getActionCommand();
+        if (command.equals("streamVideo")) {
+            if (model.isStreamingVideo()) {
+                //stop video
+                model.setStreamingVideo(false);
+            } else {
+                //start video
+                model.setStreamingVideo(true);
+            }
+        } else if (command.equals("streamAudio")) {
+            if (model.isStreamingAudio()) {
+                //stop audio
+                model.setStreamingAudio(false);
+            } else {
+                //start audio
+                model.setStreamingAudio(true);
+            }
+        } else if (command.equals("viewMessages")) {
+            System.out.println("View Messages");
+        } else if (command.equals("viewProfile")) {
+            System.out.println("View Profile");
+        } else {
+            System.out.println("UNKNOWN: "+command);
+        }
     }
 }

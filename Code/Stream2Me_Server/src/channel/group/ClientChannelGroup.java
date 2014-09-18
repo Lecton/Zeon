@@ -8,6 +8,7 @@ package channel.group;
 
 import channel.ClientChannel;
 import channel.group.matcher.ClientMatcher;
+import channel.group.matcher.RemoveMatcher;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
 import io.netty.channel.Channel;
@@ -99,6 +100,27 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
             channel.closeFuture().addListener(remover);
         }
         return added;
+    }
+    
+    public boolean remove(RemoveMatcher matcher) {
+        for (Channel c: nonServerChannels) {
+            if (matcher.matches(c)) {
+                if (nonServerChannels.remove(c)) {
+                    c.closeFuture().removeListener(remover);
+                    return true;
+                }
+            }
+        }
+        for (Channel c: serverChannels) {
+            if (matcher.matches(c)) {
+                if (serverChannels.remove(c)) {
+                    c.closeFuture().removeListener(remover);
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 
     @Override

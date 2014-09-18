@@ -47,7 +47,6 @@ public class DatabaseInit extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imageContainer1 = new userInterface.generalUI.ImageContainer();
         jLabel1 = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -57,6 +56,7 @@ public class DatabaseInit extends javax.swing.JFrame {
         btnAdd = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JTextField();
+        imageContainer1 = new utils.ImageContainer();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -64,23 +64,6 @@ public class DatabaseInit extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
         });
-
-        imageContainer1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                imageContainer1MouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout imageContainer1Layout = new javax.swing.GroupLayout(imageContainer1);
-        imageContainer1.setLayout(imageContainer1Layout);
-        imageContainer1Layout.setHorizontalGroup(
-            imageContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 140, Short.MAX_VALUE)
-        );
-        imageContainer1Layout.setVerticalGroup(
-            imageContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 140, Short.MAX_VALUE)
-        );
 
         jLabel1.setText("Name");
 
@@ -97,31 +80,49 @@ public class DatabaseInit extends javax.swing.JFrame {
 
         jLabel4.setText("Password");
 
+        imageContainer1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                imageContainer1MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout imageContainer1Layout = new javax.swing.GroupLayout(imageContainer1);
+        imageContainer1.setLayout(imageContainer1Layout);
+        imageContainer1Layout.setHorizontalGroup(
+            imageContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 150, Short.MAX_VALUE)
+        );
+        imageContainer1Layout.setVerticalGroup(
+            imageContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 150, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(imageContainer1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtName)
-                    .addComponent(txtSurname)
-                    .addComponent(txtEmail)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
-                    .addComponent(txtPassword))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel1)
+                        .addComponent(txtName)
+                        .addComponent(txtSurname)
+                        .addComponent(txtEmail)
+                        .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                        .addComponent(txtPassword))
+                    .addComponent(imageContainer1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(92, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(imageContainer1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addContainerGap()
+                .addComponent(imageContainer1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -213,7 +214,7 @@ public class DatabaseInit extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
-    private userInterface.generalUI.ImageContainer imageContainer1;
+    private utils.ImageContainer imageContainer1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

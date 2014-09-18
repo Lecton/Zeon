@@ -4,12 +4,14 @@
  * and open the template in the editor.
  */
 
-package channel;
+package channel.group;
 
+import channel.ClientChannel;
 import channel.group.ClientChannelGroup;
 import channel.group.matcher.ClientGroup;
 import channel.group.matcher.ClientMatcher;
-import core.database.Database;
+import channel.group.matcher.RemoveMatcher;
+import io.netty.channel.Channel;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,12 +43,12 @@ public class ClientHandler {
         }
     }
     
-    public static boolean remove(ClientChannel channel) {
+    public static boolean remove(Channel channel, String userID, String groupID) {
         Logger.getLogger(ClientHandler.class.getName()).log(Level.INFO, 
                 "Clients: " + serverGroup.size());
-        ClientChannelGroup ccg =serverGroup.get(channel.getGroupID());
+        ClientChannelGroup ccg =serverGroup.get(groupID);
         if (ccg != null) {
-            return ccg.remove(channel);
+            return ccg.remove(new RemoveMatcher(userID));
         } else {
             return serverGroup.get("default").remove(channel);
         }

@@ -8,8 +8,6 @@ package mvc.controller;
 
 import communication.handlers.MessageFactory;
 import messages.userConnection.GreetingMessage;
-import mvc.model.Model;
-import mvc.model.User;
 import mvc.view.authentication.Login;
 
 /**
@@ -46,8 +44,7 @@ public class LoginControl {
         String title =msg.getTitle();
         String aboutMe =msg.getAboutMe();
         
-        Model.setUser(new User(userID, username, name, surname, email, avatar, title, aboutMe));
-        System.out.println(view == null);
+        UserControl.setUser(userID, username, name, surname, email, avatar, title, aboutMe);
         view.setResponse(response);
         if (result) {
             view.dispose();

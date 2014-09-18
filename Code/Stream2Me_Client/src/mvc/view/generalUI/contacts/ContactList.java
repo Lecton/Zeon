@@ -10,8 +10,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import mvc.controller.ContactControl;
 import mvc.view.generalUI.SeparatorBorder;
 import util.Log;
 
@@ -19,9 +21,10 @@ import util.Log;
  *
  * @author Bernhard
  */
-public class ContactList extends javax.swing.JPanel {
+public class ContactList extends javax.swing.JPanel implements MouseListener {
     private GridBagConstraints gbcContactProfile;
     private ArrayList<ContactProfile> list =new ArrayList<ContactProfile>();
+    private ContactProfile selectedProfile =null;
     
     /**
      * Creates new form NewJPanel
@@ -52,13 +55,15 @@ public class ContactList extends javax.swing.JPanel {
         return null;
     }
     
-    public void addProfile(String userID, String fullName, String avatar, int position) {
-        ContactProfile contact =new ContactProfile();
+    public void addProfile(String userID, String fullName, String avatar) {
+        ContactProfile contact =new ContactProfile(userID);
         contact.setBorder(new SeparatorBorder(Color.BLACK, false, true, false, true));
-        contact.setProfile(userID, fullName, avatar);
+        contact.setProfile(fullName, avatar);
         contact.setParent(this);
+        contact.addMouseListener(this);
+        contact.addPropertyChangeListener(ContactControl.INSTANCE);
         list.add(contact);
-        add(contact, gbcContactProfile, position);
+        add(contact, gbcContactProfile, list.size()-1);
         update();
         
         Log.write(this.getClass(), "User added");
@@ -95,4 +100,40 @@ public class ContactList extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getSource().getClass().getSimpleName().equals("ContactProfile")) {
+            ContactProfile caller =(ContactProfile)e.getSource();
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                if (selectedProfile == null) {
+                    selectedProfile =caller;
+                    selectedProfile.select();
+                } else if (selectedProfile.getUserID().equals(caller.getUserID())) {
+                    selectedProfile =null;
+                    caller.unselect();
+                } else {
+                    selectedProfile.unselect();
+                    selectedProfile =caller;
+                    selectedProfile.select();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 }
