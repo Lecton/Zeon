@@ -22,26 +22,39 @@ public class ContactListControl {
     private static ContactList view;
     private static ColleagueList model =new ColleagueList();
     
-    public static void register(ContactList viewList) {
+    protected static void register(ContactList viewList) {
         view =viewList;
     }
-    
-    public static void addPerson(String userID, String name, String surname, String email, String avatar, String title, String aboutMe) {
-        Colleague person =new Colleague(userID, name, surname, email, avatar, title, aboutMe);
-        model.add(person);
-        UpdateControl.INSTANCE.add(userID, UpdateControl.NEWUSER);
-    }
 
-    static void clear() {
+    protected static void clear() {
         model =new ColleagueList();
     }
     
-    protected void addPerson(String userID) {
+    public static void addColleague(String userID, String name, String surname, String email, String avatar, String title, String aboutMe) {
+        if (!userID.equals(UserControl.getUserID())) {
+            Colleague person =new Colleague(userID, name, surname, email, avatar, title, aboutMe);
+            model.add(person);
+            UpdateControl.INSTANCE.add(userID, UpdateControl.NEWUSER);
+        }
+    }
+
+    public static void removeColleague(String userID) {
+        System.out.println("User disconnect");
+        model.remove(userID);
+       
+        UpdateControl.INSTANCE.add(userID, UpdateControl.REMOVEUSER);
+    }
+    
+    protected void addProfile(String userID) {
         Person person =model.get(userID);
         view.addProfile(person.getUserID(), person.getFullname(), person.getAvatar());
     }
     
-    protected Colleague getPerson(String userID) {
+    protected Colleague getColleague(String userID) {
         return model.get(userID);
+    }
+    
+    protected void removeProfile(String userID) {
+        view.removeProfile(userID);
     }
 }

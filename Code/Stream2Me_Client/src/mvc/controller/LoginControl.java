@@ -35,20 +35,34 @@ public class LoginControl {
     }
     
     public static void response(boolean result, String response, GreetingMessage msg) {
-        String userID =msg.getUserID();
-        String username =msg.getUsername();
-        String name =msg.getName();
-        String surname =msg.getSurname();
-        String email =msg.getEmail();
-        String avatar =msg.getAvatar();
-        String title =msg.getTitle();
-        String aboutMe =msg.getAboutMe();
-        
-        UserControl.setUser(userID, username, name, surname, email, avatar, title, aboutMe);
         view.setResponse(response);
         if (result) {
+            String userID =msg.getUserID();
+            String username =msg.getUsername();
+            String name =msg.getName();
+            String surname =msg.getSurname();
+            String email =msg.getEmail();
+            String avatar =msg.getAvatar();
+            String title =msg.getTitle();
+            String aboutMe =msg.getAboutMe();
+
+            UserControl.setUser(userID, username, name, surname, email, avatar, title, aboutMe);
             view.dispose();
             Control.INSTANCE.initiate(2);
+            UpdateControl.INSTANCE.add(userID, UpdateControl.LOGIN);
         }
+    }
+    
+    public static void updateList() {
+//        String pwd =new String(password);
+//        Control.INSTANCE.writeMessage(MessageFactory.generateLogin(username, pwd));
+//        if (con != null) {
+//            try {
+//                con.write(MessageFactory.generateLogin(txtUsername.getText(), "pass123"));
+//            } catch (IOException ex) {
+//                lblResponse.setText("Connection error");
+//                Log.error(this.getClass(), "Connection error");
+//            }
+//        }
     }
 }

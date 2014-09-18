@@ -21,8 +21,8 @@ public class ColleagueList {
         colleagues.put(person.getUserID(), person);
     }
     
-    public void remove(Colleague person) {
-        colleagues.remove(person.getUserID());
+    public void remove(String userID) {
+        colleagues.remove(userID);
     }
     
     public Colleague get(String userID) {

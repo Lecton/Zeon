@@ -32,10 +32,10 @@ public class UpdateControl {
     private AtomicInteger usage =new AtomicInteger(0);
     
     public static final int LOGIN =0;
-    public static final int UPDATENAME =1;
-    public static final int UPDATEAVATAR =2;
-    public static final int NEWUSER =3;
-    public static final int REMOVEUSER =4;
+    public static final int NEWUSER =1;
+    public static final int REMOVEUSER =2;
+    public static final int UPDATENAME =3;
+    public static final int UPDATEAVATAR =4;
     
     public UpdateControl() {
         for (int i=0; i<10; i++) {
@@ -83,7 +83,10 @@ public class UpdateControl {
                             UserControl.INSTANCE.update(userID);
                             break;
                         case UpdateControl.NEWUSER:
-                            ContactListControl.INSTANCE.addPerson((String)e.target);
+                            ContactListControl.INSTANCE.addProfile((String)e.target);
+                            break;
+                        case UpdateControl.REMOVEUSER:
+                            ContactListControl.INSTANCE.removeProfile((String)e.target);
                             break;
                         case UpdateControl.UPDATENAME:
 //                                ContactProfile nameProfile =ContactListControl.INSTANCE.getContact((String)e.target);
@@ -92,9 +95,6 @@ public class UpdateControl {
                         case UpdateControl.UPDATEAVATAR:
 //                                ContactProfile avatarProfile =ContactListControl.INSTANCE.getContact((String)e.target);
 //                                avatarProfile.setAvatar((String)e.arg);
-                            break;
-                        case UpdateControl.REMOVEUSER:
-//                                ContactListControl.INSTANCE.removePerson((String)e.target);
                             break;
                         default:
 

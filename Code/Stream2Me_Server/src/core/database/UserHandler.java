@@ -10,12 +10,13 @@ import channel.ClientChannel;
 import channel.group.ClientHandler;
 import channel.group.matcher.ClientGroup;
 import connection.messageChannel.MessageBuilder;
+import core.database.objects.BaseUser;
 import core.database.objects.User;
 import io.netty.channel.Channel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.Message;
@@ -30,6 +31,35 @@ import messages.userConnection.NewUserMessage;
  * @author Bernhard
  */
 public class UserHandler {
+    
+    /**
+     * Private helper function for the login and logoff functions strictly. 
+     * The database is queried for the respective user and his loggedin field
+     * is updated to the specified loggedIn flag.
+     * @param userID - User to be found
+     * @param loggedIn - Flag to change the loggedin field to
+     */
+    private static void userLoggedInUpdate(String userID, boolean loggedIn) {
+        Statement statement =Database.INSTANCE.getStatment();
+        String query = "UPDATE client " +
+                        "SET loggedin = "+loggedIn+" " +
+                        "WHERE userid = '"+userID+"' ";
+        try {
+            statement.executeUpdate(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserHandler.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if(statement != null) {
+                    statement.close();
+                }
+            } catch(SQLException ex) {
+                Logger.getLogger(UserHandler.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     /**
      * Checks if the username and password match. If there is a match and 
@@ -38,7 +68,7 @@ public class UserHandler {
      * false greeting is generated. 
      * 
      * The channel is populated with the static user data
-     * @param channel - The channel of the user to be logged in
+     * @param ch - The channel of the user to be logged in
      * @param message - The LoginMessage containing the users login details
      * @return GreetingMessage with success or failure data
      */
@@ -56,8 +86,8 @@ public class UserHandler {
             try{
                 statement.setString(1, username);
 //                statement.setString(2, password);
-                System.out.println("Pwd: "+password);
-                System.out.println("Query: "+statement.toString());
+//                System.out.println("Pwd: "+password);
+//                System.out.println("Query: "+statement.toString());
                 result = statement.executeQuery();
                 
                 if(result.next()){
@@ -79,7 +109,7 @@ public class UserHandler {
                         boolean addResult =ClientHandler.add(cc);
                         if (addResult) {
                             ClientHandler.writeAndFlush(groupID, MessageBuilder.generateNewUser(person), new ClientGroup(groupID));
-                            //update db to set loggedin to true;
+                            userLoggedInUpdate(userID, true);
                             return MessageBuilder.generateGreeting(person, true, "Login success.");
                         } else {
                             return MessageBuilder.generateGreeting(null, false, "Users group could not be found.");
@@ -108,12 +138,46 @@ public class UserHandler {
     }
 
     /**
-     * Gets the user with the corresponding userID
+     * Gets the base user with the corresponding userID
+     * The base user is the same as the user except it only
+     * holds the userID, groupID and loggedin fields.
      * @param userID - ID of the user to be retrieved
-     * @return User if found, otherwise null
+     * @return BaseUser if found, otherwise null
      */
-    public static User getUser(String userID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static BaseUser getUser(String userID) {
+        PreparedStatement statement;
+        ResultSet result = null;
+        String query = "SELECT userid, groupid, loggedin " +
+                        "FROM client " +
+                        "WHERE userid = ? ";
+        statement = Database.INSTANCE.getPreparedStatement(query);
+        try {
+            statement.setString(1, userID);
+            result = statement.executeQuery();
+
+            if(result.next()) {
+                String uID =result.getString("userid");
+                String groupID =result.getString("groupid");
+                boolean loggedIn =result.getBoolean("loggedin");
+                
+                BaseUser person =new BaseUser(uID, groupID);
+                person.setLoggedIn(loggedIn);
+                return person;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserHandler.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if(statement != null) {
+                    statement.close();
+                }
+            } catch(SQLException ex) {
+                Logger.getLogger(UserHandler.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
     }
 
     /**
@@ -121,7 +185,8 @@ public class UserHandler {
      * @param userID - ID of the user
      */
     public static void logoff(String userID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        userLoggedInUpdate(userID, false);
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**

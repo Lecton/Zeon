@@ -7,13 +7,12 @@
 package connection.messageChannel;
 
 import channel.group.ClientHandler;
-import channel.ClientChannel;
 import connection.bootstrap.Handler;
 import core.database.StreamHandler;
 import core.database.StringMessageHandler;
 import core.database.UserHandler;
+import core.database.objects.BaseUser;
 import core.database.objects.StreamProperty;
-import core.database.objects.User;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import java.util.logging.Level;
@@ -83,16 +82,17 @@ public class MessageHandler {
     
     private static void handleLogin(Channel ch, LoginMessage msg) {
         GreetingMessage g =UserHandler.userLogin(ch, msg);
-        System.out.println("User login attempt: "+g.isSuccessful());
+//        System.out.println("User login attempt: "+g.isSuccessful());
         if (g != null) {
             ch.writeAndFlush(g);
         } else {
-            System.out.println("Login error");
+//            System.out.println("Login error");
         }
     }
     
     private static void handleLogout(Channel ch, LogoutMessage msg) {
-        User u =UserHandler.getUser(msg.getUserID());
+        BaseUser u =UserHandler.getUser(msg.getUserID());
+        System.out.println("handle Logout");
         if (u == null) {
             Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                     "Client closed connection, but client could not be found.");
@@ -107,6 +107,8 @@ public class MessageHandler {
             ClientHandler.writeAndFlush(UserHandler.getGroupID(msg.getUserID()), message);
             
             UserHandler.logoff(u.getUserID());
+        } else {
+            System.out.println("User not logged in");
         }
     }
     

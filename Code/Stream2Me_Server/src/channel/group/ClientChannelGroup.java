@@ -30,6 +30,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import messages.Message;
 
 /**
@@ -320,6 +322,9 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
                 futures.put(c, c.writeAndFlush(safeDuplicate(message)));
             }
         }
+        
+        Logger.getLogger(ClientChannelGroup.class.getName()).log(Level.INFO, 
+                     "Writing message to group");
 
         ReferenceCountUtil.release(message);
         return futures;

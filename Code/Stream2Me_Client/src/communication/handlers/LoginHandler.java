@@ -9,7 +9,6 @@ package communication.handlers;
 import messages.Message;
 import messages.userConnection.GreetingMessage;
 import mvc.controller.LoginControl;
-import mvc.controller.UpdateControl;
 
 /**
  *
@@ -24,14 +23,6 @@ public class LoginHandler extends MessageHandler {
                 final GreetingMessage message =(GreetingMessage)msg;
                 System.out.println("Login: "+message.isSuccessful());
                 LoginControl.response(message.isSuccessful(), message.getResponse(), message);
-                if (message.isSuccessful()) {
-                    java.awt.EventQueue.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            UpdateControl.INSTANCE.add(message.getUserID(), UpdateControl.LOGIN);
-                        }
-                    });
-                }
                 return true;
             case console:
                 return handleConsole(msg);

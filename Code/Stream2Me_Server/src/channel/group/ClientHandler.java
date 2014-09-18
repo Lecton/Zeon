@@ -67,6 +67,9 @@ public class ClientHandler {
         ClientChannelGroup ccg =serverGroup.get(groupID);
         if (ccg != null) {
             ccg.writeAndFlush(message, matcher);
+        } else {
+             Logger.getLogger(ClientHandler.class.getName()).log(Level.WARNING, 
+                     "Group not found");
         }
     }
     

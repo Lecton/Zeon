@@ -25,7 +25,7 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
     public static ContactControl INSTANCE =new ContactControl();
     
     public static boolean receivingVideo(String userID) {
-        Colleague person =ContactListControl.INSTANCE.getPerson(userID);
+        Colleague person =ContactListControl.INSTANCE.getColleague(userID);
         if (person != null) {
             return person.isReceivingVideo();
         }
@@ -33,7 +33,7 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
     }
 
     public static boolean receivingAudio(String userID) {
-        Receiver person =ContactListControl.INSTANCE.getPerson(userID);
+        Receiver person =ContactListControl.INSTANCE.getColleague(userID);
         if (person != null) {
             return person.isReceivingAudio();
         }
@@ -41,7 +41,7 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
     }
 
     public static boolean hasVideoNotify(String userID) {
-        Notifier person =ContactListControl.INSTANCE.getPerson(userID);
+        Notifier person =ContactListControl.INSTANCE.getColleague(userID);
         if (person != null) {
             return person.hasVideo();
         }
@@ -49,7 +49,7 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
     }
 
     public static boolean hasAudioNotify(String userID) {
-        Notifier person =ContactListControl.INSTANCE.getPerson(userID);
+        Notifier person =ContactListControl.INSTANCE.getColleague(userID);
         if (person != null) {
             return person.hasAudio();
         }
@@ -57,7 +57,7 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
     }
 
     public static boolean hasMessageNotify(String userID) {
-        Notifier person =ContactListControl.INSTANCE.getPerson(userID);
+        Notifier person =ContactListControl.INSTANCE.getColleague(userID);
         if (person != null) {
             return person.hasMessage();
         }

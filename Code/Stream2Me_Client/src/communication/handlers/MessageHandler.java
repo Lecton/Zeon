@@ -29,12 +29,12 @@ public class MessageHandler {
                 return handleConsole(msg);
             case newUser:
                 return handleNewUser((NewUserMessage)msg);
+            case logout:
+                return handleRemoveUser((LogoutMessage)msg);
             case updateAvatar:
                 return handleUpdateAvatar((UpdateAvatarMessage)msg);
             case updateName:
                 return handleUpdateName((UpdateNameMessage)msg);
-            case logout:
-                return handleRemoveUser((LogoutMessage)msg);
 
             case string:
                 return handleStringMessage((StringMessage)msg);
@@ -64,7 +64,12 @@ public class MessageHandler {
         String title =msg.getTitle();
         String aboutMe =msg.getAboutMe();
         
-        ContactListControl.addPerson(userID, name, surname, email, avatar, title, aboutMe);
+        ContactListControl.addColleague(userID, name, surname, email, avatar, title, aboutMe);
+        return true;
+    }
+
+    private boolean handleRemoveUser(LogoutMessage msg) {
+        ContactListControl.removeColleague(msg.getUserID());
         return true;
     }
 
@@ -85,10 +90,6 @@ public class MessageHandler {
 //            UpdateControl.INSTANCE.add(msg.getUserID(), UpdateControl.UPDATENAME, person.getFullname());
 //        }
         return true;
-    }
-
-    private boolean handleRemoveUser(LogoutMessage msg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private boolean handleStringMessage(StringMessage msg) {

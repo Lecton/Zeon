@@ -15,7 +15,7 @@ import mvc.model.person.Streamer;
 public class User extends Streamer {
     private String username;
 
-    public User(String username, String userID, String name, String surname, String email, String avatar, String title, String aboutMe) {
+    public User(String userID, String username, String name, String surname, String email, String avatar, String title, String aboutMe) {
         super(userID, name, surname, email, avatar, title, aboutMe);
         this.username = username;
     }

@@ -6,38 +6,28 @@
 
 package core.database.objects;
 
-import java.sql.Date;
-
 /**
  *
  * @author Bernhard
  */
-public class User {
-    final String userID;
+public class User extends BaseUser {
     String username;
-    String groupID;
     String name;
     String surname;
     String email;
     String title;
     String aboutMe;
     String avatar;
-    boolean LoggedIn =false;
 
     public User(String userID, String username, String groupID, String name, String surname, String email, String title, String aboutMe, String avatar) {
-        this.userID = userID;
+        super(userID, groupID);
         this.username = username;
-        this.groupID = groupID;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.title = title;
         this.aboutMe = aboutMe;
         this.avatar = avatar;
-    }
-
-    public String getUserID() {
-        return userID;
     }
 
     public String getUsername() {
@@ -58,10 +48,6 @@ public class User {
 
     public String getAvatar() {
         return avatar;
-    }
-
-    public String getGroupID() {
-        return groupID;
     }
 
     public String getAboutMe() {
@@ -88,10 +74,6 @@ public class User {
         this.email = email;
     }
 
-    public void setGroupID(String groupID) {
-        this.groupID = groupID;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -102,13 +84,5 @@ public class User {
 
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
-    }
-
-    public boolean isLoggedIn() {
-        return LoggedIn;
-    }
-
-    public void setLoggedIn(boolean LoggedIn) {
-        this.LoggedIn = LoggedIn;
     }
 }
