@@ -6,16 +6,17 @@
 
 package mvc.controller;
 
-import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.JComponent;
+import javax.swing.JMenuItem;
 import mvc.model.Colleague;
 import mvc.model.person.Notifier;
 import mvc.model.person.Receiver;
+import mvc.view.generalUI.contacts.ContactPopup;
+import mvc.view.generalUI.contacts.ContactProfile;
 
 /**
  *
@@ -68,13 +69,19 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
     public void actionPerformed(ActionEvent e) {
         String command =e.getActionCommand();
         if (command.equals("viewProfile")) {
-            System.out.println("View Profile");
+            ContactPopup cp =(ContactPopup)((JMenuItem) e.getSource()).getParent();
+            GUIControl.changeContent(0, cp.getUserID());
+//            System.out.println("View Profile");
         } else if (command.equals("viewMessages")) {
+            ContactPopup cp =(ContactPopup)((JMenuItem) e.getSource()).getParent();
+            GUIControl.changeContent(1, cp.getUserID());
             System.out.println("View Messages");
         } else if (command.equals("videoStream")) {
             System.out.println("Toggle video");
         } else if (command.equals("audioStream")) {
             System.out.println("Toggle audio");
+        } else if (command.equals("viewMessagesSelected")) {
+            
         } else {
             System.out.println("UNKNOWN: "+command);
         }
@@ -88,7 +95,7 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
                 System.out.println("Unselected");
             } else {
                 System.out.println("Selected");
-                actionPerformed(new ActionEvent(evt.getSource(), 0, "viewMessages"));
+                actionPerformed(new ActionEvent(evt.getSource(), 0, "viewMessagesSelected"));
             }
         } else {
             System.out.println("UNKNOWN: "+evt.getPropertyName());

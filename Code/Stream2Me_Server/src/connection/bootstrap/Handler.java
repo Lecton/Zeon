@@ -38,12 +38,13 @@ public class Handler extends SimpleChannelInboundHandler<Message> {
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         Channel incomming =ctx.channel();
-        connections.remove(ctx.channel());
+        connections.remove(incomming);
+        incomming.close();
         System.out.println("Disconnected");
 //        if (Server.clientContains(incomming)) {
 //            Server.closeConnection(incomming);
 //        } else {
-////            System.out.println("wasnt logged in");
+//            System.out.println("wasnt logged in");
 //        }
     }
     

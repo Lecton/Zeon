@@ -89,6 +89,7 @@ public class ImageContainer extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setName(""); // NOI18N
         setPreferredSize(new java.awt.Dimension(15, 15));

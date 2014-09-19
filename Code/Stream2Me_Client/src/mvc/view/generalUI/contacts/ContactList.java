@@ -21,7 +21,7 @@ import util.Log;
  *
  * @author Bernhard
  */
-public class ContactList extends javax.swing.JPanel implements MouseListener {
+public class ContactList extends JPanel implements MouseListener {
     private GridBagConstraints gbcContactProfile;
     private ArrayList<ContactProfile> list =new ArrayList<ContactProfile>();
     private ContactProfile selectedProfile =null;

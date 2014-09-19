@@ -17,6 +17,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.Message;
@@ -108,7 +110,7 @@ public class UserHandler {
                         ClientChannel cc =new ClientChannel(ch, userID, groupID);
                         boolean addResult =ClientHandler.add(cc);
                         if (addResult) {
-                            ClientHandler.writeAndFlush(groupID, MessageBuilder.generateNewUser(person), new ClientGroup(groupID));
+                            ClientHandler.writeAndFlush(groupID, MessageBuilder.generateNewUser(person, null), new ClientGroup(groupID));
                             userLoggedInUpdate(userID, true);
                             return MessageBuilder.generateGreeting(person, true, "Login success.");
                         } else {
@@ -217,7 +219,43 @@ public class UserHandler {
      * @return users in the group or an empty (int[0]) array
      */
     public static String[] getGroupUsers(String userID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        BaseUser bu =getUser(userID);
+        if (bu != null && !bu.getGroupID().equalsIgnoreCase("DEFAULT")) {
+            PreparedStatement statement;
+            ResultSet result = null;
+            String query = "SELECT userid " +
+                            "FROM client " +
+                            "WHERE groupid = ? " +
+                            "AND userID <> ?";// + 
+//                            "AND loggedin = TRUE";
+            statement = Database.INSTANCE.getPreparedStatement(query);
+            try {
+                statement.setString(1, bu.getGroupID());
+                statement.setString(2, bu.getUserID());
+                result = statement.executeQuery();
+
+                List<String> users =new ArrayList<>();
+                if(result.next()) {
+                    String uID =result.getString("userid");
+                    users.add(uID);
+                }
+                return users.toArray(new String[0]);
+            } catch (SQLException ex) {
+                Logger.getLogger(UserHandler.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if(statement != null) {
+                        statement.close();
+                    }
+                } catch(SQLException ex) {
+                    Logger.getLogger(UserHandler.class.getName())
+                            .log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return new String[0];
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -229,7 +267,41 @@ public class UserHandler {
      * @return generated NewUserMessage of the user provided or null if a mismatch or error occurred
      */
     public static NewUserMessage getNewUserMessage(String userID, String targetID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PreparedStatement statement;
+        ResultSet result = null;
+        String query = "SELECT * " +
+                        "FROM client " +
+                        "WHERE userID = ?";
+        statement = Database.INSTANCE.getPreparedStatement(query);
+        try {
+            statement.setString(1, userID);
+            result = statement.executeQuery();
+
+            if(result.next()) {
+                String uID =result.getString("userid");
+                String name =result.getString("name");
+                String surname =result.getString("surname");
+                String email =result.getString("email");
+                String title =result.getString("title");
+                String aboutMe =result.getString("aboutme");
+                String avatar =result.getString("avatar");
+                User u =new User(uID, null, null, name, surname, email, title, aboutMe, avatar);
+                return MessageBuilder.generateNewUser(u, targetID);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserHandler.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if(statement != null) {
+                    statement.close();
+                }
+            } catch(SQLException ex) {
+                Logger.getLogger(UserHandler.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
     }
     
 

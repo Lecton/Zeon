@@ -6,12 +6,12 @@
 
 package mvc.view.generalUI;
 
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
-import mvc.controller.ContactListControl;
-import mvc.controller.Control;
 import mvc.controller.GUIControl;
 import mvc.controller.UserControl;
 import mvc.view.generalUI.contacts.ContactList;
@@ -62,6 +62,9 @@ public class GUI extends javax.swing.JFrame {
         contactsScroll = new javax.swing.JScrollPane();
         contacts = new mvc.view.generalUI.contacts.ContactList();
         content = new javax.swing.JPanel();
+        messages = new javax.swing.JPanel();
+        profileScroll = new javax.swing.JScrollPane();
+        profile = new mvc.view.generalUI.ProfilePanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Stream2Me");
@@ -156,11 +159,11 @@ public class GUI extends javax.swing.JFrame {
                 .addGap(2, 2, 2))
         );
 
-        user.setBackground(new java.awt.Color(255, 255, 255));
-
         contactsScroll.setBackground(new java.awt.Color(255, 255, 255));
         contactsScroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         contactsScroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        contacts.setBackground(new java.awt.Color(255, 255, 255));
         contactsScroll.setViewportView(contacts);
 
         javax.swing.GroupLayout peopleLayout = new javax.swing.GroupLayout(people);
@@ -168,7 +171,7 @@ public class GUI extends javax.swing.JFrame {
         peopleLayout.setHorizontalGroup(
             peopleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(user, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(contactsScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addComponent(contactsScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
         );
         peopleLayout.setVerticalGroup(
             peopleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,17 +182,29 @@ public class GUI extends javax.swing.JFrame {
         );
 
         content.setBackground(new java.awt.Color(255, 255, 255));
+        content.setLayout(new java.awt.CardLayout());
 
-        javax.swing.GroupLayout contentLayout = new javax.swing.GroupLayout(content);
-        content.setLayout(contentLayout);
-        contentLayout.setHorizontalGroup(
-            contentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        messages.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout messagesLayout = new javax.swing.GroupLayout(messages);
+        messages.setLayout(messagesLayout);
+        messagesLayout.setHorizontalGroup(
+            messagesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 312, Short.MAX_VALUE)
         );
-        contentLayout.setVerticalGroup(
-            contentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        messagesLayout.setVerticalGroup(
+            messagesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 500, Short.MAX_VALUE)
         );
+
+        content.add(messages, "message");
+
+        profileScroll.setBackground(new java.awt.Color(255, 255, 255));
+        profileScroll.setBorder(null);
+        profileScroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        profileScroll.setViewportView(profile);
+
+        content.add(profileScroll, "profile");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -200,19 +215,19 @@ public class GUI extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(controls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(people, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(people, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(content, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
+                .addComponent(content, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(rightArrow, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(content, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addComponent(leftArrow, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(rightArrow, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(controls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(people, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(content, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -260,8 +275,8 @@ public class GUI extends javax.swing.JFrame {
         
         addWindowListener(new GUIControl());
         
-        streamVideo.addActionListener(new UserControl());
-        streamAudio.addActionListener(new UserControl());
+        streamVideo.addActionListener(UserControl.INSTANCE);
+        streamAudio.addActionListener(UserControl.INSTANCE);
     }
 
     public ContactList getContactList() {
@@ -271,9 +286,28 @@ public class GUI extends javax.swing.JFrame {
     public UserPanel getUserPanel() {
         return user;
     }
-
-    public JPanel getContentPanel() {
-        return content;
+    
+    public JComponent changeContent(int type, String userID) {
+        CardLayout cl = (CardLayout)(content.getLayout());
+        switch (type) {
+            case 0: //show contact profile
+                profile.setUserID(userID, false);
+                cl.show(content, "profile");
+                return profile;
+            case 1: //show contact messages
+                cl.show(content, "message");
+                return messages;
+            case 2: //show user profile
+                profile.setUserID(userID, true);
+                cl.show(content, "profile");
+                return profile;
+            case 3: //show group messages
+                cl.show(content, "message");
+                return messages;
+            default: //show group messages
+                cl.show(content, "message");
+                return messages;
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -285,7 +319,10 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel controls;
     private mvc.view.generalUI.HideArrow leftArrow;
     private mvc.view.generalUI.Button logout;
+    private javax.swing.JPanel messages;
     private javax.swing.JPanel people;
+    private mvc.view.generalUI.ProfilePanel profile;
+    private javax.swing.JScrollPane profileScroll;
     private mvc.view.generalUI.HideArrow rightArrow;
     private mvc.view.generalUI.Button settings;
     private mvc.view.generalUI.Button streamAudio;

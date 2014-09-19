@@ -94,7 +94,7 @@ public class MessageHandler {
         BaseUser u =UserHandler.getUser(msg.getUserID());
         System.out.println("handle Logout");
         if (u == null) {
-            Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
+            Logger.getLogger(MessageHandler.class.getName()).log(Level.parse("ERROR"), 
                     "Client closed connection, but client could not be found.");
             return;
         }

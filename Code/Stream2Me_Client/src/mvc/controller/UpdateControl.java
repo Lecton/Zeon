@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author Bernhard
  */
-public class UpdateControl {
+class UpdateControl {
     public static UpdateControl INSTANCE =new UpdateControl();
 
     static void clear() {
@@ -27,15 +27,16 @@ public class UpdateControl {
         }
     }
     
-    private ConcurrentLinkedQueue<Event> updates =new ConcurrentLinkedQueue<>();
-    private ConcurrentLinkedQueue<Observer> threadPool =new ConcurrentLinkedQueue<>();
-    private AtomicInteger usage =new AtomicInteger(0);
+    private final ConcurrentLinkedQueue<Event> updates =new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<Observer> threadPool =new ConcurrentLinkedQueue<>();
+    private final AtomicInteger usage =new AtomicInteger(0);
     
-    public static final int LOGIN =0;
-    public static final int NEWUSER =1;
-    public static final int REMOVEUSER =2;
-    public static final int UPDATENAME =3;
-    public static final int UPDATEAVATAR =4;
+    protected static final int LOGIN =0;
+    protected static final int NEWUSER =1;
+    protected static final int REMOVEUSER =2;
+    protected static final int UPDATENAME =3;
+    protected static final int UPDATEAVATAR =4;
+    protected static final int UPDATECONTENT =5;
     
     public UpdateControl() {
         for (int i=0; i<10; i++) {
@@ -53,6 +54,10 @@ public class UpdateControl {
     
     public void add(Object target, int action) {
         updates.add(new Event(target, action, null));
+    }
+    
+    public void add(Object target, int action, Object arg) {
+        updates.add(new Event(target, action, arg));
     }
     
     protected Event getEvent() {
@@ -78,23 +83,26 @@ public class UpdateControl {
                 } else {
                     usage.incrementAndGet();
                     switch (e.id) {
-                        case UpdateControl.LOGIN:
+                        case LOGIN:
                             String userID =(String)e.target;
                             UserControl.INSTANCE.update(userID);
                             break;
-                        case UpdateControl.NEWUSER:
+                        case NEWUSER:
                             ContactListControl.INSTANCE.addProfile((String)e.target);
                             break;
-                        case UpdateControl.REMOVEUSER:
+                        case REMOVEUSER:
                             ContactListControl.INSTANCE.removeProfile((String)e.target);
                             break;
-                        case UpdateControl.UPDATENAME:
+                        case UPDATENAME:
 //                                ContactProfile nameProfile =ContactListControl.INSTANCE.getContact((String)e.target);
 //                                nameProfile.setName((String)e.arg);
                             break;
-                        case UpdateControl.UPDATEAVATAR:
+                        case UPDATEAVATAR:
 //                                ContactProfile avatarProfile =ContactListControl.INSTANCE.getContact((String)e.target);
 //                                avatarProfile.setAvatar((String)e.arg);
+                            break;
+                        case UPDATECONTENT:
+                            GUIControl.updateContent(e.target, (int)e.arg);
                             break;
                         default:
 

@@ -6,6 +6,7 @@
 
 package mvc.controller;
 
+import communication.handlers.MessageFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComponent;
@@ -17,7 +18,7 @@ import mvc.view.generalUI.UserPanel;
  * @author Bernhard
  */
 public class UserControl implements ActionListener {
-    protected static UserControl INSTANCE =new UserControl();
+    public static UserControl INSTANCE =new UserControl();
     private static UserPanel view;
     private static User model;
 
@@ -52,6 +53,7 @@ public class UserControl implements ActionListener {
     protected void update(String userID) {
         view.setAvatar(model.getAvatar());
         view.setName(model.getFullname());
+        Control.INSTANCE.writeMessage(MessageFactory.generateRefreshListRequest(userID));
     }
     
     protected void setName(String name) {
@@ -81,10 +83,12 @@ public class UserControl implements ActionListener {
                 //start audio
                 model.setStreamingAudio(true);
             }
-        } else if (command.equals("viewMessages")) {
-            System.out.println("View Messages");
         } else if (command.equals("viewProfile")) {
-            System.out.println("View Profile");
+            GUIControl.changeContent(2, model.getUserID());
+            System.out.println("View User Profile");
+        } else if (command.equals("viewMessages")) {
+            GUIControl.changeContent(3, model.getUserID());
+            System.out.println("View User Messages");
         } else {
             System.out.println("UNKNOWN: "+command);
         }

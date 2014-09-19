@@ -50,6 +50,10 @@ public class ContactPopup extends JPopupMenu {
         add(audioControl);
         add(videoControl);
     }
+    
+    public String getUserID() {
+        return parent.getUserID();
+    }
 
     @Override
     public void show(Component invoker, int x, int y) {

@@ -31,10 +31,13 @@ public class MessageBuilder {
         return msg;
     }
 
-    public static NewUserMessage generateNewUser(User person) {
+    public static NewUserMessage generateNewUser(User person, String targetID) {
         NewUserMessage msg =new NewUserMessage(person.getUserID(), person.getName()
                 , person.getSurname(), person.getEmail(), person.getAvatar()
                 , person.getTitle(), person.getAboutMe());
+        if (targetID != null) {
+            msg.setTargetID(targetID);
+        }
         return msg;
     }
 }

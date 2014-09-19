@@ -6,6 +6,9 @@
 
 package mvc.view.generalUI;
 
+import java.awt.event.ActionEvent;
+import mvc.controller.UserControl;
+
 /**
  *
  * @author Bernhard
@@ -16,6 +19,8 @@ public class UserPanel extends javax.swing.JPanel {
      */
     public UserPanel() {
         initComponents();
+        
+        setComponentPopupMenu(new UserPopup());
     }
     
     public void setName(String name) {
@@ -38,6 +43,7 @@ public class UserPanel extends javax.swing.JPanel {
         lblName = new javax.swing.JLabel();
         imgAvatar = new mvc.view.generalUI.ImageContainer();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(325, 69));
         setMinimumSize(new java.awt.Dimension(10, 69));
         setPreferredSize(new java.awt.Dimension(10, 69));
@@ -48,6 +54,8 @@ public class UserPanel extends javax.swing.JPanel {
         });
 
         lblName.setText("Name");
+
+        imgAvatar.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout imgAvatarLayout = new javax.swing.GroupLayout(imgAvatar);
         imgAvatar.setLayout(imgAvatarLayout);
@@ -68,7 +76,7 @@ public class UserPanel extends javax.swing.JPanel {
                 .addComponent(imgAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblName)
-                .addGap(0, 175, Short.MAX_VALUE))
+                .addGap(0, 164, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -81,9 +89,8 @@ public class UserPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-//        userInterface.profileSelectedMessage(user);
+        UserControl.INSTANCE.actionPerformed(new ActionEvent(this, evt.getID(), "viewMessages", evt.getWhen(), evt.getModifiers()));
     }//GEN-LAST:event_formMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private mvc.view.generalUI.ImageContainer imgAvatar;

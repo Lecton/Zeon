@@ -3,7 +3,7 @@
     <type>org.netbeans.modules.java.j2seproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-            <name>Stream2Me_Client</name>
+            <name>Stream2Me_Client_OLD</name>
             <source-roots>
                 <root id="src.assets.dir"/>
                 <root id="src.dir"/>

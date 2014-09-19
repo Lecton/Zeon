@@ -9,6 +9,7 @@ package mvc.controller;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import javax.swing.JComponent;
 import mvc.view.generalUI.GUI;
 import sun.awt.WindowClosingListener;
 import sun.awt.WindowClosingSupport;
@@ -31,22 +32,12 @@ public class GUIControl implements WindowListener {
     }
     
     protected static void changeContent(int type, String userID) {
-        switch (type) {
-            case 0:
-                //show profile
-                break;
-            case 1:
-                //show message
-                break;
-            case 2:
-                //show user profile
-                break;
-            case 3:
-                //show group message
-                break;
-            default:
-                //show group message
-        }
+        JComponent target =view.changeContent(type, userID);
+        UpdateControl.INSTANCE.add(target, UpdateControl.UPDATECONTENT, type);
+    }
+
+    static void updateContent(Object target, int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
