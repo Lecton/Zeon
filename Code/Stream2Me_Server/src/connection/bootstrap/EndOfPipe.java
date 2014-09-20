@@ -22,6 +22,8 @@ public class EndOfPipe extends SimpleChannelInboundHandler<Object> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         if (cause instanceof NotSslRecordException) {
+        } else if (!ctx.channel().isOpen()) {
+            return;
         } else {
             Logger.getLogger(EndOfPipe.class.getName()).log(Level.SEVERE, 
                     "Exception at end of pipe: ", cause);

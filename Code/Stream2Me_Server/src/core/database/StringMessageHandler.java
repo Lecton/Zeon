@@ -22,7 +22,9 @@ public class StringMessageHandler {
      * @return String message with possibly modified groupID.
      */
     public static Message handleStringMessage(StringMessage msg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (msg.getTargetID().equals(Message.ALL)) {
+            msg.setTargetGroupID(UserHandler.getGroupID(msg.getUserID()));
+        }
+        return msg;
     }
-    
 }

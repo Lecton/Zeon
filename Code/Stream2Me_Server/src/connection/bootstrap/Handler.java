@@ -59,7 +59,12 @@ public class Handler extends SimpleChannelInboundHandler<Message> {
         Logger.getLogger(Handler.class.getName()).log(Level.INFO, 
                 "Received message: "+msg.handle());
         Channel incomming =ctx.channel();
-        MessageHandler.handle(ctx, msg);
+        
+        try {
+            MessageHandler.handle(ctx, msg);
+        } catch (UnsupportedOperationException e) {
+//            Logger.getLogger(Handler.class.getName()).log(Level.WARNING, "Operation not yet implemented", e);
+        }
     }
     
 }

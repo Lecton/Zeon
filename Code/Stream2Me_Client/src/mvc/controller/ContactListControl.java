@@ -8,10 +8,9 @@ package mvc.controller;
 
 import mvc.model.Colleague;
 import mvc.model.ColleagueList;
-import mvc.model.Model;
+import mvc.model.UserMessage;
 import mvc.model.person.Person;
 import mvc.view.generalUI.contacts.ContactList;
-import mvc.view.generalUI.contacts.ContactProfile;
 
 /**
  *
@@ -44,6 +43,11 @@ public class ContactListControl {
        
         UpdateControl.INSTANCE.add(userID, UpdateControl.REMOVEUSER);
     }
+
+    public static void addMessage(String userID, String targetID, String timestamp, String message) {
+        UserMessage um =INSTANCE.getColleague(userID).addMessage(userID, targetID, timestamp, message);
+        UpdateControl.INSTANCE.add(userID, UpdateControl.STRINGMESSAGE, um);
+    }
     
     protected void addProfile(String userID) {
         Person person =model.get(userID);
@@ -56,5 +60,9 @@ public class ContactListControl {
     
     protected void removeProfile(String userID) {
         view.removeProfile(userID);
+    }
+
+    String getColleagueFullname(String userID) {
+        return model.get(userID).getFullname();
     }
 }

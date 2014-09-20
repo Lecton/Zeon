@@ -43,6 +43,7 @@ public class MessageFactory {
     }
     
     public static StringMessage generateStringMessage(String userID, String targetID, String message) {
+        targetID =targetID.equals(userID) ? Message.ALL : targetID;
         return new StringMessage(userID, targetID, message);
     }
     

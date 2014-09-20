@@ -22,7 +22,7 @@ import util.Log;
  * @author Bernhard
  */
 public class ContactList extends JPanel implements MouseListener {
-    private GridBagConstraints gbcContactProfile;
+    private GridBagConstraints gbcContent;
     private ArrayList<ContactProfile> list =new ArrayList<ContactProfile>();
     private ContactProfile selectedProfile =null;
     
@@ -40,10 +40,10 @@ public class ContactList extends JPanel implements MouseListener {
         p.setPreferredSize(new Dimension(0, 0));
         add(p, gbc);
         
-        gbcContactProfile = new GridBagConstraints();
-        gbcContactProfile.gridwidth = GridBagConstraints.REMAINDER;
-        gbcContactProfile.weightx = 1;
-        gbcContactProfile.fill = GridBagConstraints.HORIZONTAL;
+        gbcContent = new GridBagConstraints();
+        gbcContent.gridwidth = GridBagConstraints.REMAINDER;
+        gbcContent.weightx = 1;
+        gbcContent.fill = GridBagConstraints.HORIZONTAL;
     }
     
     public ContactProfile getContactProfile(String userID) {
@@ -63,7 +63,7 @@ public class ContactList extends JPanel implements MouseListener {
         contact.addMouseListener(this);
         contact.addPropertyChangeListener(ContactControl.INSTANCE);
         list.add(contact);
-        add(contact, gbcContactProfile, list.size()-1);
+        add(contact, gbcContent, list.size()-1);
         update();
         
         Log.write(this.getClass(), "User added");

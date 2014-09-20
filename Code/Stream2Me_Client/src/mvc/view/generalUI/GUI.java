@@ -11,10 +11,10 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import mvc.controller.GUIControl;
 import mvc.controller.UserControl;
 import mvc.view.generalUI.contacts.ContactList;
+import mvc.view.generalUI.message.MessagePanel;
 
 /**
  *
@@ -62,7 +62,7 @@ public class GUI extends javax.swing.JFrame {
         contactsScroll = new javax.swing.JScrollPane();
         contacts = new mvc.view.generalUI.contacts.ContactList();
         content = new javax.swing.JPanel();
-        messages = new javax.swing.JPanel();
+        messages = new mvc.view.generalUI.message.MessagePanel();
         profileScroll = new javax.swing.JScrollPane();
         profile = new mvc.view.generalUI.ProfilePanel();
 
@@ -183,20 +183,6 @@ public class GUI extends javax.swing.JFrame {
 
         content.setBackground(new java.awt.Color(255, 255, 255));
         content.setLayout(new java.awt.CardLayout());
-
-        messages.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout messagesLayout = new javax.swing.GroupLayout(messages);
-        messages.setLayout(messagesLayout);
-        messagesLayout.setHorizontalGroup(
-            messagesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 312, Short.MAX_VALUE)
-        );
-        messagesLayout.setVerticalGroup(
-            messagesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
-        );
-
         content.add(messages, "message");
 
         profileScroll.setBackground(new java.awt.Color(255, 255, 255));
@@ -287,6 +273,10 @@ public class GUI extends javax.swing.JFrame {
         return user;
     }
     
+    public MessagePanel getMessagePanel() {
+        return messages;
+    }
+    
     public JComponent changeContent(int type, String userID) {
         CardLayout cl = (CardLayout)(content.getLayout());
         switch (type) {
@@ -295,18 +285,24 @@ public class GUI extends javax.swing.JFrame {
                 cl.show(content, "profile");
                 return profile;
             case 1: //show contact messages
+                messages.setUserID(userID, false);
                 cl.show(content, "message");
                 return messages;
+//                return null;
             case 2: //show user profile
                 profile.setUserID(userID, true);
                 cl.show(content, "profile");
                 return profile;
             case 3: //show group messages
+                messages.setUserID(userID, true);
                 cl.show(content, "message");
                 return messages;
+//                return null;
             default: //show group messages
+                messages.setUserID(userID, true);
                 cl.show(content, "message");
                 return messages;
+//                return null;
         }
     }
     
@@ -319,7 +315,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel controls;
     private mvc.view.generalUI.HideArrow leftArrow;
     private mvc.view.generalUI.Button logout;
-    private javax.swing.JPanel messages;
+    private mvc.view.generalUI.message.MessagePanel messages;
     private javax.swing.JPanel people;
     private mvc.view.generalUI.ProfilePanel profile;
     private javax.swing.JScrollPane profileScroll;
@@ -329,4 +325,5 @@ public class GUI extends javax.swing.JFrame {
     private mvc.view.generalUI.Button streamVideo;
     private mvc.view.generalUI.UserPanel user;
     // End of variables declaration//GEN-END:variables
+
 }

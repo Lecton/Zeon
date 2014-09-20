@@ -9,8 +9,9 @@ package mvc.controller;
 import communication.handlers.MessageFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JComponent;
+import messages.Message;
 import mvc.model.User;
+import mvc.view.generalUI.ProfilePanel;
 import mvc.view.generalUI.UserPanel;
 
 /**
@@ -50,6 +51,12 @@ public class UserControl implements ActionListener {
         return model.getUserID();
     }
 
+    protected static void updateContent(ProfilePanel userPanel) {
+        userPanel.setProfile(model.getName(), model.getSurname(), 
+                model.getEmail(), model.getAvatar(), model.getTitle(), 
+                model.getAboutMe());
+    }
+
     protected void update(String userID) {
         view.setAvatar(model.getAvatar());
         view.setName(model.getFullname());
@@ -62,6 +69,10 @@ public class UserControl implements ActionListener {
     
     protected void setAvatar(String avatar) {
         view.setAvatar(avatar);
+    }
+    
+    protected void addMessage(String userID, String targetID, String time, String message) {
+        model.addMessage(userID, targetID, time, message);
     }
 
     @Override
@@ -92,5 +103,9 @@ public class UserControl implements ActionListener {
         } else {
             System.out.println("UNKNOWN: "+command);
         }
+    }
+
+    String getFullname(String userID) {
+        return model.getFullname();
     }
 }

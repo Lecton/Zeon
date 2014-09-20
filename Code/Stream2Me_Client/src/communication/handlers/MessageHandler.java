@@ -93,7 +93,12 @@ public class MessageHandler {
     }
 
     private boolean handleStringMessage(StringMessage msg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String userID =msg.getUserID();
+        String targetID =msg.getTargetID();
+        String message =msg.getMessage();
+        String timestamp =msg.getTimestamp();
+        ContactListControl.addMessage(userID, targetID, timestamp, message);
+        return true;
     }
 
     private boolean handleStreamNotification(StreamNotifyMessage msg) {

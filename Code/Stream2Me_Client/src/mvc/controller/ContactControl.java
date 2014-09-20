@@ -13,8 +13,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JMenuItem;
 import mvc.model.Colleague;
+import mvc.model.ColleagueList;
 import mvc.model.person.Notifier;
+import mvc.model.person.Person;
 import mvc.model.person.Receiver;
+import mvc.view.generalUI.ProfilePanel;
 import mvc.view.generalUI.contacts.ContactPopup;
 import mvc.view.generalUI.contacts.ContactProfile;
 
@@ -65,23 +68,28 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
         return false;
     }
 
+    protected static void updateContent(ProfilePanel pp) {
+        Person p =ContactListControl.INSTANCE.getColleague(pp.getUserID());
+        pp.setProfile(p.getName(), p.getSurname(), p.getEmail(), p.getAvatar(), p.getTitle(), p.getAboutMe());
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         String command =e.getActionCommand();
         if (command.equals("viewProfile")) {
             ContactPopup cp =(ContactPopup)((JMenuItem) e.getSource()).getParent();
             GUIControl.changeContent(0, cp.getUserID());
-//            System.out.println("View Profile");
         } else if (command.equals("viewMessages")) {
+            System.out.println("Show messages");
             ContactPopup cp =(ContactPopup)((JMenuItem) e.getSource()).getParent();
             GUIControl.changeContent(1, cp.getUserID());
-            System.out.println("View Messages");
         } else if (command.equals("videoStream")) {
             System.out.println("Toggle video");
         } else if (command.equals("audioStream")) {
             System.out.println("Toggle audio");
         } else if (command.equals("viewMessagesSelected")) {
-            
+            ContactProfile cp =(ContactProfile)e.getSource();
+            GUIControl.changeContent(0, cp.getUserID());
         } else {
             System.out.println("UNKNOWN: "+command);
         }
@@ -94,12 +102,15 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
             if (c.equals(Color.WHITE)) {
                 System.out.println("Unselected");
             } else {
-                System.out.println("Selected");
                 actionPerformed(new ActionEvent(evt.getSource(), 0, "viewMessagesSelected"));
             }
         } else {
             System.out.println("UNKNOWN: "+evt.getPropertyName());
         }
     }
-    
+
+    protected void addMessage(String userID, String targetID, String timestamp, String message) {
+        Colleague c =ContactListControl.INSTANCE.getColleague(targetID);
+        c.addMessage(userID, targetID, timestamp, message);
+    }
 }

@@ -50,6 +50,7 @@ public class Control {
         GUIControl.register(ui);
         ContactListControl.register(ui.getContactList());
         UserControl.register(ui.getUserPanel());
+        ChatControl.register(ui.getMessagePanel());
     }
     
     public void close() {

@@ -6,13 +6,11 @@
 
 package mvc.controller;
 
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JComponent;
 import mvc.view.generalUI.GUI;
-import sun.awt.WindowClosingListener;
-import sun.awt.WindowClosingSupport;
+import mvc.view.generalUI.ProfilePanel;
 
 /**
  *
@@ -36,8 +34,27 @@ public class GUIControl implements WindowListener {
         UpdateControl.INSTANCE.add(target, UpdateControl.UPDATECONTENT, type);
     }
 
-    static void updateContent(Object target, int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    protected static void updateContent(Object target, int type) {
+        switch (type) {
+            case 0: //show contact profile
+                ContactControl.updateContent((ProfilePanel)target);
+                break;
+            case 1: //show contact messages
+//                Message pp =(ProfilePanel)target;
+//                ContactControl.updateContent(pp);
+//                return messages;
+                break;
+            case 2: //show user profile
+                UserControl.updateContent((ProfilePanel)target);
+                break;
+            case 3: //show group messages
+//                cl.show(content, "message");
+                break;
+            default: //show group messages
+//                cl.show(content, "message");
+                break;
+        }
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

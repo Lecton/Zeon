@@ -45,7 +45,7 @@ public class ClientHandler {
     
     public static boolean remove(Channel channel, String userID, String groupID) {
         Logger.getLogger(ClientHandler.class.getName()).log(Level.INFO, 
-                "Clients: " + serverGroup.size());
+                "Groups: " + serverGroup.size());
         ClientChannelGroup ccg =serverGroup.get(groupID);
         if (ccg != null) {
             return ccg.remove(new RemoveMatcher(userID));
@@ -65,11 +65,18 @@ public class ClientHandler {
     public static void writeAndFlush(String groupID, Message message) {
         ClientMatcher matcher =ClientMatcher.generateMatcher(message);
         ClientChannelGroup ccg =serverGroup.get(groupID);
-        if (ccg != null) {
-            ccg.writeAndFlush(message, matcher);
-        } else {
-             Logger.getLogger(ClientHandler.class.getName()).log(Level.WARNING, 
-                     "Group not found");
+        
+        try {
+            if (ccg != null) {
+                ccg.writeAndFlush(message, matcher);
+            } else {
+                 Logger.getLogger(ClientHandler.class.getName()).log(Level.WARNING, 
+                         "Group not found");
+            }
+        } catch (Exception e) {
+            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, 
+                    "Exception during write and flush of message. "
+                            +message.handle(), e);
         }
     }
     

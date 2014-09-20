@@ -10,7 +10,7 @@ package mvc.model.person;
  *
  * @author Bernhard
  */
-public class Streamer extends Notifier {
+public class Streamer extends MessageUser {
     private String videoName =null;
     private String audioName =null;
     

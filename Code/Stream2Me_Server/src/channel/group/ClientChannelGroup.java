@@ -23,6 +23,7 @@ import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.internal.ConcurrentSet;
 import io.netty.util.internal.StringUtil;
+import java.io.IOException;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,8 +43,8 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
     private static final AtomicInteger nextId = new AtomicInteger();
     private final EventExecutor executor;
     private final String name;
-    private final ConcurrentSet<Channel> serverChannels = new ConcurrentSet<Channel>();
-    private final ConcurrentSet<Channel> nonServerChannels = new ConcurrentSet<Channel>();
+    private final ConcurrentSet<ClientChannel> serverChannels = new ConcurrentSet<ClientChannel>();
+    private final ConcurrentSet<ClientChannel> nonServerChannels = new ConcurrentSet<ClientChannel>();
     private final ChannelFutureListener remover = new ChannelFutureListener() {
         @Override
         public void operationComplete(ChannelFuture future) throws Exception {
@@ -94,8 +95,11 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
 
     @Override
     public boolean add(Channel channel) {
-        ConcurrentSet<Channel> set =
-            channel instanceof ServerChannel? serverChannels : nonServerChannels;
+        return false;
+    }
+    public boolean add(ClientChannel channel) {
+        ConcurrentSet<ClientChannel> set =
+            channel instanceof ServerChannel ? serverChannels : nonServerChannels;
 
         boolean added = set.add(channel);
         if (added) {
@@ -105,7 +109,7 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
     }
     
     public boolean remove(RemoveMatcher matcher) {
-        for (Channel c: nonServerChannels) {
+        for (ClientChannel c: nonServerChannels) {
             if (matcher.matches(c)) {
                 if (nonServerChannels.remove(c)) {
                     c.closeFuture().removeListener(remover);
@@ -153,9 +157,7 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
 
     @Override
     public Iterator<Channel> iterator() {
-        return new CombinedIterator<Channel>(
-                serverChannels.iterator(),
-                nonServerChannels.iterator());
+        return null;
     }
 
     @Override
@@ -313,13 +315,26 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
         Map<Channel, ChannelFuture> futures = new LinkedHashMap<Channel, ChannelFuture>(size());
 
         for (Channel c: serverChannels) {
-            if (matcher.matches(c)) {
-                futures.put(c, c.writeAndFlush(safeDuplicate(message)));
+            try {
+                if (matcher.matches(c)) {
+                    futures.put(c, c.writeAndFlush(safeDuplicate(message)));
+                }
+            } catch (Exception e) {
+                if (c.isOpen()) {
+                    throw e;
+                }
             }
         }
+        
         for (Channel c: nonServerChannels) {
-            if (matcher.matches(c)) {
-                futures.put(c, c.writeAndFlush(safeDuplicate(message)));
+            try {
+                if (matcher.matches(c)) {
+                    futures.put(c, c.writeAndFlush(safeDuplicate(message)));
+                }
+            } catch (Exception e) {
+                if (c.isOpen()) {
+                    throw e;
+                }
             }
         }
         

@@ -35,6 +35,10 @@ public class ProfilePanel extends javax.swing.JPanel {
         this.revalidate();
         this.repaint();
     }
+    
+    public String getUserID() {
+        return userID;
+    }
 
     public void setProfile(String name, String surname, String email, String avatar, String title, String aboutMe) {
         if (owner) {
