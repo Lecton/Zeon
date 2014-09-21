@@ -11,9 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JMenuItem;
 import mvc.model.Colleague;
-import mvc.model.ColleagueList;
 import mvc.model.person.Notifier;
 import mvc.model.person.Person;
 import mvc.model.person.Receiver;
@@ -26,6 +27,8 @@ import mvc.view.generalUI.contacts.ContactProfile;
  * @author Bernhard
  */
 public class ContactControl implements ActionListener, PropertyChangeListener {
+    private final static Logger LOGGER = Logger.getLogger(ContactControl.class.getName());
+    
     public static ContactControl INSTANCE =new ContactControl();
     
     public static boolean receivingVideo(String userID) {
@@ -78,20 +81,23 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
         String command =e.getActionCommand();
         if (command.equals("viewProfile")) {
             ContactPopup cp =(ContactPopup)((JMenuItem) e.getSource()).getParent();
-            GUIControl.changeContent(0, cp.getUserID());
+            GUIControl.changeContent(0, cp.getUserID(),  ContactListControl
+                    .INSTANCE.getColleagueFullname(cp.getUserID()));
         } else if (command.equals("viewMessages")) {
-            System.out.println("Show messages");
+            LOGGER.log(Level.INFO, "Show messages");
             ContactPopup cp =(ContactPopup)((JMenuItem) e.getSource()).getParent();
-            GUIControl.changeContent(1, cp.getUserID());
+            GUIControl.changeContent(1, cp.getUserID(), ContactListControl
+                    .INSTANCE.getColleagueFullname(cp.getUserID()));
         } else if (command.equals("videoStream")) {
-            System.out.println("Toggle video");
+            LOGGER.log(Level.INFO, "Toggle video");
         } else if (command.equals("audioStream")) {
-            System.out.println("Toggle audio");
+            LOGGER.log(Level.INFO, "Toggle audio");
         } else if (command.equals("viewMessagesSelected")) {
             ContactProfile cp =(ContactProfile)e.getSource();
-            GUIControl.changeContent(0, cp.getUserID());
+            GUIControl.changeContent(1, cp.getUserID(), ContactListControl
+                    .INSTANCE.getColleagueFullname(cp.getUserID()));
         } else {
-            System.out.println("UNKNOWN: "+command);
+            LOGGER.log(Level.WARNING, "UNKNOWN: "+command);
         }
     }
 
@@ -100,17 +106,12 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
         if (evt.getPropertyName().equals("background")) {
             Color c =(Color)evt.getNewValue();
             if (c.equals(Color.WHITE)) {
-                System.out.println("Unselected");
+                LOGGER.log(Level.INFO, "Unselected");
             } else {
                 actionPerformed(new ActionEvent(evt.getSource(), 0, "viewMessagesSelected"));
             }
         } else {
-            System.out.println("UNKNOWN: "+evt.getPropertyName());
+            LOGGER.log(Level.WARNING, "UNKNOWN: "+evt.getPropertyName());
         }
-    }
-
-    protected void addMessage(String userID, String targetID, String timestamp, String message) {
-        Colleague c =ContactListControl.INSTANCE.getColleague(targetID);
-        c.addMessage(userID, targetID, timestamp, message);
     }
 }

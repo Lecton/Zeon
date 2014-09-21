@@ -6,11 +6,16 @@
 
 package mvc.view.generalUI;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Bernhard
  */
 public class ProfilePanel extends javax.swing.JPanel {
+    private final static Logger LOGGER = Logger.getLogger(ProfilePanel.class.getName());
+    
     private boolean owner;
     private String userID;
 
@@ -21,7 +26,7 @@ public class ProfilePanel extends javax.swing.JPanel {
         initComponents();
     }
     
-    public void setUserID(String userID, boolean owner) {
+    public void setUserID(String userID, String name, boolean owner) {
         this.owner =owner;
         this.userID =userID;
         
@@ -202,7 +207,7 @@ public class ProfilePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnUpdateDetailsActionPerformed
 
     private void formPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_formPropertyChange
-        System.out.println("property: "+evt.getPropertyName());
+        LOGGER.log(Level.INFO, "property: "+evt.getPropertyName());
     }//GEN-LAST:event_formPropertyChange
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

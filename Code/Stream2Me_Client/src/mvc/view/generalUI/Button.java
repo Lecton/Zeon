@@ -8,6 +8,7 @@ package mvc.view.generalUI;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import utils.ImageUtils;
@@ -18,6 +19,8 @@ import utils.ImageUtils;
  * @author Bernhard
  */
 public class Button extends JButton {
+    private final static Logger LOGGER = Logger.getLogger(Button.class.getName());
+    
     private String PATH ="./assets/";
     private int width =-1;
     private int height =-1;

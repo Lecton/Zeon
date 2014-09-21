@@ -9,6 +9,7 @@ package mvc.view.generalUI.contacts;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import mvc.controller.ContactControl;
@@ -20,6 +21,8 @@ import mvc.controller.UserControl;
  * @author Bernhard
  */
 public class ContactPopup extends JPopupMenu {
+    private final static Logger LOGGER = Logger.getLogger(ContactPopup.class.getName());
+    
     JMenuItem viewProfile, viewMessages;
     JMenuItem audioControl, videoControl;
     final ContactProfile parent;

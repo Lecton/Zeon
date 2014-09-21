@@ -9,6 +9,7 @@ package mvc.controller;
 import java.awt.Event;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import mvc.model.UserMessage;
 
 /**
@@ -16,6 +17,8 @@ import mvc.model.UserMessage;
  * @author Bernhard
  */
 class UpdateControl {
+    private final static Logger LOGGER = Logger.getLogger(UpdateControl.class.getName());
+    
     public static UpdateControl INSTANCE =new UpdateControl();
 
     static void clear() {
@@ -107,7 +110,7 @@ class UpdateControl {
                             GUIControl.updateContent(e.target, (int)e.arg);
                             break;
                         case STRINGMESSAGE:
-                            ChatControl.INSTANCE.checkMessage((String)e.target, (UserMessage)e.arg);
+                            ChatControl.INSTANCE.checkMessage((String)e.target, (int)e.arg);
                             break;
                         default:
 

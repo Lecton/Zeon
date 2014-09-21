@@ -13,12 +13,15 @@ import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.handler.ssl.SslContext;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Bernhard
  */
 public class Initialiser extends  ChannelInitializer<SocketChannel> {
+    private final static Logger LOGGER = Logger.getLogger(Initialiser.class.getName());
+    
     private final SslContext sslCtx;
 
     public Initialiser() {

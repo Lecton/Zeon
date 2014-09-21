@@ -8,6 +8,7 @@ package mvc.controller;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import mvc.view.generalUI.GUI;
 import mvc.view.generalUI.ProfilePanel;
@@ -17,6 +18,8 @@ import mvc.view.generalUI.ProfilePanel;
  * @author Bernhard
  */
 public class GUIControl implements WindowListener {
+    private final static Logger LOGGER = Logger.getLogger(GUIControl.class.getName());
+    
     private static GUI view;
     
     public static void register(GUI ui) {
@@ -29,8 +32,8 @@ public class GUIControl implements WindowListener {
         UserControl.clear();
     }
     
-    protected static void changeContent(int type, String userID) {
-        JComponent target =view.changeContent(type, userID);
+    protected static void changeContent(int type, String userID, String name) {
+        JComponent target =view.changeContent(type, userID, name);
         UpdateControl.INSTANCE.add(target, UpdateControl.UPDATECONTENT, type);
     }
 

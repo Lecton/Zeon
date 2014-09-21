@@ -7,6 +7,7 @@
 package communication;
 
 import io.netty.channel.ChannelHandlerContext;
+import java.util.logging.Logger;
 import messages.Message;
 
 /**
@@ -14,6 +15,8 @@ import messages.Message;
  * @author Bernhard
  */
 public class PoolEntry {
+    private final static Logger LOGGER = Logger.getLogger(PoolEntry.class.getName());
+    
     Message message;
     ChannelHandlerContext ctx;
     int counter;

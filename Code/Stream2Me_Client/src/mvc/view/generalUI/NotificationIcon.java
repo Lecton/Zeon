@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -18,6 +19,8 @@ import javax.imageio.ImageIO;
  * @author Bernhard
  */
 public class NotificationIcon extends javax.swing.JPanel {
+    private final static Logger LOGGER = Logger.getLogger(NotificationIcon.class.getName());
+    
     public static enum iconType {MESSAGE, VIDEO, AUDIO};
     private double w =200, h =200;
     private static int gap =3;

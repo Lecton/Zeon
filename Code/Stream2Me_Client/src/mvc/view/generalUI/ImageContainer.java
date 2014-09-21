@@ -12,6 +12,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import utils.ImageUtils;
@@ -21,6 +22,8 @@ import utils.ImageUtils;
  * @author Bernhard
  */
 public class ImageContainer extends javax.swing.JPanel {
+    private final static Logger LOGGER = Logger.getLogger(ImageContainer.class.getName());
+    
     ImageIcon icon;
     boolean fill;
     

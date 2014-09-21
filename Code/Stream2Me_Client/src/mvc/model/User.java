@@ -6,6 +6,7 @@
 
 package mvc.model;
 
+import java.util.logging.Logger;
 import mvc.model.person.Streamer;
 
 /**
@@ -13,6 +14,8 @@ import mvc.model.person.Streamer;
  * @author Bernhard
  */
 public class User extends Streamer {
+    private final static Logger LOGGER = Logger.getLogger(User.class.getName());
+    
     private String username;
 
     public User(String userID, String username, String name, String surname, String email, String avatar, String title, String aboutMe) {

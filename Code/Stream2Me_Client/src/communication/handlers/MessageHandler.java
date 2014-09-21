@@ -6,6 +6,8 @@
 
 package communication.handlers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import messages.Message;
 import messages.StringMessage;
 import messages.media.AudioStreamMessage;
@@ -16,14 +18,17 @@ import messages.update.UpdateNameMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
 import mvc.controller.ContactListControl;
+import mvc.controller.MessageControl;
 
 /**
  *
  * @author Bernhard
  */
 public class MessageHandler {
-    public boolean handle(Message msg) {
-        System.out.println(msg.handle());
+    private final static Logger LOGGER = Logger.getLogger(MessageHandler.class.getName()); 
+    
+    public boolean handle(Message msg) throws UnsupportedOperationException {
+        LOGGER.log(Level.INFO, msg.handle()+"");
         switch (msg.handle()) {
             case console:
                 return handleConsole(msg);
@@ -51,7 +56,7 @@ public class MessageHandler {
     }
     
     boolean handleConsole(Message msg) {
-        System.out.println(msg.getMessage());
+        LOGGER.log(Level.INFO, msg.getMessage());
         return true;
     }
 
@@ -97,7 +102,7 @@ public class MessageHandler {
         String targetID =msg.getTargetID();
         String message =msg.getMessage();
         String timestamp =msg.getTimestamp();
-        ContactListControl.addMessage(userID, targetID, timestamp, message);
+        MessageControl.acceptMessage(userID, targetID, timestamp, message);
         return true;
     }
 

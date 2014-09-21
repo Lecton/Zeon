@@ -10,6 +10,7 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import mvc.controller.GUIControl;
 import mvc.controller.UserControl;
@@ -21,6 +22,8 @@ import mvc.view.generalUI.message.MessagePanel;
  * @author Bernhard
  */
 public class GUI extends javax.swing.JFrame {
+    private final static Logger LOGGER = Logger.getLogger(GUI.class.getName());
+    
 
     /**
      * Creates new form GUI
@@ -29,14 +32,6 @@ public class GUI extends javax.swing.JFrame {
         initComponents();
         
         setupGUI();
-    }
-    
-    private void printBounds(String name, Rectangle r) {
-        System.out.println(name+": ");
-        System.out.println("\tX: "+r.x);
-        System.out.println("\tY: "+r.y);
-        System.out.println("\tWidth: "+r.width);
-        System.out.println("\tHeight: "+r.height);
     }
 
     /**
@@ -277,29 +272,30 @@ public class GUI extends javax.swing.JFrame {
         return messages;
     }
     
-    public JComponent changeContent(int type, String userID) {
+    public JComponent changeContent(int type, String userID, String name) {
         CardLayout cl = (CardLayout)(content.getLayout());
+        contacts.checkSelected(userID);
         switch (type) {
             case 0: //show contact profile
-                profile.setUserID(userID, false);
+                profile.setUserID(userID, name, false);
                 cl.show(content, "profile");
                 return profile;
             case 1: //show contact messages
-                messages.setUserID(userID, false);
+                messages.setUserID(userID, name, false);
                 cl.show(content, "message");
                 return messages;
 //                return null;
             case 2: //show user profile
-                profile.setUserID(userID, true);
+                profile.setUserID(userID, name, true);
                 cl.show(content, "profile");
                 return profile;
             case 3: //show group messages
-                messages.setUserID(userID, true);
+                messages.setUserID("default", name, true);
                 cl.show(content, "message");
                 return messages;
 //                return null;
             default: //show group messages
-                messages.setUserID(userID, true);
+                messages.setUserID("default", name, true);
                 cl.show(content, "message");
                 return messages;
 //                return null;

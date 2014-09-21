@@ -7,7 +7,11 @@
 package mvc.controller;
 
 import communication.handlers.MessageFactory;
+import java.util.logging.Logger;
 import messages.userConnection.GreetingMessage;
+import mvc.controller.Control;
+import mvc.controller.MessageControl;
+import mvc.controller.UpdateControl;
 import mvc.view.authentication.Login;
 
 /**
@@ -15,6 +19,8 @@ import mvc.view.authentication.Login;
  * @author Bernhard
  */
 public class LoginControl {
+    private final static Logger LOGGER = Logger.getLogger(LoginControl.class.getName());
+    
     private static Login view;
     
     public static void register(Login loginView) {
@@ -47,6 +53,7 @@ public class LoginControl {
             String aboutMe =msg.getAboutMe();
 
             UserControl.setUser(userID, username, name, surname, email, avatar, title, aboutMe);
+            MessageControl.clear();
             view.dispose();
             Control.INSTANCE.initiate(2);
             UpdateControl.INSTANCE.add(userID, UpdateControl.LOGIN);

@@ -9,12 +9,15 @@ package mvc.model;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Bernhard
  */
 public class ColleagueList {
+    private final static Logger LOGGER = Logger.getLogger(ColleagueList.class.getName());
+    
     private final Map<String, Colleague> colleagues =Collections.synchronizedMap(new HashMap<String, Colleague>());
     
     public void add(Colleague person) {

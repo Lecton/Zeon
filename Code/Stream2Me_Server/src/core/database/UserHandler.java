@@ -110,7 +110,7 @@ public class UserHandler {
                         ClientChannel cc =new ClientChannel(ch, userID, groupID);
                         boolean addResult =ClientHandler.add(cc);
                         if (addResult) {
-                            ClientHandler.writeAndFlush(groupID, MessageBuilder.generateNewUser(person, null), new ClientGroup(groupID));
+                            ClientHandler.writeAndFlush(groupID, MessageBuilder.generateNewUser(person, null), new ClientGroup(userID, groupID));
                             userLoggedInUpdate(userID, true);
                             return MessageBuilder.generateGreeting(person, true, "Login success.");
                         } else {
@@ -226,8 +226,8 @@ public class UserHandler {
             String query = "SELECT userid " +
                             "FROM client " +
                             "WHERE groupid = ? " +
-                            "AND userID <> ?";// + 
-//                            "AND loggedin = TRUE";
+                            "AND userID <> ?" + 
+                            "AND loggedin = TRUE";
             statement = Database.INSTANCE.getPreparedStatement(query);
             try {
                 statement.setString(1, bu.getGroupID());

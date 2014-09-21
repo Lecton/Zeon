@@ -6,6 +6,8 @@
 
 package communication.handlers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import messages.Message;
 import messages.userConnection.GreetingMessage;
 import mvc.controller.LoginControl;
@@ -15,13 +17,14 @@ import mvc.controller.LoginControl;
  * @author Bernhard
  */
 public class LoginHandler extends MessageHandler {
+    private final static Logger LOGGER = Logger.getLogger(LoginHandler.class.getName()); 
     
     @Override
     public boolean handle(Message msg) {
         switch (msg.handle()) {
             case greeting:
                 final GreetingMessage message =(GreetingMessage)msg;
-                System.out.println("Login: "+message.isSuccessful());
+                LOGGER.log(Level.INFO, "Login: "+message.isSuccessful());
                 LoginControl.response(message.isSuccessful(), message.getResponse(), message);
                 return true;
             case console:

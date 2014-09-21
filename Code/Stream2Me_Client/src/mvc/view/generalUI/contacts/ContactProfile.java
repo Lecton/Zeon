@@ -8,8 +8,8 @@ package mvc.view.generalUI.contacts;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import mvc.controller.ContactControl;
 
 /**
@@ -17,6 +17,8 @@ import mvc.controller.ContactControl;
  * @author Bernhard
  */
 public class ContactProfile extends javax.swing.JPanel {
+    private final static Logger LOGGER = Logger.getLogger(ContactProfile.class.getName());
+    
     private ContactList parent;
     private final String userID;
     

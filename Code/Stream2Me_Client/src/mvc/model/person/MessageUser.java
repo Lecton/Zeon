@@ -15,14 +15,14 @@ import mvc.model.UserMessage;
  * @author Bernhard
  */
 public class MessageUser extends Notifier {
-    List<UserMessage> messageHist =new ArrayList<UserMessage>();
+    List<UserMessage> messageHist =new ArrayList<>();
 
     public MessageUser(String userID, String name, String surname, String email, String avatar, String title, String aboutMe) {
         super(userID, name, surname, email, avatar, title, aboutMe);
     }
     
-    public UserMessage addMessage(String userID, String targetID, String time, String message) {
-        UserMessage um =new UserMessage(userID, targetID, time, message);
+    public UserMessage addMessage(String userID, String targetID, String name, String time, String message) {
+        UserMessage um =new UserMessage(userID, targetID, name, time, message);
         messageHist.add(um);
         return um;
     }

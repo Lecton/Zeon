@@ -12,6 +12,8 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import messages.Message;
 
 /**
@@ -19,6 +21,8 @@ import messages.Message;
  * @author Bernhard
  */
 public class Connection {
+    private final static Logger LOGGER = Logger.getLogger(Connection.class.getName()); 
+    
     protected static int PORT;
     protected static String HOST;
     
@@ -51,6 +55,9 @@ public class Connection {
     }
     
     public void writeMessage(Message msg) {
+        LOGGER.log(Level.INFO, "Writing message "+msg.handle()
+                +" from "+msg.getUserID()+" to "+msg.getTargetID());
+        
         channel.writeAndFlush(msg);
     }
 }

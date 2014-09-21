@@ -6,64 +6,65 @@
 
 package mvc.view.generalUI.message;
 
-import java.awt.Component;
-import java.util.ArrayList;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import messages.StringMessage;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.util.logging.Logger;
+import javax.swing.JPanel;
 
 /**
  *
  * @author Bernhard
  */
-public class MessageList extends JScrollPane {
-    private ArrayList<String[]> chatMessages =new ArrayList<>();
-    private final JList list;
+public class MessageList extends JPanel {
+    private final static Logger LOGGER = Logger.getLogger(MessageList.class.getName());
     
-    /**
-     * Creates new form UserMessage
-     */
+    private GridBagConstraints gbcContent;
+
     public MessageList() {
-        list = new JList();
-        list.setVisibleRowCount(1);
-        list.setCellRenderer(new MessageItem());
-        list.setEnabled(false);
-        list.setDragEnabled(false);
-        setViewportView(list);
-        getVerticalScrollBar().setValue(0);
+        initComponents();
+    }
+
+    private void initComponents() {
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        JPanel p =new JPanel();
+        p.setBackground(new Color(204, 204, 204));
+        p.setPreferredSize(new Dimension(0, 0));
+        add(p, gbc);
+        
+        gbcContent = new GridBagConstraints();
+        gbcContent.gridwidth = GridBagConstraints.REMAINDER;
+        gbcContent.weightx = 1;
+        gbcContent.fill = GridBagConstraints.HORIZONTAL;
     }
     
-    public void update() {
-        if (chatMessages != null) {
-            list.setListData(chatMessages.toArray());
-        }
-        
-        for (Component c: list.getComponents()) {
-            if (c instanceof MessageItem) {
-                System.out.println("hi");
-            }
-        }
-        
-        validate();
+    private void update() {
+        revalidate();
         repaint();
     }
-
-    public void clear() {
-        chatMessages = new ArrayList<>();
+    
+    int index =0;
+    void addMessage(int ID, boolean owner, String name, String time, String message) {
+        MessageItem msg =new MessageItem(ID, owner, name, time, message);
+        add(msg, gbcContent, index++);
         update();
+        
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                update();
+            }
+        });
     }
 
-    void addMessage(String name, String timestamp, String message) {
-        chatMessages.add(new String[] {name, message});
-        
-        int extent = getVerticalScrollBar().getModel().getExtent();
-        int max =getVerticalScrollBar().getMaximum();
-        int current =getVerticalScrollBar().getValue()+extent;
+    void clear() {
+        removeAll();
+        initComponents();
+        index =0;
         update();
-        
-        if (max == current) {
-            int newMax =getVerticalScrollBar().getMaximum();
-            getVerticalScrollBar().setValue(newMax);
-        }
     }
 }

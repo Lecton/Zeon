@@ -8,6 +8,7 @@ package communication;
 
 import io.netty.handler.ssl.SslContext;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -19,6 +20,8 @@ import javax.net.ssl.SSLException;
  * @author Bernhard
  */
 public final class TrustStore {
+    private final static Logger LOGGER = Logger.getLogger(TrustStore.class.getName()); 
+    
     private static final byte[] chain =new byte[] {
         45, 45, 45, 45, 45, 66, 69, 71, 73, 78, 32, 
         67, 69, 82, 84, 73, 70, 73, 67, 65, 84, 69, 
@@ -150,9 +153,13 @@ public final class TrustStore {
             try {
                 return SslContext.newClientContext(f);
             } catch (SSLException e) {
+                LOGGER.log(Level.WARNING, "Error creating client context", e);
                 return null;
             }
+        } catch (FileNotFoundException e) {
+            LOGGER.log(Level.WARNING, "Error finding trust store temp file", e);
         } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, "Error creating file", ex);
         }
         return null;
     }

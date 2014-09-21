@@ -8,6 +8,7 @@ package mvc.view.generalUI;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
@@ -16,6 +17,8 @@ import javax.swing.JComponent;
  * @author Bernhard
  */
 public class HideArrow extends JButton {
+    private final static Logger LOGGER = Logger.getLogger(HideArrow.class.getName());
+    
     private boolean rightDirection =false;
     private JComponent dependant =null;
 //    JPanel parent;

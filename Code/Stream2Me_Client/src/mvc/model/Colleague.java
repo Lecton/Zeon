@@ -6,6 +6,7 @@
 
 package mvc.model;
 
+import java.util.logging.Logger;
 import mvc.model.person.Receiver;
 
 /**
@@ -13,7 +14,8 @@ import mvc.model.person.Receiver;
  * @author Bernhard
  */
 public class Colleague extends Receiver {
-
+    private final static Logger LOGGER = Logger.getLogger(Colleague.class.getName());
+    
     public Colleague(String userID, String name, String surname, String email, String avatar, String title, String aboutMe) {
         super(userID, name, surname, email, avatar, title, aboutMe);
     }

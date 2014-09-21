@@ -9,20 +9,23 @@ package communication;
 import io.netty.channel.ChannelHandlerContext;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import messages.Message;
 import mvc.controller.Control;
-import util.Log;
 
 /**
  *
  * @author Bernhard
  */
 public class Pool implements Runnable {
+    private final static Logger LOGGER = Logger.getLogger(Pool.class.getName()); 
+    
     private static final Queue<PoolEntry> pool =new ConcurrentLinkedQueue<>();
     private static boolean running =true;
     
     public static boolean add(ChannelHandlerContext ctx, Message msg) {
-        System.out.println("Message added: "+msg.handle());
+        LOGGER.log(Level.INFO, "Message added: "+msg.handle());
         return pool.add(new PoolEntry(ctx, msg, 0));
     }
     
@@ -31,11 +34,11 @@ public class Pool implements Runnable {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                System.out.println("Error sleeping");
+                LOGGER.log(Level.WARNING, "Error sleeping");
             }
             return pool.add(new PoolEntry(ctx, msg, counter+1));
         } else if (counter >= 30) {
-            System.out.println("Message discarded");
+            LOGGER.log(Level.WARNING, "Message discarded");
             return false;
         } else {
             return pool.add(new PoolEntry(ctx, msg, counter+1));
@@ -48,7 +51,7 @@ public class Pool implements Runnable {
     
     @Override
     public void run() {
-        Log.write(this.getClass(), "Connection Pool started");
+        LOGGER.log(Level.INFO, "Connection Pool started");
         while (running) {
             if (!pool.isEmpty()) {
                 PoolEntry msg =pool.remove();
@@ -58,6 +61,6 @@ public class Pool implements Runnable {
                 }
             }
         }
-        Log.write(this.getClass(), "Message pool closed");
+        LOGGER.log(Level.INFO, "Message pool closed");
     }
 }

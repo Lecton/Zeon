@@ -57,7 +57,7 @@ public class ClientHandler {
     public static void removeGroup(String groupID) {
         ClientChannelGroup ccg =serverGroup.get(groupID);
         if (ccg != null) {
-            ccg.deregister(new ClientGroup(groupID));
+            ccg.deregister(new ClientGroup("", groupID));
             serverGroup.remove(groupID);
         }
     }
@@ -68,7 +68,7 @@ public class ClientHandler {
         
         try {
             if (ccg != null) {
-                ccg.writeAndFlush(message, matcher);
+                int count =ccg.writeAndFlush(message, matcher);
             } else {
                  Logger.getLogger(ClientHandler.class.getName()).log(Level.WARNING, 
                          "Group not found");

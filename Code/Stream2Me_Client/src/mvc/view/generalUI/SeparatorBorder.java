@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.util.logging.Logger;
 import javax.swing.border.Border;
 
 /**
@@ -17,6 +18,8 @@ import javax.swing.border.Border;
  * @author Bernhard
  */
 public class SeparatorBorder implements Border {
+    private final static Logger LOGGER = Logger.getLogger(SeparatorBorder.class.getName());
+    
     Color colour;
     boolean left, top, right, bottom;
     Insets inset;

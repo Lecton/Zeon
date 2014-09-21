@@ -14,8 +14,11 @@ import io.netty.channel.Channel;
  * @author Bernhard
  */
 public class ClientGroup extends ClientMatcher {
-    public ClientGroup(String groupID) {
+    String userID;
+    
+    public ClientGroup(String userID, String groupID) {
         super(groupID);
+        this.userID =userID;
     }
 
     public String getGroupID() {
@@ -26,7 +29,10 @@ public class ClientGroup extends ClientMatcher {
     public boolean matches(Channel channel) {
         if (channel instanceof ClientChannel) {
             if (((ClientChannel)channel).getGroupID().equals(targetID)) {
-                return true;
+                if (!((ClientChannel)channel).getUserID().equals(userID)) {
+                    System.out.println("CLIENTGROUP: Writing to "+((ClientChannel)channel).getUserID());
+                    return true;
+                }
             }
         }
         return false;

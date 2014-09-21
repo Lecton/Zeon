@@ -304,7 +304,7 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
         throw new UnsupportedOperationException("Write and Flush with ChannelGroupFuture return not implemented");
     }
     
-    public Map<Channel, ChannelFuture> writeAndFlush(Message message, ClientMatcher matcher) {
+    public int writeAndFlush(Message message, ClientMatcher matcher) {
         if (message == null) {
             throw new NullPointerException("message");
         }
@@ -312,12 +312,12 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
             throw new NullPointerException("matcher");
         }
 
-        Map<Channel, ChannelFuture> futures = new LinkedHashMap<Channel, ChannelFuture>(size());
-
+        int count =0;
         for (Channel c: serverChannels) {
             try {
                 if (matcher.matches(c)) {
-                    futures.put(c, c.writeAndFlush(safeDuplicate(message)));
+                    c.writeAndFlush(safeDuplicate(message));
+                    count++;
                 }
             } catch (Exception e) {
                 if (c.isOpen()) {
@@ -329,7 +329,8 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
         for (Channel c: nonServerChannels) {
             try {
                 if (matcher.matches(c)) {
-                    futures.put(c, c.writeAndFlush(safeDuplicate(message)));
+                    c.writeAndFlush(safeDuplicate(message));
+                    count++;
                 }
             } catch (Exception e) {
                 if (c.isOpen()) {
@@ -339,10 +340,10 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
         }
         
         Logger.getLogger(ClientChannelGroup.class.getName()).log(Level.INFO, 
-                     "Writing message to group");
+                     "Writing message to group. "+count+" users written to.");
 
         ReferenceCountUtil.release(message);
-        return futures;
+        return count;
     }
 
     @Override

@@ -16,13 +16,13 @@ import messages.Message;
  * @author Bernhard
  */
 public class ClientMatcher implements ChannelMatcher {
-    private static final ClientGroup ALL_MATCHER = new ClientGroup("ALL") {
+    private static final ClientGroup ALL_MATCHER = new ClientGroup("", "ALL") {
         @Override
         public boolean matches(Channel channel) {
             return true;
         }
     };
-    private static final ClientGroup NON_MATCHER = new ClientGroup("IGNORE") {
+    private static final ClientGroup NON_MATCHER = new ClientGroup("", "IGNORE") {
         @Override
         public boolean matches(Channel channel) {
             return false;
@@ -48,7 +48,7 @@ public class ClientMatcher implements ChannelMatcher {
             } else if (message.getTargetGroupID().equals(Message.SERVER)) {
                 return ClientMatcher.non();
             } else {
-                return new ClientGroup(message.getTargetGroupID());
+                return new ClientGroup(message.getUserID(), message.getTargetGroupID());
             }
         } else if (message.getTargetID().equals(Message.IGNORE)) {
             return ClientMatcher.non();

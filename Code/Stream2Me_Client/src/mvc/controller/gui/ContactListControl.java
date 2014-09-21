@@ -6,6 +6,9 @@
 
 package mvc.controller;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import mvc.controller.UpdateControl;
 import mvc.model.Colleague;
 import mvc.model.ColleagueList;
 import mvc.model.UserMessage;
@@ -17,6 +20,8 @@ import mvc.view.generalUI.contacts.ContactList;
  * @author Bernhard
  */
 public class ContactListControl {
+    private final static Logger LOGGER = Logger.getLogger(ContactListControl.class.getName());
+    
     protected static ContactListControl INSTANCE =new ContactListControl();
     private static ContactList view;
     private static ColleagueList model =new ColleagueList();
@@ -33,20 +38,16 @@ public class ContactListControl {
         if (!userID.equals(UserControl.getUserID())) {
             Colleague person =new Colleague(userID, name, surname, email, avatar, title, aboutMe);
             model.add(person);
+            MessageControl.INSTANCE.addMessageHist(userID);
             UpdateControl.INSTANCE.add(userID, UpdateControl.NEWUSER);
         }
     }
 
     public static void removeColleague(String userID) {
-        System.out.println("User disconnect");
+        LOGGER.log(Level.INFO, "User disconnect");
         model.remove(userID);
        
         UpdateControl.INSTANCE.add(userID, UpdateControl.REMOVEUSER);
-    }
-
-    public static void addMessage(String userID, String targetID, String timestamp, String message) {
-        UserMessage um =INSTANCE.getColleague(userID).addMessage(userID, targetID, timestamp, message);
-        UpdateControl.INSTANCE.add(userID, UpdateControl.STRINGMESSAGE, um);
     }
     
     protected void addProfile(String userID) {

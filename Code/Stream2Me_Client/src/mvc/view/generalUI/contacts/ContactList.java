@@ -12,16 +12,19 @@ import java.awt.GridBagConstraints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 import mvc.controller.ContactControl;
 import mvc.view.generalUI.SeparatorBorder;
-import util.Log;
 
 /**
  *
  * @author Bernhard
  */
 public class ContactList extends JPanel implements MouseListener {
+    private final static Logger LOGGER = Logger.getLogger(ContactList.class.getName());
+    
     private GridBagConstraints gbcContent;
     private ArrayList<ContactProfile> list =new ArrayList<ContactProfile>();
     private ContactProfile selectedProfile =null;
@@ -66,7 +69,7 @@ public class ContactList extends JPanel implements MouseListener {
         add(contact, gbcContent, list.size()-1);
         update();
         
-        Log.write(this.getClass(), "User added");
+        LOGGER.log(Level.INFO, "User added");
     }
 
     public void removeProfile(String userID) {
@@ -76,7 +79,7 @@ public class ContactList extends JPanel implements MouseListener {
             remove(profile);
             update();
         } else {
-            Log.error(this.getClass(), "User to be removed was not found in list");
+            LOGGER.log(Level.WARNING, "User to be removed was not found in list");
         }
     }
 
@@ -135,5 +138,15 @@ public class ContactList extends JPanel implements MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
+    }
+
+    public void checkSelected(String userID) {
+        if (selectedProfile != null) {
+            if (selectedProfile.getUserID().equals(userID)) {
+                return;
+            }
+            selectedProfile.unselect();
+            selectedProfile =null;
+        }
     }
 }

@@ -24,6 +24,7 @@ public class StringMessageHandler {
     public static Message handleStringMessage(StringMessage msg) {
         if (msg.getTargetID().equals(Message.ALL)) {
             msg.setTargetGroupID(UserHandler.getGroupID(msg.getUserID()));
+            System.out.println("STRINGMESSAGEHANDLER: To all");
         }
         return msg;
     }

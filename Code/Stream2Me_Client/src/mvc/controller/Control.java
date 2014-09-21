@@ -12,8 +12,7 @@ import messages.Message;
 import communication.handlers.LoginHandler;
 import communication.handlers.MessageFactory;
 import communication.handlers.MessageHandler;
-import mvc.model.ColleagueList;
-import mvc.model.Model;
+import java.util.logging.Logger;
 import mvc.view.authentication.Login;
 import mvc.view.generalUI.GUI;
 
@@ -22,6 +21,8 @@ import mvc.view.generalUI.GUI;
  * @author Bernhard
  */
 public class Control {
+    private final static Logger LOGGER = Logger.getLogger(Control.class.getName());
+    
     protected static Control INSTANCE;
     private static MessageHandler msgHandler =new LoginHandler();
     

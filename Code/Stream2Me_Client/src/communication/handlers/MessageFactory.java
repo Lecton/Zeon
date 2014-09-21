@@ -6,6 +6,7 @@
 
 package communication.handlers;
 
+import java.util.logging.Logger;
 import messages.Message;
 import messages.StringMessage;
 import messages.media.StreamPropertyMessage;
@@ -22,6 +23,8 @@ import messages.userConnection.LogoutMessage;
  * @author Bernhard
  */
 public class MessageFactory {
+    private final static Logger LOGGER = Logger.getLogger(MessageFactory.class.getName()); 
+    
     public static LoginMessage generateLogin(String email, String password) {
         return new LoginMessage(email, password);
     }
