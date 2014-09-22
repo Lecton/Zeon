@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:background="@color/listViewBg"
     android:orientation="vertical" >
 
@@ -23,60 +23,52 @@
         android:layout_toRightOf="@+id/clientPicture"
         android:text="TextView" />
 
-	<TextView
-	    android:id="@+id/surname"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_alignLeft="@+id/name"
-	    android:layout_alignParentRight="true"
-	    android:layout_alignParentTop="true"
-	    android:layout_marginTop="117dp"
-	    android:text="TextView" />
-	
-	<TextView
-	    android:id="@+id/email"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_alignLeft="@+id/surname"
-	    android:layout_alignParentRight="true"
-	    android:layout_alignParentTop="true"
-	    android:layout_marginTop="214dp"
-	    android:text="TextView" />
+    <TextView
+        android:id="@+id/surname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/name"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="117dp"
+        android:text="TextView" />
 
-	<Button
-	    android:id="@+id/videoAccept"
-	    android:layout_width="100dp"
-	    android:layout_height="100dp"
-	    android:layout_marginLeft="20dp"
-	    android:layout_marginTop="400dp"
-	    android:text="Accept Video" />
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/surname"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="214dp"
+        android:text="TextView" />
 
-	<Button
-	    android:id="@+id/audioAccepts"
-	    android:layout_width="100dp"
-	    android:layout_height="100dp"
-	    android:layout_marginLeft="400dp"
-	    android:layout_marginTop="400dp"
-	    android:text="Accept Audio" />
+    <ImageButton
+        android:id="@+id/audioInvite"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/clientPicture"
+        android:layout_marginRight="54dp"
+        android:layout_marginTop="289dp"
+        android:src="@drawable/unclicked_stream" />
 
-	<Button
-	    android:id="@+id/videoInvite"
-	    android:layout_width="100dp"
-	    android:layout_height="100dp"
-	    android:layout_marginLeft="20dp"
-	    android:layout_below="@+id/videoAccept"
-	    android:layout_marginTop="110dp"
-	    android:text="Invite to video" />
+    <ImageButton
+        android:id="@+id/videoInvite"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/audioInvite"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/unclicked_camera" />
 
-	<Button
-	    android:id="@+id/audioInvite"
-	    android:layout_width="100dp"
-	    android:layout_height="100dp"
-	    android:layout_marginLeft="400dp"
-	    android:layout_alignBaseline="@+id/videoInvite"
-	    android:layout_alignBottom="@+id/videoInvite"
-	    android:layout_alignRight="@+id/audioAccepts"
-	    android:layout_marginRight="14dp"
-	    android:text="Invite to Audeo" />
+    <ImageButton
+        android:id="@+id/audioAccepts"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignLeft="@+id/email"
+        android:layout_alignTop="@+id/audioInvite"
+        android:layout_marginLeft="17dp"
+        android:src="@drawable/unclicked_microphone" />
 
 </RelativeLayout>

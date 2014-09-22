@@ -50,7 +50,7 @@ public class ContactWindow extends Activity {
 	public static Handler UIHandler;
 	public static Context baseContext;
 	public static ChatAdapter chatAdapter;
-	private static int clientID =-1;
+	private static String clientID ="-1";
 
 	static 
 	{
@@ -69,7 +69,7 @@ public class ContactWindow extends Activity {
 //		Serializable c = getIntent().getSerializableExtra("Client");
 //		Serializable u = getIntent().getSerializableExtra("User");
 		
-		int uid = getIntent().getIntExtra("ClientID", -1);
+		String uid = getIntent().getStringExtra("ClientID");
 		
 //		if(c != null && u != null){
 //			user = (Contact)u;
@@ -79,7 +79,7 @@ public class ContactWindow extends Activity {
 //			listChats = (ListView) findViewById(R.id.chatList);
 //			getActionBar().setIcon(icon);
 //		}
-		if(uid != -1){
+		if(uid != null){
 			clientID =uid;
 			setTitle(ClientHandler.getFromUserID(clientID).getName());
 			BitmapDrawable icon = new BitmapDrawable(getResources(),ClientHandler.getFromUserID(clientID).getImage());
@@ -108,16 +108,11 @@ public class ContactWindow extends Activity {
 		super.onOptionsItemSelected(item);
 		
         switch(item.getItemId()){
-        case R.id.profile:
-			getIntent().putExtra("UserProfile", true);
-    		setResult(RESULT_OK, getIntent());		
-    		finish();
-            break;
         case android.R.id.home:
-			getIntent().putExtra("ClientProfile", true);
+			getIntent().putExtra("ClientID", clientID);
+			getIntent().putExtra("UserProfile", 3);
     		setResult(RESULT_OK, getIntent());		
     		finish();
-        	break;
         }		
 		return true;
 	}
@@ -143,7 +138,7 @@ public class ContactWindow extends Activity {
 	public static boolean handleStringMessage(StringMessage message){
 		if (ClientHandler.getFromUserID(clientID) != null) {
 			if (message.getTargetID() != Message.ALL) {
-				if (ClientHandler.getFromUserID(clientID).getUserID() == message.getUserID()) {
+				if (ClientHandler.getFromUserID(clientID).getUserID().equals(message.getUserID())) {
 					ClientHandler.getFromUserID(clientID).addMessage(message);
 					updateChatList();
 					return true;
@@ -152,8 +147,8 @@ public class ContactWindow extends Activity {
 				}
 			} else {
 				if (ClientHandler.getUser() != null 
-						&& ClientHandler.getFromUserID(clientID).getUserID() == ClientHandler.getUser().getUserID()) {
-					ClientHandler.getFromUserID(clientID).addMessage(message);
+						&& ClientHandler.getUser().getUserID().equals(message.getUserID())) {
+					ClientHandler.getUser().addMessage(message);
 					updateChatList();
 					return true;
 				} else {
@@ -182,7 +177,6 @@ public class ContactWindow extends Activity {
 		    	
 		    	if(listChats != null){
 		    		List<ChatMessages> shortList = ClientHandler.getFromUserID(clientID).getMessageHistory();
-		    		Log.v("Lengtht","" + shortList.size());
 		    		
 			 		chatAdapter = new ChatAdapter(baseContext,shortList);
 			 		listChats.setAdapter(chatAdapter);
@@ -197,14 +191,27 @@ public class ContactWindow extends Activity {
 		EditText text = (EditText) findViewById(R.id.textMessage);
 		String message = text.getText().toString();
 		text.setText("");
-		StringMessage sm = MessageFactory.generateStringMessage(
-                ClientHandler.getUser().getUserID(), ClientHandler.getFromUserID(clientID).getUserID(), 
-                ClientHandler.getUser().getEmail(), 
-                message + "\n");
 		
-//		handleStringMessage(sm);
-		ClientHandler.getFromUserID(clientID).addMessage(sm);
+		if (ClientHandler.getUser().getUserID().equals(clientID)) {
+			StringMessage sm = MessageFactory.generateStringMessage(
+					clientID, Message.ALL, 
+					message + "\n");
+		
+			ClientHandler.getUser().addMessage(sm);
+			Client.connection.writeMessage(sm);
+		} else {
+			StringMessage sm = MessageFactory.generateStringMessage(
+					ClientHandler.getUser().getUserID(), clientID, 
+					message + "\n");
+
+//		Log.d("StringMessage userID", sm.getUserID());
+//		Log.d("ClientHandler userID", ClientHandler.getUser().getUserID());
+//		Log.d("StringMessage targetID", sm.getTargetID());
+//		Log.d("ClientHandler targetID", clientID);
+		
+			ClientHandler.getFromUserID(clientID).addMessage(sm);
+			Client.connection.writeMessage(sm);
+		}
 		updateChatList();
-		Client.connection.writeSafe(sm);
 	}
 }

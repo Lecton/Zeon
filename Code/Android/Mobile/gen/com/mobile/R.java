@@ -1090,20 +1090,25 @@ containing a value of this type.
         public static final int audio_icon=0x7f020057;
         public static final int background_selector=0x7f020058;
         public static final int boxbg=0x7f020059;
-        public static final int green=0x7f02005a;
-        public static final int ic_launcher=0x7f02005b;
-        public static final int logo=0x7f02005c;
-        public static final int message_bar=0x7f02005d;
-        public static final int message_field=0x7f02005e;
-        public static final int message_icon=0x7f02005f;
-        public static final int orange=0x7f020060;
-        public static final int send_button=0x7f020061;
-        public static final int speech_bubble_green=0x7f020062;
-        public static final int speech_bubble_orange=0x7f020063;
-        public static final int video_icon=0x7f020064;
+        public static final int clicked_camera=0x7f02005a;
+        public static final int clicked_microphone=0x7f02005b;
+        public static final int green=0x7f02005c;
+        public static final int ic_launcher=0x7f02005d;
+        public static final int logo=0x7f02005e;
+        public static final int message_bar=0x7f02005f;
+        public static final int message_field=0x7f020060;
+        public static final int message_icon=0x7f020061;
+        public static final int orange=0x7f020062;
+        public static final int send_button=0x7f020063;
+        public static final int speech_bubble_green=0x7f020064;
+        public static final int speech_bubble_orange=0x7f020065;
+        public static final int unclicked_camera=0x7f020066;
+        public static final int unclicked_microphone=0x7f020067;
+        public static final int unclicked_stream=0x7f020068;
+        public static final int video_icon=0x7f020069;
     }
     public static final class id {
-        public static final int Button01=0x7f050049;
+        public static final int Button01=0x7f050048;
         public static final int action_bar=0x7f05001c;
         public static final int action_bar_activity_content=0x7f050015;
         public static final int action_bar_container=0x7f05001b;
@@ -1119,8 +1124,8 @@ containing a value of this type.
         public static final int action_settings=0x7f05005e;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
-        public static final int audioAccepts=0x7f050042;
-        public static final int audioInvite=0x7f050044;
+        public static final int audioAccepts=0x7f050043;
+        public static final int audioInvite=0x7f050041;
         public static final int beginning=0x7f050011;
         public static final int bottom_write_bar=0x7f05004e;
         public static final int chatList=0x7f050053;
@@ -1128,7 +1133,7 @@ containing a value of this type.
         public static final int clientPicture=0x7f05003d;
         public static final int collapseActionView=0x7f05000d;
         public static final int contactList=0x7f050051;
-        public static final int contactPicture=0x7f050045;
+        public static final int contactPicture=0x7f050044;
         public static final int container=0x7f05003c;
         public static final int default_activity_button=0x7f050028;
         public static final int dialog=0x7f05000e;
@@ -1149,10 +1154,10 @@ containing a value of this type.
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
         public static final int login=0x7f05004d;
-        public static final int login_form=0x7f050048;
-        public static final int login_status=0x7f050046;
-        public static final int login_status_message=0x7f050047;
-        public static final int logo=0x7f05004b;
+        public static final int login_form=0x7f050047;
+        public static final int login_status=0x7f050045;
+        public static final int login_status_message=0x7f050046;
+        public static final int logo=0x7f05004a;
         public static final int member_name=0x7f05005a;
         public static final int message=0x7f050058;
         public static final int message_icon=0x7f05005b;
@@ -1182,7 +1187,7 @@ containing a value of this type.
         public static final int showCustom=0x7f050007;
         public static final int showHome=0x7f050004;
         public static final int showTitle=0x7f050006;
-        public static final int sign_in_button=0x7f05004a;
+        public static final int sign_in_button=0x7f050049;
         public static final int sound_icon=0x7f05005c;
         public static final int split_action_bar=0x7f05001e;
         public static final int submit_area=0x7f050039;
@@ -1196,8 +1201,8 @@ containing a value of this type.
         public static final int useLogo=0x7f050003;
         public static final int userName=0x7f050056;
         public static final int userSurname=0x7f050057;
-        public static final int videoAccept=0x7f050041;
-        public static final int videoInvite=0x7f050043;
+        public static final int username=0x7f05004b;
+        public static final int videoInvite=0x7f050042;
         public static final int video_icon=0x7f05005d;
         public static final int withText=0x7f05000c;
     }

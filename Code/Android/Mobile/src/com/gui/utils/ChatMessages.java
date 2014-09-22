@@ -1,20 +1,28 @@
 package com.gui.utils;
 
-import java.sql.Timestamp;
+import android.util.Log;
+
+import com.mobile.ClientHandler;
 
 import messages.StringMessage;
 
 public class ChatMessages {
 
-	 private int userID;
-	 private int targetID;
+	 private String userID;
+	 private String targetID;
 	 private String name;
 	 private String message;
 	 private String timestamp;
 	 private boolean isMine;
 	 
 	 public ChatMessages(StringMessage message, boolean owner){
-		 this.name = message.getSender();
+		 
+		 Log.v("User ID",message.getUserID());
+		 if (owner) {
+			 this.name =ClientHandler.getUser().getName();
+		 } else {
+			 this.name = ClientHandler.getFromUserID(message.getUserID()).getName();
+		 }
 		 this.message = message.getMessage();
 		 this.timestamp = message.getTimestamp();
 		 this.userID = message.getUserID();
@@ -26,11 +34,11 @@ public class ChatMessages {
 		isMine = m;
 	}
 	
-	public void setUserID(int userID) {
+	public void setUserID(String userID) {
 		this.userID = userID;
 	}
 		
-	public void setTargetID(int targetID) {
+	public void setTargetID(String targetID) {
 		this.targetID = targetID;
 	}
 	
@@ -50,11 +58,11 @@ public class ChatMessages {
 		return isMine;
 	}
 	
-	public int getUserID() {
+	public String getUserID() {
 		return userID;
 	}
 	
-	public int getTargetID() {
+	public String getTargetID() {
 		return targetID;
 	}
 	
@@ -64,6 +72,10 @@ public class ChatMessages {
 	
 	public String getMessage() {
 		return message;
+	}
+	
+	public String getTimestamp() {
+		return timestamp;
 	}
 	
 //	public String getTimestamp() {

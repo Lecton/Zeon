@@ -8,7 +8,6 @@ import messages.userConnection.NewUserMessage;
 
 import com.gui.LoginWindow;
 import com.gui.MainWindow;
-import com.gui.ContactWindow;
 import com.mobile.ClientHandler;
 
 import android.util.Log;
@@ -44,9 +43,12 @@ public class ConnectionHandler extends SimpleChannelInboundHandler<Message> {
 			case logout:
 				MainWindow.handleLogoutUser((LogoutMessage)msg);
 				break;
+			case console:
+				Log.v("Server notice",msg.getMessage());
+				break;
 			default:
-					Log.e("Message Read", "Unhandled message "+msg.handle());
-					Log.v("Message Read",msg.getMessage());
+				Log.e("Message Read", "Unhandled message "+msg.handle());
+				Log.v("Message Read",msg.getMessage());
 		}
 	}	
 }

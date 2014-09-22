@@ -45,7 +45,7 @@
             android:layout_width="fill_parent"
             android:layout_height="30dp"
             android:layout_margin="10dp"
-        		android:background="@drawable/send_button"
+        	android:background="@drawable/message_bar"
             android:inputType="text" />
 
         <EditText
@@ -53,7 +53,7 @@
             android:layout_width="fill_parent"
             android:layout_height="30dp"
             android:layout_margin="10dp"
-        		android:background="@drawable/send_button"
+        	android:background="@drawable/message_bar"
             android:inputType="text" />
 
     </LinearLayout>

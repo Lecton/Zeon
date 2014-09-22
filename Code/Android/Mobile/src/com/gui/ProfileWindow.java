@@ -54,7 +54,7 @@ public class ProfileWindow extends Activity {
 		eName = (EditText) findViewById(R.id.userName);
 		eSurname = (EditText) findViewById(R.id.userSurname);
 		  
-		if(setUpdate()){
+		if(init()){
 			Button updateBtn = (Button) findViewById(R.id.updateBtn);
 			updateBtn.setOnClickListener(new OnClickListener() {
 				
@@ -63,7 +63,8 @@ public class ProfileWindow extends Activity {
 					ClientHandler.getUser().setName(eName.getText().toString());
 					ClientHandler.getUser().setSurname(eSurname.getText().toString());
 					
-					Client.getConnection().writeSafe(new UpdateNameMessage(ClientHandler.getUser().getUserID(), eName.getText().toString(), eSurname.getText().toString()));
+					Client.getConnection().writeMessage(new UpdateNameMessage(ClientHandler.getUser().getUserID(), eName.getText().toString(), eSurname.getText().toString()));
+					getIntent().putExtra("UserProfile", 2);
 					setResult(RESULT_OK, getIntent());		
 					finish();					
 				}
@@ -84,9 +85,9 @@ public class ProfileWindow extends Activity {
 		
 	}
 
-	public boolean setUpdate(){
+	public boolean init(){
 		if(profileImage != null && eName != null && eSurname != null){
-			profileImage.setImageBitmap(ClientHandler.getUser().getResizedBitmap(ClientHandler.getUser().getImage(),300,300));
+			profileImage.setImageBitmap(ClientHandler.getResizedBitmap(ClientHandler.getUser().getImage(),50,300));
 			eName.setText(ClientHandler.getUser().getName());
 			eSurname.setText(ClientHandler.getUser().getSurname());
 			return true;
@@ -131,6 +132,13 @@ public class ProfileWindow extends Activity {
 		}
 	}
 	
+	@Override
+	public void onBackPressed() {
+		getIntent().putExtra("UserProfile", 2);
+		setResult(RESULT_OK, getIntent());		
+		finish();
+	}	
+	
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent in) { 
         super.onActivityResult(requestCode, resultCode, in); 
@@ -144,7 +152,7 @@ public class ProfileWindow extends Activity {
 				BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
 				bm = BitmapFactory.decodeFile(tempPath, btmapOptions);
 				profileImage.setImageBitmap(bm);
-				Client.getConnection().writeSafe(new UpdateAvatarMessage(ClientHandler.getUser().getUserID(),ClientHandler.BitMapToString(bm)));
+				Client.getConnection().writeMessage(new UpdateAvatarMessage(ClientHandler.getUser().getUserID(),ClientHandler.BitMapToString(bm)));
  
             }
         }

@@ -50,7 +50,7 @@
             android:label="@string/title_activity_contact_window" >
         </activity>
         <activity
-            android:name="com.mobile.ClientProfileWindow"
+            android:name="com.gui.ClientProfileWindow"
             android:label="@string/title_activity_client_profile_window" >
         </activity>
     </application>
