@@ -20,6 +20,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.Image;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class Contact implements Serializable {
@@ -144,13 +145,25 @@ public class Contact implements Serializable {
 		 messageHistory.add(message);
 	 }
 	 
+	 
 	 public List<ChatMessages> getMessageHistory() {
 		 List<ChatMessages> messageList = new ArrayList<>();
+//		 Log.v("User name: " + this.name,"" + messageHistory.size());
 		 for (StringMessage message: messageHistory) {
 //			 Logger.getLogger(Contact.class.getName()).log(Level.INFO, message.getMessage()+" --> "+message.getUserID()+" --> "+getUserID());
-			 messageList.add(new ChatMessages(message, !(message.getUserID().equals(getUserID()))));
+			 messageList.add(new ChatMessages(message, (message.getUserID().equals(ClientHandler.getUser().getUserID()))));
 		 }
 		 return messageList;
 	 }
+	 
+//	 public List<ChatMessages> getMessageHistory(boolean value) {
+//		 List<ChatMessages> messageList = new ArrayList<>();
+//		 Log.v("User name: " + this.name,"" + messageHistory.size());
+//		 for (StringMessage message: messageHistory) {
+////			 Logger.getLogger(Contact.class.getName()).log(Level.INFO, message.getMessage()+" --> "+message.getUserID()+" --> "+getUserID());
+//			 messageList.add(new ChatMessages(message, value));
+//		 }
+//		 return messageList;
+//	 }
 	 		
 	}

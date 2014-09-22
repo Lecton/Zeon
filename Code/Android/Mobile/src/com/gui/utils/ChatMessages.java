@@ -17,9 +17,8 @@ public class ChatMessages {
 	 
 	 public ChatMessages(StringMessage message, boolean owner){
 		 
-		 Log.v("User ID",message.getUserID());
 		 if (owner) {
-			 this.name =ClientHandler.getUser().getName();
+			 this.name = ClientHandler.getUser().getName();
 		 } else {
 			 this.name = ClientHandler.getFromUserID(message.getUserID()).getName();
 		 }

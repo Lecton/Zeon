@@ -53,6 +53,10 @@
             android:name="com.gui.ClientProfileWindow"
             android:label="@string/title_activity_client_profile_window" >
         </activity>
+        <activity
+            android:name="com.gui.GroupMessages"
+            android:label="@string/title_activity_group_messages" >
+        </activity>
     </application>
 
 </manifest>

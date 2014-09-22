@@ -48,7 +48,7 @@ public class ChatAdapter extends BaseAdapter {
 				holder = (ViewHolder) convertView.getTag();		
 			}
 			
-			holder.message.setText(message.getMessage());
+			holder.message.setText(message.getName() + "\n" +message.getMessage());
 			LayoutParams lp = (LayoutParams) holder.message.getLayoutParams();		
 				//Check whether message is mine to show green background and align to right
 				if(message.isMine())
