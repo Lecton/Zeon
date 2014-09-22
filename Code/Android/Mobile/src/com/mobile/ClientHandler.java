@@ -1,6 +1,7 @@
 package com.mobile;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,8 +12,12 @@ import messages.media.StreamNotifyMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.util.Base64;
 import android.util.Log;
+import biz.source_code.base64Coder.Base64Coder;
 
 import com.gui.MainWindow;
 import com.gui.utils.Contact;
@@ -52,10 +57,10 @@ public class ClientHandler {
 		return contacts.get(position);
 	}
 	
-	public static Contact getFromUserID(int userID) {
+	public static Contact getFromUserID(String userID) {
 		for (Iterator<Contact> it = contacts.iterator(); it.hasNext(); ) {
 			Contact c = it.next();
-			if (c.getUserID() == userID) {
+			if (c.getUserID().equals(userID)) {
 				return c;
 			}
 		}
@@ -98,16 +103,6 @@ public class ClientHandler {
 		}
 	}
 	
-	public static boolean handleGroupMessage(StringMessage message){
-		if(contacts != null && contacts.size() > 0){
-			for (Iterator<Contact> it = contacts.iterator(); it.hasNext(); ) {
-				Contact c = it.next();
-				c.addMessage(message);
-			}
-		}
-		return false;
-	}
-	
 	public static boolean handleLogoutMessage(LogoutMessage message) {
 		for (Iterator<Contact> it = contacts.iterator(); it.hasNext(); ) {
 			Contact c = it.next();
@@ -135,10 +130,41 @@ public class ClientHandler {
 	}
 	
 	public static String BitMapToString(Bitmap bitmap){
-	     ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-	     bitmap.compress(Bitmap.CompressFormat.JPEG,10, baos);
-	     byte [] b=baos.toByteArray();
-	     String temp=Base64.encodeToString(b, Base64.DEFAULT);
-	     return temp;
+//	     ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+//	     bitmap.compress(CompressFormat.PNG,0, baos);
+//	     byte [] b=baos.toByteArray();
+		ByteBuffer byteBuf =ByteBuffer.allocate(bitmap.getByteCount());
+		bitmap.copyPixelsToBuffer(byteBuf);
+		byte[] b =byteBuf.array();
+		return new String(Base64Coder.encode(b));
 	}
+	
+
+	 public static Bitmap getImageBitMap(String avatar){
+		 byte[] decodedString = Base64Coder.decode(avatar);
+		 BitmapFactory.Options options = new BitmapFactory.Options(); 
+		 options.inSampleSize = 8; 
+		  return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
+	 }
+	 
+	 public static Bitmap getImageBitMap(String avatar,int height,int width){
+		 byte[] decodedString = Base64Coder.decode(avatar);
+		  return getResizedBitmap(
+				  	BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length),height,width);
+	 }
+	 
+	  public static Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+	        int width = bm.getWidth();
+	        int height = bm.getHeight();
+	        float scaleWidth = ((float) newWidth) / width;
+	        float scaleHeight = ((float) newHeight) / height;
+	        // CREATE A MATRIX FOR THE MANIPULATION
+			Matrix matrix = new Matrix();
+			// RESIZE THE BIT MAP
+			matrix.postScale(scaleWidth, scaleHeight);
+			
+			// "RECREATE" THE NEW BITMAP
+	        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+	        return resizedBitmap;
+	  }
 }

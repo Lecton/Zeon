@@ -34,32 +34,21 @@ public class LoginWindow extends Activity {
 		
 		if(greet != null){
 			LoginWindow.greet = greet;
+			Log.v("Login response", greet.getResponse());
 		}
 	}
 	
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
-
-	/**
-	 * The default email to populate the email field with.
-	 */
-	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
-
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
 	 */
 	private UserLoginTask mAuthTask = null;
 
 	// Values for email and password at the time of the login attempt.
-	private String mEmail;
+	private String mUsername;
 	private String mPassword;
 
 	// UI references.
-	private EditText mEmailView;
+	private EditText mUsernameView;
 	private EditText mPasswordView;
 	private View mLoginFormView;
 	private View mLoginStatusView;
@@ -72,9 +61,9 @@ public class LoginWindow extends Activity {
 		setContentView(R.layout.activity_login);
 
 		// Set up the login form.
-		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
-		mEmailView = (EditText) findViewById(R.id.email);
-		mEmailView.setText(mEmail);
+		mUsername = getIntent().getStringExtra("Lecton");
+		mUsernameView = (EditText) findViewById(R.id.username);
+		mUsernameView.setText(mUsername);
 
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
@@ -121,17 +110,17 @@ public class LoginWindow extends Activity {
 		}
 
 		// Reset errors.
-		mEmailView.setError(null);
+//		mEmailView.setError(null);
 		mPasswordView.setError(null);
 
 		// Store values at the time of the login attempt.
-		mEmail = mEmailView.getText().toString();
+		mUsername = mUsernameView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
 
 		boolean cancel = false;
 		View focusView = null;
 
-		// Check for a valid password.
+//		 Check for a valid password.
 		if (TextUtils.isEmpty(mPassword)) {
 			mPasswordView.setError(getString(R.string.error_field_required));
 			focusView = mPasswordView;
@@ -143,16 +132,18 @@ public class LoginWindow extends Activity {
 		}
 
 		// Check for a valid email address.
-		if (TextUtils.isEmpty(mEmail)) {
-			mEmailView.setError(getString(R.string.error_field_required));
-			focusView = mEmailView;
-			cancel = true;
-		} else if (!mEmail.contains("@")) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
-			focusView = mEmailView;
-			cancel = true;
-		}
+//		if (TextUtils.isEmpty(mEmail)) {
+//			mEmailView.setError(getString(R.string.error_field_required));
+//			focusView = mEmailView;
+//			cancel = true;
+//		} else if (!mEmail.contains("@")) {
+//			mEmailView.setError(getString(R.string.error_invalid_email));
+//			focusView = mEmailView;
+//			cancel = true;
+//		}
 
+		Log.v("Cancel value", ""+cancel);
+		
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
@@ -219,7 +210,7 @@ public class LoginWindow extends Activity {
 
 			try {
 				//Send the login message
-				Client.getConnection().write(new LoginMessage(mEmail, mPassword));
+				Client.getConnection().writeMessage(new LoginMessage(mUsername, mPassword));
 				
 				//Wait until server response has been set
 				while (true) {
@@ -231,10 +222,13 @@ public class LoginWindow extends Activity {
 					Thread.sleep(200);
 				}
 				
+				Log.d("UserLoginTask", "Result: "+greet.isSuccessful());
+				
 				//If the login was successful return true
 				if (greet.isSuccessful()) {
 					return true;
 				} else {
+					greet =null;
 					//if unsuccessful return false
 					return false;
 				}

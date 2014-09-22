@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 
 public class SplashWindow extends ActionBarActivity {
 
-	final long SPLASH_DELAY = 7; 
+	final long SPLASH_DELAY = 1; 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState); 

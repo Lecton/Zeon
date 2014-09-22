@@ -5,7 +5,12 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.mobile.ClientHandler;
+
+import biz.source_code.base64Coder.Base64Coder;
 import messages.userConnection.GreetingMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
@@ -27,12 +32,12 @@ public class Contact implements Serializable {
 	 private boolean [] notification = {false, // video notificatioon[0]
 			 							false, // audio notificatioon[1]
 			 							false}; //string notificatioon [2]
-	 private int UserID;
+	 private String UserID;
 	 
 	 private ArrayList<StringMessage> messageHistory;
 	 
 	 public Contact(GreetingMessage message) {
-		  this.name = message.getSender();
+		  this.name = message.getName();
 		  this.surname = message.getSurname();
 		  this.email = message.getEmail();
 		  this.UserID = message.getUserID();		  
@@ -41,7 +46,7 @@ public class Contact implements Serializable {
 	 }
 
 	 public Contact(NewUserMessage message) {
-		  this.name = message.getSender();
+		  this.name = message.getName();
 		  this.surname = message.getSurname();
 		  this.email = message.getEmail();
 		  this.UserID = message.getUserID();		  
@@ -50,16 +55,15 @@ public class Contact implements Serializable {
 	 }
 
 	 public Contact(LogoutMessage message) {
-		  this.name = message.getSender();
 		  this.UserID = message.getUserID();
 	 }	 
 	 
-	 public int getUserID() {
+	 public String getUserID() {
 		 return UserID;
 	 }
 	 
 	 public Bitmap getImage(){
-		 return getImageBitMap(image);
+		 return ClientHandler.getImageBitMap(image);
 	 }
 
 	 public String getName() {
@@ -132,7 +136,7 @@ public class Contact implements Serializable {
 		 this.image =si;
 	 }
 	 
-	 public void setUserID(int userID) {
+	 public void setUserID(String userID) {
 		 UserID = userID;
 	 }
 	 
@@ -143,37 +147,10 @@ public class Contact implements Serializable {
 	 public List<ChatMessages> getMessageHistory() {
 		 List<ChatMessages> messageList = new ArrayList<>();
 		 for (StringMessage message: messageHistory) {
-			 messageList.add(new ChatMessages(message, message.getUserID() != getUserID()));
+//			 Logger.getLogger(Contact.class.getName()).log(Level.INFO, message.getMessage()+" --> "+message.getUserID()+" --> "+getUserID());
+			 messageList.add(new ChatMessages(message, !(message.getUserID().equals(getUserID()))));
 		 }
 		 return messageList;
 	 }
-	 
-	 public static Bitmap getImageBitMap(String message){
-		 byte[] decodedString = Base64.decode(message, Base64.DEFAULT);
-		 BitmapFactory.Options options = new BitmapFactory.Options(); 
-		 options.inSampleSize = 8; 
-		  return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length,options);
-	 }
-	 
-	 public static Bitmap getImageBitMap(String message,int height,int width){
-		 byte[] decodedString = Base64.decode(message, Base64.DEFAULT);
-		  return getResizedBitmap(
-				  	BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length),height,width);
-	 }
-	 
-	  public static Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
-	        int width = bm.getWidth();
-	        int height = bm.getHeight();
-	        float scaleWidth = ((float) newWidth) / width;
-	        float scaleHeight = ((float) newHeight) / height;
-	        // CREATE A MATRIX FOR THE MANIPULATION
-			Matrix matrix = new Matrix();
-			// RESIZE THE BIT MAP
-			matrix.postScale(scaleWidth, scaleHeight);
-			
-			// "RECREATE" THE NEW BITMAP
-	        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
-	        return resizedBitmap;
-	  }		 
-	 	 
+	 		
 	}

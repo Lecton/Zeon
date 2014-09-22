@@ -16,6 +16,7 @@ import com.connection.Connection;
 import com.gui.utils.ChatMessages;
 import com.gui.utils.ClientAdapter;
 import com.gui.utils.Contact;
+import com.gui.utils.MessageFactory;
 import com.mobile.Client;
 import com.mobile.ClientHandler;
 import com.mobile.R;
@@ -71,7 +72,7 @@ public class MainWindow extends Activity {
 
 		if(ClientHandler.getUser() != null){
 //			Serializable userd = getIntent().getSerializableExtra("UserDetails");
-			Log.v("user","Main user");
+			Log.v("MAINWINDOW: user","Main user");
 		} else {
 			//Logout / Kick user
 			Log.v("On GUIActivity create","User got here without valid login path");
@@ -101,10 +102,10 @@ public class MainWindow extends Activity {
 				if(text != null && (text.compareTo("") != 0)){
 					et.setText("");
 					StringMessage message = new StringMessage(ClientHandler.getUser().getUserID(),
-															  Message.ALL,ClientHandler.getUser().getEmail(),text + "\n");
+															  Message.ALL,text + "\n");
 					
-					ClientHandler.handleGroupMessage(message);
-					Client.getConnection().writeSafe(message);
+					ClientHandler.getUser().addMessage(message);
+					Client.getConnection().writeMessage(message);
 				}else{
 					Log.v("MainWindow","onCreate");
 				}
@@ -113,6 +114,14 @@ public class MainWindow extends Activity {
 		});
 		
 		updateClientList();
+	}
+	
+	@Override
+	public void onBackPressed() {
+		Client.getConnection().writeMessage(MessageFactory.generateLogout(ClientHandler.getUser().getUserID()));
+		getIntent().putExtra("UserProfile", -1);
+		setResult(RESULT_OK, getIntent());		
+		finish();
 	}
 
 	@Override 
@@ -128,7 +137,7 @@ public class MainWindow extends Activity {
 		
         switch(item.getItemId()){
         case R.id.profile:
-			getIntent().putExtra("UserProfile", true);
+			getIntent().putExtra("UserProfile", 1);
     		setResult(RESULT_OK, getIntent());		
     		finish();
             break;
@@ -185,7 +194,7 @@ public class MainWindow extends Activity {
 		    	if (listClients == null) {
 		    		return;
 		    	}
-		    	 
+
 		 		clientAdapter = new ClientAdapter(baseContext,ClientHandler.getContacts());
 		 		listClients.setAdapter(clientAdapter);
 		 		listClients.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
