@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
 import mvc.controller.ContactControl;
-import mvc.view.generalUI.SeparatorBorder;
+import mvc.view.generalUI.containers.SeparatorBorder;
 
 /**
  *
@@ -49,7 +49,7 @@ public class ContactList extends JPanel implements MouseListener {
         gbcContent.fill = GridBagConstraints.HORIZONTAL;
     }
     
-    public ContactProfile getContactProfile(String userID) {
+    private ContactProfile getContactProfile(String userID) {
         for (ContactProfile cp: list) {
             if (cp.getUserID().equals(userID)) {
                 return cp;
@@ -60,10 +60,12 @@ public class ContactList extends JPanel implements MouseListener {
     
     public void addProfile(String userID, String fullName, String avatar) {
         ContactProfile contact =new ContactProfile(userID);
-        contact.setBorder(new SeparatorBorder(Color.BLACK, false, true, false, true));
+        contact.setBorder(new SeparatorBorder(Color.BLACK, true, true, true, true));
         contact.setProfile(fullName, avatar);
         contact.setParent(this);
         contact.addMouseListener(this);
+        
+        //Property change for selecting and unselecting
         contact.addPropertyChangeListener(ContactControl.INSTANCE);
         list.add(contact);
         add(contact, gbcContent, list.size()-1);
@@ -147,6 +149,21 @@ public class ContactList extends JPanel implements MouseListener {
             }
             selectedProfile.unselect();
             selectedProfile =null;
+        }
+    }
+
+    public void alert(String userID) {
+        ContactProfile profile =getContactProfile(userID);
+        if (profile != null) {
+            profile.update();
+        }
+    }
+
+    public void updateProfile(String userID, String fullname, String avatar) {
+        ContactProfile profile =getContactProfile(userID);
+        if (profile != null) {
+            profile.setProfile(fullname, avatar);
+            profile.update();
         }
     }
 }

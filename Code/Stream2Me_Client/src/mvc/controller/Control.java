@@ -52,6 +52,7 @@ public class Control {
         ContactListControl.register(ui.getContactList());
         UserControl.register(ui.getUserPanel());
         ChatControl.register(ui.getMessagePanel());
+        ProfileControl.register(ui.getProfilePanel());
     }
     
     public void close() {

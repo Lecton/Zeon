@@ -117,7 +117,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateDetailsActionPerformed"/>
       </Events>
     </Component>
-    <Container class="mvc.view.generalUI.ImageContainer" name="imageContainer1">
+    <Container class="mvc.view.generalUI.containers.ImageContainer" name="imageContainer1">
 
       <Layout>
         <DimensionLayout dim="0">

@@ -70,4 +70,14 @@ public class MessageList {
             return hist.get(index);
         }
     }
+
+    public List<UserMessage> getMessageHistory(String key) {
+        List<UserMessage> hist =messageHistories.get(key);
+        if (hist == null) {
+            Logger.getLogger(MessageList.class.getName()).log(Level.SEVERE, "Message history not found");
+            return null;
+        } else {
+            return hist;
+        }
+    }
 }

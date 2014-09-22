@@ -49,12 +49,12 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="mvc.view.generalUI.HideArrow" name="leftArrow">
+    <Component class="mvc.view.generalUI.containers.HideArrow" name="leftArrow">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="leftArrowActionPerformed"/>
       </Events>
     </Component>
-    <Component class="mvc.view.generalUI.HideArrow" name="rightArrow">
+    <Component class="mvc.view.generalUI.containers.HideArrow" name="rightArrow">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rightArrowActionPerformed"/>
       </Events>
@@ -63,6 +63,11 @@
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+            <LineBorder/>
+          </Border>
         </Property>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[62, 500]"/>
@@ -82,12 +87,12 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="logout" max="32767" attributes="0"/>
-                      <Component id="acceptVideo" max="32767" attributes="0"/>
-                      <Component id="streamVideo" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="streamAudio" alignment="0" max="32767" attributes="0"/>
-                      <Component id="acceptAudio" alignment="0" max="32767" attributes="0"/>
-                      <Component id="settings" alignment="0" max="32767" attributes="0"/>
+                      <Component id="logout" min="-2" max="-2" attributes="0"/>
+                      <Component id="acceptVideo" min="-2" max="-2" attributes="0"/>
+                      <Component id="streamVideo" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="streamAudio" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="acceptAudio" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="settings" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
               </Group>
@@ -100,11 +105,11 @@
                   <Component id="streamVideo" min="-2" pref="58" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="streamAudio" min="-2" pref="58" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+                  <EmptySpace pref="66" max="32767" attributes="0"/>
                   <Component id="acceptVideo" min="-2" pref="58" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="acceptAudio" min="-2" pref="58" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
                   <Component id="settings" min="-2" pref="58" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="logout" min="-2" pref="56" max="-2" attributes="0"/>
@@ -114,7 +119,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="mvc.view.generalUI.Button" name="streamVideo">
+        <Component class="mvc.view.generalUI.containers.Button" name="streamVideo">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/streaming_Icons/unclicked-camera.png"/>
@@ -136,7 +141,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="mvc.view.generalUI.Button" name="streamAudio">
+        <Component class="mvc.view.generalUI.containers.Button" name="streamAudio">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/streaming_Icons/unclicked-microphone.png"/>
@@ -157,8 +162,9 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="mvc.view.generalUI.Button" name="acceptAudio">
+        <Component class="mvc.view.generalUI.containers.Button" name="acceptAudio">
           <Properties>
+            <Property name="actionCommand" type="java.lang.String" value="respondAudio"/>
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
               <Insets value="[2, 2, 2, 2]"/>
             </Property>
@@ -173,11 +179,12 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="mvc.view.generalUI.Button" name="acceptVideo">
+        <Component class="mvc.view.generalUI.containers.Button" name="acceptVideo">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/notification_Icons/video_icon.png"/>
             </Property>
+            <Property name="actionCommand" type="java.lang.String" value="respondVideo"/>
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
               <Insets value="[2, 2, 2, 2]"/>
             </Property>
@@ -192,8 +199,9 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="mvc.view.generalUI.Button" name="logout">
+        <Component class="mvc.view.generalUI.containers.Button" name="logout">
           <Properties>
+            <Property name="actionCommand" type="java.lang.String" value="logout"/>
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
               <Insets value="[2, 2, 2, 2]"/>
             </Property>
@@ -208,8 +216,9 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="mvc.view.generalUI.Button" name="settings">
+        <Component class="mvc.view.generalUI.containers.Button" name="settings">
           <Properties>
+            <Property name="actionCommand" type="java.lang.String" value="settings"/>
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
               <Insets value="[2, 2, 2, 2]"/>
             </Property>

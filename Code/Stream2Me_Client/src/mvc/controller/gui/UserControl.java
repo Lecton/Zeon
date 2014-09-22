@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import mvc.controller.Control;
 import mvc.model.User;
+import mvc.model.person.Person;
 import mvc.view.generalUI.ProfilePanel;
 import mvc.view.generalUI.UserPanel;
 
@@ -55,12 +56,6 @@ public class UserControl implements ActionListener {
         return model.getUserID();
     }
 
-    protected static void updateContent(ProfilePanel userPanel) {
-        userPanel.setProfile(model.getName(), model.getSurname(), 
-                model.getEmail(), model.getAvatar(), model.getTitle(), 
-                model.getAboutMe());
-    }
-
     protected void update(String userID) {
         view.setAvatar(model.getAvatar());
         view.setName(model.getFullname());
@@ -84,6 +79,7 @@ public class UserControl implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String command =e.getActionCommand();
         if (command.equals("streamVideo")) {
+            System.out.println("streamVideo");
             if (model.isStreamingVideo()) {
                 //stop video
                 model.setStreamingVideo(false);
@@ -92,6 +88,7 @@ public class UserControl implements ActionListener {
                 model.setStreamingVideo(true);
             }
         } else if (command.equals("streamAudio")) {
+            System.out.println("streamAudio");
             if (model.isStreamingAudio()) {
                 //stop audio
                 model.setStreamingAudio(false);
@@ -99,18 +96,39 @@ public class UserControl implements ActionListener {
                 //start audio
                 model.setStreamingAudio(true);
             }
+            
+            
         } else if (command.equals("viewProfile")) {
             GUIControl.changeContent(2, model.getUserID(), model.getFullname());
             LOGGER.log(Level.INFO, "View User Profile");
         } else if (command.equals("viewMessages")) {
+            model.setMessage(false);
             GUIControl.changeContent(3, model.getUserID(), model.getFullname());
             LOGGER.log(Level.INFO, "View User Messages");
+            
+            
+        } else if (command.equals("inviteVideo")) {
+            System.out.println("Invite to video");
+        } else if (command.equals("inviteAudio")) {
+            System.out.println("Invite to audio");
+            
+            
+        } else if (command.equals("removeVideo")) {
+            System.out.println("Remove from video");
+        } else if (command.equals("removeAudio")) {
+            System.out.println("Remove from audio");
+            
+            
         } else {
             LOGGER.log(Level.WARNING, "UNKNOWN: "+command);
         }
     }
 
-    String getFullname() {
+    protected String getFullname() {
         return model.getFullname();
+    }
+
+    protected Person getUser() {
+        return model;
     }
 }

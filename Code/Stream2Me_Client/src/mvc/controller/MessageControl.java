@@ -6,6 +6,7 @@
 
 package mvc.controller;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.Message;
@@ -54,5 +55,9 @@ public class MessageControl {
     
     protected void addMessageHist(String userID) {
         model.addMessageHistory(userID);
+    }
+
+    List<UserMessage> qetMessageHistory(String userID) {
+        return model.getMessageHistory(userID);
     }
 }

@@ -71,11 +71,6 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
         return false;
     }
 
-    protected static void updateContent(ProfilePanel pp) {
-        Person p =ContactListControl.INSTANCE.getColleague(pp.getUserID());
-        pp.setProfile(p.getName(), p.getSurname(), p.getEmail(), p.getAvatar(), p.getTitle(), p.getAboutMe());
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         String command =e.getActionCommand();
@@ -86,14 +81,16 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
         } else if (command.equals("viewMessages")) {
             LOGGER.log(Level.INFO, "Show messages");
             ContactPopup cp =(ContactPopup)((JMenuItem) e.getSource()).getParent();
+            ContactListControl.INSTANCE.settleMessageAlert(cp.getUserID());
             GUIControl.changeContent(1, cp.getUserID(), ContactListControl
                     .INSTANCE.getColleagueFullname(cp.getUserID()));
-        } else if (command.equals("videoStream")) {
-            LOGGER.log(Level.INFO, "Toggle video");
-        } else if (command.equals("audioStream")) {
-            LOGGER.log(Level.INFO, "Toggle audio");
+        } else if (command.equals("respondVideo")) {
+            LOGGER.log(Level.INFO, "Respond video");
+        } else if (command.equals("respondAudio")) {
+            LOGGER.log(Level.INFO, "Respond audio");
         } else if (command.equals("viewMessagesSelected")) {
             ContactProfile cp =(ContactProfile)e.getSource();
+            ContactListControl.INSTANCE.settleMessageAlert(cp.getUserID());
             GUIControl.changeContent(1, cp.getUserID(), ContactListControl
                     .INSTANCE.getColleagueFullname(cp.getUserID()));
         } else {
@@ -107,8 +104,10 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
             Color c =(Color)evt.getNewValue();
             if (c.equals(Color.WHITE)) {
                 LOGGER.log(Level.INFO, "Unselected");
+                GUIControl.hideStreamAcceptors();
             } else {
                 actionPerformed(new ActionEvent(evt.getSource(), 0, "viewMessagesSelected"));
+                GUIControl.checkStreamAcceptors(((ContactProfile)evt.getSource()).getUserID());
             }
         } else {
             LOGGER.log(Level.WARNING, "UNKNOWN: "+evt.getPropertyName());

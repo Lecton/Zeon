@@ -2,14 +2,21 @@ package messages.update;
 
 import messages.Message;
 
-public class UpdateNameMessage extends Message {
+public class UpdateProfileMessage extends Message {
     private String name;
     private String surname;
+    private String email;
+    private String title;
+    private String aboutMe;
     
-    public UpdateNameMessage(String userID, String name, String surname) {
+    public UpdateProfileMessage(String userID, String name, String surname, 
+            String email, String title, String aboutMe) {
         this.userID = userID;
         this.name = name;
         this.surname =surname;
+        this.email =email;
+        this.title =title;
+        this.aboutMe =aboutMe;
     }
     
     @Override
@@ -23,6 +30,18 @@ public class UpdateNameMessage extends Message {
 
     public String getSurname() {
         return surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
     }
 
     @Override

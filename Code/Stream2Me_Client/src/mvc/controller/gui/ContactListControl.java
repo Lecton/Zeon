@@ -8,10 +8,9 @@ package mvc.controller;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import mvc.controller.UpdateControl;
 import mvc.model.Colleague;
 import mvc.model.ColleagueList;
-import mvc.model.UserMessage;
+import mvc.model.person.Notifier;
 import mvc.model.person.Person;
 import mvc.view.generalUI.contacts.ContactList;
 
@@ -49,6 +48,28 @@ public class ContactListControl {
        
         UpdateControl.INSTANCE.add(userID, UpdateControl.REMOVEUSER);
     }
+
+    public static void updateContact(String userID, String name, String surname, String avatar, String title, String aboutMe) {
+        Person person =INSTANCE.getColleague(userID);
+        if (person != null) {
+            if (name != null) {
+                person.setName(name);
+            }
+            if (surname != null) {
+                person.setSurname(surname);
+            }
+            if (avatar != null) {
+                person.setAvatar(avatar);
+            }
+            if (title != null) {
+                person.setTitle(title);
+            }
+            if (aboutMe != null) {
+                person.setAboutMe(aboutMe);
+            }
+            UpdateControl.INSTANCE.add(userID, UpdateControl.UPDATEDETAILS);
+        }
+    }
     
     protected void addProfile(String userID) {
         Person person =model.get(userID);
@@ -63,7 +84,30 @@ public class ContactListControl {
         view.removeProfile(userID);
     }
 
-    String getColleagueFullname(String userID) {
+    protected String getColleagueFullname(String userID) {
         return model.get(userID).getFullname();
+    }
+
+    protected boolean alertMessage(String userID) {
+        Notifier person =getColleague(userID);
+        if (person != null) {
+            person.setMessage(true);
+            view.alert(userID);
+            return true;
+        }
+        return false;
+    }
+
+    protected void settleMessageAlert(String userID) {
+        Notifier person =getColleague(userID);
+        if (person != null) {
+            person.setMessage(false);
+        }
+    }
+
+    protected void update(String userID) {
+        Person person =model.get(userID);
+        view.updateProfile(person.getUserID(), person.getFullname(), person.getAvatar());
+        ProfileControl.INSTANCE.update(person);
     }
 }

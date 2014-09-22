@@ -9,9 +9,9 @@ package mvc.view.generalUI;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
+import mvc.controller.ContactControl;
 import mvc.controller.GUIControl;
 import mvc.controller.UserControl;
 import mvc.view.generalUI.contacts.ContactList;
@@ -43,15 +43,15 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        leftArrow = new mvc.view.generalUI.HideArrow();
-        rightArrow = new mvc.view.generalUI.HideArrow();
+        leftArrow = new mvc.view.generalUI.containers.HideArrow();
+        rightArrow = new mvc.view.generalUI.containers.HideArrow();
         controls = new javax.swing.JPanel();
-        streamVideo = new mvc.view.generalUI.Button();
-        streamAudio = new mvc.view.generalUI.Button();
-        acceptAudio = new mvc.view.generalUI.Button();
-        acceptVideo = new mvc.view.generalUI.Button();
-        logout = new mvc.view.generalUI.Button();
-        settings = new mvc.view.generalUI.Button();
+        streamVideo = new mvc.view.generalUI.containers.Button();
+        streamAudio = new mvc.view.generalUI.containers.Button();
+        acceptAudio = new mvc.view.generalUI.containers.Button();
+        acceptVideo = new mvc.view.generalUI.containers.Button();
+        logout = new mvc.view.generalUI.containers.Button();
+        settings = new mvc.view.generalUI.containers.Button();
         people = new javax.swing.JPanel();
         user = new mvc.view.generalUI.UserPanel();
         contactsScroll = new javax.swing.JScrollPane();
@@ -78,6 +78,7 @@ public class GUI extends javax.swing.JFrame {
         });
 
         controls.setBackground(new java.awt.Color(255, 255, 255));
+        controls.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         controls.setMaximumSize(new java.awt.Dimension(62, 500));
         controls.setMinimumSize(new java.awt.Dimension(62, 500));
         controls.setName(""); // NOI18N
@@ -100,22 +101,26 @@ public class GUI extends javax.swing.JFrame {
         streamAudio.setName(""); // NOI18N
         streamAudio.setPreferredSize(new java.awt.Dimension(58, 58));
 
+        acceptAudio.setActionCommand("respondAudio");
         acceptAudio.setMargin(new java.awt.Insets(2, 2, 2, 2));
         acceptAudio.setMaximumSize(new java.awt.Dimension(58, 58));
         acceptAudio.setMinimumSize(new java.awt.Dimension(58, 58));
         acceptAudio.setPreferredSize(new java.awt.Dimension(58, 58));
 
         acceptVideo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/notification_Icons/video_icon.png"))); // NOI18N
+        acceptVideo.setActionCommand("respondVideo");
         acceptVideo.setMargin(new java.awt.Insets(2, 2, 2, 2));
         acceptVideo.setMaximumSize(new java.awt.Dimension(58, 58));
         acceptVideo.setMinimumSize(new java.awt.Dimension(58, 58));
         acceptVideo.setPreferredSize(new java.awt.Dimension(58, 58));
 
+        logout.setActionCommand("logout");
         logout.setMargin(new java.awt.Insets(2, 2, 2, 2));
         logout.setMaximumSize(new java.awt.Dimension(58, 58));
         logout.setMinimumSize(new java.awt.Dimension(58, 58));
         logout.setPreferredSize(new java.awt.Dimension(58, 58));
 
+        settings.setActionCommand("settings");
         settings.setMargin(new java.awt.Insets(2, 2, 2, 2));
         settings.setMaximumSize(new java.awt.Dimension(58, 58));
         settings.setMinimumSize(new java.awt.Dimension(58, 58));
@@ -128,12 +133,12 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controlsLayout.createSequentialGroup()
                 .addGap(2, 2, 2)
                 .addGroup(controlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(logout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(acceptVideo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(streamVideo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(streamAudio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(acceptAudio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(settings, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(acceptVideo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(streamVideo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(streamAudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(acceptAudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(settings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(2, 2, 2))
         );
         controlsLayout.setVerticalGroup(
@@ -143,11 +148,11 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(streamVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(streamAudio, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addComponent(acceptVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(acceptAudio, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
+                .addGap(59, 59, 59)
                 .addComponent(settings, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -258,6 +263,9 @@ public class GUI extends javax.swing.JFrame {
         
         streamVideo.addActionListener(UserControl.INSTANCE);
         streamAudio.addActionListener(UserControl.INSTANCE);
+        
+        acceptVideo.addActionListener(ContactControl.INSTANCE);
+        acceptAudio.addActionListener(ContactControl.INSTANCE);
     }
 
     public ContactList getContactList() {
@@ -272,54 +280,70 @@ public class GUI extends javax.swing.JFrame {
         return messages;
     }
     
+    public ProfilePanel getProfilePanel() {
+        return profile;
+    }
+    
     public JComponent changeContent(int type, String userID, String name) {
         CardLayout cl = (CardLayout)(content.getLayout());
         contacts.checkSelected(userID);
         switch (type) {
             case 0: //show contact profile
                 profile.setUserID(userID, name, false);
+                messages.setUserID("", "", false);
                 cl.show(content, "profile");
                 return profile;
             case 1: //show contact messages
                 messages.setUserID(userID, name, false);
+                profile.setUserID("", "", false);
                 cl.show(content, "message");
                 return messages;
-//                return null;
             case 2: //show user profile
                 profile.setUserID(userID, name, true);
+                messages.setUserID("", "", false);
                 cl.show(content, "profile");
                 return profile;
             case 3: //show group messages
                 messages.setUserID("default", name, true);
+                profile.setUserID("", "", false);
                 cl.show(content, "message");
                 return messages;
-//                return null;
             default: //show group messages
                 messages.setUserID("default", name, true);
+                profile.setUserID("", "", false);
                 cl.show(content, "message");
                 return messages;
-//                return null;
         }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private mvc.view.generalUI.Button acceptAudio;
-    private mvc.view.generalUI.Button acceptVideo;
+    private mvc.view.generalUI.containers.Button acceptAudio;
+    private mvc.view.generalUI.containers.Button acceptVideo;
     private mvc.view.generalUI.contacts.ContactList contacts;
     private javax.swing.JScrollPane contactsScroll;
     private javax.swing.JPanel content;
     private javax.swing.JPanel controls;
-    private mvc.view.generalUI.HideArrow leftArrow;
-    private mvc.view.generalUI.Button logout;
+    private mvc.view.generalUI.containers.HideArrow leftArrow;
+    private mvc.view.generalUI.containers.Button logout;
     private mvc.view.generalUI.message.MessagePanel messages;
     private javax.swing.JPanel people;
     private mvc.view.generalUI.ProfilePanel profile;
     private javax.swing.JScrollPane profileScroll;
-    private mvc.view.generalUI.HideArrow rightArrow;
-    private mvc.view.generalUI.Button settings;
-    private mvc.view.generalUI.Button streamAudio;
-    private mvc.view.generalUI.Button streamVideo;
+    private mvc.view.generalUI.containers.HideArrow rightArrow;
+    private mvc.view.generalUI.containers.Button settings;
+    private mvc.view.generalUI.containers.Button streamAudio;
+    private mvc.view.generalUI.containers.Button streamVideo;
     private mvc.view.generalUI.UserPanel user;
     // End of variables declaration//GEN-END:variables
+
+    public void setStreamAcceptors(boolean video, boolean audio) {
+//        acceptVideo.setVisible(video);
+//        acceptAudio.setVisible(audio);
+    }
+
+    public void hideStreamAcceptors() {
+//        acceptVideo.setVisible(false);
+//        acceptAudio.setVisible(false);
+    }
 
 }

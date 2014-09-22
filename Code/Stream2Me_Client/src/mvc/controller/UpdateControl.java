@@ -10,7 +10,6 @@ import java.awt.Event;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
-import mvc.model.UserMessage;
 
 /**
  *
@@ -38,10 +37,10 @@ class UpdateControl {
     protected static final int LOGIN =0;
     protected static final int NEWUSER =1;
     protected static final int REMOVEUSER =2;
-    protected static final int UPDATENAME =3;
-    protected static final int UPDATEAVATAR =4;
-    protected static final int UPDATECONTENT =5;
-    protected static final int STRINGMESSAGE =6;
+    protected static final int UPDATEDETAILS =3;
+    protected static final int UPDATECONTENT =4;
+    protected static final int STRINGMESSAGE =5;
+    protected static final int UPDATEAVATAR =6;
     
     public UpdateControl() {
         for (int i=0; i<10; i++) {
@@ -89,8 +88,7 @@ class UpdateControl {
                     usage.incrementAndGet();
                     switch (e.id) {
                         case LOGIN:
-                            String userID =(String)e.target;
-                            UserControl.INSTANCE.update(userID);
+                            UserControl.INSTANCE.update((String)e.target);
                             break;
                         case NEWUSER:
                             ContactListControl.INSTANCE.addProfile((String)e.target);
@@ -98,7 +96,10 @@ class UpdateControl {
                         case REMOVEUSER:
                             ContactListControl.INSTANCE.removeProfile((String)e.target);
                             break;
-                        case UPDATENAME:
+                        case UPDATEDETAILS:
+                            ContactListControl.INSTANCE.update((String)e.target);
+                            //
+                            
 //                                ContactProfile nameProfile =ContactListControl.INSTANCE.getContact((String)e.target);
 //                                nameProfile.setName((String)e.arg);
                             break;

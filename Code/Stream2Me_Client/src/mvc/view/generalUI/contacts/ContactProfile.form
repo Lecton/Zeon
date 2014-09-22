@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <NonVisualComponents>
+    <Component class="mvc.view.generalUI.contacts.ContactList" name="contactList1">
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="ff" green="ff" red="ff" type="rgb"/>
     </Property>
     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[800, 69]"/>
+      <Dimension value="[400, 69]"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[100, 69]"/>
@@ -35,7 +39,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="0" pref="99" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="139" max="32767" attributes="0"/>
                       <Component id="ntiVideo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="ntiAudio" min="-2" max="-2" attributes="0"/>
@@ -64,9 +68,9 @@
                   <Component id="ntiAudio" min="-2" max="-2" attributes="0"/>
                   <Component id="ntiVideo" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
               <Component id="lblName" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="lblID" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -74,7 +78,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="mvc.view.generalUI.ImageContainer" name="imgAvatar">
+    <Container class="mvc.view.generalUI.containers.ImageContainer" name="imgAvatar">
       <Properties>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[69, 69]"/>
@@ -110,7 +114,7 @@
         <Property name="text" type="java.lang.String" value="ID"/>
       </Properties>
     </Component>
-    <Container class="mvc.view.generalUI.NotificationIcon" name="ntiMessage">
+    <Container class="mvc.view.generalUI.containers.NotificationIcon" name="ntiMessage">
       <Properties>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[15, 15]"/>
@@ -121,7 +125,7 @@
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[15, 15]"/>
         </Property>
-        <Property name="type" type="mvc.view.generalUI.NotificationIcon$iconType" editor="org.netbeans.modules.form.editors.EnumEditor">
+        <Property name="type" type="mvc.view.generalUI.containers.NotificationIcon$iconType" editor="org.netbeans.modules.form.editors.EnumEditor">
           <Value id="MESSAGE"/>
         </Property>
       </Properties>
@@ -139,7 +143,7 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Container class="mvc.view.generalUI.NotificationIcon" name="ntiAudio">
+    <Container class="mvc.view.generalUI.containers.NotificationIcon" name="ntiAudio">
       <Properties>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[15, 15]"/>
@@ -150,7 +154,7 @@
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[15, 15]"/>
         </Property>
-        <Property name="type" type="mvc.view.generalUI.NotificationIcon$iconType" editor="org.netbeans.modules.form.editors.EnumEditor">
+        <Property name="type" type="mvc.view.generalUI.containers.NotificationIcon$iconType" editor="org.netbeans.modules.form.editors.EnumEditor">
           <Value id="AUDIO"/>
         </Property>
       </Properties>
@@ -168,7 +172,7 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Container class="mvc.view.generalUI.NotificationIcon" name="ntiVideo">
+    <Container class="mvc.view.generalUI.containers.NotificationIcon" name="ntiVideo">
       <Properties>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[15, 15]"/>
@@ -179,7 +183,7 @@
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[15, 15]"/>
         </Property>
-        <Property name="type" type="mvc.view.generalUI.NotificationIcon$iconType" editor="org.netbeans.modules.form.editors.EnumEditor">
+        <Property name="type" type="mvc.view.generalUI.containers.NotificationIcon$iconType" editor="org.netbeans.modules.form.editors.EnumEditor">
           <Value id="VIDEO"/>
         </Property>
       </Properties>

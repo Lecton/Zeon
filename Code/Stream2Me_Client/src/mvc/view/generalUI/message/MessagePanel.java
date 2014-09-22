@@ -67,7 +67,7 @@ public class MessagePanel extends javax.swing.JPanel {
     private void initComponents() {
 
         txtMessage = new javax.swing.JTextField();
-        btnSend = new mvc.view.generalUI.Button();
+        btnSend = new mvc.view.generalUI.containers.Button();
         messageList = new javax.swing.JScrollPane();
         messages = new mvc.view.generalUI.message.MessageList();
         btnToggleContent = new javax.swing.JButton();
@@ -117,7 +117,7 @@ public class MessagePanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private mvc.view.generalUI.Button btnSend;
+    private mvc.view.generalUI.containers.Button btnSend;
     private javax.swing.JButton btnToggleContent;
     private javax.swing.JScrollPane messageList;
     private mvc.view.generalUI.message.MessageList messages;

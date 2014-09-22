@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.Message;
 import messages.update.UpdateAvatarMessage;
-import messages.update.UpdateNameMessage;
+import messages.update.UpdateProfileMessage;
 import messages.userConnection.GreetingMessage;
 import messages.userConnection.LoginMessage;
 import messages.userConnection.NewUserMessage;
@@ -202,13 +202,45 @@ public class UserHandler {
     }
 
     /**
-     * Update the name and surname of the user and retrieves the groupID of the user,
+     * Update the profile of the user and retrieves the groupID of the user,
      * if the user has a group.
      * @param msg - Message containing the updated name, surname and userID
      * @return Possibly modified UpdateNameMessage
      */
-    public static Message updateName(UpdateNameMessage msg) {
+    public static Message updateProfile(UpdateProfileMessage msg) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//        PreparedStatement statement;
+//        ResultSet result = null;
+//        String query = "UPDATE userid " +
+//                        "FROM client " +
+//                        "WHERE groupid = ? " +
+//                        "AND userID <> ?" + 
+//                        "AND loggedin = TRUE";
+//        statement = Database.INSTANCE.getPreparedStatement(query);
+//        try {
+//            statement.setString(1, bu.getGroupID());
+//            statement.setString(2, bu.getUserID());
+//            result = statement.executeQuery();
+//
+//            List<String> users =new ArrayList<>();
+//            while(result.next()) {
+//                String uID =result.getString("userid");
+//                users.add(uID);
+//            }
+////            return users.toArray(new String[0]);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(UserHandler.class.getName())
+//                    .log(Level.SEVERE, null, ex);
+//        } finally {
+//            try {
+//                if(statement != null) {
+//                    statement.close();
+//                }
+//            } catch(SQLException ex) {
+//                Logger.getLogger(UserHandler.class.getName())
+//                        .log(Level.SEVERE, null, ex);
+//            }
+//        }
     }
 
     /**
@@ -235,7 +267,7 @@ public class UserHandler {
                 result = statement.executeQuery();
 
                 List<String> users =new ArrayList<>();
-                if(result.next()) {
+                while(result.next()) {
                     String uID =result.getString("userid");
                     users.add(uID);
                 }

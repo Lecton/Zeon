@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package mvc.view.generalUI;
+package mvc.view.generalUI.containers;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;

@@ -42,12 +42,14 @@ public class ContactPopup extends JPopupMenu {
         add(viewProfile);
         add(viewMessages);
         
+        
+        //UserControl on getUserID
         audioControl =new JMenuItem("No audio stream");
-        audioControl.addActionListener(new audioAction());
+        audioControl.addActionListener(UserControl.INSTANCE);
         audioControl.setVisible(false);
         
         videoControl =new JMenuItem("No video stream");
-        videoControl.addActionListener(new videoAction());
+        videoControl.addActionListener(UserControl.INSTANCE);
         videoControl.setVisible(false);
         
         add(audioControl);
@@ -61,42 +63,32 @@ public class ContactPopup extends JPopupMenu {
     @Override
     public void show(Component invoker, int x, int y) {
         super.show(invoker, x, y);
-        if (UserControl.streamingAudio()) {
-            audioControl.setVisible(true);
-            if (ContactControl.receivingAudio(parent.getUserID())) {
-                audioControl.setText("Remove from audio");
-            } else {
-                audioControl.setText("Invite to audio");
-            }
-        } else {
-            audioControl.setVisible(false);
-        }
-        
-        if (UserControl.streamingVideo()) {
+//        if (UserControl.streamingVideo()) {
             videoControl.setVisible(true);
             if (ContactControl.receivingVideo(parent.getUserID())) {
                 videoControl.setText("Remove from video");
+                videoControl.setActionCommand("removeVideo");
             } else {
                 videoControl.setText("Invite to video");
+                videoControl.setActionCommand("inviteVideo");
             }
-        } else {
-            videoControl.setVisible(false);
-        }
-        pack();
-    }
-    
-    class showMessageEvent implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-//            parent.showMessages();
-        }
+//        } else {
+//            videoControl.setVisible(false);
+//        }
         
-    }
-    class showProfileEvent implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-//            parent.showProfile();
-        }
+//        if (UserControl.streamingAudio()) {
+            audioControl.setVisible(true);
+            if (ContactControl.receivingAudio(parent.getUserID())) {
+                audioControl.setText("Remove from audio");
+                audioControl.setActionCommand("removeAudio");
+            } else {
+                audioControl.setText("Invite to audio");
+                audioControl.setActionCommand("inviteAudio");
+            }
+//        } else {
+//            audioControl.setVisible(false);
+//        }
+        pack();
     }
     
     class audioAction implements ActionListener {

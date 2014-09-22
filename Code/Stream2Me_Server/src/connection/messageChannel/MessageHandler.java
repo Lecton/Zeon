@@ -27,7 +27,7 @@ import messages.media.StreamUpdateMessage;
 import messages.media.VideoStreamMessage;
 import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateListMessage;
-import messages.update.UpdateNameMessage;
+import messages.update.UpdateProfileMessage;
 import messages.userConnection.GreetingMessage;
 import messages.userConnection.LoginMessage;
 import messages.userConnection.LogoutMessage;
@@ -54,7 +54,7 @@ public class MessageHandler {
                 handleUpdateAvatar(ctx.channel(), (UpdateAvatarMessage)msg);
                 break;
             case updateName:
-                handleUpdateName(ctx.channel(), (UpdateNameMessage)msg);
+                handleUpdateName(ctx.channel(), (UpdateProfileMessage)msg);
                 break;
             case updateList:
                 handleListRequest(ctx.channel(), (UpdateListMessage)msg);
@@ -124,8 +124,8 @@ public class MessageHandler {
                 "Update avatar.");
     }
 
-    private static void handleUpdateName(Channel ch, UpdateNameMessage msg) {
-        Message message =UserHandler.updateName(msg);
+    private static void handleUpdateName(Channel ch, UpdateProfileMessage msg) {
+        Message message =UserHandler.updateProfile(msg);
         ClientHandler.writeAndFlush(UserHandler.getGroupID(msg.getUserID()), message);
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                     "Update username.");

@@ -7,9 +7,9 @@
 package mvc.controller;
 
 import communication.handlers.MessageFactory;
-import io.netty.util.ResourceLeakDetector;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.Message;
@@ -28,6 +28,10 @@ public class ChatControl implements ActionListener {
     
     public static void register(MessagePanel viewMessages) {
         view =viewMessages;
+    }
+
+    static void clear() {
+        view.clearMessage();
     }
     
     protected String getMessage() {
@@ -70,14 +74,25 @@ public class ChatControl implements ActionListener {
                     msg.getTimestamp(), message);
     }
 
-    void checkMessage(String target, int messageID) {
+    protected void checkMessage(String target, int messageID) {
         if (view.getUserID().equals(target)) {
             UserMessage msg =MessageControl.getMessage(target, messageID);
             view.addMessage(messageID, msg.getUserID().equals(
                     UserControl.getUserID()), msg.getName(), 
                     msg.getTime(), msg.getMessage());
         } else {
-            LOGGER.log(Level.INFO, "Not my problem. View userID: "+view.getUserID()+" target: "+target);
+            boolean alert =ContactListControl.INSTANCE.alertMessage(target);
+            LOGGER.log(Level.INFO, "Not my problem? "+alert+". View userID: "+view.getUserID()+" target: "+target);
+        }
+    }
+    
+    protected static void updateContent(MessagePanel mp) {
+        List<UserMessage> history =MessageControl.INSTANCE.qetMessageHistory(mp.getUserID());
+        for (int i=0; i<history.size(); i++) {
+            UserMessage msg =history.get(i);
+            view.addMessage(i, msg.getUserID().equals(
+                    UserControl.getUserID()), msg.getName(), 
+                    msg.getTime(), msg.getMessage());
         }
     }
 }

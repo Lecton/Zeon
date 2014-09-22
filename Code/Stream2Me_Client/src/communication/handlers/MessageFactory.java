@@ -14,7 +14,7 @@ import messages.media.StreamResponseMessage;
 import messages.media.StreamUpdateMessage;
 import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateListMessage;
-import messages.update.UpdateNameMessage;
+import messages.update.UpdateProfileMessage;
 import messages.userConnection.LoginMessage;
 import messages.userConnection.LogoutMessage;
 
@@ -35,8 +35,10 @@ public class MessageFactory {
         return ua;
     }
 
-    public static UpdateNameMessage generateUpdateName(String userID, String name, String surname) {
-        UpdateNameMessage uu =new UpdateNameMessage(userID, name, surname);
+    public static UpdateProfileMessage generateUpdateName(String userID, 
+            String name, String surname, String email, String title, String aboutMe) {
+        UpdateProfileMessage uu =new UpdateProfileMessage(userID, name, 
+                surname, email, title, aboutMe);
         uu.setTargetID(Message.ALL);
         return uu;
     }

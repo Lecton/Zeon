@@ -10,8 +10,10 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
+import mvc.model.Colleague;
 import mvc.view.generalUI.GUI;
 import mvc.view.generalUI.ProfilePanel;
+import mvc.view.generalUI.message.MessagePanel;
 
 /**
  *
@@ -30,30 +32,44 @@ public class GUIControl implements WindowListener {
         UpdateControl.clear();
         ContactListControl.clear();
         UserControl.clear();
+        ChatControl.clear();
+        ProfileControl.clear();
     }
     
     protected static void changeContent(int type, String userID, String name) {
         JComponent target =view.changeContent(type, userID, name);
         UpdateControl.INSTANCE.add(target, UpdateControl.UPDATECONTENT, type);
     }
+    
+    protected static void hideStreamAcceptors() {
+        view.hideStreamAcceptors();
+    }
+    
+    protected static void checkStreamAcceptors(String userID) {
+        Colleague person =ContactListControl.INSTANCE.getColleague(userID);
+        view.setStreamAcceptors(person.isReceivingVideo(), person.isReceivingAudio());
+    }
 
     protected static void updateContent(Object target, int type) {
         switch (type) {
             case 0: //show contact profile
-                ContactControl.updateContent((ProfilePanel)target);
+                ProfileControl.updateContact((ProfilePanel)target);
                 break;
             case 1: //show contact messages
+                ChatControl.updateContent((MessagePanel)target);
 //                Message pp =(ProfilePanel)target;
 //                ContactControl.updateContent(pp);
 //                return messages;
                 break;
             case 2: //show user profile
-                UserControl.updateContent((ProfilePanel)target);
+                ProfileControl.updateUser((ProfilePanel)target);
                 break;
             case 3: //show group messages
+                ChatControl.updateContent((MessagePanel)target);
 //                cl.show(content, "message");
                 break;
             default: //show group messages
+                ChatControl.updateContent((MessagePanel)target);
 //                cl.show(content, "message");
                 break;
         }

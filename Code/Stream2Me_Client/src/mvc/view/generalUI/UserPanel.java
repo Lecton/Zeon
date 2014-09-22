@@ -48,7 +48,7 @@ public class UserPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         lblName = new javax.swing.JLabel();
-        imgAvatar = new mvc.view.generalUI.ImageContainer();
+        imgAvatar = new mvc.view.generalUI.containers.ImageContainer();
         lblID = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -105,7 +105,7 @@ public class UserPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_formMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private mvc.view.generalUI.ImageContainer imgAvatar;
+    private mvc.view.generalUI.containers.ImageContainer imgAvatar;
     private javax.swing.JLabel lblID;
     private javax.swing.JLabel lblName;
     // End of variables declaration//GEN-END:variables

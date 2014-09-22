@@ -63,7 +63,7 @@
         <Property name="text" type="java.lang.String" value="Name"/>
       </Properties>
     </Component>
-    <Container class="mvc.view.generalUI.ImageContainer" name="imgAvatar">
+    <Container class="mvc.view.generalUI.containers.ImageContainer" name="imgAvatar">
 
       <Layout>
         <DimensionLayout dim="0">

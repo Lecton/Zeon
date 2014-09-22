@@ -61,15 +61,16 @@ public class ContactProfile extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imgAvatar = new mvc.view.generalUI.ImageContainer();
+        contactList1 = new mvc.view.generalUI.contacts.ContactList();
+        imgAvatar = new mvc.view.generalUI.containers.ImageContainer();
         lblName = new javax.swing.JLabel();
         lblID = new javax.swing.JLabel();
-        ntiMessage = new mvc.view.generalUI.NotificationIcon();
-        ntiAudio = new mvc.view.generalUI.NotificationIcon();
-        ntiVideo = new mvc.view.generalUI.NotificationIcon();
+        ntiMessage = new mvc.view.generalUI.containers.NotificationIcon();
+        ntiAudio = new mvc.view.generalUI.containers.NotificationIcon();
+        ntiVideo = new mvc.view.generalUI.containers.NotificationIcon();
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(800, 69));
+        setMaximumSize(new java.awt.Dimension(400, 69));
         setMinimumSize(new java.awt.Dimension(100, 69));
         setPreferredSize(new java.awt.Dimension(300, 69));
 
@@ -95,7 +96,7 @@ public class ContactProfile extends javax.swing.JPanel {
         ntiMessage.setMaximumSize(new java.awt.Dimension(15, 15));
         ntiMessage.setMinimumSize(new java.awt.Dimension(15, 15));
         ntiMessage.setPreferredSize(new java.awt.Dimension(15, 15));
-        ntiMessage.setType(mvc.view.generalUI.NotificationIcon.iconType.MESSAGE);
+        ntiMessage.setType(mvc.view.generalUI.containers.NotificationIcon.iconType.MESSAGE);
 
         javax.swing.GroupLayout ntiMessageLayout = new javax.swing.GroupLayout(ntiMessage);
         ntiMessage.setLayout(ntiMessageLayout);
@@ -111,7 +112,7 @@ public class ContactProfile extends javax.swing.JPanel {
         ntiAudio.setMaximumSize(new java.awt.Dimension(15, 15));
         ntiAudio.setMinimumSize(new java.awt.Dimension(15, 15));
         ntiAudio.setPreferredSize(new java.awt.Dimension(15, 15));
-        ntiAudio.setType(mvc.view.generalUI.NotificationIcon.iconType.AUDIO);
+        ntiAudio.setType(mvc.view.generalUI.containers.NotificationIcon.iconType.AUDIO);
 
         javax.swing.GroupLayout ntiAudioLayout = new javax.swing.GroupLayout(ntiAudio);
         ntiAudio.setLayout(ntiAudioLayout);
@@ -127,7 +128,7 @@ public class ContactProfile extends javax.swing.JPanel {
         ntiVideo.setMaximumSize(new java.awt.Dimension(15, 15));
         ntiVideo.setMinimumSize(new java.awt.Dimension(15, 15));
         ntiVideo.setPreferredSize(new java.awt.Dimension(15, 15));
-        ntiVideo.setType(mvc.view.generalUI.NotificationIcon.iconType.VIDEO);
+        ntiVideo.setType(mvc.view.generalUI.containers.NotificationIcon.iconType.VIDEO);
 
         javax.swing.GroupLayout ntiVideoLayout = new javax.swing.GroupLayout(ntiVideo);
         ntiVideo.setLayout(ntiVideoLayout);
@@ -149,7 +150,7 @@ public class ContactProfile extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 99, Short.MAX_VALUE)
+                        .addGap(0, 139, Short.MAX_VALUE)
                         .addComponent(ntiVideo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ntiAudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -171,9 +172,9 @@ public class ContactProfile extends javax.swing.JPanel {
                     .addComponent(ntiMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ntiAudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ntiVideo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(1, 1, 1)
                 .addComponent(lblName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblID)
                 .addContainerGap())
         );
@@ -186,12 +187,13 @@ public class ContactProfile extends javax.swing.JPanel {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private mvc.view.generalUI.ImageContainer imgAvatar;
+    private mvc.view.generalUI.contacts.ContactList contactList1;
+    private mvc.view.generalUI.containers.ImageContainer imgAvatar;
     private javax.swing.JLabel lblID;
     private javax.swing.JLabel lblName;
-    private mvc.view.generalUI.NotificationIcon ntiAudio;
-    private mvc.view.generalUI.NotificationIcon ntiMessage;
-    private mvc.view.generalUI.NotificationIcon ntiVideo;
+    private mvc.view.generalUI.containers.NotificationIcon ntiAudio;
+    private mvc.view.generalUI.containers.NotificationIcon ntiMessage;
+    private mvc.view.generalUI.containers.NotificationIcon ntiVideo;
     // End of variables declaration//GEN-END:variables
 
     public void unselect() {
@@ -204,7 +206,7 @@ public class ContactProfile extends javax.swing.JPanel {
         update();
     }
     
-    private void update() {
+    protected void update() {
         revalidate();
         repaint();
     }

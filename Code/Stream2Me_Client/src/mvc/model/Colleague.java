@@ -19,5 +19,4 @@ public class Colleague extends Receiver {
     public Colleague(String userID, String name, String surname, String email, String avatar, String title, String aboutMe) {
         super(userID, name, surname, email, avatar, title, aboutMe);
     }
-
 }

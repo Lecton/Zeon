@@ -14,7 +14,7 @@ import messages.media.AudioStreamMessage;
 import messages.media.StreamNotifyMessage;
 import messages.media.VideoStreamMessage;
 import messages.update.UpdateAvatarMessage;
-import messages.update.UpdateNameMessage;
+import messages.update.UpdateProfileMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
 import mvc.controller.ContactListControl;
@@ -36,10 +36,18 @@ public class MessageHandler {
                 return handleNewUser((NewUserMessage)msg);
             case logout:
                 return handleRemoveUser((LogoutMessage)msg);
+                
             case updateAvatar:
                 return handleUpdateAvatar((UpdateAvatarMessage)msg);
             case updateName:
-                return handleUpdateName((UpdateNameMessage)msg);
+                return handleUpdateName((UpdateProfileMessage)msg);
+//            case updateTitle:
+//                return handleUpdateName((UpdateNameMessage)msg);
+//            case updateAboutMe:
+//                return handleUpdateName((UpdateNameMessage)msg);//            case updateTitle:
+//                return handleUpdateName((UpdateNameMessage)msg);
+//            case updateAboutMe:
+//                return handleUpdateName((UpdateNameMessage)msg);
 
             case string:
                 return handleStringMessage((StringMessage)msg);
@@ -79,6 +87,7 @@ public class MessageHandler {
     }
 
     private boolean handleUpdateAvatar(UpdateAvatarMessage msg) {
+        ContactListControl.updateContact(msg.getUserID(), null, null, msg.getAvatar(), null, null);
 //        Colleague person =Model.INSTANCE.getColleagueList().get(msg.getUserID());
 //        if (person != null) {
 //            person.setAvatar(msg.getAvatar());
@@ -87,7 +96,8 @@ public class MessageHandler {
         return true;
     }
 
-    private boolean handleUpdateName(UpdateNameMessage msg) {
+    private boolean handleUpdateName(UpdateProfileMessage msg) {
+        ContactListControl.updateContact(msg.getUserID(), msg.getName(), msg.getSurname(), null, null, null);
 //        Colleague person =Model.INSTANCE.getColleagueList().get(msg.getUserID());
 //        if (person != null) {
 //            person.setName(msg.getName());

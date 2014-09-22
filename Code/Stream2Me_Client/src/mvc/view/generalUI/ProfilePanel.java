@@ -17,7 +17,7 @@ public class ProfilePanel extends javax.swing.JPanel {
     private final static Logger LOGGER = Logger.getLogger(ProfilePanel.class.getName());
     
     private boolean owner;
-    private String userID;
+    private String userID ="";
 
     /**
      * Creates new form ProfilePanel
@@ -57,14 +57,17 @@ public class ProfilePanel extends javax.swing.JPanel {
             lblSurname.setText("Surname");
             lblEmail.setText("Email");
             lblTitle.setText("Title");
+            
+            txaAboutMe.setEditable(true);
         } else {
             lblName.setText(name);
             lblSurname.setText(surname);
             lblEmail.setText(email);
             lblTitle.setText(title);
+            
+            txaAboutMe.setEditable(false);
     //        this.imgProfilePicture.setImage(avatar, false);
         }
-        txaAboutMe.setText(aboutMe);
         txaAboutMe.setText(aboutMe);
     }
 
@@ -83,7 +86,7 @@ public class ProfilePanel extends javax.swing.JPanel {
         txtName = new javax.swing.JTextField();
         txtSurname = new javax.swing.JTextField();
         btnUpdateDetails = new javax.swing.JButton();
-        imageContainer1 = new mvc.view.generalUI.ImageContainer();
+        imageContainer1 = new mvc.view.generalUI.containers.ImageContainer();
         txtEmail = new javax.swing.JTextField();
         lblTitle = new javax.swing.JLabel();
         txtTitle = new javax.swing.JTextField();
@@ -212,7 +215,7 @@ public class ProfilePanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnUpdateDetails;
-    private mvc.view.generalUI.ImageContainer imageContainer1;
+    private mvc.view.generalUI.containers.ImageContainer imageContainer1;
     private javax.swing.JLabel lblAboutMe;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblName;
@@ -224,4 +227,18 @@ public class ProfilePanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtSurname;
     private javax.swing.JTextField txtTitle;
     // End of variables declaration//GEN-END:variables
+
+    public void clear() {
+        txtName.setText("Name");
+        txtSurname.setText("Surname");
+        txtEmail.setText("Email");
+//        imgProfilePicture.setImage(avatar, false);
+        txtTitle.setText("Title");
+
+        lblName.setText("Name");
+        lblSurname.setText("Surname");
+        lblEmail.setText("Email");
+        lblTitle.setText("Title");
+        txaAboutMe.setText("AboutMe");
+    }
 }
