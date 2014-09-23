@@ -144,23 +144,25 @@ public class Client extends ActionBarActivity {
 						else if(u_result == 1){
 							Intent i = new Intent(getApplicationContext(),ProfileWindow.class);
 							startActivityForResult(i, MAIN_RESULT);
-								
 						}else if(u_result == 2){
 							Intent i = new Intent(getApplicationContext(),MainWindow.class);
 							startActivityForResult(i, MAIN_RESULT);
-							
 						}else if(u_result == 3){
 							String clientID = in.getExtras().getString("ClientID");
 							Intent i = new Intent(getApplicationContext(),ClientProfileWindow.class);
 							i.putExtra("ClientID", clientID);
 							startActivityForResult(i, MAIN_RESULT);
 						}
-						else{
-							String clientID = in.getExtras().getString("ClientID");
-	//						Contact user = (Contact)in.getExtras().getSerializable("User");
+						else if(u_result == 4){
+							String clientID = ClientHandler.getUser().getUserID();
 							Intent i = new Intent(getApplicationContext(), ContactWindow.class);
 							i.putExtra("ClientID", clientID);
-	//						i.putExtra("User", user);
+							startActivityForResult(i, MESSAGE_RESULT);
+						}
+						else{
+							String clientID = in.getExtras().getString("ClientID");
+							Intent i = new Intent(getApplicationContext(), ContactWindow.class);
+							i.putExtra("ClientID", clientID);
 							startActivityForResult(i, MESSAGE_RESULT);
 						}
 					}

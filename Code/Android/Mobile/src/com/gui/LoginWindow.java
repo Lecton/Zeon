@@ -4,7 +4,9 @@ import messages.userConnection.GreetingMessage;
 import messages.userConnection.LoginMessage;
 
 import com.gui.utils.Contact;
+import com.gui.utils.MessageFactory;
 import com.mobile.Client;
+import com.mobile.ClientHandler;
 import com.mobile.R;
 
 import android.animation.Animator;

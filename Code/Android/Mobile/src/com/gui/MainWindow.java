@@ -96,20 +96,24 @@ public class MainWindow extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				EditText et = (EditText) findViewById(R.id.group_message);
-				String text = et.getText().toString().trim();
-				
-				if(text != null && (text.compareTo("") != 0)){
-					et.setText("");
-					StringMessage message = new StringMessage(ClientHandler.getUser().getUserID(),
-															  Message.ALL,text + "\n");
-					
-					ClientHandler.getUser().addMessage(message);
-					Client.getConnection().writeMessage(message);
-				}else{
-					Log.v("MainWindow","onCreate");
-				}
-				
+
+				getIntent().putExtra("UserProfile", 4);
+				setResult(RESULT_OK, getIntent());		
+				finish();
+//				EditText et = (EditText) findViewById(R.id.group_message);
+//				String text = et.getText().toString().trim();
+//				
+//				if(text != null && (text.compareTo("") != 0)){
+//					et.setText("");
+//					StringMessage message = new StringMessage(ClientHandler.getUser().getUserID(),
+//															  Message.ALL,text + "\n");
+//					
+//					ClientHandler.getUser().addMessage(message);
+//					Client.getConnection().writeMessage(message);
+//				}else{
+//					Log.v("MainWindow","onCreate");
+//				}
+//				
 			}
 		});
 		
@@ -180,7 +184,7 @@ public class MainWindow extends Activity {
 	}
 	
 	public static void handleStringMessage(StringMessage message){
-		boolean result =ContactWindow.handleStringMessage(message);
+		boolean result = ContactWindow.handleStringMessage(message);
 		if (!result) {
 			ClientHandler.handleStringMessage(message);
 		}

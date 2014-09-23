@@ -12,21 +12,9 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/message_bar" >
 
-        <EditText
-            android:id="@+id/group_message"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"            
-            android:layout_margin="5sp"
-            android:layout_weight="1"
-            android:background="@drawable/message_field"
-            android:hint="Write here"
-            android:padding="5sp"
-            android:inputType="text"
-            android:textColor="@color/textFieldColor" />
-        
         <Button
             android:id="@+id/groupBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:layout_margin="5sp"
             android:background="@drawable/send_button"
@@ -34,8 +22,9 @@
             android:paddingLeft="15sp"
             android:paddingRight="15sp"
             android:paddingTop="5sp"
-            android:text="Send"
+            android:text="Group Message"
             android:textColor="#FFF" />
+
     </LinearLayout>
 
     <ListView

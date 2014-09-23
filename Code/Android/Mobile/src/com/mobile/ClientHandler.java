@@ -106,7 +106,7 @@ public class ClientHandler {
 	public static boolean handleLogoutMessage(LogoutMessage message) {
 		for (Iterator<Contact> it = contacts.iterator(); it.hasNext(); ) {
 			Contact c = it.next();
-		    if (message.getUserID() == c.getUserID()) {
+		    if (message.getUserID().equals(c.getUserID())) {
 		        it.remove();
 		    }
 		}

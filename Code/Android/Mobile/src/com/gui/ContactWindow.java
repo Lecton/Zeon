@@ -81,19 +81,25 @@ public class ContactWindow extends Activity {
 //		}
 		if(uid != null){
 			clientID =uid;
-			setTitle(ClientHandler.getFromUserID(clientID).getName());
-			BitmapDrawable icon = new BitmapDrawable(getResources(),ClientHandler.getFromUserID(clientID).getImage());
+			
+			BitmapDrawable icon =null;
+			if (ClientHandler.getUser().getUserID().equals(clientID)) {
+				setTitle("Group Messages");
+				icon = new BitmapDrawable(getResources(),ClientHandler.getUser().getImage());
+			} else {
+				setTitle(ClientHandler.getFromUserID(clientID).getName());
+				icon = new BitmapDrawable(getResources(),ClientHandler.getFromUserID(clientID).getImage());
+			}
 			listChats = (ListView) findViewById(R.id.chatList);
 			getActionBar().setIcon(icon);
 			getActionBar().setDisplayHomeAsUpEnabled(true);
+
+			baseContext = getBaseContext();
 			updateChatList();
 		} else {
 			//back or something
 			Log.e("MessageWindow", "ClientID not received.");
 		}
-
-		baseContext = getBaseContext();
-		updateChatList();
 	}
 
 	@Override
@@ -136,18 +142,23 @@ public class ContactWindow extends Activity {
 
 
 	public static boolean handleStringMessage(StringMessage message){
-		if (ClientHandler.getFromUserID(clientID) != null) {
-			if (message.getTargetID() != Message.ALL) {
-				if (ClientHandler.getFromUserID(clientID).getUserID().equals(message.getUserID())) {
-					ClientHandler.getFromUserID(clientID).addMessage(message);
-					updateChatList();
-					return true;
+//		if (ClientHandler.getFromUserID(clientID) != null) {
+		Log.v("ContactWindow.handleStringMessage", message.getTargetID());
+			if (!(message.getTargetID().equals(Message.ALL))) {
+				if (ClientHandler.getFromUserID(clientID) != null)  {
+					if (ClientHandler.getFromUserID(clientID).getUserID().equals(message.getUserID())) {
+						ClientHandler.getFromUserID(clientID).addMessage(message);
+						updateChatList();
+						return true;
+					} else {
+						return false;
+					}
 				} else {
 					return false;
 				}
 			} else {
 				if (ClientHandler.getUser() != null 
-						&& ClientHandler.getUser().getUserID().equals(message.getUserID())) {
+						&& ClientHandler.getUser().getUserID().equals(clientID)) {
 					ClientHandler.getUser().addMessage(message);
 					updateChatList();
 					return true;
@@ -155,9 +166,15 @@ public class ContactWindow extends Activity {
 					return false;
 				}
 			}
-		} else {
-			return false;
-		}
+//		} else {
+//			if (ClientHandler.getUser() != null) {
+//				ClientHandler.getUser().addMessage(message);
+//				GroupMessages.updateChatList();
+//				return true;
+//			} else {
+//				return false;
+//			}
+//		}
 //		chatHistory.add(new ChatMessages(messages,owner));
 	}
 	
@@ -176,7 +193,12 @@ public class ContactWindow extends Activity {
 		     public void run() {
 		    	
 		    	if(listChats != null){
-		    		List<ChatMessages> shortList = ClientHandler.getFromUserID(clientID).getMessageHistory();
+		    		List<ChatMessages> shortList =null;
+		    		if (ClientHandler.getUser().getUserID().equals(clientID)) {
+		    			shortList = ClientHandler.getUser().getMessageHistory();
+		    		} else {
+		    			shortList = ClientHandler.getFromUserID(clientID).getMessageHistory();
+		    		}
 		    		
 			 		chatAdapter = new ChatAdapter(baseContext,shortList);
 			 		listChats.setAdapter(chatAdapter);

@@ -26,7 +26,7 @@ public class ConnectionHandler extends SimpleChannelInboundHandler<Message> {
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Message msg)
 			throws Exception {
-				
+		Log.v("ConnectionHandler.channelRead0", ""+msg.handle());
 		switch (msg.handle()) {
 			case greeting:
 				LoginWindow.setGreetingMessage((GreetingMessage)msg);
