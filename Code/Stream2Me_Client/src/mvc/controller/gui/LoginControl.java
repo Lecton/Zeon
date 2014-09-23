@@ -9,9 +9,6 @@ package mvc.controller;
 import communication.handlers.MessageFactory;
 import java.util.logging.Logger;
 import messages.userConnection.GreetingMessage;
-import mvc.controller.Control;
-import mvc.controller.MessageControl;
-import mvc.controller.UpdateControl;
 import mvc.view.authentication.Login;
 
 /**

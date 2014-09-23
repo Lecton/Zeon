@@ -6,7 +6,10 @@
 
 package connection.messageChannel;
 
+import channel.ClientChannel;
 import channel.group.ClientHandler;
+import channel.group.matcher.ConnectionGroup;
+import channel.group.matcher.ConnectionMatcher;
 import connection.bootstrap.Handler;
 import core.database.StreamHandler;
 import core.database.StringMessageHandler;
@@ -53,8 +56,8 @@ public class MessageHandler {
             case updateAvatar:
                 handleUpdateAvatar(ctx.channel(), (UpdateAvatarMessage)msg);
                 break;
-            case updateName:
-                handleUpdateName(ctx.channel(), (UpdateProfileMessage)msg);
+            case updateProfile:
+                handleUpdateProfile(ctx.channel(), (UpdateProfileMessage)msg);
                 break;
             case updateList:
                 handleListRequest(ctx.channel(), (UpdateListMessage)msg);
@@ -82,7 +85,6 @@ public class MessageHandler {
     
     private static void handleLogin(Channel ch, LoginMessage msg) {
         GreetingMessage g =UserHandler.userLogin(ch, msg);
-//        System.out.println("User login attempt: "+g.isSuccessful());
         if (g != null) {
             ch.writeAndFlush(g);
         } else {
@@ -99,22 +101,23 @@ public class MessageHandler {
             return;
         }
 
-        if (u.isLoggedIn()) {
-            ClientHandler.remove(ch, u.getUserID(), u.getGroupID());
-            Handler.connections.add(ch);
+        ClientChannel channel =ClientHandler.remove(ch, u.getGroupID());
+        boolean contained =ClientHandler.contains(channel, channel.getUserID());
+        Handler.connections.add(ch);
+        System.out.println("Second life: "+contained);
+        if (!contained) {
             LogoutMessage message =new LogoutMessage(u.getUserID(), messages.Message.ALL);
             message.setTargetGroupID(u.getGroupID());
             ClientHandler.writeAndFlush(UserHandler.getGroupID(msg.getUserID()), message);
-            
-            UserHandler.logoff(u.getUserID());
-        } else {
-            System.out.println("User not logged in");
         }
+        UserHandler.logoff(u.getUserID(), channel.getConnectionID());
     }
     
     private static void handleStringMessage(Channel ch, StringMessage msg) {
         Message message =StringMessageHandler.handleStringMessage(msg);
-        ClientHandler.writeAndFlush(UserHandler.getGroupID(msg.getUserID()), message);
+        String groupID =UserHandler.getGroupID(msg.getUserID());
+        String connectionID =ClientHandler.getConnectionID(ch, groupID);
+        ClientHandler.writeAndFlush(groupID, message, new ConnectionGroup(connectionID, groupID));
     }
 
     private static void handleUpdateAvatar(Channel ch, UpdateAvatarMessage msg) {
@@ -124,17 +127,12 @@ public class MessageHandler {
                 "Update avatar.");
     }
 
-    private static void handleUpdateName(Channel ch, UpdateProfileMessage msg) {
+    private static void handleUpdateProfile(Channel ch, UpdateProfileMessage msg) {
         Message message =UserHandler.updateProfile(msg);
         ClientHandler.writeAndFlush(UserHandler.getGroupID(msg.getUserID()), message);
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
-                    "Update username.");
-        
+                    "Update profile.");
     }
-    
-   /* private static void handleUpdateTitle(ChannelHandlerContext ctx, UpdateTitle msg){
-        
-    }*/
 
     private static void handleListRequest(Channel ch, UpdateListMessage msg) {
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
@@ -142,9 +140,10 @@ public class MessageHandler {
         String groupUsers[] =UserHandler.getGroupUsers(msg.getUserID());
         for (String userID: groupUsers) {
             NewUserMessage message =UserHandler.getNewUserMessage(userID, msg.getUserID());
+            String groupID =UserHandler.getGroupID(msg.getUserID());
+            String connectionID =ClientHandler.getConnectionID(ch, groupID);
             if (message != null) {
-                ClientHandler.writeAndFlush(UserHandler.getGroupID(
-                        msg.getUserID()), message);
+                ClientHandler.writeAndFlush(groupID, message, new ConnectionMatcher(connectionID));
             }
         }
     }

@@ -29,6 +29,8 @@ public class Button extends JButton {
     
     private Icon unclicked;
     private Icon clicked;
+    
+    private String ownerID;
 
     public Button() {
     }
@@ -62,6 +64,10 @@ public class Button extends JButton {
         pressed =!pressed;
     }
 
+    public void setPressed(boolean pressed) {
+        this.pressed = pressed;
+    }
+
     public boolean isPressed() {
         return pressed;
     }
@@ -85,5 +91,13 @@ public class Button extends JButton {
         }
         
         super.paint(g);
+    }
+
+    public void setOwnerID(String ownerID) {
+        this.ownerID =ownerID;
+    }
+
+    public String getOwnerID() {
+        return ownerID;
     }
 }

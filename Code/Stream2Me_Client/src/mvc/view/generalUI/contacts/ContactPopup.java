@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import mvc.controller.ContactControl;
+import mvc.controller.ContactListControl;
 import mvc.controller.UserControl;
 
 
@@ -45,11 +46,11 @@ public class ContactPopup extends JPopupMenu {
         
         //UserControl on getUserID
         audioControl =new JMenuItem("No audio stream");
-        audioControl.addActionListener(UserControl.INSTANCE);
+        audioControl.addActionListener(ContactListControl.INSTANCE);
         audioControl.setVisible(false);
         
         videoControl =new JMenuItem("No video stream");
-        videoControl.addActionListener(UserControl.INSTANCE);
+        videoControl.addActionListener(ContactListControl.INSTANCE);
         videoControl.setVisible(false);
         
         add(audioControl);

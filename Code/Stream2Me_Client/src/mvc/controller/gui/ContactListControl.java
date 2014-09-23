@@ -6,22 +6,29 @@
 
 package mvc.controller;
 
+import communication.handlers.MessageFactory;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JMenuItem;
 import mvc.model.Colleague;
 import mvc.model.ColleagueList;
 import mvc.model.person.Notifier;
 import mvc.model.person.Person;
+import mvc.model.person.Receiver;
 import mvc.view.generalUI.contacts.ContactList;
+import mvc.view.generalUI.contacts.ContactPopup;
+import mvc.view.generalUI.containers.Button;
 
 /**
  *
  * @author Bernhard
  */
-public class ContactListControl {
+public class ContactListControl implements ActionListener {
     private final static Logger LOGGER = Logger.getLogger(ContactListControl.class.getName());
     
-    protected static ContactListControl INSTANCE =new ContactListControl();
+    public static ContactListControl INSTANCE =new ContactListControl();
     private static ContactList view;
     private static ColleagueList model =new ColleagueList();
     
@@ -109,5 +116,91 @@ public class ContactListControl {
         Person person =model.get(userID);
         view.updateProfile(person.getUserID(), person.getFullname(), person.getAvatar());
         ProfileControl.INSTANCE.update(person);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command =e.getActionCommand();
+        if (command.equals("respondVideo")) {
+            String userID =((Button)e.getSource()).getOwnerID();
+            Receiver person =model.get(userID);
+            if (person != null) {
+                ((Button)e.getSource()).togglePressed();
+                boolean accept =((Button)e.getSource()).isPressed();
+                person.setAcceptedVideo(accept);
+                
+                Control.INSTANCE.writeMessage(MessageFactory
+                        .generateStreamResponse(userID, 
+                                person.getVideoStream(), accept));
+            }
+            
+            LOGGER.log(Level.INFO, "Respond video "+((Button)e.getSource()).isPressed());
+        } else if (command.equals("respondAudio")) {
+            String userID =((Button)e.getSource()).getOwnerID();
+            Receiver person =model.get(userID);
+            if (person != null) {
+                ((Button)e.getSource()).togglePressed();
+                boolean accept =((Button)e.getSource()).isPressed();
+                person.setAcceptedAudio(accept);
+                
+                Control.INSTANCE.writeMessage(MessageFactory
+                        .generateStreamResponse(userID, 
+                                person.getAudioStream(), accept));
+            }
+            
+            LOGGER.log(Level.INFO, "Respond audio"+((Button)e.getSource()).isPressed());
+        } else if (command.equals("inviteVideo")) {
+            String userID =((ContactPopup)((JMenuItem) e.getSource()).getParent()).getUserID();
+            Receiver person =model.get(userID);
+            if (person != null) {
+                person.setReceivingVideo(true);
+                String videoStreamID =UserControl.INSTANCE.getUser().getVideoStreamID();
+                
+                Control.INSTANCE.writeMessage(MessageFactory
+                        .generateStreamUpdate(UserControl.getUserID(), 
+                                "SERVER", videoStreamID, userID, 0));
+            }
+            
+            System.out.println("Invite to video");
+        } else if (command.equals("inviteAudio")) {
+            String userID =((ContactPopup)((JMenuItem) e.getSource()).getParent()).getUserID();
+            Receiver person =model.get(userID);
+            if (person != null) {
+                person.setReceivingAudio(true);
+                String audioStreamID =UserControl.INSTANCE.getUser().getAudioStreamID();
+                
+                Control.INSTANCE.writeMessage(MessageFactory
+                        .generateStreamUpdate(UserControl.getUserID(), 
+                                "SERVER", audioStreamID, userID, 0));
+            }
+            
+            System.out.println("Invite to audio");
+        } else if (command.equals("removeVideo")) {
+            String userID =((ContactPopup)((JMenuItem) e.getSource()).getParent()).getUserID();
+            Receiver person =model.get(userID);
+            if (person != null) {
+                person.setReceivingVideo(false);
+                String videoStreamID =UserControl.INSTANCE.getUser().getVideoStreamID();
+                
+                Control.INSTANCE.writeMessage(MessageFactory
+                        .generateStreamUpdate(UserControl.getUserID(), 
+                                "SERVER", videoStreamID, userID, 1));
+            }
+            
+            System.out.println("Remove from video");
+        } else if (command.equals("removeAudio")) {
+            String userID =((ContactPopup)((JMenuItem) e.getSource()).getParent()).getUserID();
+            Receiver person =model.get(userID);
+            if (person != null) {
+                person.setReceivingAudio(false);
+                String audioStreamID =UserControl.INSTANCE.getUser().getAudioStreamID();
+                
+                Control.INSTANCE.writeMessage(MessageFactory
+                        .generateStreamUpdate(UserControl.getUserID(), 
+                                "SERVER", audioStreamID, userID, 1));
+            }
+            
+            System.out.println("Remove from audio");
+        }
     }
 }

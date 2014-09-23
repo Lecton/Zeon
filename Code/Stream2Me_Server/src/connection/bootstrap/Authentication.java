@@ -30,11 +30,11 @@ public class Authentication implements GenericFutureListener<Future<Channel>> {
         if (future.isSuccess()) {
             future.get().write(new ConsoleMessage(
                     "Welcome to "+InetAddress.getLocalHost().getHostName()+
-                    " secure chat service!\n"));
+                    " secure chat service!"));
             future.get().write(new ConsoleMessage(
                     "Your session is protectd by "+
                     sslHandler.engine().getSession().getCipherSuite()+
-                    " cipher suite.\n"));
+                    " cipher suite."));
             future.get().flush();
             Handler.connections.add(future.get());
         } else {

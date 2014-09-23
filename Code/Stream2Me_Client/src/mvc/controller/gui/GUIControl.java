@@ -41,13 +41,13 @@ public class GUIControl implements WindowListener {
         UpdateControl.INSTANCE.add(target, UpdateControl.UPDATECONTENT, type);
     }
     
-    protected static void hideStreamAcceptors() {
-        view.hideStreamAcceptors();
+    protected static void hideStreamAcceptors(String userID) {
+        view.hideStreamAcceptors(userID);
     }
     
     protected static void checkStreamAcceptors(String userID) {
         Colleague person =ContactListControl.INSTANCE.getColleague(userID);
-        view.setStreamAcceptors(person.isReceivingVideo(), person.isReceivingAudio());
+        view.setStreamAcceptors(person.isReceivingVideo(), person.acceptedVideo(), person.isReceivingAudio(), person.acceptedAudio(), userID);
     }
 
     protected static void updateContent(Object target, int type) {

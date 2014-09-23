@@ -11,10 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import mvc.controller.Control;
+import javax.swing.JOptionPane;
 import mvc.model.User;
-import mvc.model.person.Person;
-import mvc.view.generalUI.ProfilePanel;
 import mvc.view.generalUI.UserPanel;
 
 /**
@@ -82,18 +80,27 @@ public class UserControl implements ActionListener {
             System.out.println("streamVideo");
             if (model.isStreamingVideo()) {
                 //stop video
+                StreamControl.stopVideo();
+                model.setVideoStreamID(null);
                 model.setStreamingVideo(false);
             } else {
+                
                 //start video
+                String streamID =StreamControl.startVideo();
+                model.setVideoStreamID(streamID);
                 model.setStreamingVideo(true);
             }
         } else if (command.equals("streamAudio")) {
             System.out.println("streamAudio");
             if (model.isStreamingAudio()) {
                 //stop audio
+                StreamControl.stopAudio();
+                model.setAudioStreamID(null);
                 model.setStreamingAudio(false);
             } else {
                 //start audio
+                String streamID =StreamControl.startAudio();
+                model.setAudioStreamID(streamID);
                 model.setStreamingAudio(true);
             }
             
@@ -107,18 +114,6 @@ public class UserControl implements ActionListener {
             LOGGER.log(Level.INFO, "View User Messages");
             
             
-        } else if (command.equals("inviteVideo")) {
-            System.out.println("Invite to video");
-        } else if (command.equals("inviteAudio")) {
-            System.out.println("Invite to audio");
-            
-            
-        } else if (command.equals("removeVideo")) {
-            System.out.println("Remove from video");
-        } else if (command.equals("removeAudio")) {
-            System.out.println("Remove from audio");
-            
-            
         } else {
             LOGGER.log(Level.WARNING, "UNKNOWN: "+command);
         }
@@ -128,7 +123,7 @@ public class UserControl implements ActionListener {
         return model.getFullname();
     }
 
-    protected Person getUser() {
+    protected User getUser() {
         return model;
     }
 }

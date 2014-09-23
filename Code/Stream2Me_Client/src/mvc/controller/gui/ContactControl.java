@@ -16,9 +16,7 @@ import java.util.logging.Logger;
 import javax.swing.JMenuItem;
 import mvc.model.Colleague;
 import mvc.model.person.Notifier;
-import mvc.model.person.Person;
 import mvc.model.person.Receiver;
-import mvc.view.generalUI.ProfilePanel;
 import mvc.view.generalUI.contacts.ContactPopup;
 import mvc.view.generalUI.contacts.ContactProfile;
 
@@ -84,10 +82,6 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
             ContactListControl.INSTANCE.settleMessageAlert(cp.getUserID());
             GUIControl.changeContent(1, cp.getUserID(), ContactListControl
                     .INSTANCE.getColleagueFullname(cp.getUserID()));
-        } else if (command.equals("respondVideo")) {
-            LOGGER.log(Level.INFO, "Respond video");
-        } else if (command.equals("respondAudio")) {
-            LOGGER.log(Level.INFO, "Respond audio");
         } else if (command.equals("viewMessagesSelected")) {
             ContactProfile cp =(ContactProfile)e.getSource();
             ContactListControl.INSTANCE.settleMessageAlert(cp.getUserID());
@@ -104,7 +98,7 @@ public class ContactControl implements ActionListener, PropertyChangeListener {
             Color c =(Color)evt.getNewValue();
             if (c.equals(Color.WHITE)) {
                 LOGGER.log(Level.INFO, "Unselected");
-                GUIControl.hideStreamAcceptors();
+                GUIControl.hideStreamAcceptors(((ContactProfile)evt.getSource()).getUserID());
             } else {
                 actionPerformed(new ActionEvent(evt.getSource(), 0, "viewMessagesSelected"));
                 GUIControl.checkStreamAcceptors(((ContactProfile)evt.getSource()).getUserID());

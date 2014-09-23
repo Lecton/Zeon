@@ -68,7 +68,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        txtUsername.setText("bmwilhelm@gmail.com");
+        txtUsername.setText("Bernhard");
         txtUsername.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtPasswordKeyReleased(evt);

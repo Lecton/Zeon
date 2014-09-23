@@ -7,6 +7,7 @@
 package connection.bootstrap;
 
 import channel.group.ClientChannelGroup;
+import channel.group.ClientHandler;
 import connection.messageChannel.MessageHandler;
 import core.database.Database;
 import io.netty.channel.Channel;
@@ -40,6 +41,9 @@ public class Handler extends SimpleChannelInboundHandler<Message> {
         Channel incomming =ctx.channel();
         connections.remove(incomming);
         incomming.close();
+        
+        ClientHandler.handlerRemoved(incomming);
+        
         System.out.println("Disconnected");
 //        if (Server.clientContains(incomming)) {
 //            Server.closeConnection(incomming);

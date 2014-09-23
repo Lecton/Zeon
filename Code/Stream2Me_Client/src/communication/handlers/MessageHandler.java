@@ -39,8 +39,8 @@ public class MessageHandler {
                 
             case updateAvatar:
                 return handleUpdateAvatar((UpdateAvatarMessage)msg);
-            case updateName:
-                return handleUpdateName((UpdateProfileMessage)msg);
+            case updateProfile:
+                return handleUpdateProfile((UpdateProfileMessage)msg);
 //            case updateTitle:
 //                return handleUpdateName((UpdateNameMessage)msg);
 //            case updateAboutMe:
@@ -96,7 +96,7 @@ public class MessageHandler {
         return true;
     }
 
-    private boolean handleUpdateName(UpdateProfileMessage msg) {
+    private boolean handleUpdateProfile(UpdateProfileMessage msg) {
         ContactListControl.updateContact(msg.getUserID(), msg.getName(), msg.getSurname(), null, null, null);
 //        Colleague person =Model.INSTANCE.getColleagueList().get(msg.getUserID());
 //        if (person != null) {

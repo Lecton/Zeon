@@ -18,6 +18,7 @@ import io.netty.channel.EventLoop;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
 import java.net.SocketAddress;
+import java.util.UUID;
 
 /**
  *
@@ -27,11 +28,17 @@ public class ClientChannel implements Channel {
     private final Channel  ch;
     private final String userID;
     private String groupID;
+    private final String connectionID;
 
     public ClientChannel(Channel channel, String userID, String groupID) {
         this.ch =channel;
         this.userID =userID;
         this.groupID =groupID;
+        this.connectionID =UUID.randomUUID().toString();
+    }
+
+    public String getConnectionID() {
+        return connectionID;
     }
 
     public String getUserID() {
@@ -243,5 +250,18 @@ public class ClientChannel implements Channel {
     @Override
     public int compareTo(Channel o) {
         return ch.compareTo(o);
+        }
+
+    @Override
+    public boolean equals(Object obj) {
+        System.out.println("Hi "+userID);
+        if (obj instanceof Channel) {
+            if (obj instanceof ClientChannel) {
+                return super.equals(obj);
+            } else {
+                return ch.equals(obj);
+            }
+        }
+        return false;
     }
 }

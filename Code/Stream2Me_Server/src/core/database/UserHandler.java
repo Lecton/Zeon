@@ -36,27 +36,40 @@ public class UserHandler {
     
     /**
      * Private helper function for the login and logoff functions strictly. 
-     * The database is queried for the respective user and his loggedin field
-     * is updated to the specified loggedIn flag.
+     * The database is queried for the respective user and he is added to a 
+     * connection table.
      * @param userID - User to be found
-     * @param loggedIn - Flag to change the loggedin field to
+     * @param connectionID - the socket session ID
+     * @param action - Flag to add (true) or remove (false) from the connections
      */
-    private static void userLoggedInUpdate(String userID, boolean loggedIn) {
-        Statement statement =Database.INSTANCE.getStatment();
-        String query = "UPDATE client " +
-                        "SET loggedin = "+loggedIn+" " +
-                        "WHERE userid = '"+userID+"' ";
-        try {
-            statement.executeUpdate(query);
+    private static void userLoggedInUpdate(String userID, String connectionID, boolean action) {
+        
+        PreparedStatement statement =null;
+        try{
+            if (action) {
+                String query = "INSERT INTO connection " +
+                        "(connectionID, userID)" +
+                        "VALUES (?, ?)";
+                statement = Database.INSTANCE.getPreparedStatement(query);
+                statement.setString(1, connectionID);
+                statement.setString(2, userID);
+                statement.execute();
+            } else {
+                String query ="DELETE FROM connection " +
+                        "WHERE connectionID = ?";
+                statement = Database.INSTANCE.getPreparedStatement(query);
+                statement.setString(1, connectionID);
+                statement.execute();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(UserHandler.class.getName())
                     .log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if(statement != null) {
+            try{
+                if(statement != null){
                     statement.close();
                 }
-            } catch(SQLException ex) {
+            }catch(SQLException ex){
                 Logger.getLogger(UserHandler.class.getName())
                         .log(Level.SEVERE, null, ex);
             }
@@ -102,22 +115,19 @@ public class UserHandler {
                     String aboutMe =result.getString("aboutme");
                     String title =result.getString("title");
                     String avatar =result.getString("avatar");
-                    boolean loggedIn =result.getBoolean("loggedin");
-                    System.out.println(loggedIn);
-                    if (!loggedIn) {
-                        User person =new User(userID, uName, groupID, 
-                                name, surname, email, title, aboutMe, avatar);
-                        ClientChannel cc =new ClientChannel(ch, userID, groupID);
-                        boolean addResult =ClientHandler.add(cc);
-                        if (addResult) {
-                            ClientHandler.writeAndFlush(groupID, MessageBuilder.generateNewUser(person, null), new ClientGroup(userID, groupID));
-                            userLoggedInUpdate(userID, true);
-                            return MessageBuilder.generateGreeting(person, true, "Login success.");
-                        } else {
-                            return MessageBuilder.generateGreeting(null, false, "Users group could not be found.");
-                        }
+                    User person =new User(userID, uName, groupID, 
+                            name, surname, email, title, aboutMe, avatar);
+                    ClientChannel cc =new ClientChannel(ch, userID, groupID);
+                    int addResult =ClientHandler.add(cc);
+                    if (addResult == 1) {
+                        ClientHandler.writeAndFlush(groupID, MessageBuilder.generateNewUser(person, null), new ClientGroup(userID, groupID));
+                        userLoggedInUpdate(userID, cc.getConnectionID(), true);
+                        return MessageBuilder.generateGreeting(person, true, "Login success.");
+                    } else if (addResult == 2) {
+                        userLoggedInUpdate(userID, cc.getConnectionID(), true);
+                        return MessageBuilder.generateGreeting(person, true, "Login success.");
                     } else {
-                        return MessageBuilder.generateGreeting(null, false, "User already logged in.");
+                        return MessageBuilder.generateGreeting(null, false, "Users group could not be found.");
                     }
                 }
               }catch (SQLException ex) {
@@ -149,7 +159,7 @@ public class UserHandler {
     public static BaseUser getUser(String userID) {
         PreparedStatement statement;
         ResultSet result = null;
-        String query = "SELECT userid, groupid, loggedin " +
+        String query = "SELECT userid, groupid " +
                         "FROM client " +
                         "WHERE userid = ? ";
         statement = Database.INSTANCE.getPreparedStatement(query);
@@ -160,10 +170,8 @@ public class UserHandler {
             if(result.next()) {
                 String uID =result.getString("userid");
                 String groupID =result.getString("groupid");
-                boolean loggedIn =result.getBoolean("loggedin");
                 
                 BaseUser person =new BaseUser(uID, groupID);
-                person.setLoggedIn(loggedIn);
                 return person;
             }
         } catch (SQLException ex) {
@@ -186,9 +194,8 @@ public class UserHandler {
      * Logs off the user with the provided user id
      * @param userID - ID of the user
      */
-    public static void logoff(String userID) {
-        userLoggedInUpdate(userID, false);
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static void logoff(String userID, String connectionID) {
+        userLoggedInUpdate(userID, connectionID, false);
     }
 
     /**
@@ -204,43 +211,52 @@ public class UserHandler {
     /**
      * Update the profile of the user and retrieves the groupID of the user,
      * if the user has a group.
-     * @param msg - Message containing the updated name, surname and userID
+     * @param msg - Message containing the updated profile details and userID
      * @return Possibly modified UpdateNameMessage
      */
     public static Message updateProfile(UpdateProfileMessage msg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//        PreparedStatement statement;
-//        ResultSet result = null;
-//        String query = "UPDATE userid " +
-//                        "FROM client " +
-//                        "WHERE groupid = ? " +
-//                        "AND userID <> ?" + 
-//                        "AND loggedin = TRUE";
-//        statement = Database.INSTANCE.getPreparedStatement(query);
-//        try {
-//            statement.setString(1, bu.getGroupID());
-//            statement.setString(2, bu.getUserID());
-//            result = statement.executeQuery();
-//
-//            List<String> users =new ArrayList<>();
-//            while(result.next()) {
-//                String uID =result.getString("userid");
-//                users.add(uID);
-//            }
-////            return users.toArray(new String[0]);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UserHandler.class.getName())
-//                    .log(Level.SEVERE, null, ex);
-//        } finally {
-//            try {
-//                if(statement != null) {
-//                    statement.close();
-//                }
-//            } catch(SQLException ex) {
-//                Logger.getLogger(UserHandler.class.getName())
-//                        .log(Level.SEVERE, null, ex);
-//            }
-//        }
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PreparedStatement statement;
+        ResultSet result = null;
+        String query = "UPDATE client " +
+                        "SET name = ?, " +
+                        "surname = ?, " +
+                        "email = ?, " +
+                        "title = ?, " +
+                        "aboutMe = ? " +
+                        "WHERE userID = ?";
+        statement = Database.INSTANCE.getPreparedStatement(query);
+        try {
+            statement.setString(1, msg.getName());
+            statement.setString(2, msg.getSurname());
+            statement.setString(3, msg.getEmail());
+            statement.setString(4, msg.getTitle());
+            statement.setString(5, msg.getAboutMe());
+            statement.setString(6, msg.getUserID());
+            int lines =statement.executeUpdate();
+            if (lines == 1) {
+                return msg;
+            } else {
+                Logger.getLogger(UserHandler.class.getName())
+                        .log(Level.SEVERE, "Lines changed error", 
+                                new SQLException("SQL returned with invalid "
+                                        + "line change amount", 
+                                        statement.toString()));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserHandler.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if(statement != null) {
+                    statement.close();
+                }
+            } catch(SQLException ex) {
+                Logger.getLogger(UserHandler.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
     }
 
     /**
@@ -255,11 +271,11 @@ public class UserHandler {
         if (bu != null && !bu.getGroupID().equalsIgnoreCase("DEFAULT")) {
             PreparedStatement statement;
             ResultSet result = null;
-            String query = "SELECT userid " +
-                            "FROM client " +
-                            "WHERE groupid = ? " +
-                            "AND userID <> ?" + 
-                            "AND loggedin = TRUE";
+            String query = "SELECT DISTINCT con.userid as userid " +
+                    "FROM connection as con, client as c " +
+                    "WHERE con.userID = c.userID " +
+                    "AND c.groupID = ? " +
+                    "AND con.userID <> ? ";
             statement = Database.INSTANCE.getPreparedStatement(query);
             try {
                 statement.setString(1, bu.getGroupID());

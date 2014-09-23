@@ -24,7 +24,12 @@ public class MessageControl {
     private static MessageList model =new MessageList();
 
     public static boolean acceptMessage(String userID, String targetID, String timestamp, String message) {
-        String name =ContactListControl.INSTANCE.getColleagueFullname(userID);
+        String name ="Default User";
+        if (userID.equals(UserControl.getUserID())) {
+            name =UserControl.INSTANCE.getFullname();
+        } else {
+            name =ContactListControl.INSTANCE.getColleagueFullname(userID);
+        }
         int result =model.addMessage(userID, targetID, name, timestamp, 
                 message, targetID.equals(Message.ALL));
         LOGGER.log(Level.INFO, "Message received from: "+name+". Message index: "+result);

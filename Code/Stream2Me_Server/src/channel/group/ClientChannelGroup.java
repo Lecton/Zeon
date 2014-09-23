@@ -84,12 +84,69 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
         if (o instanceof Channel) {
             Channel c = (Channel) o;
             if (o instanceof ServerChannel) {
-                return serverChannels.contains(c);
+                ClientChannel[] serverCH =serverChannels.toArray(new ClientChannel[0]);
+                for (ClientChannel cc: serverCH) {
+                    if (cc.getChannel().equals(o)) {
+                        return true;
+                    }
+                }
             } else {
-                return nonServerChannels.contains(c);
+                ClientChannel[] serverCH =nonServerChannels.toArray(new ClientChannel[0]);
+                for (ClientChannel cc: serverCH) {
+                    if (cc.getChannel().equals(o)) {
+                        return true;
+                    }
+                }
             }
+            return false;
         } else {
             return false;
+        }
+    }
+    
+    public boolean containsByID(Channel o, String userID) {
+        Channel c = (Channel) o;
+        if (o instanceof ServerChannel) {
+            ClientChannel[] serverCH =serverChannels.toArray(new ClientChannel[0]);
+            for (ClientChannel cc: serverCH) {
+                if (cc.getUserID().equals(userID)) {
+                    return true;
+                }
+            }
+        } else {
+            ClientChannel[] serverCH =nonServerChannels.toArray(new ClientChannel[0]);
+            for (ClientChannel cc: serverCH) {
+                if (cc.getUserID().equals(userID)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public ClientChannel containsAndRemove(Object o) {
+        if (o instanceof Channel) {
+            Channel c = (Channel) o;
+            if (o instanceof ServerChannel) {
+                ClientChannel[] serverCH =serverChannels.toArray(new ClientChannel[0]);
+                for (ClientChannel cc: serverCH) {
+                    if (cc.getChannel().equals(o)) {
+                        serverChannels.remove(cc);
+                        return cc;
+                    }
+                }
+            } else {
+                ClientChannel[] serverCH =nonServerChannels.toArray(new ClientChannel[0]);
+                for (ClientChannel cc: serverCH) {
+                    if (cc.getChannel().equals(o)) {
+                        nonServerChannels.remove(cc);
+                        return cc;
+                    }
+                }
+            }
+            return null;
+        } else {
+            return null;
         }
     }
 
@@ -97,15 +154,27 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
     public boolean add(Channel channel) {
         return false;
     }
-    public boolean add(ClientChannel channel) {
+    
+    public int add(ClientChannel channel) {
         ConcurrentSet<ClientChannel> set =
             channel instanceof ServerChannel ? serverChannels : nonServerChannels;
+        
+        System.out.println("CLIENTCHANNELGROUP: "+(channel instanceof ServerChannel));
 
+        boolean contained =containsByID(channel, channel.getUserID());
+        
         boolean added = set.add(channel);
         if (added) {
             channel.closeFuture().addListener(remover);
         }
-        return added;
+        
+        if (added) {
+            if (contained) {
+                return 2;
+            }
+            return 1;
+        }
+        return -1;
     }
     
     public boolean remove(RemoveMatcher matcher) {
@@ -369,5 +438,24 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
     @Override
     public String toString() {
         return StringUtil.simpleClassName(this) + "(name: " + name() + ", size: " + size() + ')';
+    }
+
+    public String getConnectionID(Channel c) {
+        if (c instanceof ServerChannel) {
+            ClientChannel[] serverCH =serverChannels.toArray(new ClientChannel[0]);
+            for (ClientChannel cc: serverCH) {
+                if (cc.getChannel().equals(c)) {
+                    return cc.getConnectionID();
+                }
+            }
+        } else {
+            ClientChannel[] serverCH =nonServerChannels.toArray(new ClientChannel[0]);
+            for (ClientChannel cc: serverCH) {
+                if (cc.getChannel().equals(c)) {
+                    return cc.getConnectionID();
+                }
+            }
+        }
+        return null;
     }
 }

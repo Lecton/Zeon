@@ -11,12 +11,15 @@ package mvc.model.person;
  * @author Bernhard
  */
 public class Receiver extends Notifier {
+    //ID of streams receiving
     private String videoStream =null;
     private String audioStream =null;
     
+    //Flags to show if has accepted streams
     private boolean acceptedVideo =false;
     private boolean acceptedAudio =false;
     
+    //Flags to show if has been invited to streams
     private boolean receivingVideo =false;
     private boolean receivingAudio =false;
 

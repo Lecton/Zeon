@@ -13,7 +13,6 @@ package core.database.objects;
 public class BaseUser {
     final String userID;
     String groupID;
-    boolean LoggedIn =false;
 
     public BaseUser(String userID, String groupID) {
         this.userID = userID;
@@ -30,13 +29,5 @@ public class BaseUser {
 
     public void setGroupID(String groupID) {
         this.groupID = groupID;
-    }
-
-    public boolean isLoggedIn() {
-        return LoggedIn;
-    }
-
-    public void setLoggedIn(boolean LoggedIn) {
-        this.LoggedIn = LoggedIn;
     }
 }

@@ -46,6 +46,6 @@ public class UpdateProfileMessage extends Message {
 
     @Override
     public MessageType handle() {
-        return MessageType.updateName;
+        return MessageType.updateProfile;
     }
 }

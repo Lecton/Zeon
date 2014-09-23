@@ -11,30 +11,31 @@ package mvc.model.person;
  * @author Bernhard
  */
 public class Streamer extends Notifier {
-    private String videoName =null;
-    private String audioName =null;
+    private String videoStreamID =null;
+    private String audioStreamID =null;
     
     private boolean streamingVideo;
     private boolean streamingAudio;
 
-    public Streamer(String userID, String name, String surname, String email, String avatar, String title, String aboutMe) {
+    public Streamer(String userID, String name, String surname, 
+            String email, String avatar, String title, String aboutMe) {
         super(userID, name, surname, email, avatar, title, aboutMe);
     }
 
-    public String getAudioName() {
-        return audioName;
+    public String getAudioStreamID() {
+        return audioStreamID;
     }
 
-    public String getVideoName() {
-        return videoName;
+    public String getVideoStreamID() {
+        return videoStreamID;
     }
 
-    public void setAudioName(String audioName) {
-        this.audioName = audioName;
+    public void setAudioStreamID(String audioStreamID) {
+        this.audioStreamID = audioStreamID;
     }
 
-    public void setVideoName(String videoName) {
-        this.videoName = videoName;
+    public void setVideoStreamID(String videoStreamID) {
+        this.videoStreamID = videoStreamID;
     }
 
     public boolean isStreamingAudio() {

@@ -8,6 +8,7 @@ package mvc.view.generalUI;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import mvc.controller.ProfileControl;
 
 /**
  *
@@ -24,10 +25,16 @@ public class ProfilePanel extends javax.swing.JPanel {
      */
     public ProfilePanel() {
         initComponents();
+        btnUpdateDetails.addActionListener(ProfileControl.INSTANCE);
     }
     
     public void setUserID(String userID, String name, boolean owner) {
         this.owner =owner;
+        if (owner) {
+            btnUpdateDetails.setActionCommand("updateUserDetails");
+        } else {
+            btnUpdateDetails.setActionCommand("updateDetails");
+        }
         this.userID =userID;
         
         txtName.setVisible(owner);
@@ -71,6 +78,26 @@ public class ProfilePanel extends javax.swing.JPanel {
         txaAboutMe.setText(aboutMe);
     }
 
+    public String getFirstname() {
+        return txtName.getText();
+    }
+    
+    public String getSurname() {
+        return txtSurname.getText();
+    }
+    
+    public String getEmail() {
+        return txtEmail.getText();
+    }
+    
+    public String getTitle() {
+        return txtTitle.getText();
+    }
+    
+    public String getAboutMe() {
+        return txaAboutMe.getText();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -111,11 +138,7 @@ public class ProfilePanel extends javax.swing.JPanel {
         txtSurname.setText("Surname");
 
         btnUpdateDetails.setText("Update Details");
-        btnUpdateDetails.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateDetailsActionPerformed(evt);
-            }
-        });
+        btnUpdateDetails.setActionCommand("updateDetails");
 
         javax.swing.GroupLayout imageContainer1Layout = new javax.swing.GroupLayout(imageContainer1);
         imageContainer1.setLayout(imageContainer1Layout);
@@ -136,14 +159,15 @@ public class ProfilePanel extends javax.swing.JPanel {
 
         lblAboutMe.setText("About Me");
 
-        txaAboutMe.setEditable(false);
-        txaAboutMe.setColumns(20);
-        txaAboutMe.setRows(3);
+        txaAboutMe.setColumns(1);
+        txaAboutMe.setLineWrap(true);
+        txaAboutMe.setRows(4);
+        txaAboutMe.setText("About Me");
         txaAboutMe.setWrapStyleWord(true);
-        txaAboutMe.setBorder(null);
+        txaAboutMe.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         txaAboutMe.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        txaAboutMe.setFocusable(false);
-        txaAboutMe.setRequestFocusEnabled(false);
+        txaAboutMe.setMaximumSize(new java.awt.Dimension(260, 1000));
+        txaAboutMe.setMinimumSize(new java.awt.Dimension(260, 64));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -164,8 +188,8 @@ public class ProfilePanel extends javax.swing.JPanel {
                         .addComponent(txtTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(btnUpdateDetails, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txaAboutMe, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)))
+                        .addComponent(txaAboutMe, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                        .addComponent(btnUpdateDetails, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -202,12 +226,6 @@ public class ProfilePanel extends javax.swing.JPanel {
 
         getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnUpdateDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateDetailsActionPerformed
-//        if (owner) {
-//            userInterface.getConnection().writeSafe(MessageFactory.generateUpdateName(profile.getUserID(), txtName.getText(), txtSurname.getText()));
-//        }
-    }//GEN-LAST:event_btnUpdateDetailsActionPerformed
 
     private void formPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_formPropertyChange
         LOGGER.log(Level.INFO, "property: "+evt.getPropertyName());

@@ -35,7 +35,7 @@ public class MessageFactory {
         return ua;
     }
 
-    public static UpdateProfileMessage generateUpdateName(String userID, 
+    public static UpdateProfileMessage generateUpdateProfile(String userID, 
             String name, String surname, String email, String title, String aboutMe) {
         UpdateProfileMessage uu =new UpdateProfileMessage(userID, name, 
                 surname, email, title, aboutMe);

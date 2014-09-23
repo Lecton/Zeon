@@ -13,8 +13,8 @@ import java.sql.Timestamp;
  */
 
 public abstract class Message implements Serializable {
-    public static enum MessageType {login, logout, newUser, notify,
-                                    updateName, updateAvatar, updateList, 
+    public static enum MessageType {login, logout, newUser,
+                                    updateProfile, updateAvatar, updateList, 
                                     string, streamProperty, streamUpdate, 
                                     streamNotify, auido, video, 
                                     streamReply, greeting, console};
