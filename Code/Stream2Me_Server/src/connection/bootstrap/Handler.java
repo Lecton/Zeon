@@ -9,12 +9,10 @@ package connection.bootstrap;
 import channel.group.ClientChannelGroup;
 import channel.group.ClientHandler;
 import connection.messageChannel.MessageHandler;
-import core.database.Database;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
-import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import java.util.logging.Level;
@@ -67,7 +65,7 @@ public class Handler extends SimpleChannelInboundHandler<Message> {
         try {
             MessageHandler.handle(ctx, msg);
         } catch (UnsupportedOperationException e) {
-//            Logger.getLogger(Handler.class.getName()).log(Level.WARNING, "Operation not yet implemented", e);
+            Logger.getLogger(Handler.class.getName()).log(Level.WARNING, "Operation not yet implemented", e);
         }
     }
     

@@ -14,6 +14,9 @@ public class Streamer extends Notifier {
     private String videoStreamID =null;
     private String audioStreamID =null;
     
+    private String videoStreamName =null;
+    private String audioStreamName =null;
+    
     private boolean streamingVideo;
     private boolean streamingAudio;
 
@@ -52,5 +55,21 @@ public class Streamer extends Notifier {
 
     public void setStreamingVideo(boolean streamingVideo) {
         this.streamingVideo = streamingVideo;
+    }
+
+    public void setVideoStreamName(String videoStreamName) {
+        this.videoStreamName = videoStreamName;
+    }
+
+    public void setAudioStreamName(String audioStreamName) {
+        this.audioStreamName = audioStreamName;
+    }
+
+    public String getVideoStreamName() {
+        return videoStreamName;
+    }
+
+    public String getAudioStreamName() {
+        return audioStreamName;
     }
 }

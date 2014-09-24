@@ -7,6 +7,8 @@
 package connection.messageChannel;
 
 import core.database.objects.User;
+import messages.media.creation.StreamPropertyMessage;
+import messages.media.creation.StreamTerminateMessage;
 import messages.userConnection.GreetingMessage;
 import messages.userConnection.NewUserMessage;
 
@@ -39,5 +41,13 @@ public class MessageBuilder {
             msg.setTargetID(targetID);
         }
         return msg;
+    }
+
+    public static StreamPropertyMessage generateStreamResponse(String userID, String streamID, String streamName, int type, boolean success) {
+        return new StreamPropertyMessage(streamID, userID, streamName, type, success);
+    }
+
+    public static StreamTerminateMessage generateStreamTerminate(String userID, String streamID, int type) {
+        return new StreamTerminateMessage(streamID, userID, type);
     }
 }

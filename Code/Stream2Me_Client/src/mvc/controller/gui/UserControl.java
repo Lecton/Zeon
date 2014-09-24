@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import messages.Message;
 import mvc.model.User;
 import mvc.view.generalUI.UserPanel;
 
@@ -77,31 +77,38 @@ public class UserControl implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String command =e.getActionCommand();
         if (command.equals("streamVideo")) {
-            System.out.println("streamVideo");
             if (model.isStreamingVideo()) {
-                //stop video
-                StreamControl.stopVideo();
+                Message msg =MessageFactory.generateStreamProperty(
+                        UserControl.getUserID(), model.getVideoStreamID(), 
+                        model.getVideoStreamName(), false, 0);
+                Control.INSTANCE.writeMessage(msg);
                 model.setVideoStreamID(null);
-                model.setStreamingVideo(false);
+                //stop video
             } else {
-                
+                String namn =model.getVideoStreamName() == null ? 
+                        "videoStream" : model.getVideoStreamName();
+                Message msg =MessageFactory.generateStreamProperty(
+                        UserControl.getUserID(), null, namn, true, 0);
+                Control.INSTANCE.writeMessage(msg);
+                model.setVideoStreamName(namn);
                 //start video
-                String streamID =StreamControl.startVideo();
-                model.setVideoStreamID(streamID);
-                model.setStreamingVideo(true);
             }
         } else if (command.equals("streamAudio")) {
-            System.out.println("streamAudio");
             if (model.isStreamingAudio()) {
-                //stop audio
-                StreamControl.stopAudio();
+                Message msg =MessageFactory.generateStreamProperty(
+                        UserControl.getUserID(), model.getAudioStreamID(), 
+                        model.getAudioStreamName(), false, 1);
+                Control.INSTANCE.writeMessage(msg);
                 model.setAudioStreamID(null);
-                model.setStreamingAudio(false);
+                //stop audio
             } else {
+                String namn =model.getAudioStreamName() == null ? 
+                        "audioStream" : model.getAudioStreamName();
+                Message msg =MessageFactory.generateStreamProperty(
+                        UserControl.getUserID(), null, namn, true, 1);
+                Control.INSTANCE.writeMessage(msg);
+                model.setAudioStreamName(namn);
                 //start audio
-                String streamID =StreamControl.startAudio();
-                model.setAudioStreamID(streamID);
-                model.setStreamingAudio(true);
             }
             
             

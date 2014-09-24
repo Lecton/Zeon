@@ -64,7 +64,7 @@ public class ContactPopup extends JPopupMenu {
     @Override
     public void show(Component invoker, int x, int y) {
         super.show(invoker, x, y);
-//        if (UserControl.streamingVideo()) {
+        if (UserControl.streamingVideo()) {
             videoControl.setVisible(true);
             if (ContactControl.receivingVideo(parent.getUserID())) {
                 videoControl.setText("Remove from video");
@@ -73,11 +73,11 @@ public class ContactPopup extends JPopupMenu {
                 videoControl.setText("Invite to video");
                 videoControl.setActionCommand("inviteVideo");
             }
-//        } else {
-//            videoControl.setVisible(false);
-//        }
+        } else {
+            videoControl.setVisible(false);
+        }
         
-//        if (UserControl.streamingAudio()) {
+        if (UserControl.streamingAudio()) {
             audioControl.setVisible(true);
             if (ContactControl.receivingAudio(parent.getUserID())) {
                 audioControl.setText("Remove from audio");
@@ -86,9 +86,9 @@ public class ContactPopup extends JPopupMenu {
                 audioControl.setText("Invite to audio");
                 audioControl.setActionCommand("inviteAudio");
             }
-//        } else {
-//            audioControl.setVisible(false);
-//        }
+        } else {
+            audioControl.setVisible(false);
+        }
         pack();
     }
     

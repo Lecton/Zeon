@@ -14,14 +14,16 @@ import channel.group.matcher.StreamMatcher;
  * @author Bernhard
  */
 public class StreamProperty {
-    final String[] targetIDs;
-    final String streamID;
-    final String groupID;
+    String[] targetIDs;
+    String streamID;
+    String groupID;
+    int type;
 
-    public StreamProperty(String[] targetIDs, String streamID, String groupID) {
+    public StreamProperty(String[] targetIDs, String streamID, String groupID, int type) {
         this.targetIDs = targetIDs;
         this.streamID = streamID;
         this.groupID =groupID;
+        this.type =type;
     }
 
     public String[] getTargetIDs() {
@@ -34,6 +36,14 @@ public class StreamProperty {
 
     public String getGroupID() {
         return groupID;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setTargetIDs(String[] targetIDs) {
+        this.targetIDs = targetIDs;
     }
 
     public ClientMatcher generateMatcher() {

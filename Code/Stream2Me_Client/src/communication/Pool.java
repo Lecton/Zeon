@@ -30,16 +30,16 @@ public class Pool implements Runnable {
     }
     
     private static boolean add(ChannelHandlerContext ctx, Message msg, int counter) {
-        if (counter >= 10) {
+        if (counter >= 30) {
+            LOGGER.log(Level.WARNING, "Message discarded");
+            return false;
+        } else if (counter >= 10) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 LOGGER.log(Level.WARNING, "Error sleeping");
             }
             return pool.add(new PoolEntry(ctx, msg, counter+1));
-        } else if (counter >= 30) {
-            LOGGER.log(Level.WARNING, "Message discarded");
-            return false;
         } else {
             return pool.add(new PoolEntry(ctx, msg, counter+1));
         }

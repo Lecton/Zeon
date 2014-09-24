@@ -76,6 +76,14 @@ public class GUIControl implements WindowListener {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    protected static void toggleStreamVideo(boolean onOrOff) {
+        view.toggleStreamVideo(onOrOff);
+    }
+
+    protected static void toggleStreamAudio(boolean onOrOff) {
+        view.toggleStreamAudio(onOrOff);
+    }
+
     @Override
     public void windowOpened(WindowEvent e) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

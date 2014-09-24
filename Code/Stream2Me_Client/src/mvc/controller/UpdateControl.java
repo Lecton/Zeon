@@ -41,6 +41,8 @@ class UpdateControl {
     protected static final int UPDATECONTENT =4;
     protected static final int STRINGMESSAGE =5;
     protected static final int UPDATEAVATAR =6;
+    protected static final int VIDEONOTIFICATION =7;
+    protected static final int AUDIONOTIFICATION =8;
     
     public UpdateControl() {
         for (int i=0; i<10; i++) {
@@ -112,6 +114,12 @@ class UpdateControl {
                             break;
                         case STRINGMESSAGE:
                             ChatControl.INSTANCE.checkMessage((String)e.target, (int)e.arg);
+                            break;
+                        case VIDEONOTIFICATION:
+                            ContactListControl.INSTANCE.alertVideo((String)e.target, (boolean)e.arg);
+                            break;
+                        case AUDIONOTIFICATION:
+                            ContactListControl.INSTANCE.alertAudio((String)e.target, (boolean)e.arg);
                             break;
                         default:
 

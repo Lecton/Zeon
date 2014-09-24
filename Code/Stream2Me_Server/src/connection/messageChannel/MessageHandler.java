@@ -8,6 +8,8 @@ package connection.messageChannel;
 
 import channel.ClientChannel;
 import channel.group.ClientHandler;
+import channel.group.matcher.ClientGroup;
+import channel.group.matcher.ClientMatcher;
 import channel.group.matcher.ConnectionGroup;
 import channel.group.matcher.ConnectionMatcher;
 import connection.bootstrap.Handler;
@@ -23,11 +25,13 @@ import java.util.logging.Logger;
 import messages.Message;
 import messages.StringMessage;
 import messages.media.AudioStreamMessage;
-import messages.media.StreamNotifyMessage;
-import messages.media.StreamPropertyMessage;
-import messages.media.StreamResponseMessage;
-import messages.media.StreamUpdateMessage;
+import messages.media.communication.StreamNotifyMessage;
+import messages.media.creation.StreamPropertyRequestMessage;
+import messages.media.communication.StreamResponseMessage;
+import messages.media.communication.StreamUpdateMessage;
 import messages.media.VideoStreamMessage;
+import messages.media.creation.StreamPropertyMessage;
+import messages.media.creation.StreamTerminateMessage;
 import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateListMessage;
 import messages.update.UpdateProfileMessage;
@@ -63,8 +67,8 @@ public class MessageHandler {
                 handleListRequest(ctx.channel(), (UpdateListMessage)msg);
                 break;
 
-            case streamProperty:
-                handleStreamProperty(ctx.channel(), (StreamPropertyMessage)msg);
+            case streamPropertyRequest:
+                handleStreamPropertyRequest(ctx.channel(), (StreamPropertyRequestMessage)msg);
                 break;
             case streamReply:
                 handleStreamResponse(ctx.channel(), (StreamResponseMessage)msg);
@@ -94,7 +98,6 @@ public class MessageHandler {
     
     private static void handleLogout(Channel ch, LogoutMessage msg) {
         BaseUser u =UserHandler.getUser(msg.getUserID());
-        System.out.println("handle Logout");
         if (u == null) {
             Logger.getLogger(MessageHandler.class.getName()).log(Level.parse("ERROR"), 
                     "Client closed connection, but client could not be found.");
@@ -148,31 +151,50 @@ public class MessageHandler {
         }
     }
 
-    private static void handleStreamProperty(Channel ch, StreamPropertyMessage msg) {
-        if (msg.getType() == 1) {
-            StreamHandler.createStreamProperty(msg.getUserID(), msg.getStreamName());
-            Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
-                    "StreamProperty "+msg.getStreamName()+" created.");
-        } else {
-            StreamProperty sp =StreamHandler.removeStreamProperty(msg.getUserID(), msg.getStreamName());
-            if (sp != null) {
-                StreamNotifyMessage message =new StreamNotifyMessage(
-                        msg.getUserID(), Message.ALL, sp.getStreamID(), 0);
-                ClientHandler.writeAndFlush(
-                        UserHandler.getGroupID(msg.getUserID()), 
-                        message, sp.generateMatcher());
+    private static void handleStreamPropertyRequest(Channel ch, StreamPropertyRequestMessage msg) {
+        try {
+        if (msg.getAction()) {
+            String connectionID =ClientHandler.getConnectionID(ch, msg.getUserID());
+            
+            StreamPropertyMessage message =StreamHandler.createStreamProperty(msg.getUserID(), connectionID, 
+                    msg.getStreamName(), msg.getType());
+            
+            if (message.isSuccessful()) {
                 Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
-                        "StreamProperty "+msg.getStreamName()+" removed.");
-            } else {
-                Logger.getLogger(MessageHandler.class.getName()).log(Level.WARNING, 
-                    "StreamProperty "+msg.getStreamName()+" was not found.");
+                        "StreamProperty "+msg.getStreamName()+" created.");
             }
+            String groupID =UserHandler.getGroupID(msg.getUserID());
+            ClientHandler.writeAndFlush(groupID, message, new ClientMatcher(msg.getUserID()));
+        } else {
+            try {
+                StreamProperty sp =StreamHandler.removeStreamProperty(msg.getUserID(), msg.getStreamID());
+                if (sp != null) {
+                    StreamTerminateMessage terminate =MessageBuilder.generateStreamTerminate(msg.getUserID(), msg.getStreamID(), sp.getType());
+                    String groupID =sp.getGroupID();
+                    ClientHandler.writeAndFlush(groupID, terminate, new ClientMatcher(msg.getUserID()));
+                    StreamNotifyMessage message =new StreamNotifyMessage(
+                            msg.getUserID(), Message.ALL, sp.getStreamID(), sp.getType(), true);
+                    ClientHandler.writeAndFlush(groupID, message, sp.generateMatcher());
+                    Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
+                            "StreamProperty "+msg.getStreamName()+" removed.");
+                } else {
+                    Logger.getLogger(MessageHandler.class.getName()).log(Level.WARNING, 
+                        "StreamProperty "+msg.getStreamName()+" was not found.");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
     private static void handleStreamResponse(Channel ch, StreamResponseMessage msg) {
-//        Log.write(MessageHandler.class, msg.getMessage());
-        boolean result =StreamHandler.respondStream(msg.getStreamID(), msg.getUserID(), msg.isAccept());
+        Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
+                    msg.getMessage()+".");
+        String connectionID =ClientHandler.getConnectionID(ch, UserHandler.getGroupID(msg.getUserID()));
+        boolean result =StreamHandler.respondStream(msg.getStreamID(), msg.getUserID(), connectionID, msg.isAccept());
         if (!result) {
             Logger.getLogger(MessageHandler.class.getName()).log(Level.WARNING, 
                     "Stream response unsuccessful.");
@@ -186,20 +208,25 @@ public class MessageHandler {
     private static void handleStreamUpdate(Channel ch, StreamUpdateMessage msg) {
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                     msg.getMessage()+".");
-        String streamID =StreamHandler.updateStream(msg.getStreamID(), msg.getUserID(), msg.getAffectedUserID(), msg.getAction());
-        String groupID =UserHandler.getGroupID(msg.getUserID());
-        
-        if (streamID != null) {
+        String affectedConnectionID =UserHandler.getConnectionID(msg.getAffectedUserID());
+        boolean success =StreamHandler.updateStream(msg.getStreamID(), msg.getUserID(), msg.getAffectedUserID(), affectedConnectionID, msg.getAction());
+        if (success) {
+            Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
+                        "Stream Update successful.");
+            String groupID =UserHandler.getGroupID(msg.getUserID());
             ClientHandler.writeAndFlush(groupID, new StreamNotifyMessage(msg.getUserID(), 
-                    msg.getAffectedUserID(), streamID,
+                    msg.getAffectedUserID(), msg.getStreamID(), msg.getType(),
                     msg.getAction()));
+        } else {
+            Logger.getLogger(MessageHandler.class.getName()).log(Level.WARNING, 
+                        "Could not update the connection.");
         }
     }
 
     private static void handleAudioStream(Channel ch, AudioStreamMessage msg) {
 //        Log.write(MessageHandler.class, "Audio stream received on streamID: "
 //                +as.getStreamID());
-        StreamProperty sp =StreamHandler.getStreamProperty(msg.getUserID(), msg.getStreamName());
+        StreamProperty sp =StreamHandler.getStreamProperty(msg.getUserID(), msg.getStreamID(), true);
         if (sp != null) {
             ClientHandler.writeAndFlush(sp.getGroupID(), msg, sp.generateMatcher());
         } else {
@@ -212,7 +239,8 @@ public class MessageHandler {
     private static void handleVideoStream(Channel ch, VideoStreamMessage msg) {
 //        Log.write(MessageHandler.class, "Video stream received on streamID: "
 //                +vs.getStreamID());
-        StreamProperty sp =StreamHandler.getStreamProperty(msg.getUserID(), msg.getStreamName());
+        StreamProperty sp =StreamHandler.getStreamProperty(msg.getUserID(), msg.getStreamID(), true);
+        
         if (sp != null) {
             ClientHandler.writeAndFlush(sp.getGroupID(), msg, sp.generateMatcher());
         } else {

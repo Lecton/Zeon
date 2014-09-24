@@ -77,6 +77,26 @@ public class ContactListControl implements ActionListener {
             UpdateControl.INSTANCE.add(userID, UpdateControl.UPDATEDETAILS);
         }
     }
+
+    public static void acceptStream(String streamID, String userID, int type, boolean action) {
+        if (type == 0) {
+            Receiver person =INSTANCE.getColleague(userID);
+            if (person != null) {
+                person.setReceivingVideo(action);
+                person.setVideoStream(streamID);
+                person.setAcceptedVideo(false);
+                UpdateControl.INSTANCE.add(userID, UpdateControl.VIDEONOTIFICATION, action);
+            }
+        } else if (type == 1) {
+            Receiver person =INSTANCE.getColleague(userID);
+            if (person != null) {
+                person.setReceivingAudio(action);
+                person.setAudioStream(streamID);
+                person.setAcceptedAudio(false);
+                UpdateControl.INSTANCE.add(userID, UpdateControl.AUDIONOTIFICATION, action);
+            }
+        }
+    }
     
     protected void addProfile(String userID) {
         Person person =model.get(userID);
@@ -128,9 +148,10 @@ public class ContactListControl implements ActionListener {
                 ((Button)e.getSource()).togglePressed();
                 boolean accept =((Button)e.getSource()).isPressed();
                 person.setAcceptedVideo(accept);
+                person.setVideo(!accept);
                 
                 Control.INSTANCE.writeMessage(MessageFactory
-                        .generateStreamResponse(userID, 
+                        .generateStreamResponse(UserControl.getUserID(), 
                                 person.getVideoStream(), accept));
             }
             
@@ -142,9 +163,10 @@ public class ContactListControl implements ActionListener {
                 ((Button)e.getSource()).togglePressed();
                 boolean accept =((Button)e.getSource()).isPressed();
                 person.setAcceptedAudio(accept);
+                person.setAudio(!accept);
                 
                 Control.INSTANCE.writeMessage(MessageFactory
-                        .generateStreamResponse(userID, 
+                        .generateStreamResponse(UserControl.getUserID(), 
                                 person.getAudioStream(), accept));
             }
             
@@ -158,7 +180,7 @@ public class ContactListControl implements ActionListener {
                 
                 Control.INSTANCE.writeMessage(MessageFactory
                         .generateStreamUpdate(UserControl.getUserID(), 
-                                "SERVER", videoStreamID, userID, 0));
+                                "SERVER", videoStreamID, userID, 0, true));
             }
             
             System.out.println("Invite to video");
@@ -171,7 +193,7 @@ public class ContactListControl implements ActionListener {
                 
                 Control.INSTANCE.writeMessage(MessageFactory
                         .generateStreamUpdate(UserControl.getUserID(), 
-                                "SERVER", audioStreamID, userID, 0));
+                                "SERVER", audioStreamID, userID, 1, true));
             }
             
             System.out.println("Invite to audio");
@@ -184,7 +206,7 @@ public class ContactListControl implements ActionListener {
                 
                 Control.INSTANCE.writeMessage(MessageFactory
                         .generateStreamUpdate(UserControl.getUserID(), 
-                                "SERVER", videoStreamID, userID, 1));
+                                "SERVER", videoStreamID, userID, 0, false));
             }
             
             System.out.println("Remove from video");
@@ -197,10 +219,30 @@ public class ContactListControl implements ActionListener {
                 
                 Control.INSTANCE.writeMessage(MessageFactory
                         .generateStreamUpdate(UserControl.getUserID(), 
-                                "SERVER", audioStreamID, userID, 1));
+                                "SERVER", audioStreamID, userID, 1, false));
             }
             
             System.out.println("Remove from audio");
         }
+    }
+
+    protected boolean alertVideo(String userID, boolean action) {
+        Notifier person =getColleague(userID);
+        if (person != null) {
+            person.setVideo(action);
+            view.alert(userID);
+            return true;
+        }
+        return false;
+    }
+    
+    protected boolean alertAudio(String userID, boolean action) {
+        Notifier person =getColleague(userID);
+        if (person != null) {
+            person.setAudio(action);
+            view.alert(userID);
+            return true;
+        }
+        return false;
     }
 }

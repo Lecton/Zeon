@@ -50,6 +50,7 @@ public class LoginControl {
             String aboutMe =msg.getAboutMe();
 
             UserControl.setUser(userID, username, name, surname, email, avatar, title, aboutMe);
+            StreamControl.register(userID);
             MessageControl.clear();
             view.dispose();
             Control.INSTANCE.initiate(2);

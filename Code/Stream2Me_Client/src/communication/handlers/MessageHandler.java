@@ -11,14 +11,17 @@ import java.util.logging.Logger;
 import messages.Message;
 import messages.StringMessage;
 import messages.media.AudioStreamMessage;
-import messages.media.StreamNotifyMessage;
+import messages.media.communication.StreamNotifyMessage;
 import messages.media.VideoStreamMessage;
+import messages.media.creation.StreamPropertyMessage;
+import messages.media.creation.StreamTerminateMessage;
 import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateProfileMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
 import mvc.controller.ContactListControl;
 import mvc.controller.MessageControl;
+import mvc.controller.StreamControl;
 
 /**
  *
@@ -28,7 +31,7 @@ public class MessageHandler {
     private final static Logger LOGGER = Logger.getLogger(MessageHandler.class.getName()); 
     
     public boolean handle(Message msg) throws UnsupportedOperationException {
-        LOGGER.log(Level.INFO, msg.handle()+"");
+//        LOGGER.log(Level.INFO, msg.handle()+"");
         switch (msg.handle()) {
             case console:
                 return handleConsole(msg);
@@ -41,16 +44,14 @@ public class MessageHandler {
                 return handleUpdateAvatar((UpdateAvatarMessage)msg);
             case updateProfile:
                 return handleUpdateProfile((UpdateProfileMessage)msg);
-//            case updateTitle:
-//                return handleUpdateName((UpdateNameMessage)msg);
-//            case updateAboutMe:
-//                return handleUpdateName((UpdateNameMessage)msg);//            case updateTitle:
-//                return handleUpdateName((UpdateNameMessage)msg);
-//            case updateAboutMe:
-//                return handleUpdateName((UpdateNameMessage)msg);
 
             case string:
                 return handleStringMessage((StringMessage)msg);
+                
+            case streamProperty:
+                return handleStreamProperty((StreamPropertyMessage)msg);
+            case streamTerminate:
+                return handleStreamTerminate((StreamTerminateMessage)msg);
             case streamNotify:
                 return handleStreamNotification((StreamNotifyMessage)msg);
             case auido:
@@ -117,14 +118,27 @@ public class MessageHandler {
     }
 
     private boolean handleStreamNotification(StreamNotifyMessage msg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ContactListControl.acceptStream(msg.getStreamID(), msg.getUserID(), msg.getType(), msg.getAction());
+        return true;
     }
 
     private boolean handleAudioStream(AudioStreamMessage msg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StreamControl.handleAudioData(msg.getBuffer());
+        return true;
     }
 
     private boolean handleVideoStream(VideoStreamMessage msg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StreamControl.handleVideoData(msg.getUserID(), msg.getImg());
+        return true;
+    }
+
+    private boolean handleStreamProperty(StreamPropertyMessage msg) {
+        StreamControl.handleStreamProperty(msg);
+        return true;
+    }
+
+    private boolean handleStreamTerminate(StreamTerminateMessage msg) {
+        StreamControl.handleStreamTerminate(msg);
+        return true;
     }
 }

@@ -9,9 +9,9 @@ package communication.handlers;
 import java.util.logging.Logger;
 import messages.Message;
 import messages.StringMessage;
-import messages.media.StreamPropertyMessage;
-import messages.media.StreamResponseMessage;
-import messages.media.StreamUpdateMessage;
+import messages.media.creation.StreamPropertyRequestMessage;
+import messages.media.communication.StreamResponseMessage;
+import messages.media.communication.StreamUpdateMessage;
 import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateListMessage;
 import messages.update.UpdateProfileMessage;
@@ -56,12 +56,12 @@ public class MessageFactory {
         return new LogoutMessage(userID);
     }
      
-    public static StreamUpdateMessage generateStreamUpdate(String userID, String targetID, String streamID, String affectedUserID, int action) {
-        return new StreamUpdateMessage(userID, targetID, streamID, affectedUserID, action);
+    public static StreamUpdateMessage generateStreamUpdate(String userID, String targetID, String streamID, String affectedUserID, int type, boolean action) {
+        return new StreamUpdateMessage(userID, targetID, streamID, affectedUserID, type, action);
     }
     
-    public static StreamPropertyMessage generateStreamProperty(String userID, String targetID, String streamID, boolean turnOn) {
-        return new StreamPropertyMessage(userID, targetID, streamID, (turnOn?1:0));
+    public static StreamPropertyRequestMessage generateStreamProperty(String userID, String streamID, String streamName, boolean turnOn, int type) {
+        return new StreamPropertyRequestMessage(userID, streamName, streamID, turnOn, type);
     }
 
     public static StreamResponseMessage generateStreamResponse(String userID, String videoStreamID, boolean response) {

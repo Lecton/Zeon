@@ -347,8 +347,8 @@ public class GUI extends javax.swing.JFrame {
         this.acceptVideo.setPressed(acceptVideo);
         this.acceptAudio.setPressed(acceptAudio);
         
-//        this.acceptVideo.setVisible(video);
-//        this.acceptAudio.setVisible(audio);
+        this.acceptVideo.setVisible(video);
+        this.acceptAudio.setVisible(audio);
     }
 
     public void hideStreamAcceptors(String userID) {
@@ -359,4 +359,11 @@ public class GUI extends javax.swing.JFrame {
         acceptAudio.setVisible(false);
     }
 
+    public void toggleStreamVideo(boolean onOrOff) {
+        streamVideo.togglePressed(onOrOff);
+    }
+
+    public void toggleStreamAudio(boolean onOrOff) {
+        streamAudio.togglePressed(onOrOff);
+    }
 }

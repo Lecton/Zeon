@@ -6,6 +6,7 @@
 
 package mvc.view.generalUI.containers;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.logging.Logger;
@@ -56,12 +57,24 @@ public class Button extends JButton {
     }
     
     public void togglePressed() {
-        if (pressed && unclicked != null) {
-            setIcon(unclicked);
-        } else if (clicked != null) {
-            setIcon(clicked);
+        togglePressed(!pressed);
+    }
+    
+    public void togglePressed(boolean pressed) {
+        this.pressed =pressed;
+        if (pressed) {
+            if (clicked != null) {
+                setIcon(clicked);
+            } else {
+                setBackground(Color.red);
+            }
+        } else {
+            if (unclicked != null) {
+                setIcon(unclicked);
+            } else {
+                setBackground(Color.blue);
+            }
         }
-        pressed =!pressed;
     }
 
     public void setPressed(boolean pressed) {

@@ -1,7 +1,5 @@
 package stream2me;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.media.opengl.GLCanvas;
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;

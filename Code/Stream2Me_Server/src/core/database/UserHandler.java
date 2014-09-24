@@ -423,4 +423,36 @@ public class UserHandler {
         }
         return "default";
     }
+
+    public static String getConnectionID(String userID) {
+        PreparedStatement statement;
+        ResultSet result = null;
+        String query = "SELECT connectionid "
+                        + "FROM connection "
+                        + "WHERE userid = ?";
+        statement = Database.INSTANCE.getPreparedStatement(query);
+        try{
+            statement.setString(1, userID);
+            result = statement.executeQuery();
+
+            while(result.next()) {
+                String connectionID =result.getString("connectionid");
+                return connectionID;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserHandler.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if(statement != null) {
+                    statement.close();
+                }
+            } catch(SQLException ex) {
+          //                      System.out.println("here2");
+                Logger.getLogger(UserHandler.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
+    }
 }

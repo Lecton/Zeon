@@ -159,7 +159,7 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
         ConcurrentSet<ClientChannel> set =
             channel instanceof ServerChannel ? serverChannels : nonServerChannels;
         
-        System.out.println("CLIENTCHANNELGROUP: "+(channel instanceof ServerChannel));
+//        System.out.println("CLIENTCHANNELGROUP: "+(channel instanceof ServerChannel));
 
         boolean contained =containsByID(channel, channel.getUserID());
         
@@ -408,8 +408,10 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
             }
         }
         
-        Logger.getLogger(ClientChannelGroup.class.getName()).log(Level.INFO, 
-                     "Writing message to group. "+count+" users written to.");
+//        if (message.handle() != Message.MessageType.auido) {
+            Logger.getLogger(ClientChannelGroup.class.getName()).log(Level.INFO, 
+                         "Writing message ("+message.getMessage()+") to group. "+count+" users written to.");
+//        }
 
         ReferenceCountUtil.release(message);
         return count;
