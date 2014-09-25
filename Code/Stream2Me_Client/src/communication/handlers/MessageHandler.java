@@ -128,7 +128,7 @@ public class MessageHandler {
     }
 
     private boolean handleVideoStream(VideoStreamMessage msg) {
-        StreamControl.handleVideoData(msg.getUserID(), msg.getImg());
+        StreamControl.handleVideoData(msg.getStreamID(), msg.getImg());
         return true;
     }
 

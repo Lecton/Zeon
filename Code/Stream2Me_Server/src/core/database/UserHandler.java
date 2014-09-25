@@ -6,6 +6,7 @@
 
 package core.database;
 
+import biz.source_code.base64Coder.Base64Coder;
 import channel.ClientChannel;
 import channel.group.ClientHandler;
 import channel.group.matcher.ClientGroup;
@@ -13,10 +14,12 @@ import connection.messageChannel.MessageBuilder;
 import core.database.objects.BaseUser;
 import core.database.objects.User;
 import io.netty.channel.Channel;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -33,6 +36,15 @@ import messages.userConnection.NewUserMessage;
  * @author Bernhard
  */
 public class UserHandler {
+    static MessageDigest digest;
+    static {
+        try {
+            digest =MessageDigest.getInstance("SHA1");
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(UserHandler.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
+    }
     
     /**
      * Private helper function for the login and logoff functions strictly. 
@@ -89,7 +101,7 @@ public class UserHandler {
      */
     public static GreetingMessage userLogin(Channel ch, LoginMessage message) {
         String username =message.getUsername();
-        String password =message.getPasswordHash();
+        String password =Base64Coder.decodeString(message.getPasswordHash());
         
         if(username != null){
             PreparedStatement statement;
@@ -105,35 +117,49 @@ public class UserHandler {
 //                System.out.println("Query: "+statement.toString());
                 result = statement.executeQuery();
                 
-                if(result.next()){
+                if (result.next()) {
                     String userID =result.getString("userid");
-                    String groupID =result.getString("groupid");
-                    String name =result.getString("name");
-                    String surname =result.getString("surname");
-                    String uName =result.getString("username");
-                    String email =result.getString("email");
-                    String aboutMe =result.getString("aboutme");
-                    String title =result.getString("title");
-                    String avatar =result.getString("avatar");
-                    User person =new User(userID, uName, groupID, 
-                            name, surname, email, title, aboutMe, avatar);
-                    ClientChannel cc =new ClientChannel(ch, userID, groupID);
-                    int addResult =ClientHandler.add(cc);
-                    if (addResult == 1) {
-                        ClientHandler.writeAndFlush(groupID, MessageBuilder.generateNewUser(person, null), new ClientGroup(userID, groupID));
-                        userLoggedInUpdate(userID, cc.getConnectionID(), true);
-                        return MessageBuilder.generateGreeting(person, true, "Login success.");
-                    } else if (addResult == 2) {
-                        userLoggedInUpdate(userID, cc.getConnectionID(), true);
-                        return MessageBuilder.generateGreeting(person, true, "Login success.");
+                    String pwd =result.getString("password");
+                    
+                    byte[] dbDigest =pwd.getBytes("Latin1");
+                    password =userID+password;
+                    password =password;
+                    byte[] pwdDigest =digest.digest(password.getBytes("Latin1"));
+                    boolean digestMatch =MessageDigest.isEqual(pwdDigest, dbDigest);
+                    
+                    if (digestMatch) {
+                        String groupID =result.getString("groupid");
+                        String name =result.getString("name");
+                        String surname =result.getString("surname");
+                        String uName =result.getString("username");
+                        String email =result.getString("email");
+                        String aboutMe =result.getString("aboutme");
+                        String title =result.getString("title");
+                        String avatar =result.getString("avatar");
+                        User person =new User(userID, uName, groupID, 
+                                name, surname, email, title, aboutMe, avatar);
+                        ClientChannel cc =new ClientChannel(ch, userID, groupID);
+                        int addResult =ClientHandler.add(cc);
+                        if (addResult == 1) {
+                            ClientHandler.writeAndFlush(groupID, MessageBuilder.generateNewUser(person, null), new ClientGroup(userID, groupID));
+                            userLoggedInUpdate(userID, cc.getConnectionID(), true);
+                            return MessageBuilder.generateGreeting(person, true, "Login success.");
+                        } else if (addResult == 2) {
+                            userLoggedInUpdate(userID, cc.getConnectionID(), true);
+                            return MessageBuilder.generateGreeting(person, true, "Login success.");
+                        } else {
+                            return MessageBuilder.generateGreeting(null, false, "Users group could not be found.");
+                        }
                     } else {
-                        return MessageBuilder.generateGreeting(null, false, "Users group could not be found.");
+                        return MessageBuilder.generateGreeting(null, false, "Username or password did not match.");
                     }
                 }
               }catch (SQLException ex) {
                   Logger.getLogger(UserHandler.class.getName())
                           .log(Level.SEVERE, null, ex);
-              }finally{
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(UserHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
                   try{
                       if(statement != null){
                           statement.close();

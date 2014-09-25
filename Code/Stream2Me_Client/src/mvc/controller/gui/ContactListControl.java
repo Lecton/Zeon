@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JMenuItem;
+import mvc.controller.videoPlayer.VideoManager;
 import mvc.model.Colleague;
 import mvc.model.ColleagueList;
 import mvc.model.person.Notifier;
@@ -149,6 +150,10 @@ public class ContactListControl implements ActionListener {
                 boolean accept =((Button)e.getSource()).isPressed();
                 person.setAcceptedVideo(accept);
                 person.setVideo(!accept);
+                
+                if (accept) {
+                    StreamControl.INSTANCE.addVideoFrame(person.getVideoStream());
+                }
                 
                 Control.INSTANCE.writeMessage(MessageFactory
                         .generateStreamResponse(UserControl.getUserID(), 

@@ -141,11 +141,15 @@ public class StreamControl {
         audioView.write(buffer);
     }
 
-    public static void handleVideoData(String userID, String imageBuffer) {
-        videoView.write(userID, imageBuffer);
+    public static void handleVideoData(String streamID, String imageBuffer) {
+        videoView.write(streamID, imageBuffer);
     }
     
     public void write(Message msg) {
         Control.INSTANCE.writeMessage(msg);
+    }
+
+    protected void addVideoFrame(String videoStream) {
+        videoView.addVideoFrame(videoStream);
     }
 }

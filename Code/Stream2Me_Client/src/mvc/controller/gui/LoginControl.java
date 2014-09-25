@@ -6,7 +6,9 @@
 
 package mvc.controller;
 
+import biz.source_code.base64Coder.Base64Coder;
 import communication.handlers.MessageFactory;
+import java.security.MessageDigest;
 import java.util.logging.Logger;
 import messages.userConnection.GreetingMessage;
 import mvc.view.authentication.Login;
@@ -25,7 +27,7 @@ public class LoginControl {
     }
     
     public static void login(String username, char[] password) {
-        String pwd =new String(password);
+        String pwd =Base64Coder.encodeString(new String(password));
         Control.INSTANCE.writeMessage(MessageFactory.generateLogin(username, pwd));
 //        if (con != null) {
 //            try {
