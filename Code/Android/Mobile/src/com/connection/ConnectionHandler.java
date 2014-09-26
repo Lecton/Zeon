@@ -1,13 +1,15 @@
 package com.connection;
 import messages.Message;
 import messages.StringMessage;
-import messages.media.StreamNotifyMessage;
+import messages.media.VideoStreamMessage;
+import messages.media.communication.StreamNotifyMessage;
 import messages.userConnection.GreetingMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
 
 import com.gui.LoginWindow;
 import com.gui.MainWindow;
+import com.gui.VideoStreamWindow;
 import com.mobile.ClientHandler;
 
 import android.util.Log;
@@ -40,11 +42,14 @@ public class ConnectionHandler extends SimpleChannelInboundHandler<Message> {
 			case streamNotify:
 				ClientHandler.setClientNotifocation((StreamNotifyMessage)msg);
 				break;
-			case logout:
-				MainWindow.handleLogoutUser((LogoutMessage)msg);
-				break;
 			case console:
 				Log.v("Server notice",msg.getMessage());
+				break;
+			case video:
+				VideoStreamWindow.handleVideo((VideoStreamMessage)msg);
+				break;
+			case logout:
+				MainWindow.handleLogoutUser((LogoutMessage)msg);
 				break;
 			default:
 				Log.e("Message Read", "Unhandled message "+msg.handle());

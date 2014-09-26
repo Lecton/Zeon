@@ -2,40 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context="com.gui.ProfileWindow"
     tools:ignore="MergeRootFrame" >
 
     <ImageButton
         android:id="@+id/profileImg"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="550dp"
+        android:layout_height="550dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="22dp"
         android:background="#FFFFFF" />
 
-    <Button
-        android:id="@+id/updateBtn"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:layout_alignLeft="@+id/profileImg"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="5sp"
-        android:background="@drawable/send_button"
-        android:onClick="sendMessage"
-        android:paddingBottom="5sp"
-        android:paddingLeft="15sp"
-        android:paddingRight="15sp"
-        android:paddingTop="5sp"
-        android:text="Update"
-        android:textColor="#FFF" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="400dp"
         android:layout_above="@+id/updateBtn"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/profileImg"
         android:background="#FFFFFF"
         android:gravity="center"
         android:orientation="vertical" >
@@ -55,7 +39,31 @@
             android:layout_margin="10dp"
         	android:background="@drawable/message_bar"
             android:inputType="text" />
+        
+        <EditText
+            android:id="@+id/userAbout"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+        	android:background="@drawable/message_bar"
+            android:inputType="text" />        
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/updateBtn"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5sp"
+        android:background="@drawable/send_button"
+        android:onClick="sendMessage"
+        android:paddingBottom="5sp"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp"
+        android:paddingTop="5sp"
+        android:text="Update"
+        android:textColor="#FFF" />
 
 </RelativeLayout>

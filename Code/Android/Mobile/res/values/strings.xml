@@ -12,5 +12,6 @@
     <string name="title_activity_contact_window">ContactWindow</string>
     <string name="title_activity_client_profile_window">ClientProfileWindow</string>
     <string name="title_activity_group_messages">GroupMessages</string>
+    <string name="title_activity_video_stream_window">VideoStreamWindow</string>
 
 </resources>

@@ -8,7 +8,7 @@ import java.util.List;
 
 import messages.Message;
 import messages.StringMessage;
-import messages.media.StreamNotifyMessage;
+import messages.media.communication.StreamNotifyMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
 import android.graphics.Bitmap;
@@ -71,7 +71,23 @@ public class ClientHandler {
 		Contact c = getFromUserID(msg.getUserID());
 		
 		if(c != null){
-			c.setVideoNoticationOn();
+			if (msg.getAction()) {
+				if (msg.getType() == 0) {
+					c.setVideoNoticationOn();
+					c.setVideoStreamID(msg.getStreamID());
+				} else {
+					c.setAudioNoticationOn();
+					c.setAudioStreamID(msg.getStreamID());
+				}
+			} else {
+				if (msg.getType() == 0) {
+					c.setVideoNoticationOff();
+					c.setVideoStreamID(null);
+				} else {
+					c.setAudioNoticationOff();
+					c.setAudioStreamID(null);
+				}
+			}
 			MainWindow.updateClientList();
 		}else{
 			Log.v("ClientHandler","client does not exist.");

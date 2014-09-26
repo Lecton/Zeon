@@ -1,6 +1,8 @@
 package com.gui;
 
 import com.gui.utils.Contact;
+import com.gui.utils.MessageFactory;
+import com.mobile.Client;
 import com.mobile.ClientHandler;
 import com.mobile.R;
 import com.mobile.R.id;
@@ -18,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -31,17 +34,15 @@ public class ClientProfileWindow extends Activity {
 	TextView name;
 	TextView surname;
 	TextView email;
-	Button audioInvite;
-	Button videoInvite;
-	Button audioAccept;
-	Button videoAccept;
+	ImageButton audioAccept;
+	ImageButton videoAccept;
 	private static Contact contact;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_client_profile_window);
 
-		String uid = getIntent().getStringExtra("ClientID");
+		final String uid = getIntent().getStringExtra("ClientID");
 		
 		if(uid != null){
 			contact = ClientHandler.getFromUserID(uid);
@@ -49,25 +50,53 @@ public class ClientProfileWindow extends Activity {
 			name = (TextView) findViewById(R.id.name);
 			surname = (TextView) findViewById(R.id.surname);
 			email = (TextView) findViewById(R.id.email);
-			audioInvite = (Button) findViewById(R.id.audioInvite);
-			videoInvite = (Button) findViewById(R.id.videoInvite);
-			audioAccept = (Button) findViewById(R.id.audioAccepts);
-			init();
+			videoAccept = (ImageButton) findViewById(R.id.videoInvite);
+			videoAccept.setVisibility(View.GONE);
+			
+
+//			if(contact.getAudioNotification()){
+//				audioAccept.setVisibility(View.VISIBLE);
+//			}
+			
+			if(contact.getVideoNotification()){
+				videoAccept.setVisibility(View.VISIBLE);
+				videoAccept.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						contact.setVideoNoticationOff();
+						Client.connection.writeMessage(
+								MessageFactory.generateStreamResponse(ClientHandler.getUser().getUserID(), 
+										ClientHandler.getFromUserID(uid).getVideoStreamID(), true));
+						getIntent().putExtra("UserProfile", 5);
+						getIntent().putExtra("ClientID", contact.getUserID());
+						setResult(RESULT_OK, getIntent());		
+						finish();
+					}
+				});
+			}
+			
+			if(!init()){
+				Log.v("ClientProfileWindow","init error");				
+			}
 		}else{
 			Log.v("ClientProfileWindow","onCreate");
 		}
 	}
 
 	public boolean init(){
-		if(image != null && name != null && surname != null && email != null && 
-		 audioAccept != null && videoAccept != null && videoInvite != null && audioInvite != null){
+		if(image != null && name != null && surname != null && email != null){
 			image.setImageBitmap(ClientHandler.getResizedBitmap(contact.getImage(),300,300));
 			name.setText(contact.getName());
 			surname.setText(contact.getSurname());
 			email.setText(contact.getEmail());
+			return true;
 		}
+		
 		return false;
 	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -90,8 +119,8 @@ public class ClientProfileWindow extends Activity {
 
 	@Override
 	public void onBackPressed() {
-//		getIntent().putExtra("User", user);
-//		getIntent().putExtra("Client", client);
+		getIntent().putExtra("UserProfile", 4);
+		getIntent().putExtra("ClientID", contact.getUserID());
 		setResult(RESULT_OK, getIntent());		
 		finish();
 	}	

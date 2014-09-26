@@ -16,7 +16,7 @@ public class main {
     private final static Logger LOGGER = Logger.getLogger(main.class.getName());
     
     public static void main(String[] args) throws InterruptedException {
-        Control c =new Control("localhost", 2014);
+        Control c =new Control("192.168.43.26", 2014);
         Control.INSTANCE =c;
         c.initiate(0);
     }

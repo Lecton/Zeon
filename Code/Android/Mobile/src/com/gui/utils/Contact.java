@@ -30,9 +30,14 @@ public class Contact implements Serializable {
 	 private String name;
 	 private String surname;
 	 private String email;
+	 private String about;
 	 private boolean [] notification = {false, // video notificatioon[0]
 			 							false, // audio notificatioon[1]
 			 							false}; //string notificatioon [2]
+	 
+	 private String videoStreamID;
+	 private String audioStreamID;
+	 
 	 private String UserID;
 	 
 	 private ArrayList<StringMessage> messageHistory;
@@ -41,7 +46,8 @@ public class Contact implements Serializable {
 		  this.name = message.getName();
 		  this.surname = message.getSurname();
 		  this.email = message.getEmail();
-		  this.UserID = message.getUserID();		  
+		  this.UserID = message.getUserID();
+		  this.about = message.getAboutMe();		  
 		  image = message.getAvatar();
 		  messageHistory =new ArrayList<StringMessage>();
 	 }
@@ -50,7 +56,8 @@ public class Contact implements Serializable {
 		  this.name = message.getName();
 		  this.surname = message.getSurname();
 		  this.email = message.getEmail();
-		  this.UserID = message.getUserID();		  
+		  this.UserID = message.getUserID();
+		  this.about = message.getAboutMe();		  
 		  image = message.getAvatar();
 		  messageHistory =new ArrayList<StringMessage>();
 	 }
@@ -58,6 +65,14 @@ public class Contact implements Serializable {
 	 public Contact(LogoutMessage message) {
 		  this.UserID = message.getUserID();
 	 }	 
+	 
+	 public String getAbout(){
+		 return about;
+	 }
+	 
+	 public void setAbout(String abt){
+		this.about = abt;
+	 }
 	 
 	 public String getUserID() {
 		 return UserID;
@@ -145,6 +160,21 @@ public class Contact implements Serializable {
 		 messageHistory.add(message);
 	 }
 	 
+	 public String getVideoStreamID() {
+		return videoStreamID;
+	 }
+	 
+	 public void setVideoStreamID(String videoStreamID) {
+		this.videoStreamID = videoStreamID;
+	 }
+	 
+	 public String getAudioStreamID() {
+		return audioStreamID;
+	 }
+	 
+	 public void setAudioStreamID(String audioStreamID) {
+		this.audioStreamID = audioStreamID;
+	 }
 	 
 	 public List<ChatMessages> getMessageHistory() {
 		 List<ChatMessages> messageList = new ArrayList<>();

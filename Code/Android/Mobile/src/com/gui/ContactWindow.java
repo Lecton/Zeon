@@ -80,7 +80,7 @@ public class ContactWindow extends Activity {
 //			getActionBar().setIcon(icon);
 //		}
 		if(uid != null){
-			clientID =uid;
+			clientID = uid;
 			
 			BitmapDrawable icon =null;
 			if (ClientHandler.getUser().getUserID().equals(clientID)) {
@@ -182,6 +182,7 @@ public class ContactWindow extends Activity {
 	public void onBackPressed() {
 //		getIntent().putExtra("User", user);
 //		getIntent().putExtra("Client", client);
+		getIntent().putExtra("UserProfile", 2);
 		setResult(RESULT_OK, getIntent());		
 		finish();
 	}	

@@ -44,31 +44,12 @@
         android:text="TextView" />
 
     <ImageButton
-        android:id="@+id/audioInvite"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/clientPicture"
-        android:layout_marginRight="54dp"
-        android:layout_marginTop="289dp"
-        android:src="@drawable/unclicked_stream" />
-
-    <ImageButton
         android:id="@+id/videoInvite"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/audioInvite"
-        android:layout_marginTop="12dp"
+        android:layout_below="@+id/clientPicture"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="190dp"
         android:src="@drawable/unclicked_camera" />
-
-    <ImageButton
-        android:id="@+id/audioAccepts"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignLeft="@+id/email"
-        android:layout_alignTop="@+id/audioInvite"
-        android:layout_marginLeft="17dp"
-        android:src="@drawable/unclicked_microphone" />
 
 </RelativeLayout>

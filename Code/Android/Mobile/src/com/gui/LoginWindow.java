@@ -2,6 +2,7 @@ package com.gui;
 
 import messages.userConnection.GreetingMessage;
 import messages.userConnection.LoginMessage;
+import biz.source_code.base64Coder.Base64Coder;
 
 import com.gui.utils.Contact;
 import com.gui.utils.MessageFactory;
@@ -63,9 +64,9 @@ public class LoginWindow extends Activity {
 		setContentView(R.layout.activity_login);
 
 		// Set up the login form.
-		mUsername = getIntent().getStringExtra("Lecton");
+//		mUsername = getIntent().getStringExtra("Lecton");
 		mUsernameView = (EditText) findViewById(R.id.username);
-		mUsernameView.setText(mUsername);
+//		mUsernameView.setText(mUsername);
 
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
@@ -212,7 +213,7 @@ public class LoginWindow extends Activity {
 
 			try {
 				//Send the login message
-				Client.getConnection().writeMessage(new LoginMessage(mUsername, mPassword));
+				Client.getConnection().writeMessage(new LoginMessage(mUsername, Base64Coder.encodeString(mPassword)));
 				
 				//Wait until server response has been set
 				while (true) {

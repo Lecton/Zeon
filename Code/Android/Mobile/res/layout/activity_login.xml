@@ -41,18 +41,6 @@
             android:layout_height="436dp"
             android:orientation="vertical" >
 
-            <Button
-                android:id="@+id/Button01"
-                android:layout_width="287dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/sign_in_button"
-        		android:background="@drawable/send_button"
-                android:layout_marginTop="21dp"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:text="Register" />
-
             <ImageView
                 android:id="@+id/logo"
                 android:layout_width="wrap_content"
@@ -69,6 +57,7 @@
                 android:layout_marginTop="14dp"
                 android:ems="10"
                 android:inputType="text"
+        		android:background="@drawable/message_bar"
                 android:maxLines="1"
                 android:singleLine="true" >
 
@@ -81,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/username"
+        		android:background="@drawable/message_bar"
                 android:layout_marginTop="21dp"
                 android:ems="10"
                 android:hint="@string/prompt_password"
@@ -88,7 +78,7 @@
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
-                android:text="asdewq"
+                android:text="cos301"
                 android:maxLines="1"
                 android:singleLine="true" />
 

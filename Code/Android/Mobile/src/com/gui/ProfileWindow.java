@@ -5,8 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import messages.update.UpdateAvatarMessage;
-import messages.update.UpdateNameMessage;
+import messages.update.UpdateProfileMessage;
 
+import com.gui.utils.MessageFactory;
 import com.mobile.Client;
 import com.mobile.ClientHandler;
 import com.mobile.R;
@@ -42,7 +43,8 @@ public class ProfileWindow extends Activity {
 
 	protected ImageButton profileImage = null;
 	protected EditText eName = null;
-	protected EditText eSurname = null; 
+	protected EditText eSurname = null;
+	protected EditText eAbout = null; 
 	private final int SELECT_PHOTO = 1;
 	
 	@Override
@@ -53,6 +55,7 @@ public class ProfileWindow extends Activity {
 		profileImage = (ImageButton) findViewById(R.id.profileImg);
 		eName = (EditText) findViewById(R.id.userName);
 		eSurname = (EditText) findViewById(R.id.userSurname);
+		eAbout = (EditText) findViewById(R.id.userAbout);
 		  
 		if(init()){
 			Button updateBtn = (Button) findViewById(R.id.updateBtn);
@@ -62,8 +65,16 @@ public class ProfileWindow extends Activity {
 				public void onClick(View v) {
 					ClientHandler.getUser().setName(eName.getText().toString());
 					ClientHandler.getUser().setSurname(eSurname.getText().toString());
+					ClientHandler.getUser().setAbout(eAbout.getText().toString());
 					
-					Client.getConnection().writeMessage(new UpdateNameMessage(ClientHandler.getUser().getUserID(), eName.getText().toString(), eSurname.getText().toString()));
+					String userID =ClientHandler.getUser().getUserID();
+					String name =eName.getText().toString();
+					String surname =eSurname.getText().toString();
+					String email =ClientHandler.getUser().getEmail();
+					String title ="";
+					String aboutMe =eAbout.getText().toString();
+					
+					Client.getConnection().writeMessage(MessageFactory.generateUpdateProfile(userID, name, surname, email, title, aboutMe));
 					getIntent().putExtra("UserProfile", 2);
 					setResult(RESULT_OK, getIntent());		
 					finish();					
@@ -87,9 +98,10 @@ public class ProfileWindow extends Activity {
 
 	public boolean init(){
 		if(profileImage != null && eName != null && eSurname != null){
-			profileImage.setImageBitmap(ClientHandler.getResizedBitmap(ClientHandler.getUser().getImage(),50,300));
+			profileImage.setImageBitmap(ClientHandler.getResizedBitmap(ClientHandler.getUser().getImage(),500,500));
 			eName.setText(ClientHandler.getUser().getName());
 			eSurname.setText(ClientHandler.getUser().getSurname());
+			eAbout.setText(ClientHandler.getUser().getAbout());
 			return true;
 		}
 		return false;

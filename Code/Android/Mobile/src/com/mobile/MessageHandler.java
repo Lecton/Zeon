@@ -2,7 +2,8 @@ package com.mobile;
 
 import messages.Message;
 import messages.StringMessage;
-import messages.media.StreamNotifyMessage;
+import messages.media.VideoStreamMessage;
+import messages.media.communication.StreamNotifyMessage;
 import messages.userConnection.GreetingMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
@@ -10,6 +11,7 @@ import android.util.Log;
 
 import com.gui.LoginWindow;
 import com.gui.MainWindow;
+import com.gui.VideoStreamWindow;
 
 public class MessageHandler {
 	public static boolean handle(Message msg) {
@@ -28,6 +30,12 @@ public class MessageHandler {
 				return true;
 			case logout:
 				MainWindow.handleLogoutUser((LogoutMessage)msg);
+				return true;
+			case console:
+				Log.v("Server notice",msg.getMessage());
+				return true;
+			case video:
+				VideoStreamWindow.handleVideo((VideoStreamMessage)msg);
 				return true;
 			default:
 				Log.e("Message Read", "Unhandled message "+msg.handle());

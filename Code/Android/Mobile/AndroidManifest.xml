@@ -57,6 +57,10 @@
             android:name="com.gui.GroupMessages"
             android:label="@string/title_activity_group_messages" >
         </activity>
+        <activity
+            android:name="com.gui.VideoStreamWindow"
+            android:label="@string/title_activity_video_stream_window" >
+        </activity>
     </application>
 
 </manifest>

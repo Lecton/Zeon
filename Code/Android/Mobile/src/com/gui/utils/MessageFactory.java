@@ -9,16 +9,13 @@ package com.gui.utils;
 import messages.Message;
 import messages.StringMessage;
 import messages.media.AudioStreamMessage;
-import messages.media.StreamPropertyMessage;
-import messages.media.StreamResponseMessage;
-import messages.media.StreamUpdateMessage;
 import messages.media.VideoStreamMessage;
+import messages.media.communication.StreamResponseMessage;
 import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateListMessage;
-import messages.update.UpdateNameMessage;
+import messages.update.UpdateProfileMessage;
 import messages.userConnection.LoginMessage;
 import messages.userConnection.LogoutMessage;
-import messages.userConnection.NewUserMessage;
 
 /**
  *
@@ -35,8 +32,8 @@ public class MessageFactory {
         return ua;
     }
 
-    public static UpdateNameMessage generateUpdateUsername(String userID, String name, String surname) {
-        UpdateNameMessage uu =new UpdateNameMessage(userID, name, surname);
+    public static UpdateProfileMessage generateUpdateProfile(String userID, String name, String surname, String email, String title, String aboutMe) {
+    	UpdateProfileMessage uu =new UpdateProfileMessage(userID, name, surname, email, title, aboutMe);
         uu.setTargetID(Message.ALL);
         return uu;
     }
@@ -53,14 +50,14 @@ public class MessageFactory {
         return new LogoutMessage(userID);
     }
      
-    public static StreamUpdateMessage generateStreamUpdate(String userID, String targetID, String streamID, String affectedUserID, int action) {
-        return new StreamUpdateMessage(userID, targetID, streamID, affectedUserID, action);
-    }
-    
-    public static StreamPropertyMessage generateStreamProperty(String userID, String targetID, String streamID, boolean turnOn) {
-        return new StreamPropertyMessage(userID, targetID, streamID, (turnOn?1:0));
-    }
-
+//    public static StreamUpdateMessage generateStreamUpdate(String userID, String targetID, String streamID, String affectedUserID, int action) {
+//        return new StreamUpdateMessage(userID, targetID, streamID, affectedUserID, action);
+//    }
+//    
+//    public static StreamPropertyMessage generateStreamProperty(String userID, String targetID, String streamID, boolean turnOn) {
+//        return new StreamPropertyMessage(userID, targetID, streamID, (turnOn?1:0));
+//    }
+//
     public static StreamResponseMessage generateStreamResponse(String userID, String videoStreamID, boolean response) {
         return new StreamResponseMessage(userID, videoStreamID, response);
     }
