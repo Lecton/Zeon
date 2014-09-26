@@ -73,6 +73,7 @@ public class ContactProfile extends javax.swing.JPanel {
         setMaximumSize(new java.awt.Dimension(400, 69));
         setMinimumSize(new java.awt.Dimension(100, 69));
         setPreferredSize(new java.awt.Dimension(300, 69));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         imgAvatar.setMaximumSize(new java.awt.Dimension(69, 69));
         imgAvatar.setMinimumSize(new java.awt.Dimension(69, 69));
@@ -89,9 +90,13 @@ public class ContactProfile extends javax.swing.JPanel {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        add(imgAvatar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         lblName.setText("Name");
+        add(lblName, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 21, -1, -1));
 
         lblID.setText("ID");
+        add(lblID, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 46, -1, -1));
 
         ntiMessage.setMaximumSize(new java.awt.Dimension(15, 15));
         ntiMessage.setMinimumSize(new java.awt.Dimension(15, 15));
@@ -109,6 +114,8 @@ public class ContactProfile extends javax.swing.JPanel {
             .addGap(0, 15, Short.MAX_VALUE)
         );
 
+        add(ntiMessage, new org.netbeans.lib.awtextra.AbsoluteConstraints(254, 5, -1, -1));
+
         ntiAudio.setMaximumSize(new java.awt.Dimension(15, 15));
         ntiAudio.setMinimumSize(new java.awt.Dimension(15, 15));
         ntiAudio.setPreferredSize(new java.awt.Dimension(15, 15));
@@ -124,6 +131,8 @@ public class ContactProfile extends javax.swing.JPanel {
             ntiAudioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 15, Short.MAX_VALUE)
         );
+
+        add(ntiAudio, new org.netbeans.lib.awtextra.AbsoluteConstraints(233, 5, -1, -1));
 
         ntiVideo.setMaximumSize(new java.awt.Dimension(15, 15));
         ntiVideo.setMinimumSize(new java.awt.Dimension(15, 15));
@@ -141,43 +150,7 @@ public class ContactProfile extends javax.swing.JPanel {
             .addGap(0, 15, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(imgAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 139, Short.MAX_VALUE)
-                        .addComponent(ntiVideo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ntiAudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ntiMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblID)
-                            .addComponent(lblName))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(imgAvatar, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ntiMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ntiAudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ntiVideo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(1, 1, 1)
-                .addComponent(lblName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblID)
-                .addContainerGap())
-        );
+        add(ntiVideo, new org.netbeans.lib.awtextra.AbsoluteConstraints(212, 5, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void showPopup(MouseEvent evt) {

@@ -166,4 +166,11 @@ public class ContactList extends JPanel implements MouseListener {
             profile.update();
         }
     }
+
+    public void empty() {
+        for (ContactProfile cp: list) {
+            remove(cp);
+            selectedProfile =null;
+        }
+    }
 }

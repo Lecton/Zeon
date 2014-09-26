@@ -61,8 +61,6 @@ public class UserControl implements ActionListener {
         view.setID(userID);
         
         ChatControl.INSTANCE.setUserName(model.getFullname());
-        
-        Control.INSTANCE.writeMessage(MessageFactory.generateRefreshListRequest(userID));
     }
     
     protected void setName(String name) {
@@ -83,6 +81,8 @@ public class UserControl implements ActionListener {
                         model.getVideoStreamName(), false, 0);
                 Control.INSTANCE.writeMessage(msg);
                 model.setVideoStreamID(null);
+                
+                ContactListControl.resetVideoReceivers();
                 //stop video
             } else {
                 String namn =model.getVideoStreamName() == null ? 
@@ -91,6 +91,8 @@ public class UserControl implements ActionListener {
                         UserControl.getUserID(), null, namn, true, 0);
                 Control.INSTANCE.writeMessage(msg);
                 model.setVideoStreamName(namn);
+                
+                ContactListControl.resetVideoReceivers();
                 //start video
             }
         } else if (command.equals("streamAudio")) {
@@ -100,6 +102,8 @@ public class UserControl implements ActionListener {
                         model.getAudioStreamName(), false, 1);
                 Control.INSTANCE.writeMessage(msg);
                 model.setAudioStreamID(null);
+                
+                ContactListControl.resetAudioReceivers();
                 //stop audio
             } else {
                 String namn =model.getAudioStreamName() == null ? 
@@ -108,6 +112,8 @@ public class UserControl implements ActionListener {
                         UserControl.getUserID(), null, namn, true, 1);
                 Control.INSTANCE.writeMessage(msg);
                 model.setAudioStreamName(namn);
+                
+                ContactListControl.resetAudioReceivers();
                 //start audio
             }
             

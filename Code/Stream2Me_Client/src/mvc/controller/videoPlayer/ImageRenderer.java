@@ -68,7 +68,7 @@ public class ImageRenderer implements GLEventListener {
             gl.glEnd();
             texture.disable();
         } else {
-            System.out.println("Null Image");
+//            System.out.println("Null Image");
         }
     }
 
@@ -92,7 +92,7 @@ public class ImageRenderer implements GLEventListener {
             public void run() {
                 while (parent.isVisible()) {
                     if (parent.hasPicture()) {
-                        System.out.println("Got Image");
+//                        System.out.println("Got Image");
                         setImage(parent.getPicture());
                     } 
                     else {
@@ -103,7 +103,7 @@ public class ImageRenderer implements GLEventListener {
                         }
                     }
                 }
-                System.out.println("Ended");
+//                System.out.println("Ended");
             }
         })).start();
     }

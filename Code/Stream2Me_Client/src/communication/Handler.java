@@ -8,6 +8,7 @@ package communication;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.Message;
 import mvc.controller.Control;
@@ -21,6 +22,9 @@ public class Handler extends SimpleChannelInboundHandler<Message> {
     
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
+        LOGGER.log(Level.INFO, "Writing message "+msg.handle()
+                +" from "+msg.getUserID()+" to "+msg.getTargetID());
+        
         boolean result =Control.handleMessage(msg);
         if (!result) {
             Pool.add(ctx, msg);

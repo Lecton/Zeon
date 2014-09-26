@@ -6,6 +6,7 @@
 
 package mvc.controller;
 
+import communication.handlers.MessageFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.Message;
@@ -14,6 +15,7 @@ import messages.media.creation.StreamTerminateMessage;
 import mvc.controller.videoPlayer.VideoManager;
 import mvc.model.mediaStreaming.audio.AudioStream;
 import mvc.model.mediaStreaming.video.VideoStream;
+import mvc.model.person.Receiver;
 
 /**
  *
@@ -149,7 +151,26 @@ public class StreamControl {
         Control.INSTANCE.writeMessage(msg);
     }
 
-    protected void addVideoFrame(String videoStream) {
-        videoView.addVideoFrame(videoStream);
+    protected void addVideoFrame(String videoStreamID, String userID) {
+        videoView.addVideoFrame(videoStreamID, userID);
+    }
+    
+    public void closedVideoFrame(String streamID, String userID) {
+        Receiver person =ContactListControl.INSTANCE.getColleague(userID);
+        if (person != null) {
+            person.setAcceptedVideo(false);
+            person.setVideo(false);
+            
+            GUIControl.updateStreamAcceptors(userID);
+            ContactListControl.INSTANCE.alertVideo(userID, true);
+            
+            Control.INSTANCE.writeMessage(MessageFactory
+                    .generateStreamResponse(UserControl.getUserID(), 
+                            streamID, false));
+        }
+    }
+
+    protected void closeVideoFrame(String streamID, String userID) {
+        videoView.removeVideoFrame(streamID);
     }
 }

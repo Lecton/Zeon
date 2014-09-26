@@ -98,7 +98,7 @@ public class MessageHandler {
     }
 
     private boolean handleUpdateProfile(UpdateProfileMessage msg) {
-        ContactListControl.updateContact(msg.getUserID(), msg.getName(), msg.getSurname(), null, null, null);
+        ContactListControl.updateContact(msg.getUserID(), msg.getName(), msg.getSurname(), null, msg.getTitle(), msg.getAboutMe());
 //        Colleague person =Model.INSTANCE.getColleagueList().get(msg.getUserID());
 //        if (person != null) {
 //            person.setName(msg.getName());

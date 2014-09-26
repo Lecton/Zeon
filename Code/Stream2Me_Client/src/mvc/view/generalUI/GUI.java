@@ -32,6 +32,9 @@ public class GUI extends javax.swing.JFrame {
         initComponents();
         
         setupGUI();
+        
+        settings.setVisible(false);
+        logout.setVisible(false);
     }
 
     /**
@@ -48,10 +51,10 @@ public class GUI extends javax.swing.JFrame {
         controls = new javax.swing.JPanel();
         streamVideo = new mvc.view.generalUI.containers.Button();
         streamAudio = new mvc.view.generalUI.containers.Button();
-        acceptAudio = new mvc.view.generalUI.containers.Button();
-        acceptVideo = new mvc.view.generalUI.containers.Button();
         logout = new mvc.view.generalUI.containers.Button();
         settings = new mvc.view.generalUI.containers.Button();
+        acceptAudio = new mvc.view.generalUI.containers.Button();
+        acceptVideo = new mvc.view.generalUI.containers.Button();
         people = new javax.swing.JPanel();
         user = new mvc.view.generalUI.UserPanel();
         contactsScroll = new javax.swing.JScrollPane();
@@ -83,6 +86,7 @@ public class GUI extends javax.swing.JFrame {
         controls.setMinimumSize(new java.awt.Dimension(62, 500));
         controls.setName(""); // NOI18N
         controls.setPreferredSize(new java.awt.Dimension(62, 500));
+        controls.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         streamVideo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/streaming_Icons/unclicked-camera.png"))); // NOI18N
         streamVideo.setToolTipText("");
@@ -94,6 +98,7 @@ public class GUI extends javax.swing.JFrame {
         streamVideo.setName(""); // NOI18N
         streamVideo.setPreferredSize(new java.awt.Dimension(58, 58));
         streamVideo.setUnclicked(new javax.swing.ImageIcon(getClass().getResource("/streaming_Icons/unclicked-camera.png"))); // NOI18N
+        controls.add(streamVideo, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 3, -1, -1));
 
         streamAudio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/streaming_Icons/unclicked-microphone.png"))); // NOI18N
         streamAudio.setActionCommand("streamAudio");
@@ -104,12 +109,34 @@ public class GUI extends javax.swing.JFrame {
         streamAudio.setName(""); // NOI18N
         streamAudio.setPreferredSize(new java.awt.Dimension(58, 58));
         streamAudio.setUnclicked(new javax.swing.ImageIcon(getClass().getResource("/streaming_Icons/unclicked-microphone.png"))); // NOI18N
+        controls.add(streamAudio, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 67, -1, -1));
 
+        logout.setActionCommand("logout");
+        logout.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        logout.setMaximumSize(new java.awt.Dimension(58, 58));
+        logout.setMinimumSize(new java.awt.Dimension(58, 58));
+        logout.setPreferredSize(new java.awt.Dimension(58, 58));
+        controls.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 441, -1, 56));
+
+        settings.setActionCommand("settings");
+        settings.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        settings.setMaximumSize(new java.awt.Dimension(58, 58));
+        settings.setMinimumSize(new java.awt.Dimension(58, 58));
+        settings.setPreferredSize(new java.awt.Dimension(58, 58));
+        settings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settingsActionPerformed(evt);
+            }
+        });
+        controls.add(settings, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 377, -1, -1));
+
+        acceptAudio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/notification_Icons/audio_icon.png"))); // NOI18N
         acceptAudio.setActionCommand("respondAudio");
         acceptAudio.setMargin(new java.awt.Insets(2, 2, 2, 2));
         acceptAudio.setMaximumSize(new java.awt.Dimension(58, 58));
         acceptAudio.setMinimumSize(new java.awt.Dimension(58, 58));
         acceptAudio.setPreferredSize(new java.awt.Dimension(58, 58));
+        controls.add(acceptAudio, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 254, -1, -1));
 
         acceptVideo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/notification_Icons/video_icon.png"))); // NOI18N
         acceptVideo.setActionCommand("respondVideo");
@@ -117,51 +144,7 @@ public class GUI extends javax.swing.JFrame {
         acceptVideo.setMaximumSize(new java.awt.Dimension(58, 58));
         acceptVideo.setMinimumSize(new java.awt.Dimension(58, 58));
         acceptVideo.setPreferredSize(new java.awt.Dimension(58, 58));
-
-        logout.setActionCommand("logout");
-        logout.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        logout.setMaximumSize(new java.awt.Dimension(58, 58));
-        logout.setMinimumSize(new java.awt.Dimension(58, 58));
-        logout.setPreferredSize(new java.awt.Dimension(58, 58));
-
-        settings.setActionCommand("settings");
-        settings.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        settings.setMaximumSize(new java.awt.Dimension(58, 58));
-        settings.setMinimumSize(new java.awt.Dimension(58, 58));
-        settings.setPreferredSize(new java.awt.Dimension(58, 58));
-
-        javax.swing.GroupLayout controlsLayout = new javax.swing.GroupLayout(controls);
-        controls.setLayout(controlsLayout);
-        controlsLayout.setHorizontalGroup(
-            controlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controlsLayout.createSequentialGroup()
-                .addGap(2, 2, 2)
-                .addGroup(controlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(acceptVideo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(streamVideo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(streamAudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(acceptAudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(settings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(2, 2, 2))
-        );
-        controlsLayout.setVerticalGroup(
-            controlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(controlsLayout.createSequentialGroup()
-                .addGap(2, 2, 2)
-                .addComponent(streamVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(streamAudio, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                .addComponent(acceptVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(acceptAudio, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59)
-                .addComponent(settings, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2))
-        );
+        controls.add(acceptVideo, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 190, -1, -1));
 
         contactsScroll.setBackground(new java.awt.Color(255, 255, 255));
         contactsScroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -259,11 +242,18 @@ public class GUI extends javax.swing.JFrame {
         setSize(currentSize);
     }//GEN-LAST:event_rightArrowActionPerformed
 
+    private void settingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_settingsActionPerformed
+
     private void setupGUI() {
         leftArrow.setPosition(controls, true);
         rightArrow.setPosition(content, false);
         
         addWindowListener(new GUIControl());
+        
+        acceptVideo.setVisible(false);
+        acceptAudio.setVisible(false);
         
         streamVideo.addActionListener(UserControl.INSTANCE);
         streamAudio.addActionListener(UserControl.INSTANCE);
@@ -365,5 +355,15 @@ public class GUI extends javax.swing.JFrame {
 
     public void toggleStreamAudio(boolean onOrOff) {
         streamAudio.togglePressed(onOrOff);
+    }
+
+    public void updateStreamAcceptors(boolean video, boolean acceptVideo, boolean audio, boolean acceptAudio, String userID) {
+        if (userID.equals(this.acceptVideo.getOwnerID()) && userID.equals(this.acceptAudio.getOwnerID())) {
+            this.acceptVideo.setPressed(acceptVideo);
+            this.acceptAudio.setPressed(acceptAudio);
+
+            this.acceptVideo.setVisible(video);
+            this.acceptAudio.setVisible(audio);
+        }
     }
 }

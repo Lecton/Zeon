@@ -39,6 +39,7 @@ public class ContactListControl implements ActionListener {
 
     protected static void clear() {
         model =new ColleagueList();
+        view.empty();
     }
     
     public static void addColleague(String userID, String name, String surname, String email, String avatar, String title, String aboutMe) {
@@ -83,20 +84,35 @@ public class ContactListControl implements ActionListener {
         if (type == 0) {
             Receiver person =INSTANCE.getColleague(userID);
             if (person != null) {
-                person.setReceivingVideo(action);
-                person.setVideoStream(streamID);
+                StreamControl.INSTANCE.closeVideoFrame(streamID, userID);
+                if (action) {
+                    person.setVideoStream(streamID);
+                } else {
+                    person.setVideoStream(null);
+                }
                 person.setAcceptedVideo(false);
                 UpdateControl.INSTANCE.add(userID, UpdateControl.VIDEONOTIFICATION, action);
             }
         } else if (type == 1) {
             Receiver person =INSTANCE.getColleague(userID);
             if (person != null) {
-                person.setReceivingAudio(action);
-                person.setAudioStream(streamID);
+                if (action) {
+                    person.setAudioStream(streamID);
+                } else {
+                    person.setAudioStream(null);
+                }
                 person.setAcceptedAudio(false);
                 UpdateControl.INSTANCE.add(userID, UpdateControl.AUDIONOTIFICATION, action);
             }
         }
+    }
+
+    protected static void resetVideoReceivers() {
+        model.resetVideoReceivers();
+    }
+
+    protected static void resetAudioReceivers() {
+        model.resetAudioReceivers();
     }
     
     protected void addProfile(String userID) {
@@ -152,8 +168,10 @@ public class ContactListControl implements ActionListener {
                 person.setVideo(!accept);
                 
                 if (accept) {
-                    StreamControl.INSTANCE.addVideoFrame(person.getVideoStream());
+                    StreamControl.INSTANCE.addVideoFrame(person.getVideoStream(), person.getUserID());
                 }
+                
+                view.alert(person.getUserID());
                 
                 Control.INSTANCE.writeMessage(MessageFactory
                         .generateStreamResponse(UserControl.getUserID(), 
@@ -169,6 +187,8 @@ public class ContactListControl implements ActionListener {
                 boolean accept =((Button)e.getSource()).isPressed();
                 person.setAcceptedAudio(accept);
                 person.setAudio(!accept);
+                
+                view.alert(person.getUserID());
                 
                 Control.INSTANCE.writeMessage(MessageFactory
                         .generateStreamResponse(UserControl.getUserID(), 
@@ -236,6 +256,7 @@ public class ContactListControl implements ActionListener {
         if (person != null) {
             person.setVideo(action);
             view.alert(userID);
+            GUIControl.updateStreamAcceptors(userID);
             return true;
         }
         return false;
@@ -246,6 +267,7 @@ public class ContactListControl implements ActionListener {
         if (person != null) {
             person.setAudio(action);
             view.alert(userID);
+            GUIControl.updateStreamAcceptors(userID);
             return true;
         }
         return false;

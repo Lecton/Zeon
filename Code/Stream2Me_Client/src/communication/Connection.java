@@ -55,8 +55,8 @@ public class Connection {
     }
     
     public void writeMessage(Message msg) {
-        LOGGER.log(Level.INFO, "Writing message "+msg.handle()
-                +" from "+msg.getUserID()+" to "+msg.getTargetID());
+//        LOGGER.log(Level.INFO, "Writing message "+msg.handle()
+//                +" from "+msg.getUserID()+" to "+msg.getTargetID());
         
         channel.writeAndFlush(msg);
     }

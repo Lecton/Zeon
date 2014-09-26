@@ -9,9 +9,17 @@ package mvc.controller;
 import communication.handlers.MessageFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import mvc.model.person.Person;
 import mvc.view.generalUI.ProfilePanel;
+import utils.ImageUtils;
 
 /**
  *
@@ -65,32 +73,59 @@ public class ProfileControl implements ActionListener {
                     person.getTitle(), person.getAboutMe());
         }
     }
+    
+    public BufferedImage imgProfilePicMouseClicked(MouseEvent evt, boolean owner, String userID) {
+        if (owner) {
+            if (evt.getButton() == 3) {
+                try {
+                    JFileChooser chooser =new JFileChooser();
+                    chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                    chooser.setMultiSelectionEnabled(false);
+                    FileNameExtensionFilter filter =new FileNameExtensionFilter("images", "png", "jpg", "jpeg", "bmp");
+                    chooser.setFileFilter(filter);
+
+                    if (chooser.showOpenDialog(null) == 0) {
+                        File cf =chooser.getSelectedFile();
+                        
+                        BufferedImage image =ImageIO.read(cf);
+                        Control.INSTANCE.writeMessage(
+                                MessageFactory.generateUpdateAvatar(userID, 
+                                        ImageUtils.encodeToString(image, "png")));
+                        return image;
+                    }
+                    return null;
+                } catch (IOException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }
+        return null;
+    }   
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String command =e.getActionCommand();
         if (command != null) {
             if (command.equals("updateDetails")) {
-                String userID =view.getUserID();
-                String name =view.getFirstname();
-                String surname =view.getSurname();
-                String email =view.getEmail();
-                String title =view.getTitle();
-                String aboutMe =view.getAboutMe();
-                
-                Person person =ContactListControl.INSTANCE.getColleague(userID);
-                if (person != null) {
-                    person.setName(name);
-                    person.setSurname(surname);
-                    person.setEmail(email);
-                    person.setTitle(title);
-                    person.setAboutMe(aboutMe);
-                    Control.INSTANCE.writeMessage(MessageFactory.generateUpdateProfile(userID, name, surname, email, title, aboutMe));
-                }
+//                String userID =view.getUserID();
+//                String name =view.getFirstname();
+//                String surname =view.getSurname();
+//                String email =view.getEmail();
+//                String title =view.getTitle();
+//                String aboutMe =view.getAboutMe();
+//                
+//                Person person =ContactListControl.INSTANCE.getColleague(userID);
+//                if (person != null) {
+//                    person.setName(name);
+//                    person.setSurname(surname);
+//                    person.setEmail(email);
+//                    person.setTitle(title);
+//                    person.setAboutMe(aboutMe);
+//                    Control.INSTANCE.writeMessage(MessageFactory.generateUpdateProfile(userID, name, surname, email, title, aboutMe));
+//                }
+                System.out.println("ERROR HERE!!!!!!!!!!!!!!!!!!!!!!!!!");
             } else if (command.equals("updateAvatar")) {
-                String userID =view.getUserID();
-//                String avatar =view.getAvatar();
-                
+                System.out.println("ERROR!!!!!!!!!!!!!!!!!!!!!!!!!");
             } else if (command.equals("updateUserDetails")) {
                 String userID =view.getUserID();
                 String name =view.getFirstname();

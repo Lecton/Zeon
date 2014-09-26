@@ -6,6 +6,7 @@
 
 package mvc.view.generalUI;
 
+import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mvc.controller.ProfileControl;
@@ -57,7 +58,7 @@ public class ProfilePanel extends javax.swing.JPanel {
             txtName.setText(name);
             txtSurname.setText(surname);
             txtEmail.setText(email);
-    //        this.imgProfilePicture.setImage(avatar, false);
+            imgProfilePic.setImage(avatar, false);
             txtTitle.setText(title);
             
             lblName.setText("Name");
@@ -73,7 +74,7 @@ public class ProfilePanel extends javax.swing.JPanel {
             lblTitle.setText(title);
             
             txaAboutMe.setEditable(false);
-    //        this.imgProfilePicture.setImage(avatar, false);
+            imgProfilePic.setImage(avatar, false);
         }
         txaAboutMe.setText(aboutMe);
     }
@@ -113,7 +114,7 @@ public class ProfilePanel extends javax.swing.JPanel {
         txtName = new javax.swing.JTextField();
         txtSurname = new javax.swing.JTextField();
         btnUpdateDetails = new javax.swing.JButton();
-        imageContainer1 = new mvc.view.generalUI.containers.ImageContainer();
+        imgProfilePic = new mvc.view.generalUI.containers.ImageContainer();
         txtEmail = new javax.swing.JTextField();
         lblTitle = new javax.swing.JLabel();
         txtTitle = new javax.swing.JTextField();
@@ -138,16 +139,22 @@ public class ProfilePanel extends javax.swing.JPanel {
         txtSurname.setText("Surname");
 
         btnUpdateDetails.setText("Update Details");
-        btnUpdateDetails.setActionCommand("updateDetails");
+        btnUpdateDetails.setActionCommand("updateUserDetails");
 
-        javax.swing.GroupLayout imageContainer1Layout = new javax.swing.GroupLayout(imageContainer1);
-        imageContainer1.setLayout(imageContainer1Layout);
-        imageContainer1Layout.setHorizontalGroup(
-            imageContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        imgProfilePic.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                imgProfilePicMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout imgProfilePicLayout = new javax.swing.GroupLayout(imgProfilePic);
+        imgProfilePic.setLayout(imgProfilePicLayout);
+        imgProfilePicLayout.setHorizontalGroup(
+            imgProfilePicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 250, Short.MAX_VALUE)
         );
-        imageContainer1Layout.setVerticalGroup(
-            imageContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        imgProfilePicLayout.setVerticalGroup(
+            imgProfilePicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 250, Short.MAX_VALUE)
         );
 
@@ -177,7 +184,7 @@ public class ProfilePanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(imageContainer1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(imgProfilePic, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
                         .addComponent(lblSurname, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
                         .addComponent(lblName, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
@@ -188,7 +195,7 @@ public class ProfilePanel extends javax.swing.JPanel {
                         .addComponent(txtTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txaAboutMe, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                        .addComponent(txaAboutMe, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnUpdateDetails, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -196,7 +203,7 @@ public class ProfilePanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(imageContainer1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(imgProfilePic, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblName)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -231,9 +238,18 @@ public class ProfilePanel extends javax.swing.JPanel {
         LOGGER.log(Level.INFO, "property: "+evt.getPropertyName());
     }//GEN-LAST:event_formPropertyChange
 
+    private void imgProfilePicMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imgProfilePicMouseClicked
+        if (owner) {
+            BufferedImage image =ProfileControl.INSTANCE.imgProfilePicMouseClicked(evt, owner, userID);
+            if (image != null) {
+                imgProfilePic.setImage(image, true);
+            }
+        }
+    }//GEN-LAST:event_imgProfilePicMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnUpdateDetails;
-    private mvc.view.generalUI.containers.ImageContainer imageContainer1;
+    private mvc.view.generalUI.containers.ImageContainer imgProfilePic;
     private javax.swing.JLabel lblAboutMe;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblName;

@@ -62,6 +62,7 @@ public class Login extends javax.swing.JFrame {
 
         lblPassword.setText("Password");
 
+        txtPassword.setText("cos301");
         txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtPasswordKeyReleased(evt);

@@ -173,7 +173,7 @@ public class MessageHandler {
                     String groupID =sp.getGroupID();
                     ClientHandler.writeAndFlush(groupID, terminate, new ClientMatcher(msg.getUserID()));
                     StreamNotifyMessage message =new StreamNotifyMessage(
-                            msg.getUserID(), Message.ALL, sp.getStreamID(), sp.getType(), true);
+                            msg.getUserID(), Message.ALL, sp.getStreamID(), sp.getType(), false);
                     ClientHandler.writeAndFlush(groupID, message, sp.generateMatcher());
                     Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                             "StreamProperty "+msg.getStreamName()+" removed.");

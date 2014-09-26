@@ -78,7 +78,9 @@ public class Button extends JButton {
     }
 
     public void setPressed(boolean pressed) {
-        this.pressed = pressed;
+        if (pressed != this.pressed) {
+            togglePressed(pressed);
+        }
     }
 
     public boolean isPressed() {

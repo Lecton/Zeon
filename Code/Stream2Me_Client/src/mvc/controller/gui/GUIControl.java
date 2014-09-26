@@ -6,6 +6,7 @@
 
 package mvc.controller;
 
+import communication.handlers.MessageFactory;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.logging.Logger;
@@ -45,9 +46,14 @@ public class GUIControl implements WindowListener {
         view.hideStreamAcceptors(userID);
     }
     
+    protected static void updateStreamAcceptors(String userID) {
+        Colleague person =ContactListControl.INSTANCE.getColleague(userID);
+        view.updateStreamAcceptors(person.getVideoStream() != null, person.acceptedVideo(), person.getAudioStream() != null, person.acceptedAudio(), userID);
+    }
+    
     protected static void checkStreamAcceptors(String userID) {
         Colleague person =ContactListControl.INSTANCE.getColleague(userID);
-        view.setStreamAcceptors(person.isReceivingVideo(), person.acceptedVideo(), person.isReceivingAudio(), person.acceptedAudio(), userID);
+        view.setStreamAcceptors(person.getVideoStream() != null, person.acceptedVideo(), person.getAudioStream() != null, person.acceptedAudio(), userID);
     }
 
     protected static void updateContent(Object target, int type) {
@@ -119,4 +125,8 @@ public class GUIControl implements WindowListener {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    protected static void requestUpdateList() {
+        ContactListControl.clear();
+        Control.INSTANCE.writeMessage(MessageFactory.generateRefreshListRequest(UserControl.getUserID()));
+    }
 }

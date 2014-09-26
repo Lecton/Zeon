@@ -231,7 +231,40 @@ public class UserHandler {
      * @return Possibly modified UpdateAvatarMessage
      */
     public static Message updateAvatar(UpdateAvatarMessage msg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PreparedStatement statement;
+        ResultSet result = null;
+        String query = "UPDATE client " +
+                        "SET avatar = ? " +
+                        "WHERE userID = ?";
+        statement = Database.INSTANCE.getPreparedStatement(query);
+        try {
+            statement.setString(1, msg.getAvatar());
+            statement.setString(2, msg.getUserID());
+            int lines =statement.executeUpdate();
+            if (lines == 1) {
+                msg.setTargetGroupID(getGroupID(msg.getUserID()));
+                return msg;
+            } else {
+                Logger.getLogger(UserHandler.class.getName())
+                        .log(Level.SEVERE, "Lines changed error", 
+                                new SQLException("SQL returned with invalid "
+                                        + "line change amount", 
+                                        statement.toString()));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserHandler.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if(statement != null) {
+                    statement.close();
+                }
+            } catch(SQLException ex) {
+                Logger.getLogger(UserHandler.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
     }
 
     /**
@@ -261,6 +294,7 @@ public class UserHandler {
             statement.setString(6, msg.getUserID());
             int lines =statement.executeUpdate();
             if (lines == 1) {
+                msg.setTargetGroupID(getGroupID(msg.getUserID()));
                 return msg;
             } else {
                 Logger.getLogger(UserHandler.class.getName())

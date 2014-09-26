@@ -6,6 +6,7 @@
 
 package mvc.model;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,5 +31,19 @@ public class ColleagueList {
     
     public Colleague get(String userID) {
         return colleagues.get(userID);
+    }
+
+    public void resetVideoReceivers() {
+        Collection<Colleague> colls =colleagues.values();
+        for (Colleague c: colls) {
+            c.setReceivingVideo(false);
+        }
+    }
+
+    public void resetAudioReceivers() {
+        Collection<Colleague> colls =colleagues.values();
+        for (Colleague c: colls) {
+            c.setReceivingAudio(false);
+        }
     }
 }

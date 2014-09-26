@@ -31,7 +31,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="imageContainer1" min="-2" pref="250" max="-2" attributes="0"/>
+                      <Component id="imgProfilePic" min="-2" pref="250" max="-2" attributes="0"/>
                       <Component id="lblTitle" alignment="0" pref="292" max="32767" attributes="0"/>
                       <Component id="lblSurname" alignment="0" pref="292" max="32767" attributes="0"/>
                       <Component id="lblName" alignment="0" pref="292" max="32767" attributes="0"/>
@@ -43,7 +43,7 @@
                       <Component id="txtEmail" alignment="0" min="-2" pref="260" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="txaAboutMe" alignment="0" pref="260" max="32767" attributes="0"/>
+                      <Component id="txaAboutMe" alignment="0" max="32767" attributes="0"/>
                       <Component id="btnUpdateDetails" alignment="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -55,7 +55,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-              <Component id="imageContainer1" min="-2" pref="250" max="-2" attributes="0"/>
+              <Component id="imgProfilePic" min="-2" pref="250" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="lblName" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -112,10 +112,13 @@
     <Component class="javax.swing.JButton" name="btnUpdateDetails">
       <Properties>
         <Property name="text" type="java.lang.String" value="Update Details"/>
-        <Property name="actionCommand" type="java.lang.String" value="updateDetails"/>
+        <Property name="actionCommand" type="java.lang.String" value="updateUserDetails"/>
       </Properties>
     </Component>
-    <Container class="mvc.view.generalUI.containers.ImageContainer" name="imageContainer1">
+    <Container class="mvc.view.generalUI.containers.ImageContainer" name="imgProfilePic">
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="imgProfilePicMouseClicked"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">

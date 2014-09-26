@@ -23,7 +23,6 @@ import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.internal.ConcurrentSet;
 import io.netty.util.internal.StringUtil;
-import java.io.IOException;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -410,7 +409,7 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
         
 //        if (message.handle() != Message.MessageType.auido) {
             Logger.getLogger(ClientChannelGroup.class.getName()).log(Level.INFO, 
-                         "Writing message ("+message.getMessage()+") to group. "+count+" users written to.");
+                         "Writing message "+message.handle()+": ("+message.getMessage()+") to group. "+count+" users written to.");
 //        }
 
         ReferenceCountUtil.release(message);

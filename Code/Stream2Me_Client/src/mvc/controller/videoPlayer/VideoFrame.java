@@ -11,6 +11,8 @@ import javax.swing.JPopupMenu;
 public class VideoFrame extends JFrame {
     private GLCanvas mainCanvas;
     private final String streamID;
+    private final String userID;
+    
     private final List<String> imageBuffer;
     private final ImageRenderer videoRenderer;
     
@@ -19,10 +21,11 @@ public class VideoFrame extends JFrame {
     
     private Thread fps;
 
-    public VideoFrame(String title, String streamID) throws HeadlessException {
+    public VideoFrame(String title, String streamID, String userID) throws HeadlessException {
         imageBuffer =new ArrayList<>();
         this.streamID =streamID;
-        System.out.println("streamID: "+streamID);
+        this.userID =userID;
+//        System.out.println("streamID: "+streamID);
         this.videoRenderer =new ImageRenderer();
         
         setTitle(title+" - "+streamID);
@@ -49,7 +52,7 @@ public class VideoFrame extends JFrame {
                     }
                     int read =readCount.getAndSet(0);
                     int write =writeCount.getAndSet(0);
-                    System.out.println("Read FPS: "+read+" --- Write FPS: "+write);
+//                    System.out.println("Read FPS: "+read+" --- Write FPS: "+write);
                 }
             }
         }, streamID+" - fps");
@@ -58,6 +61,10 @@ public class VideoFrame extends JFrame {
 
     public String getStreamID() {
         return streamID;
+    }
+
+    public String getUserID() {
+        return userID;
     }
     
     public void write(final String image) {
@@ -80,47 +87,6 @@ public class VideoFrame extends JFrame {
         } else {
             return "";
         }
-    }
-
-    private void run() {
-        JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-
-        // Create top-level window and menus
-        JFrame frame = new JFrame("Texture Sub Image Test");
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
-        // Now set up the main GLCanvas
-        mainCanvas = new GLCanvas();
-        mainCanvas.addGLEventListener(new ImageRenderer());
-//        mainCanvas.addMouseListener(new MouseAdapter() {
-//            public void mouseExited(MouseEvent e) {
-//              mainCanvas.repaint();
-//            }
-//        });
-
-        frame.getContentPane().add(mainCanvas);
-        frame.setSize(512, 512);
-        frame.setVisible(true);
-        
-        new Thread(new Runnable() {
-            int count = 0;
-            public void run() {
-                while (true) {
-                    mainCanvas.repaint();
-                    count++;
-                    try {
-                        Thread.sleep(1000/60);
-                    } catch (InterruptedException e) {
-
-                    }
-                    if (count / 10 == (double)count / 10.0) {
-                        System.out.println("Draw Count: " + count);
-                    }
-                }
-            }
-        }).start();
     }
 
     protected void draw() {

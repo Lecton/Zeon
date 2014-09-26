@@ -91,6 +91,7 @@ public class Control {
                         break;
                     case 2:
                         window =ui;
+                        GUIControl.requestUpdateList();
                         msgHandler =new MessageHandler();
                         break;
                 }
