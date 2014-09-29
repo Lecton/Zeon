@@ -1,0 +1,557 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0087)http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>OpenGL ES Android – Displaying Graphical Elements (Primitives) | Against the Grain – Game Development</title>
+<link rel="shortcut icon" href="http://obviam.net/wp-content/themes/clean-simple-white/favicon_helmet.ico">
+<link href="./article 2_files/style.css" rel="stylesheet" type="text/css" media="screen">
+				
+	<!-- Google Analytics for WordPress by Yoast v4.0 | http://yoast.com/wordpress/google-analytics/ -->
+	<script type="text/javascript" src="./article 2_files/woopra.js" async=""></script><script type="text/javascript" async="" src="./article 2_files/page.js"></script><script type="text/javascript" async="" src="./article 2_files/ga.js"></script><script type="text/javascript">//<![CDATA[
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount','UA-17403436-1']);
+	_gaq.push(['_setCustomVar',1,'tags','3d graphics-2 opengl-2'],['_setCustomVar',2,'categories','2d 3d android opengl'],['_trackPageview']);
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+	//]]></script>
+	<!-- End of Google Analytics for WordPress by Yoast v4.0 -->
+<link rel="alternate" type="application/rss+xml" title="Against the Grain - Game Development » OpenGL ES Android – Displaying Graphical Elements (Primitives) Comments Feed" href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/feed/">
+<link rel="stylesheet" id="A2A_SHARE_SAVE-css" href="./article 2_files/addtoany.min.css" type="text/css" media="all">
+<script type="text/javascript" src="./article 2_files/si_captcha.js"></script>
+<script type="text/javascript" src="./article 2_files/comment-reply.min.js"></script>
+<script type="text/javascript" src="./article 2_files/jquery.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://obviam.net/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://obviam.net/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="OpenGL ES with Android Tutorial- Switching from Canvas to OpenGL" href="http://obviam.net/index.php/opengl-es-with-android-switching-from-canvas-to-opengl/">
+<link rel="next" title="Texture Mapping – OpenGL Android (Displaying Images using OpenGL and Squares)" href="http://obviam.net/index.php/texture-mapping-opengl-android-displaying-images-using-opengl-and-squares/">
+<meta name="generator" content="WordPress 3.5">
+<link rel="canonical" href="./article 2_files/article 2.htm">
+<link rel="shortlink" href="http://obviam.net/?p=671">
+
+<script type="text/javascript"><!--
+var a2a_config=a2a_config||{},wpa2a={done:false,html_done:false,script_ready:false,script_load:function(){var a=document.createElement('script'),s=document.getElementsByTagName('script')[0];a.type='text/javascript';a.async=true;a.src='http://static.addtoany.com/menu/page.js';s.parentNode.insertBefore(a,s);wpa2a.script_load=function(){};},script_onready:function(){if(a2a.type=='page'){wpa2a.script_ready=true;if(wpa2a.html_done)wpa2a.init();}},init:function(){for(var i=0,el,target,targets=wpa2a.targets,length=targets.length;i<length;i++){el=document.getElementById('wpa2a_'+(i+1));target=targets[i];a2a_config.linkname=target.title;a2a_config.linkurl=target.url;if(el)a2a.init('page',{target:el});wpa2a.done=true;}}};a2a_config.tracking_callback=['ready',wpa2a.script_onready];
+//--></script>
+<!--[if IE]>
+<style type="text/css">
+.addtoany_list a img{filter:alpha(opacity=70)}
+.addtoany_list a:hover img,.addtoany_list a.addtoany_share_save img{filter:alpha(opacity=100)}
+</style>
+<![endif]-->
+<style type="text/css">.a2a_menu, .a2a_menu * { -moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box;float:none;margin:0;padding:0;height:auto;width:auto;}.a2a_menu { border-radius: 6px;display:none;direction:ltr;background:#FFF;font: 14px Arial,Helvetica,sans-serif;color:#000;line-height:12px;border: 1px solid #CCC;vertical-align:baseline;overflow:hidden;}.a2a_mini {min-width:200px;position:absolute;width: 300px;z-index:9999997;}.a2a_overlay {display: none;background: #CCC; _height: expression( ((e=document.documentElement.clientHeight)?e:document.body.clientHeight)+"px" ); _width: expression( ((e=document.documentElement.clientWidth)?e:document.body.clientWidth)+"px" ); filter: alpha(opacity=50); opacity: .7;position: fixed;_position: absolute; top: 0;right: 0;left: 0;bottom: 0;z-index: 9999998;-webkit-animation: a2aFadeInOverlay .14s ease-out;animation: a2aFadeInOverlay .14s ease-out;}.a2a_full {background: #FFF;height: auto;height: calc(320px);top: 15%;_top: expression(40+((e=document.documentElement.scrollTop)?e:document.body.scrollTop)+"px"); left: 50%;margin-left: -320px; position: fixed;_position: absolute; text-align: center;width: 640px;z-index: 9999999; -webkit-animation: a2aFadeIn .14s ease-in;    animation: a2aFadeIn .14s ease-in;}.a2a_full_header,.a2a_full_services,.a2a_full_footer {border: 0;margin: 0;padding: 12px;box-sizing: border-box;}.a2a_full_header {padding-bottom: 8px;}.a2a_full_services {height: 280px; overflow-y: scroll;padding: 0 12px;-webkit-overflow-scrolling: touch;}.a2a_full_services .a2a_i {display: inline-block;float: none;width: 181px;width: calc(33.334% - 18px);}div.a2a_full_footer {font-size: 9px;text-align: center;padding: 6px 12px;}div.a2a_full_footer a,div.a2a_full_footer a:visited {display: inline;font-size: 9px;padding: 6px 12px; }div.a2a_full_footer a:hover {background: none;border: 0;color: #0166FF;}div.a2a_full_footer a span.a2a_i_a2a_sm {display: inline-block;padding-left: 14px;vertical-align: bottom;}@-webkit-keyframes a2aFadeIn {from { opacity: 0; }  to { opacity: 1; }}@keyframes a2aFadeIn {from { opacity: 0; }  to { opacity: 1; }}@-webkit-keyframes a2aFadeInOverlay {from { opacity: 0; }  to { opacity: .7; }}@keyframes a2aFadeInOverlay {from { opacity: 0; }  to { opacity: .7; }}@media (max-width: 639px) {.a2a_full {top: 15%;left: 0;margin-left: auto;width: 100%;}}@media (min-width: 318px) and (max-width: 437px) {.a2a_full .a2a_full_services .a2a_i {width: calc(50% - 18px);}}@media (max-width: 317px) {.a2a_full .a2a_full_services .a2a_i {width: calc(100% - 18px);}}@media (max-height: 436px) {.a2a_full {bottom: 40px;height: auto;top: 40px;}}.a2a_menu a{color:#0166FF;text-decoration:none;font:14px Arial,Helvetica,sans-serif;line-height:14px;height:auto;width:auto;outline:none;-moz-outline:none;}.a2a_menu a:visited{color:#0166FF}.a2a_menu a:hover,.a2a_menu a:active,.a2a_menu a.a2a_i:focus,.a2a_tabs div:hover{color:#2A2A2A;border:1px solid #EEE;background-color:#EEE;text-decoration:none}.a2a_menu span,.a2a_img{background:url(http://static.addtoany.com/menu/icons.28.png) no-repeat;border:0;display:block;line-height:16px}.a2a_menu span.a2a_i_find { height:16px;left: 8px;position:absolute;top: 7px;width:16px;}.a2a_menu span.a2a_i_find svg {background-color: #FFF;}.a2a_menu span.a2a_i_find svg path {fill: #CCC;}#a2a_menu_container{display:inline-block} #a2a_menu_container{_display:inline} .a2a_menu_title_container {padding: 6px 8px;}.a2a_menu_find_container {border: 1px solid #CCC;border-radius: 6px;padding: 2px 24px 2px 0;position: relative;text-align: left;}.a2a_cols_container{border-bottom-right-radius:8px;border-top-right-radius:8px}.a2a_cols_container .a2a_col1{overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}.a2a_menu input, .a2a_menu input[type="text"]{display:block;background-image:none;box-shadow:none;line-height:100%;margin:0;overflow:hidden;padding:0;-moz-box-shadow:none;-webkit-box-shadow:none;-webkit-appearance:none} .a2a_menu_title_container input.a2a_menu_title {background-color: #FFF;border: 0;color: #2A2A2A;font: inherit;margin: 0;padding: 0;width: 99%;}.a2a_menu_find_container input.a2a_menu_find {background-color: transparent;_background-color: #FFF;border: 0;color: #2A2A2A;font-size: 16px;height: 20px;line-height: 20px;left: 28px;outline: 0;padding: 2px 0;position: relative;width: 99%;}.a2a_clear{clear:both} .a2a_img, .a2a_svg { display:block; overflow:hidden; }.a2a_img{height:16px;line-height:16px;width:16px;}.a2a_svg{height:32px;line-height:32px;width:32px;}.a2a_default_style a{float:left;line-height:16px;padding:0 2px}.a2a_default_style a:hover .a2a_img,.a2a_default_style a:hover .a2a_svg,.a2a_floating_style a:hover .a2a_img,.a2a_floating_style a:hover .a2a_svg { opacity: .7;}.a2a_default_style .a2a_svg, .a2a_floating_style .a2a_svg { border-radius:14% ;} .a2a_default_style .a2a_img, .a2a_default_style .a2a_dd, .a2a_default_style .a2a_svg{float:left}.a2a_default_style .a2a_img_text{margin-right:4px}.a2a_default_style .a2a_divider{border-left:1px solid #000;display:inline;float:left;height:16px;line-height:16px;margin:0 5px}.a2a_kit a{cursor:pointer}.a2a_floating_style { background-color: #fff; border-radius: 6px; padding: 4px; position: fixed; z-index: 9999995; }.a2a_vertical_style a { display: block; padding: 4px; }.a2a_floating_style.a2a_default_style { bottom: 0; }.a2a_floating_style.a2a_default_style a { padding: 4px; }.a2a_nowrap{white-space:nowrap}.a2a_note{margin:0 auto;padding:9px;font-size:12px;text-align:center}.a2a_note .a2a_note_note{margin:0;color:#2A2A2A}.a2a_wide a{display:block;margin-top:3px;border:1px solid #EEE;padding:3px;text-align:center}.a2a_tabs{float:left;margin:0 0 3px} .a2a_tabs a,.a2a_tabs div{margin:1px;background-color:#EEE; border:1px solid #EEE; font-size:11px; padding:6px 12px ; white-space:nowrap} .a2a_tabs a span, .a2a_tabs div span{display:inline-block;padding-left:20px;height:auto;width:auto} .a2a_tabs_default a span, .a2a_tabs_default div span{height:auto;max-width:99px;overflow:hidden;padding-left:20px;width:auto;_width:expression(this.clientWidth > 99? "97px" : "auto");}.a2a_tabs a, .a2a_tabs a:visited, .a2a_tabs a:hover, .a2a_tabs div, .a2a_tabs div:hover{cursor:pointer;border-bottom:1px solid #EEE;color:#2A2A2A;border-bottom-left-radius:0;-webkit-border-bottom-left-radius:0;-moz-border-radius-bottomleft:0;border-bottom-right-radius:0;-webkit-border-bottom-right-radius:0;-moz-border-radius-bottomright:0}a.a2a_tab_selected, a.a2a_tab_selected:visited,a.a2a_tab_selected:hover,a.a2a_tab_selected:active,a.a2a_tab_selected:focus, div.a2a_tab_selected,div.a2a_tab_selected:hover{color:#0166FF;background-color:#FFF;border:1px solid #CCC;border-bottom:1px solid #FFF}a.a2a_i,i.a2a_i{display:block;float:left;border:1px solid #FFF;padding:6px 8px;text-align:left;white-space:nowrap;width:132px;}a.a2a_i span, a.a2a_more span {overflow: hidden;padding: 0 0 0 21px;text-overflow: ellipsis;}a.a2a_sss:hover {border-left: 1px solid #CCC;}a.a2a_menu_show_more_less{border-bottom:1px solid #FFF;border-left:0;border-right:0;margin:6px 0 0;padding:6px}a.a2a_menu_show_more_less span{display:inline-block;height:16px;margin:0 auto;vertical-align:bottom;} iframe.a2a_shim {background-color: transparent;border: 0;bottom: 0;filter: alpha(opacity=0); height: 100%;left: 0;right: 0;top: 0;position: absolute;width: 100%;z-index: 9999996;_height: expression( ((e=document.documentElement.clientHeight)?e:document.body.clientHeight)+"px" ); _width: expression( ((e=document.documentElement.clientWidth)?e:document.body.clientWidth)+"px" ); }.a2a_dd img {border:0;-ms-touch-action:manipulation;}iframe[id^="PIN_"][id$="_nag"] {display: none !important;}.a2a_i_a2a{background-position:0 0!important}.a2a_i_a2a_sm{background-position:0 -17px!important}.a2a_i_agregator{background-position:0 -34px!important}.a2a_i_aim{background-position:0 -51px!important}.a2a_i_allvoices{background-position:0 -68px!important}.a2a_i_amazon{background-position:0 -85px!important}.a2a_i_aol{background-position:0 -102px!important}.a2a_i_app_net{background-position:0 -119px!important}.a2a_i_arto{background-position:0 -136px!important}.a2a_i_baidu{background-position:0 -153px!important}.a2a_i_bebo{background-position:0 -170px!important}.a2a_i_bibsonomy{background-position:0 -187px!important}.a2a_i_bitty{background-position:0 -204px!important}.a2a_i_blinklist{background-position:0 -221px!important}.a2a_i_blogger{background-position:0 -238px!important}.a2a_i_bloglines{background-position:0 -255px!important}.a2a_i_blogmarks{background-position:0 -272px!important}.a2a_i_bloomberg_current{background-position:0 -289px!important}.a2a_i_bookmark{background-position:0 -306px!important}.a2a_i_bookmarks_fr{background-position:0 -323px!important}.a2a_i_box{background-position:0 -340px!important}.a2a_i_buddymarks{background-position:0 -357px!important}.a2a_i_buffer{background-position:0 -374px!important}.a2a_i_care2{background-position:0 -391px!important}.a2a_i_chrome{background-position:0 -408px!important}.a2a_i_citeulike{background-position:0 -425px!important}.a2a_i_dailyrotation{background-position:0 -442px!important}.a2a_i_default{background-position:0 -459px!important}.a2a_i_delicious{background-position:0 -476px!important}.a2a_i_designfloat{background-position:0 -493px!important}.a2a_i_diaspora{background-position:0 -510px!important}.a2a_i_digg{background-position:0 -527px!important}.a2a_i_diigo{background-position:0 -544px!important}.a2a_i_dzone{background-position:0 -561px!important}.a2a_i_email{background-position:0 -578px!important}.a2a_i_evernote{background-position:0 -595px!important}.a2a_i_facebook{background-position:0 -612px!important}.a2a_i_fark{background-position:0 -629px!important}.a2a_i_feed{background-position:0 -646px!important}.a2a_i_feedblitz{background-position:0 -663px!important}.a2a_i_feedbucket{background-position:0 -680px!important}.a2a_i_feedly{background-position:0 -697px!important}.a2a_i_feedmailer{background-position:0 -714px!important}.a2a_i_find{background-position:0 -731px!important}.a2a_i_fireant{background-position:0 -748px!important}.a2a_i_firefox{background-position:0 -765px!important}.a2a_i_flipboard{background-position:0 -782px!important}.a2a_i_folkd{background-position:0 -799px!important}.a2a_i_friendfeed{background-position:0 -816px!important}.a2a_i_funp{background-position:0 -833px!important}.a2a_i_gmail{background-position:0 -850px!important}.a2a_i_google{background-position:0 -867px!important}.a2a_i_google_plus{background-position:0 -884px!important}.a2a_i_hatena{background-position:0 -901px!important}.a2a_i_instapaper{background-position:0 -918px!important}.a2a_i_itunes{background-position:0 -935px!important}.a2a_i_jamespot{background-position:0 -952px!important}.a2a_i_jumptags{background-position:0 -969px!important}.a2a_i_khabbr{background-position:0 -986px!important}.a2a_i_kindle{background-position:0 -1003px!important}.a2a_i_klipfolio{background-position:0 -1020px!important}.a2a_i_line{background-position:0 -1037px!important}.a2a_i_linkagogo{background-position:0 -1054px!important}.a2a_i_linkatopia{background-position:0 -1071px!important}.a2a_i_linkedin{background-position:0 -1088px!important}.a2a_i_livejournal{background-position:0 -1105px!important}.a2a_i_mail_ru{background-position:0 -1122px!important}.a2a_i_mendeley{background-position:0 -1139px!important}.a2a_i_meneame{background-position:0 -1156px!important}.a2a_i_miro{background-position:0 -1173px!important}.a2a_i_mixi{background-position:0 -1190px!important}.a2a_i_my_msn{background-position:0 -1207px!important}.a2a_i_myspace{background-position:0 -1224px!important}.a2a_i_netlog{background-position:0 -1241px!important}.a2a_i_netvibes{background-position:0 -1258px!important}.a2a_i_netvouz{background-position:0 -1275px!important}.a2a_i_newsalloy{background-position:0 -1292px!important}.a2a_i_newsisfree{background-position:0 -1309px!important}.a2a_i_newstrust{background-position:0 -1326px!important}.a2a_i_newsvine{background-position:0 -1343px!important}.a2a_i_nowpublic{background-position:0 -1360px!important}.a2a_i_odnoklassniki{background-position:0 -1377px!important}.a2a_i_oknotizie{background-position:0 -1394px!important}.a2a_i_oldreader{background-position:0 -1411px!important}.a2a_i_orkut{background-position:0 -1428px!important}.a2a_i_outlook{background-position:0 -1445px!important}.a2a_i_outlook_com{background-position:0 -1462px!important}.a2a_i_pdf{background-position:0 -1479px!important}.a2a_i_phonefavs{background-position:0 -1496px!important}.a2a_i_pinboard{background-position:0 -1513px!important}.a2a_i_pinterest{background-position:0 -1530px!important}.a2a_i_plurk{background-position:0 -1547px!important}.a2a_i_pocket{background-position:0 -1564px!important}.a2a_i_podnova{background-position:0 -1581px!important}.a2a_i_print{background-position:0 -1598px!important}.a2a_i_printfriendly{background-position:0 -1615px!important}.a2a_i_protopage{background-position:0 -1632px!important}.a2a_i_pusha{background-position:0 -1649px!important}.a2a_i_rapidfeeds{background-position:0 -1666px!important}.a2a_i_reddit{background-position:0 -1683px!important}.a2a_i_rediff{background-position:0 -1700px!important}.a2a_i_segnalo{background-position:0 -1717px!important}.a2a_i_share{background-position:0 -1734px!important}.a2a_i_sina_weibo{background-position:0 -1751px!important}.a2a_i_sitejot{background-position:0 -1768px!important}.a2a_i_slashdot{background-position:0 -1785px!important}.a2a_i_springpad{background-position:0 -1802px!important}.a2a_i_startaid{background-position:0 -1819px!important}.a2a_i_stumbleupon{background-position:0 -1836px!important}.a2a_i_stumpedia{background-position:0 -1853px!important}.a2a_i_symbaloo{background-position:0 -1870px!important}.a2a_i_technotizie{background-position:0 -1887px!important}.a2a_i_thefreedictionary{background-position:0 -1904px!important}.a2a_i_thefreelibrary{background-position:0 -1921px!important}.a2a_i_tuenti{background-position:0 -1938px!important}.a2a_i_tumblr{background-position:0 -1955px!important}.a2a_i_twiddla{background-position:0 -1972px!important}.a2a_i_twitter{background-position:0 -1989px!important}.a2a_i_typepad{background-position:0 -2006px!important}.a2a_i_viadeo{background-position:0 -2023px!important}.a2a_i_vk{background-position:0 -2040px!important}.a2a_i_wanelo{background-position:0 -2057px!important}.a2a_i_webnews{background-position:0 -2074px!important}.a2a_i_whatsapp{background-position:0 -2091px!important}.a2a_i_winksite{background-position:0 -2108px!important}.a2a_i_wists{background-position:0 -2125px!important}.a2a_i_wordpress{background-position:0 -2142px!important}.a2a_i_xerpi{background-position:0 -2159px!important}.a2a_i_xing{background-position:0 -2176px!important}.a2a_i_y18{background-position:0 -2193px!important}.a2a_i_yahoo{background-position:0 -2210px!important}.a2a_i_yim{background-position:0 -2227px!important}.a2a_i_yoolink{background-position:0 -2244px!important}.a2a_i_youmob{background-position:0 -2261px!important}</style><link rel="stylesheet" type="text/css" href="./article 2_files/shCore.css"><link rel="stylesheet" type="text/css" href="./article 2_files/shThemeDefault.css"></head>
+<body>
+<div id="wrapper">
+<div id="container">
+<div id="header" onclick="document.location.assign(&#39;http://obviam.net&#39;);">
+	&nbsp;
+<!-- 
+<h1><a href="http://obviam.net"></a></h1>
+<div id="head-desc"></div>
+ -->
+</div><!-- end header -->
+
+<div id="head-nav">
+<ul id="nav">
+	<li><a href="http://obviam.net/">Home</a></li>
+	<li class="page_item page-item-2"><a href="http://obviam.net/index.php/about/">What is this all about?</a></li>
+<li class="page_item page-item-767"><a href="http://obviam.net/index.php/table-of-contents/">Table of Contents</a></li>
+<li class="page_item page-item-850"><a href="http://obviam.net/index.php/resources/">Resources</a></li>
+</ul>
+<div class="clear"></div>
+</div><!-- end head-nav -->
+
+<div id="main-content">
+<h2><a href="./article 2_files/article 2.htm">OpenGL ES Android – Displaying Graphical Elements (Primitives)</a></h2>
+<div class="post-meta">Posted in <a href="http://obviam.net/index.php/category/2d/" title="View all posts in 2D" rel="category tag">2D</a>, <a href="http://obviam.net/index.php/category/3d/" title="View all posts in 3D" rel="category tag">3D</a>, <a href="http://obviam.net/index.php/category/android/" title="View all posts in Android" rel="category tag">Android</a>, <a href="http://obviam.net/index.php/category/opengl/" title="View all posts in OpenGL" rel="category tag">OpenGL</a> - 23 January 2011 - 12 comments</div>
+<p>This is part 2 of the android OpenGL ES series. In the <a href="http://obviam.net/index.php/opengl-es-with-android-switching-from-canvas-to-opengl/">previous</a> article  we looked at how to set up the android project to use the provided OpenGL view with our renderer. You can use the project from that article as a template for this.</p>
+<p>Before we start displaying things, we must know a few basic concepts of 3D programming and also familiarise ourselves with the terminology. I’s basic geometry really.<br>
+3D graphics happens in the <a href="http://en.wikipedia.org/wiki/Cartesian_coordinate_system#Cartesian_coordinates_in_three_dimensions" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;en.wikipedia.org&#39;]);">Cartesian Coordinate System</a>.<br>
+That means that the coordinate system used has three dimensions. <strong>X</strong>, <strong>Y</strong> and <strong>Z</strong>.<br>
+Traditionally <b>X</b> goes from left to right, <b>Y</b> from bottom to top, and <b>Z</b> from me into the screen so to speak.<br>
+<span id="more-671"></span><br>
+While we deal with objects to display (a robot for example or a car) OpenGL deals with components of these objects. Each object is created from <strong>primitives</strong> which in the case of OpenGL is a <strong>triangle</strong>. Every <strong>triangle</strong> has a <strong>face</strong> and a <strong>backface</strong>.</p>
+<p>A triangle is defined by 3 points in space. A point is called a <strong>vertex</strong> (<strong>vertices</strong> plural).</p>
+<p>The following diagram shows 2 vertices. <strong>A</strong> and <strong>B</strong>.<br>
+</p><div id="attachment_673" class="wp-caption alignnone" style="width: 479px"><a href="./article 2_files/Vertices.png"><img src="./article 2_files/Vertices.png" alt="" title="Vertices" width="469" height="349" class="size-full wp-image-673"></a><p class="wp-caption-text">Vertices</p></div><p></p>
+<p>I drew this diagram to show how we will differentiate between 2D and 3D. A vertex is defined by its X, Y and Z coordinates. If we use 0 for the Z component all the time, we have 2D. You can see vertex <b>A</b> is part of the plane defined by X and Y. Vertex <b>B</b> is farther in on the Z coordinate. If you think of Z as a line being perpendicular to the screen, we wouldn’t even see <b>B</b>.</p>
+<p>A <strong>triangle</strong> is called a <strong>primitive</strong>. A primitive is the simplest type OpenGL understands and is able to graphically represent.<br>
+It is very simple. 3 vertices define a triangle. There are other primitives as well, like quads but we’ll stick to the basics. Every shape can be broken down into triangles.</p>
+<p>We mentioned the <b>face</b> of the triangle before.<br>
+Why is it important? In 3D you will have objects with parts facing towards you, the player and parts facing away from you. In order to make the drawing efficient, OpenGL will not draw the triangles facing away from you as it is not necessary because they will be hidden by the triangles facing towards you anyway. This is called <b>backface culling</b>.</p>
+<p>How does OpenGL determine this? This is determined by the order of the vertices when drawing the triangle. If the order is <em>counter clockwise</em> then it is a <em>face</em> (green triangle). <em>Clockwise</em> order of the vertices means it is a <em>backface</em> (the red triangle). This is the default setting but it can be changed of course. The following diagram illustrates just that.<br>
+</p><div id="attachment_675" class="wp-caption alignnone" style="width: 414px"><a href="./article 2_files/Faces.png"><img src="./article 2_files/Faces.png" alt="" title="Backface Culling" width="404" height="385" class="size-full wp-image-675"></a><p class="wp-caption-text">Backface Culling</p></div><p></p>
+<p>The red triangle won’t be drawn.</p>
+<h4>Creating and Drawing a Triangle</h4>
+<p>With all the theory understood, let’s create a triangle and draw it.</p>
+<p>A triangle is defined by 3 vertices. The coordinates of the vertices is not measured in pixels. We will use <code>float</code> to represent the values and they will be relative to each other.<br>
+If a side’s length is <code>1.0f</code> and an other side’s length is <code>0.5f</code>, then it means that the second side is half the length of the first side’s length. How big it will be displayed depends on how the viewport is set up. Imagine the viewport as a camera. When we use 2D then it means that the camera is orthogonal to the screen. If the camera is very close, the triangle will appear big, if it’s far, then the triangle will be small.</p>
+<p>Let’s create the <code>Triangle</code> class.</p>
+<div id="highlighter_345126" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_345126_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_345126" menu="false" src="http://obviam.net/wp-content/plugins/syntaxhighlighter/syntaxhighlighter/scripts/clipboard.swf"></div><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines no-wrap"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="keyword">package</code> <code class="plain">net.obviam.opengl;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="keyword">import</code> <code class="plain">java.nio.ByteBuffer;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="keyword">import</code> <code class="plain">java.nio.ByteOrder;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content"><code class="keyword">import</code> <code class="plain">java.nio.FloatBuffer;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="keyword">import</code> <code class="plain">javax.microedition.khronos.opengles.GL10;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content"><code class="keyword">public</code> <code class="keyword">class</code> <code class="plain">Triangle {</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="plain">FloatBuffer vertexBuffer;&nbsp;&nbsp; </code><code class="comments">// buffer holding the vertices</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>12</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>13</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="keyword">float</code> <code class="plain">vertices[] = {</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>14</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">-</code><code class="value">0</code><code class="plain">.5f, -</code><code class="value">0</code><code class="plain">.5f,&nbsp; </code><code class="value">0</code><code class="plain">.0f,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="comments">// V1 - first vertex (x,y,z)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>15</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="value">0</code><code class="plain">.5f, -</code><code class="value">0</code><code class="plain">.5f,&nbsp; </code><code class="value">0</code><code class="plain">.0f,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="comments">// V2 - second vertex</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>16</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="value">0</code><code class="plain">.0f,&nbsp; </code><code class="value">0</code><code class="plain">.5f,&nbsp; </code><code class="value">0</code><code class="plain">.0f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="comments">// V3 - third vertex</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>17</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">};</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>18</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>19</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">Triangle() {</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>20</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// a float has 4 bytes so we allocate for each coordinate 4 bytes</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>21</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">ByteBuffer vertexByteBuffer = ByteBuffer.allocateDirect(vertices.length * </code><code class="value">4</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>22</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">vertexByteBuffer.order(ByteOrder.nativeOrder());</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>23</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>24</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// allocates the memory from the byte buffer</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>25</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">vertexBuffer = vertexByteBuffer.asFloatBuffer();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>26</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>27</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// fill the vertexBuffer with the vertices</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>28</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">vertexBuffer.put(vertices);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>29</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>30</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// set the cursor position to the beginning of the buffer</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>31</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">vertexBuffer.position(</code><code class="value">0</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>32</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>33</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div>
+<p>Line <em>11</em> defines a <code>FloatBuffer</code> that will hold the vertices for our triangle. We need to use the java.nio package as it is very intensive input output.</p>
+<p>The <code>vertices[]</code> array holds the actual coordinates for the vertices.<br>
+The triangle we will draw is represented in the following diagram. We calculate everything from the origin.<br>
+</p><div id="attachment_683" class="wp-caption alignnone" style="width: 493px"><a href="./article 2_files/Triangle.png"><img src="./article 2_files/Triangle.png" alt="" title="Triangle" width="483" height="379" class="size-full wp-image-683"></a><p class="wp-caption-text">Triangle</p></div><p></p>
+<p>In the constructor we initialise the triangle from this <code>vertices[]</code> array.<br>
+What we do is, we fill the <code>vertexBuffer</code> with the coordinates and set the cursor’s position to the beginning of the buffer. We will be using this buffer in the OpenGL call to display triangle strips. We currently have just one.</p>
+<p>Let’s take a look at the renderer. The <code>GlRenderer</code></p>
+<div id="highlighter_675019" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_675019_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_675019" menu="false" src="http://obviam.net/wp-content/plugins/syntaxhighlighter/syntaxhighlighter/scripts/clipboard.swf"></div><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines no-wrap"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="keyword">package</code> <code class="plain">net.obviam.opengl;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="keyword">import</code> <code class="plain">javax.microedition.khronos.egl.EGLConfig;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="keyword">import</code> <code class="plain">javax.microedition.khronos.opengles.GL10;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content"><code class="keyword">import</code> <code class="plain">android.opengl.GLU;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="keyword">import</code> <code class="plain">android.opengl.GLSurfaceView.Renderer;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content"><code class="keyword">public</code> <code class="keyword">class</code> <code class="plain">GlRenderer </code><code class="keyword">implements</code> <code class="plain">Renderer {</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="plain">Triangle&nbsp;&nbsp;&nbsp; triangle;&nbsp;&nbsp; </code><code class="comments">// the triangle to be drawn</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>12</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>13</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="preprocessor">/** Constructor */</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>14</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">GlRenderer() {</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>15</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">this</code><code class="plain">.triangle = </code><code class="keyword">new</code> <code class="plain">Triangle();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>16</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>17</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>18</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">@Override</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>19</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="keyword">void</code> <code class="plain">onDrawFrame(GL10 gl) {</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>20</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// clear Screen and Depth Buffer</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>21</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>22</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>23</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// Reset the Modelview Matrix</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>24</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl.glLoadIdentity();</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>25</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>26</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// Drawing</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>27</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl.glTranslatef(</code><code class="value">0</code><code class="plain">.0f, </code><code class="value">0</code><code class="plain">.0f, -</code><code class="value">5</code><code class="plain">.0f);&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="comments">// move 5 units INTO the screen</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>28</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// is the same as moving the camera 5 units away</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>29</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">triangle.draw(gl);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="comments">// Draw the triangle</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>30</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>31</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>32</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>33</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">@Override</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>34</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="keyword">void</code> <code class="plain">onSurfaceChanged(GL10 gl, </code><code class="keyword">int</code> <code class="plain">width, </code><code class="keyword">int</code> <code class="plain">height) {</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>35</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code><code class="plain">(height == </code><code class="value">0</code><code class="plain">) {&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="comments">//Prevent A Divide By Zero By</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>36</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">height = </code><code class="value">1</code><code class="plain">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="comments">//Making Height Equal One</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>37</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>38</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>39</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl.glViewport(</code><code class="value">0</code><code class="plain">, </code><code class="value">0</code><code class="plain">, width, height);&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="comments">//Reset The Current Viewport</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>40</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl.glMatrixMode(GL10.GL_PROJECTION);&nbsp;&nbsp;&nbsp; </code><code class="comments">//Select The Projection Matrix</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>41</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl.glLoadIdentity();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="comments">//Reset The Projection Matrix</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>42</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>43</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">//Calculate The Aspect Ratio Of The Window</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>44</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">GLU.gluPerspective(gl, </code><code class="value">45</code><code class="plain">.0f, (</code><code class="keyword">float</code><code class="plain">)width / (</code><code class="keyword">float</code><code class="plain">)height, </code><code class="value">0</code><code class="plain">.1f, </code><code class="value">100</code><code class="plain">.0f);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>45</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>46</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl.glMatrixMode(GL10.GL_MODELVIEW);&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="comments">//Select The Modelview Matrix</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>47</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl.glLoadIdentity();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="comments">//Reset The Modelview Matrix</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>48</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>49</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>50</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">@Override</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>51</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="keyword">void</code> <code class="plain">onSurfaceCreated(GL10 gl, EGLConfig config) {</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>52</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>53</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div>
+<p>We create the triangle in the constructor.<br>
+The <code>onDrawFrame(GL10 gl)</code> is of the most interest for us.<br>
+OpenGL works with state variables. Every method we call on the OpenGL context changes its internal state.<br>
+Following the <code> onDrawFrame</code> method we see that every time a frame is drawn, the buffers get cleared, the ModelView matrix is reloaded (don’t worry if you don’t understand this at the moment), the camera is moved away 5 units (we’re dealing with units here, not pixels) and the triangle’s <code>draw()</code> method is called.</p>
+<p>The <code>onSurfaceChanged</code> on the other hand, transitions the OpenGL context between a few states. First it sets the viewport to the current width and height of the surface (so it works with the <em>GL_PROJECTION</em> state), then it transitions the state to the <em>GL_MODELVIEW</em> so we can work with our models – the triangle in our case. It will make sense later on, don’t worry.</p>
+<p>Let’s check out the <code>draw</code> method for the triangle:</p>
+<div id="highlighter_705822" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_705822_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_705822" menu="false" src="http://obviam.net/wp-content/plugins/syntaxhighlighter/syntaxhighlighter/scripts/clipboard.swf"></div><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines no-wrap"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="keyword">public</code> <code class="keyword">void</code> <code class="plain">draw(GL10 gl) {</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// set the colour for the triangle</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl.glColor4f(</code><code class="value">0</code><code class="plain">.0f, </code><code class="value">1</code><code class="plain">.0f, </code><code class="value">0</code><code class="plain">.0f, </code><code class="value">0</code><code class="plain">.5f);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// Point to our vertex buffer</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl.glVertexPointer(</code><code class="value">3</code><code class="plain">, GL10.GL_FLOAT, </code><code class="value">0</code><code class="plain">, vertexBuffer);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// Draw the vertices as triangle strip</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, </code><code class="value">0</code><code class="plain">, vertices.length / </code><code class="value">3</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>12</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>13</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">//Disable the client state before leaving</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>14</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>15</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div>
+<p>Because we store the triangle’s vertices’ coordinates in a <code>FloatBuffer</code> we need to enable OpenGL to read from it and understand that is a triangle there. Line <em>02</em> does just that.<br>
+Line <em>05</em> sets the colour for the entity (triangle in our case) that will be drawn. Note that the values of the rgb are floats and are between 0.0 and 1.0. </p>
+<p><code>gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);</code> will tell OpenGL to use the <code>vertexBuffer</code> to extract the vertices from.<br>
+The first parameter (value = 3) represents the number of vertices in the buffer. The second lets OpenGL know what type the data the buffer holds.<br>
+The third parameter is the offset in the array used for the vertices. Because we don’t store extra data, our vertices follow each other and there is no offset.<br>
+Finally the last parameter is our buffer containing the vertices.</p>
+<p><code>gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, vertices.length / 3);</code> tells OpenGL to draw triangle strips found in the buffer provided earlier, starting with the first element. It also lets it know how many vertices there are. </p>
+<p>That is it. Run the project and you should be able to see your first accelerated triangle. Just like this:<br>
+<a href="./article 2_files/Screen-shot-2011-01-23-at-02.39.11.png"><img src="./article 2_files/Screen-shot-2011-01-23-at-02.39.11.png" alt="" title="Screen shot 2011-01-23 at 02.39.11" width="355" height="511" class="alignnone size-full wp-image-690"></a></p>
+<div class="download">
+Download the source <a href="http://obviam.net/source_code/obviam.opengl.p02.tgz" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;download&#39;,&#39;obviam.net/source_code/obviam.opengl.p02.tgz&#39;]);">here (obviam.opengl.p02.tgz)</a>:
+</div>
+<p>I was inspired by code from the <a href="http://insanitydesign.com/wp/projects/nehe-android-ports/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;insanitydesign.com&#39;]);">nehe android ports</a>. To learn the guts of OpenGL I warmly recommend the <a href="http://nehe.gamedev.net/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;nehe.gamedev.net&#39;]);">nehe tutorials</a>.</p>
+<p>Next we will see how we can create basic 3D objects and rotate them. We will also find out how we can use textures on elements.</p>
+<div class="addtoany_share_save_container"><div class="a2a_kit a2a_target addtoany_list" id="wpa2a_1"><!--[if IE]><iframe frameborder="0" allowTransparency="true" class="addtoany_special_service twitter_tweet" src="http://platform.twitter.com/widgets/tweet_button.html?url=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F&amp;counturl=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F&amp;count=horizontal&amp;text=OpenGL%20ES%20Android%20%26%238211%3B%20Displaying%20Graphical%20Elements%20%28Primitives%29" scrolling="no" style="border:none;overflow:hidden;width:130px;height:20px"></iframe><![endif]--><!--[if !IE]><!--><iframe class="addtoany_special_service twitter_tweet" src="./article 2_files/tweet_button.htm" scrolling="no" style="border:none;overflow:hidden;width:130px;height:20px"></iframe><!--<![endif]--><!--[if IE]><iframe frameborder="0" allowTransparency="true" class="addtoany_special_service facebook_like" src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F&amp;layout=button_count&amp;show_faces=false&amp;width=75&amp;action=recommend&amp;colorscheme=light&amp;height=20&amp;ref=addtoany" scrolling="no" style="border:none;overflow:hidden;width:90px;height:21px"></iframe><![endif]--><!--[if !IE]><!--><iframe class="addtoany_special_service facebook_like" src="./article 2_files/like.htm" scrolling="no" style="border:none;overflow:hidden;width:90px;height:21px"></iframe><!--<![endif]--><!--[if IE]><iframe frameborder="0" allowTransparency="true" class="addtoany_special_service google_plusone" src="https://plusone.google.com/u/0/_/%2B1/fastbutton?url=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F&amp;size=medium&amp;count=true" scrolling="no" style="border:none;overflow:hidden;width:90px;height:20px"></iframe><![endif]--><!--[if !IE]><!--><iframe class="addtoany_special_service google_plusone" src="./article 2_files/fastbutton.htm" scrolling="no" style="border:none;overflow:hidden;width:90px;height:20px"></iframe><!--<![endif]--><a class="a2a_button_linkedin" href="http://obviam.net/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;www.addtoany.com&#39;]);" title="LinkedIn" rel="nofollow" target="_blank"><img src="./article 2_files/linkedin.png" width="16" height="16" alt="LinkedIn"></a><a class="a2a_button_reddit" href="http://obviam.net/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;www.addtoany.com&#39;]);" title="Reddit" rel="nofollow" target="_blank"><img src="./article 2_files/reddit.png" width="16" height="16" alt="Reddit"></a><a class="a2a_button_tumblr" href="http://obviam.net/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;www.addtoany.com&#39;]);" title="Tumblr" rel="nofollow" target="_blank"><img src="./article 2_files/tumblr.png" width="16" height="16" alt="Tumblr"></a><a class="a2a_button_digg" href="http://obviam.net/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;www.addtoany.com&#39;]);" title="Digg" rel="nofollow" target="_blank"><img src="./article 2_files/digg.png" width="16" height="16" alt="Digg"></a><a class="a2a_button_technorati_favorites" href="http://obviam.net/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;www.addtoany.com&#39;]);" title="Technorati Favorites" rel="nofollow" target="_blank"><img src="./article 2_files/technorati.png" width="16" height="16" alt="Technorati Favorites"></a><a class="a2a_dd addtoany_share_save" href="https://www.addtoany.com/share_save#url=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F&title=OpenGL%20ES%20Android%20%E2%80%93%20Displaying%20Graphical%20Elements%20(Primitives)&description=" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;www.addtoany.com&#39;]);"><img src="./article 2_files/share_save_171_16.png" width="171" height="16" alt="Share"></a></div>
+<script type="text/javascript"><!--
+wpa2a.script_load();
+//--></script>
+</div><div class="post-tag">Tags: <a href="http://obviam.net/index.php/tag/3d/" rel="tag">3D</a>, <a href="http://obviam.net/index.php/tag/graphics-2/" rel="tag">graphics</a>, <a href="http://obviam.net/index.php/tag/opengl-2/" rel="tag">opengl</a></div>
+
+<!-- You can start editing here. -->
+
+	<h4 id="comments">12 Responses - <a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/#respond">Add Yours+</a></h4>
+
+	<div class="navigation">
+		<div class="alignleft"></div>
+		<div class="alignright"></div>
+		<div class="clear"></div>
+	</div>
+
+	<ol class="commentlist">
+			<li class="comment even thread-even depth-1" id="comment-1075">
+				<div id="div-comment-1075" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./article 2_files/f75479400030e9e7551a74b54f228bb3" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">xara</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/comment-page-1/#comment-1075">
+			May 18, 2012 at 9:33 pm</a>		</div>
+
+		<p>Thanks!<br>
+This worked out!</p>
+
+		<div class="reply">
+		<a rel="nofollow" class="comment-reply-login" href="http://obviam.net/wp-login.php?redirect_to=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F">Log in to Reply</a>		</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-1022">
+				<div id="div-comment-1022" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./article 2_files/d85cfde395796ff8d2093974f53173b8" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Brian</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/comment-page-1/#comment-1022">
+			May 2, 2012 at 8:53 am</a>		</div>
+
+		<p>I have not tried this approach yet and have never worked with openGL. But my goal is to draw a real-time line-graph only display in a Popupwindow (such as an oscilloscope or ECG trace) as it is not the main feature of the application and may not always apply. (AltertDialogs seem a bad choice as they seem to be of fixed size and do not change with respect to orientation).</p>
+<p>IS it possible to draw in this manner into a PopupWindow?</p>
+
+		<div class="reply">
+		<a rel="nofollow" class="comment-reply-login" href="http://obviam.net/wp-login.php?redirect_to=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F">Log in to Reply</a>		</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-864">
+				<div id="div-comment-864" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./article 2_files/ad7ba2b698726b2fa56f5b8066933161" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">NickA</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/comment-page-1/#comment-864">
+			February 28, 2012 at 3:52 am</a>		</div>
+
+		<p>I know now what was going wrong, I was not using gl.glPushMatrix(); and gl.glPopMatrix(); after my translations!</p>
+
+		<div class="reply">
+		<a rel="nofollow" class="comment-reply-login" href="http://obviam.net/wp-login.php?redirect_to=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F">Log in to Reply</a>		</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-863">
+				<div id="div-comment-863" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./article 2_files/9f6989ec62f456dee66de8a1de7e05df" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">NickA</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/comment-page-1/#comment-863">
+			February 28, 2012 at 3:35 am</a>		</div>
+
+		<p>Is there a way to draw multiple triangles on the screen using just the one Triangle Class you created?</p>
+<p>I have constructedd another instance of Triangle called triangle1, and then I call it like this:</p>
+<p>triangle.draw(gl, 1f, 1f);<br>
+triangle1.draw(gl, 2f, 2f); // 2f, 2f represents a translation in x and y directions.</p>
+<p>but for some reason only the first instance (triangle) is appearing. I can swap the order around and then only triangle1 will appear. There are no errors stated and the translation code I added seems to work fine.</p>
+<p>Does anyone have any idea what I’m doing wrong?</p>
+<p>Also, thanks heaps for the tutorial, very helpful!</p>
+
+		<div class="reply">
+		<a rel="nofollow" class="comment-reply-login" href="http://obviam.net/wp-login.php?redirect_to=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F">Log in to Reply</a>		</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-844">
+				<div id="div-comment-844" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./article 2_files/b83b47bdf79f6b4e9e21305c28d3cfc1" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">jitendra</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/comment-page-1/#comment-844">
+			February 15, 2012 at 9:38 am</a>		</div>
+
+		<p>The method onDrawFrame(GL10 gl) of the class GlRenderer is called again and again . </p>
+<p>What is reason behind this<br>
+can any one explain   ???????????????</p>
+
+		<div class="reply">
+		<a rel="nofollow" class="comment-reply-login" href="http://obviam.net/wp-login.php?redirect_to=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F">Log in to Reply</a>		</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-832">
+				<div id="div-comment-832" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./article 2_files/5f8688370e845ced2482dc9a9fd83ec9" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Hardik Muliya</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/comment-page-1/#comment-832">
+			February 10, 2012 at 10:28 am</a>		</div>
+
+		<p>ow some… found the best tutorial of ever</p>
+
+		<div class="reply">
+		<a rel="nofollow" class="comment-reply-login" href="http://obviam.net/wp-login.php?redirect_to=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F">Log in to Reply</a>		</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-773">
+				<div id="div-comment-773" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./article 2_files/5f2919d770b7b47db2367bd6c5c3e7ac" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">D.Elamathy</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/comment-page-1/#comment-773">
+			January 17, 2012 at 10:15 am</a>		</div>
+
+		<p>thank u for ur tutorial. how to change the color of the image????</p>
+
+		<div class="reply">
+		<a rel="nofollow" class="comment-reply-login" href="http://obviam.net/wp-login.php?redirect_to=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F">Log in to Reply</a>		</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-762">
+				<div id="div-comment-762" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./article 2_files/4ba251d29412eb005441d696febd8e96" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Om</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/comment-page-1/#comment-762">
+			January 5, 2012 at 11:56 am</a>		</div>
+
+		<p>Excellent work.<br>
+The method onDrawFrame(GL10 gl) of the class GlRenderer is called again and again . I want to know reason behind this.</p>
+<p>Thanks in advance for the reply. <img src="./article 2_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+
+		<div class="reply">
+		<a rel="nofollow" class="comment-reply-login" href="http://obviam.net/wp-login.php?redirect_to=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F">Log in to Reply</a>		</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-416">
+				<div id="div-comment-416" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./article 2_files/56953099cc5538d38a91538d1eede643" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn"><a href="http://www.pegasusdigitalmdia.com/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-commentauthor&#39;,&#39;www.pegasusdigitalmdia.com&#39;]);" rel="external nofollow" class="url">Aaron Newton</a></cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/comment-page-1/#comment-416">
+			June 28, 2011 at 1:56 pm</a>		</div>
+
+		<p>Neat little tutorial friend.</p>
+<p>Just one note – the “draw” method for the triangle class in the download hasn’t been included.</p>
+
+		<div class="reply">
+		<a rel="nofollow" class="comment-reply-login" href="http://obviam.net/wp-login.php?redirect_to=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F">Log in to Reply</a>		</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1 parent" id="comment-210">
+				<div id="div-comment-210" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./article 2_files/241aa8bb2a154108277e22ed03508ab0" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn"><a href="http://www.droidnova.com/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-commentauthor&#39;,&#39;www.droidnova.com&#39;]);" rel="external nofollow" class="url">WarrenFaith</a></cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/comment-page-1/#comment-210">
+			March 1, 2011 at 2:11 pm</a>		</div>
+
+		<p>Why did you choose OpenGL ES 1.0 instead of 1.1 or much better 2.0?</p>
+
+		<div class="reply">
+		<a rel="nofollow" class="comment-reply-login" href="http://obviam.net/wp-login.php?redirect_to=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F">Log in to Reply</a>		</div>
+				</div>
+		<ul class="children">
+		<li class="comment byuser comment-author-tamas bypostauthor even depth-2" id="comment-211">
+				<div id="div-comment-211" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./article 2_files/ad13be881d13f361a39c3ce74e5a8df8" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Impaler</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/comment-page-1/#comment-211">
+			March 1, 2011 at 2:28 pm</a>		</div>
+
+		<p>I didn’t have any previous OpenGL experience and I thought by working my way up from the bottom will give me a deeper understanding of it. Not just for me.</p>
+<p>Now I understand all the benefits of multitextures in 1.1 and the programmable pipeline in 2.0 and of course the use of shaders, but my idea of learning was to go back to first principles and start from there.</p>
+
+		<div class="reply">
+		<a rel="nofollow" class="comment-reply-login" href="http://obviam.net/wp-login.php?redirect_to=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F">Log in to Reply</a>		</div>
+				</div>
+		</li>
+</ul>
+</li>
+		<li class="comment odd alt thread-even depth-1" id="comment-187">
+				<div id="div-comment-187" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./article 2_files/cb1c57c9b52206dd69aaf26c3b7e2ad9" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn"><a href="http://www.designsaga.com/" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-commentauthor&#39;,&#39;www.designsaga.com&#39;]);" rel="external nofollow" class="url">Elliott</a></cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/comment-page-1/#comment-187">
+			February 15, 2011 at 2:13 am</a>		</div>
+
+		<p>Excellenttttttt, keep these up man!  How is your game coming along?  I’ll be sure to buy a copy when you release it.</p>
+
+		<div class="reply">
+		<a rel="nofollow" class="comment-reply-login" href="http://obviam.net/wp-login.php?redirect_to=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F">Log in to Reply</a>		</div>
+				</div>
+		</li>
+	</ol>
+
+	<div class="navigation">
+		<div class="alignleft"></div>
+		<div class="alignright"></div>
+		<div class="clear"></div>
+	</div>
+ 
+
+
+<div id="respond">
+
+<h4>Leave a Reply</h4>
+
+<div class="cancel-comment-reply">
+	<small><a rel="nofollow" id="cancel-comment-reply-link" href="http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/#respond" style="display:none;">Click here to cancel reply.</a></small>
+</div>
+
+<p>You must be <a href="http://obviam.net/wp-login.php?redirect_to=http%3A%2F%2Fobviam.net%2Findex.php%2Fopengl-es-android-displaying-graphical-elements-primitives%2F">logged in</a> to post a comment.</p>
+</div>
+
+</div><!-- end main-content -->
+
+<div id="sidebar">
+		<div class="widget">		<h4>Recent Posts</h4>		<ul>
+					<li>
+				<a href="http://obviam.net/index.php/game-ai-an-introduction-to-behavior-trees/" title="Game AI – An Introduction to Behaviour Trees">Game AI – An Introduction to Behaviour Trees</a>
+						</li>
+					<li>
+				<a href="http://obviam.net/index.php/hiatus-the-end/" title="Hiatus – The End?">Hiatus – The End?</a>
+						</li>
+					<li>
+				<a href="http://obviam.net/index.php/getting-started-in-android-game-development-with-libgdx-tutorial-part-4-collision-detection/" title="Getting Started in Android Game Development with libgdx – Tutorial Part 4 – Collision Detection">Getting Started in Android Game Development with libgdx – Tutorial Part 4 – Collision Detection</a>
+						</li>
+					<li>
+				<a href="http://obviam.net/index.php/getting-started-in-android-game-development-with-libgdx-tutorial-part-3-jumping-gravity-and-movement/" title="Getting Started in Android Game Development with libgdx – Tutorial Part 3 – Jumping, Gravity and improved movement">Getting Started in Android Game Development with libgdx – Tutorial Part 3 – Jumping, Gravity and improved movement</a>
+						</li>
+					<li>
+				<a href="http://obviam.net/index.php/getting-started-in-android-game-development-with-libgdx-tutorial-part-2-animation/" title="Getting Started in Android Game Development with libgdx – Tutorial Part 2 – Animation">Getting Started in Android Game Development with libgdx – Tutorial Part 2 – Animation</a>
+						</li>
+					<li>
+				<a href="http://obviam.net/index.php/update/" title="Update">Update</a>
+						</li>
+					<li>
+				<a href="http://obviam.net/index.php/getting-started-in-android-game-development-with-libgdx-create-a-working-prototype-in-a-day-tutorial-part-1/" title="Getting Started in Android Game Development with libgdx – Create a Working Prototype in a Day – Tutorial Part 1">Getting Started in Android Game Development with libgdx – Create a Working Prototype in a Day – Tutorial Part 1</a>
+						</li>
+					<li>
+				<a href="http://obviam.net/index.php/the-mvc-pattern-tutorial-building-games/" title="Building Games Using the MVC Pattern – Tutorial and Introduction">Building Games Using the MVC Pattern – Tutorial and Introduction</a>
+						</li>
+					<li>
+				<a href="http://obviam.net/index.php/3d-programming-with-android-projections-perspective/" title="Introduction to 3D Programming with Android – Perspective Projections">Introduction to 3D Programming with Android – Perspective Projections</a>
+						</li>
+					<li>
+				<a href="http://obviam.net/index.php/design-in-game-entities-object-composition-strategies-part-2-the-state-pattern/" title="Design In-game Entities. Object Composition Strategies. Part 2 – The State Pattern">Design In-game Entities. Object Composition Strategies. Part 2 – The State Pattern</a>
+						</li>
+					<li>
+				<a href="http://obviam.net/index.php/texture-mapping-opengl-android-displaying-images-using-opengl-and-squares/" title="Texture Mapping – OpenGL Android (Displaying Images using OpenGL and Squares)">Texture Mapping – OpenGL Android (Displaying Images using OpenGL and Squares)</a>
+						</li>
+					<li>
+				<a href="./article 2_files/article 2.htm" title="OpenGL ES Android – Displaying Graphical Elements (Primitives)">OpenGL ES Android – Displaying Graphical Elements (Primitives)</a>
+						</li>
+					<li>
+				<a href="http://obviam.net/index.php/opengl-es-with-android-switching-from-canvas-to-opengl/" title="OpenGL ES with Android Tutorial- Switching from Canvas to OpenGL">OpenGL ES with Android Tutorial- Switching from Canvas to OpenGL</a>
+						</li>
+					<li>
+				<a href="http://obviam.net/index.php/using-bitmap-fonts-in-android/" title="Using Bitmap Fonts in Android">Using Bitmap Fonts in Android</a>
+						</li>
+					<li>
+				<a href="http://obviam.net/index.php/design-in-game-entities-object-composition-strategies-part-1/" title="Design In-game Entities. Object Composition Strategies. Part 1 – The Strategy Pattern">Design In-game Entities. Object Composition Strategies. Part 1 – The Strategy Pattern</a>
+						</li>
+				</ul>
+		</div><div class="widget"><h4>Tags</h4><div class="tagcloud"><a href="http://obviam.net/index.php/tag/2d/" class="tag-link-20" title="4 topics" style="font-size: 15.567567567568pt;">2D</a>
+<a href="http://obviam.net/index.php/tag/3d/" class="tag-link-11" title="2 topics" style="font-size: 11.405405405405pt;">3D</a>
+<a href="http://obviam.net/index.php/tag/ai/" class="tag-link-39" title="1 topic" style="font-size: 8pt;">AI</a>
+<a href="http://obviam.net/index.php/tag/android-2/" class="tag-link-14" title="10 topics" style="font-size: 22pt;">android</a>
+<a href="http://obviam.net/index.php/tag/animation-2/" class="tag-link-21" title="1 topic" style="font-size: 8pt;">animation</a>
+<a href="http://obviam.net/index.php/tag/application-life-cycle/" class="tag-link-17" title="1 topic" style="font-size: 8pt;">application life cycle</a>
+<a href="http://obviam.net/index.php/tag/best-practices/" class="tag-link-26" title="2 topics" style="font-size: 11.405405405405pt;">Best Practices</a>
+<a href="http://obviam.net/index.php/tag/collision-detection/" class="tag-link-38" title="1 topic" style="font-size: 8pt;">Collision detection</a>
+<a href="http://obviam.net/index.php/tag/design-patterns/" class="tag-link-29" title="2 topics" style="font-size: 11.405405405405pt;">Design Patterns</a>
+<a href="http://obviam.net/index.php/tag/effects-2/" class="tag-link-25" title="1 topic" style="font-size: 8pt;">effects</a>
+<a href="http://obviam.net/index.php/tag/fonts/" class="tag-link-30" title="1 topic" style="font-size: 8pt;">fonts</a>
+<a href="http://obviam.net/index.php/tag/fps/" class="tag-link-19" title="2 topics" style="font-size: 11.405405405405pt;">FPS</a>
+<a href="http://obviam.net/index.php/tag/game-architecture/" class="tag-link-15" title="2 topics" style="font-size: 11.405405405405pt;">game architecture</a>
+<a href="http://obviam.net/index.php/tag/game-design/" class="tag-link-27" title="3 topics" style="font-size: 13.675675675676pt;">Game Design</a>
+<a href="http://obviam.net/index.php/tag/game-deve/" class="tag-link-36" title="1 topic" style="font-size: 8pt;">game deve</a>
+<a href="http://obviam.net/index.php/tag/game-development-2/" class="tag-link-13" title="4 topics" style="font-size: 15.567567567568pt;">Game development</a>
+<a href="http://obviam.net/index.php/tag/game-loop/" class="tag-link-16" title="4 topics" style="font-size: 15.567567567568pt;">game loop</a>
+<a href="http://obviam.net/index.php/tag/graphics-2/" class="tag-link-18" title="9 topics" style="font-size: 21.243243243243pt;">graphics</a>
+<a href="http://obviam.net/index.php/tag/java/" class="tag-link-5" title="4 topics" style="font-size: 15.567567567568pt;">Java</a>
+<a href="http://obviam.net/index.php/tag/libgdx/" class="tag-link-33" title="3 topics" style="font-size: 13.675675675676pt;">libgdx</a>
+<a href="http://obviam.net/index.php/tag/misc/" class="tag-link-35" title="1 topic" style="font-size: 8pt;">Misc</a>
+<a href="http://obviam.net/index.php/tag/motivation/" class="tag-link-3" title="1 topic" style="font-size: 8pt;">Motivation</a>
+<a href="http://obviam.net/index.php/tag/opengl-2/" class="tag-link-32" title="5 topics" style="font-size: 17.081081081081pt;">opengl</a>
+<a href="http://obviam.net/index.php/tag/particles/" class="tag-link-24" title="1 topic" style="font-size: 8pt;">particles</a>
+<a href="http://obviam.net/index.php/tag/physics/" class="tag-link-37" title="1 topic" style="font-size: 8pt;">physics</a>
+<a href="http://obviam.net/index.php/tag/sprite/" class="tag-link-22" title="1 topic" style="font-size: 8pt;">sprite</a>
+<a href="http://obviam.net/index.php/tag/strategy-pattern/" class="tag-link-28" title="1 topic" style="font-size: 8pt;">Strategy Pattern</a>
+<a href="http://obviam.net/index.php/tag/tutorial/" class="tag-link-34" title="1 topic" style="font-size: 8pt;">tutorial</a></div>
+</div><div class="widget"><h4>Categories</h4>		<ul>
+	<li class="cat-item cat-item-20"><a href="http://obviam.net/index.php/category/2d/" title="View all posts filed under 2D">2D</a>
+</li>
+	<li class="cat-item cat-item-11"><a href="http://obviam.net/index.php/category/3d/" title="3D graphics and theory">3D</a>
+</li>
+	<li class="cat-item cat-item-39"><a href="http://obviam.net/index.php/category/ai/" title="View all posts filed under AI">AI</a>
+</li>
+	<li class="cat-item cat-item-8"><a href="http://obviam.net/index.php/category/android/" title="Android stuff">Android</a>
+</li>
+	<li class="cat-item cat-item-10"><a href="http://obviam.net/index.php/category/animation/" title="Animation stuff">Animation</a>
+</li>
+	<li class="cat-item cat-item-26"><a href="http://obviam.net/index.php/category/java/best-practices/" title="View all posts filed under Best Practices">Best Practices</a>
+</li>
+	<li class="cat-item cat-item-29"><a href="http://obviam.net/index.php/category/design-patterns/" title="View all posts filed under Design Patterns">Design Patterns</a>
+</li>
+	<li class="cat-item cat-item-23"><a href="http://obviam.net/index.php/category/effects/" title="View all posts filed under Effects">Effects</a>
+</li>
+	<li class="cat-item cat-item-27"><a href="http://obviam.net/index.php/category/game-design/" title="View all posts filed under Game Design">Game Design</a>
+</li>
+	<li class="cat-item cat-item-4"><a href="http://obviam.net/index.php/category/game-development/" title="General game development">Game Development</a>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://obviam.net/index.php/category/gameloop/" title="Gameloop">Gameloop</a>
+</li>
+	<li class="cat-item cat-item-6"><a href="http://obviam.net/index.php/category/graphics/" title="Anything having to do with graphics">Graphics</a>
+</li>
+	<li class="cat-item cat-item-5"><a href="http://obviam.net/index.php/category/java/" title="Regarding the Java language">Java</a>
+</li>
+	<li class="cat-item cat-item-33"><a href="http://obviam.net/index.php/category/libgdx/" title="View all posts filed under libgdx">libgdx</a>
+</li>
+	<li class="cat-item cat-item-35"><a href="http://obviam.net/index.php/category/misc/" title="View all posts filed under Misc">Misc</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="http://obviam.net/index.php/category/motivation/" title="Why game development is cool and why should we do it?">Motivation</a>
+</li>
+	<li class="cat-item cat-item-31"><a href="http://obviam.net/index.php/category/opengl/" title="View all posts filed under OpenGL">OpenGL</a>
+</li>
+	<li class="cat-item cat-item-7"><a href="http://obviam.net/index.php/category/sound/" title="Anything having to do with sound">Sound</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="http://obviam.net/index.php/category/uncategorized/" title="View all posts filed under Uncategorized">Uncategorized</a>
+</li>
+		</ul>
+</div></div><!-- end sidebar -->
+<div class="clear"></div>
+
+<div id="footer">
+<div id="foot-1">
+
+</div><!-- end foot-1 -->
+
+<div id="foot-right">
+<div id="foot-2">
+
+</div><!-- end foot-2 -->
+
+<div id="foot-3">
+</div><!-- end foot-3 -->
+<div class="clear"></div>
+</div><!-- end foot-right -->
+<div class="clear"></div>
+</div><!-- end footer -->
+
+<div id="footer-credit">
+Copyright © - 2014 <b><a href="http://obviam.net/">Against the Grain - Obviam MMX - MMXII</a></b>. <a href="http://obviam.net/index.php/feed/">Entries (RSS)</a>.
+<div id="footer-desc">Sharing game making with the masses since 2010</div>
+</div><!-- end footer-credit -->
+
+</div><!-- end div #container -->
+</div><!-- end div #wrapper -->
+
+<!--
+	Clean Simple White (CSW) Theme for WordPress
+	Designed by Mazznoer
+	website : http://mazznoer.web.id/
+-->
+
+
+<script type="text/javascript"><!--
+wpa2a.targets=[
+{title:'OpenGL ES Android &#8211; Displaying Graphical Elements (Primitives)',url:'http://obviam.net/index.php/opengl-es-android-displaying-graphical-elements-primitives/'}];
+wpa2a.html_done=true;if(wpa2a.script_ready&&!wpa2a.done)wpa2a.init();wpa2a.script_load();
+//--></script>
+
+<!-- Woopra Analytics Code -->
+<script type="text/javascript">
+(function(){
+var wsc=document.createElement('script');
+wsc.type='text/javascript';
+wsc.src=document.location.protocol+'//static.woopra.com/js/woopra.js';
+wsc.async=true;
+var ssc = document.getElementsByTagName('script')[0];
+ssc.parentNode.insertBefore(wsc, ssc);})();
+</script>
+<!-- End of Woopra Analytics Code -->
+
+<script type="text/javascript" src="./article 2_files/shCore.js"></script>
+<script type="text/javascript" src="./article 2_files/shBrushJava.js"></script>
+<script type="text/javascript">
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "http://obviam.net/wp-content/plugins/syntaxhighlighter/syntaxhighlighter/styles/shCore.css?ver=2.1.364b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].appendChild(corecss);
+		var themecssurl = "http://obviam.net/wp-content/plugins/syntaxhighlighter/syntaxhighlighter/styles/shThemeDefault.css?ver=2.1.364b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		document.getElementsByTagName("head")[0].appendChild(themecss);
+	})();
+	SyntaxHighlighter.config.clipboardSwf = 'http://obviam.net/wp-content/plugins/syntaxhighlighter/syntaxhighlighter/scripts/clipboard.swf';
+	SyntaxHighlighter.config.strings.expandSource = 'show source';
+	SyntaxHighlighter.config.strings.viewSource = 'view source';
+	SyntaxHighlighter.config.strings.copyToClipboard = 'copy to clipboard';
+	SyntaxHighlighter.config.strings.copyToClipboardConfirmation = 'The code is in your clipboard now';
+	SyntaxHighlighter.config.strings.print = 'print';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['wrap-lines'] = false;
+	SyntaxHighlighter.all();
+</script><div style="position: static;"><div class="a2a_overlay" id="a2apage_overlay"></div><div class="a2a_menu a2a_full" id="a2apage_full"><div class="a2a_full_header"><div id="a2apage_find_container" class="a2a_menu_find_container"><input id="a2apage_find" class="a2a_menu_find" type="text" onclick="a2a.focus_find()" onkeyup="a2a.do_find()" autocomplete="off" title="Find any service"><span id="a2apage_find_icon" class="a2a_i_find" onclick="a2a.focus_find()"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="8 8 16 16"><path fill="#0166FF" d="M21.636,20.553l-3.291-3.291c0.536-0.753,0.858-1.667,0.858-2.661c0-2.542-2.061-4.602-4.602-4.602C12.06,9.999,10,12.059,10,14.601c0,2.541,2.06,4.602,4.602,4.602c0.994,0,1.907-0.32,2.659-0.856l3.291,3.29c0.401,0.402,0.968,0.486,1.268,0.184C22.119,21.521,22.036,20.953,21.636,20.553z M14.602,17.9c-1.823,0-3.3-1.477-3.3-3.3s1.477-3.3,3.3-3.3s3.3,1.477,3.3,3.3S16.424,17.9,14.602,17.9z"></path></svg></span></div></div><div class="a2a_full_services" id="a2apage_full_services"><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_facebook">Facebook</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_twitter">Twitter</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_google_plus">Google+</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_pinterest">Pinterest</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_linkedin">LinkedIn</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_email">Email</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_stumbleupon">StumbleUpon</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_reddit">Reddit</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_wordpress">WordPress</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_tumblr">Tumblr</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_delicious">Delicious</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_digg">Digg</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_google">Google Bookmarks</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_yahoo">Yahoo Bookmarks</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_whatsapp">WhatsApp</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_evernote">Evernote</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_line">Line</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_wanelo">Wanelo</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_app_net">App.net</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_buffer">Buffer</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_xing">XING</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_bebo">Bebo</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_orkut">Orkut</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_mixi">Mixi</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_vk">VK</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_pocket">Pocket</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_gmail">Google Gmail</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_mendeley">Mendeley</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_yahoo">Yahoo Mail</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_pinboard">Pinboard</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_outlook_com">Outlook.com</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_box">Box.net</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_aol">AOL Mail</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_instapaper">Instapaper</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_y18">Hacker News</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_springpad">Springpad</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_myspace">MySpace</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_flipboard">Flipboard</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_arto">Arto</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_aim">AIM</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_yim">Yahoo Messenger</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_mail_ru">Mail.Ru</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_plurk">Plurk</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_diaspora">Diaspora</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_fark">Fark</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_blogger">Blogger Post</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_typepad">TypePad Post</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_kindle">Kindle It</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_sina_weibo">Sina Weibo</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_baidu">Baidu</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_netlog">Netlog</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_citeulike">CiteULike</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_jumptags">Jumptags</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_funp">FunP</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_phonefavs">PhoneFavs</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_xerpi">Xerpi</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_netvouz">Netvouz</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_diigo">Diigo</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_bibsonomy">BibSonomy</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_blogmarks">BlogMarks</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_startaid">StartAid</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_khabbr">Khabbr</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_meneame">Meneame</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_yoolink">Yoolink</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_bookmarks_fr">Bookmarks.fr</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_technotizie">Technotizie</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_newsvine">NewsVine</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_friendfeed">FriendFeed</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_protopage">Protopage Bookmarks</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_blinklist">Blinklist</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_webnews">Webnews</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_segnalo">Segnalo</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_pusha">Pusha</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_youmob">YouMob</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_slashdot">Slashdot</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_allvoices">Allvoices</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_jamespot">Jamespot</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_twiddla">Twiddla</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_linkagogo">LinkaGoGo</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_nowpublic">NowPublic</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_livejournal">LiveJournal</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_linkatopia">Linkatopia</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_buddymarks">BuddyMarks</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_viadeo">Viadeo</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_wists">Wists</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_sitejot">SiteJot</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_dzone">DZone</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_care2">Care2 News</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_bitty">Bitty Browser</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_odnoklassniki">Odnoklassniki</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_symbaloo">Symbaloo Feeds</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_folkd">Folkd</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_newstrust">NewsTrust</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_amazon">Amazon Wish List</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_printfriendly">PrintFriendly</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_tuenti">Tuenti</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_rediff">Rediff MyPage</span></a><i class="a2a_i"></i><i class="a2a_i"></i></div><div class="a2a_full_footer"><a href="https://www.addtoany.com/" title="Share Buttons" target="_blank"><span class="a2a_i_a2a_sm">AddToAny</span></a></div></div><div id="a2apage_dropdown" class="a2a_menu a2a_mini" onmouseover="a2a.onMouseOver_stay()" onmouseout="a2a.onMouseOut_delay()" style="display:none"><div id="a2apage_title_container" class="a2a_menu_title_container" style="display:none"><input id="a2apage_title" class="a2a_menu_title"></div><div class="a2a_mini_services" id="a2apage_mini_services"><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_facebook">Facebook</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_twitter">Twitter</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_google_plus">Google+</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_pinterest">Pinterest</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_linkedin">LinkedIn</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_email">Email</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_stumbleupon">StumbleUpon</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_reddit">Reddit</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_wordpress">WordPress</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_tumblr">Tumblr</span></a></div><div id="a2apage_cols_container" class="a2a_cols_container"><div class="a2a_col1" id="a2apage_col1"></div><div id="a2apage_2_col1" style="display:none"><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_gmail">Google Gmail</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_yahoo">Yahoo Mail</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_outlook_com">Outlook.com</span></a><a rel="nofollow" class="a2a_i" href="http://obviam.net/" target="_blank"><span class="a2a_i_aol">AOL Mail</span></a><a rel="nofollow" class="a2a_i a2a_emailer" href="http://obviam.net/" target="_blank" id="a2apage_any_email"><span class="a2a_i_email">Any email</span></a><a rel="nofollow" class="a2a_i a2a_emailer a2a_email_client" href="http://obviam.net/" target="" id="a2apage_email_client"><span class="a2a_i_email">Email app</span></a></div><div class="a2a_clear"></div></div><div class="a2apage_wide a2a_wide"><a href="" id="a2apage_show_more_less" class="a2a_menu_show_more_less a2a_more" onmouseover="img=this.firstChild;if(a2a.c.color_arrow_hover==&#39;fff&#39;){if(img.className.indexOf(&#39;_wt&#39;)==-1)img.className+=&#39;_wt&#39;}else img.className=img.className.replace(/_wt/,&#39;&#39;)" onmouseout="img=this.firstChild;if(a2a.c.color_arrow==&#39;fff&#39;){if(img.className.indexOf(&#39;_wt&#39;)==-1)img.className+=&#39;_wt&#39;}else img.className=img.className.replace(/_wt/,&#39;&#39;)" title="Show all"><span class="a2a_i_a2a">More…</span></a></div></div><div style="height: 1px; width: 1px; position: absolute; z-index: 100000; top: 0px; visibility: hidden;"><iframe id="a2apage_sm_ifr" height="1" width="1" title="AddToAny Utility Frame" transparency="true" allowtransparency="true" frameborder="0" src="./article 2_files/sm11.htm" style="height: 1px; width: 1px; border: 0px; left: 0px; top: 0px; position: absolute; z-index: 100000; display: none;"></iframe></div></div>
+
+
+
+</body></html>
