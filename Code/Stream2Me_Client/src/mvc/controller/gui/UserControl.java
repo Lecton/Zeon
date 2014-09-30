@@ -68,6 +68,7 @@ public class UserControl implements ActionListener {
     }
     
     protected void setAvatar(String avatar) {
+        model.setAvatar(avatar);
         view.setAvatar(avatar);
     }
 

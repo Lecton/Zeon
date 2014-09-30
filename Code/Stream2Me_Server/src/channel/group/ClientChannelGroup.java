@@ -407,10 +407,13 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
             }
         }
         
-//        if (message.handle() != Message.MessageType.auido) {
+        if (message.handle() != Message.MessageType.auido || 
+                message.handle() != Message.MessageType.video) {
             Logger.getLogger(ClientChannelGroup.class.getName()).log(Level.INFO, 
-                         "Writing message "+message.handle()+": ("+message.getMessage()+") to group. "+count+" users written to.");
-//        }
+                         "Writing message "+message.handle()+": ("
+                                 +message.getMessage()+") to group. "
+                                 +count+" users written to.");
+        }
 
         ReferenceCountUtil.release(message);
         return count;
