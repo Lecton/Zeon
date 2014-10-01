@@ -20,6 +20,9 @@ public class StringMatcher extends ClientMatcher {
     
     public StringMatcher(String targetID, String connectionID, String userID, String groupID) {
         super(targetID);
+        this.connectionID =connectionID;
+        this.userID =userID;
+        this.groupID =groupID;
     }
 
     public String getGroupID() {
