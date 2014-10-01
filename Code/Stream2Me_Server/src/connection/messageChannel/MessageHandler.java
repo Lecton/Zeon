@@ -12,6 +12,7 @@ import channel.group.matcher.ClientGroup;
 import channel.group.matcher.ClientMatcher;
 import channel.group.matcher.ConnectionGroup;
 import channel.group.matcher.ConnectionMatcher;
+import channel.group.matcher.StringMatcher;
 import connection.bootstrap.Handler;
 import core.database.StreamHandler;
 import core.database.StringMessageHandler;
@@ -120,7 +121,7 @@ public class MessageHandler {
         Message message =StringMessageHandler.handleStringMessage(msg);
         String groupID =UserHandler.getGroupID(msg.getUserID());
         String connectionID =ClientHandler.getConnectionID(ch, groupID);
-        ClientHandler.writeAndFlush(groupID, message, new ConnectionGroup(connectionID, groupID));
+        ClientHandler.writeAndFlush(groupID, message, new StringMatcher(msg.getTargetID(), connectionID, msg.getUserID(), groupID));
     }
 
     private static void handleUpdateAvatar(Channel ch, UpdateAvatarMessage msg) {

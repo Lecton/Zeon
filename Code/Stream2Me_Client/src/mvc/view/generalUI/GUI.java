@@ -215,12 +215,12 @@ public class GUI extends javax.swing.JFrame {
         Dimension currentSize =getSize();
         if (leftArrow.getDependant().isVisible()) {
             leftArrow.getDependant().setVisible(false);
-            currentSize.width -=leftArrow.getDependant().getWidth();
-            p.x +=leftArrow.getDependant().getWidth();
+            currentSize.width -=leftArrow.getDependant().getPreferredSize().width+5;
+            p.x +=leftArrow.getDependant().getPreferredSize().width;
         } else {
             leftArrow.getDependant().setVisible(true);
             leftArrow.getDependant().validate();
-            currentSize.width +=leftArrow.getDependant().getPreferredSize().width;
+            currentSize.width +=leftArrow.getDependant().getPreferredSize().width+5;
             p.x -=leftArrow.getDependant().getPreferredSize().width;
             if (p.x < 0) {
                 p.x =0;
@@ -236,7 +236,7 @@ public class GUI extends javax.swing.JFrame {
         Dimension currentSize =getSize();
         if (rightArrow.getDependant().isVisible()) {
             rightArrow.getDependant().setVisible(false);
-            currentSize.width -=rightArrow.getDependant().getWidth();
+            currentSize.width -=rightArrow.getDependant().getPreferredSize().width;
         } else {
             rightArrow.getDependant().setVisible(true);
             rightArrow.getDependant().validate();
