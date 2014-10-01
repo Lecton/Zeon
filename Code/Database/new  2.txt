@@ -1,0 +1,368 @@
+
+CREATE TABLE client (
+    userid text NOT NULL,
+    groupid text DEFAULT '-111'::text NOT NULL,
+    name text,
+    surname text,
+    username text NOT NULL,
+    password text NOT NULL,
+    email text NOT NULL,
+    avatar text DEFAULT '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'::text,
+    aboutme text,
+    title text,
+    registrationdate date,
+    loggedin boolean
+);
+
+
+ALTER TABLE public.client OWNER TO postgres;
+
+--
+-- TOC entry 170 (class 1259 OID 16667)
+-- Name: collection; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE collection (
+    groupid text NOT NULL,
+    ownerid text,
+    name text,
+    password text NOT NULL
+);
+
+
+ALTER TABLE public.collection OWNER TO postgres;
+
+SET default_with_oids = true;
+
+--
+-- TOC entry 176 (class 1259 OID 16799)
+-- Name: connection; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE connection (
+    connectionid text NOT NULL,
+    userid text NOT NULL,
+    "timestamp" timestamp with time zone
+);
+
+
+ALTER TABLE public.connection OWNER TO postgres;
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 174 (class 1259 OID 16730)
+-- Name: logger; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE logger (
+    logid text NOT NULL,
+    logdate date,
+    userid text,
+    type text NOT NULL,
+    message text NOT NULL
+);
+
+
+ALTER TABLE public.logger OWNER TO postgres;
+
+--
+-- TOC entry 173 (class 1259 OID 16712)
+-- Name: messeges; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE messeges (
+    messageid text NOT NULL,
+    userid text,
+    targetid text,
+    messagedate date,
+    message text NOT NULL
+);
+
+
+ALTER TABLE public.messeges OWNER TO postgres;
+
+--
+-- TOC entry 172 (class 1259 OID 16693)
+-- Name: streamdata; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE streamdata (
+    streamdataid text NOT NULL,
+    streamid text,
+    userid text,
+    accepted boolean DEFAULT false,
+    "connectionID" text NOT NULL
+);
+
+
+ALTER TABLE public.streamdata OWNER TO postgres;
+
+--
+-- TOC entry 171 (class 1259 OID 16680)
+-- Name: streamproperty; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE streamproperty (
+    streamid text NOT NULL,
+    userid text,
+    type text NOT NULL,
+    name text,
+    connectionid text NOT NULL
+);
+
+
+ALTER TABLE public.streamproperty OWNER TO postgres;
+INSERT INTO client (userid, groupid, name, surname, username, password, email, avatar, aboutme, title, registrationdate, loggedin) VALUES
+('9735d1f3-0503-40d4-a1c2-1e7c84dda390','ab0ea0f2-ebe2-48c8-9b21-5b638b602b29','Zenadia','Groenewald','Zenadia','cos301','zgroenewald@gmail.com','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','','Miss','2014-09-17','f'),
+('dd124987-5599-4adf-8b6a-e465b23cfc61','05217dd7-dd68-4aa7-adbd-877d38cb0253','Lecton','Ramasila','Lecton','cos301','lecton@gmail.com','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','','Mr','2014-09-17','f'),
+('bca2414d-7ee0-40d9-a130-def36c44dc49','05217dd7-dd68-4aa7-adbd-877d38cb0253','Bernhard','Müller','Bernhard','cos301',	'bmwilhelm@gmail.com','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','I am a developer of this here system. Kill me now!!!!	Developer','Mr','2014-09-17','f'),
+('2f35aa55-3968-4669-b95c-c93668fa61b6','05217dd7-dd68-4aa7-adbd-877d38cb0253','Xavier','Smith','Xavier','cos301','xavier@gmail.com','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','','Mr','2014-09-17','f');
+
+
+
+--
+-- TOC entry 1987 (class 0 OID 16667)
+-- Dependencies: 170
+-- Data for Name: collection; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO collection (groupid, ownerid, name, password) VALUES
+('05217dd7-dd68-4aa7-adbd-877d38cb0253','bca2414d-7ee0-40d9-a130-def36c44dc49','Lectonia','1234'),
+('ab0ea0f2-ebe2-48c8-9b21-5b638b602b29','9735d1f3-0503-40d4-a1c2-1e7c84dda390','Groenewald','1234');
+
+
+--
+-- TOC entry 1993 (class 0 OID 16799)
+-- Dependencies: 176
+-- Data for Name: connection; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY connection (connectionid, userid, "timestamp") FROM stdin;
+\.
+
+
+--
+-- TOC entry 1991 (class 0 OID 16730)
+-- Dependencies: 174
+-- Data for Name: logger; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY logger (logid, logdate, userid, type, message) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1990 (class 0 OID 16712)
+-- Dependencies: 173
+-- Data for Name: messeges; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY messeges (messageid, userid, targetid, messagedate, message) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1989 (class 0 OID 16693)
+-- Dependencies: 172
+-- Data for Name: streamdata; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY streamdata (streamdataid, streamid, userid, accepted, "connectionID") FROM stdin;
+\.
+
+
+--
+-- TOC entry 1988 (class 0 OID 16680)
+-- Dependencies: 171
+-- Data for Name: streamproperty; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY streamproperty (streamid, userid, type, name, connectionid) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1866 (class 2606 OID 16784)
+-- Name: client_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY client
+    ADD CONSTRAINT client_email_key UNIQUE (email);
+
+
+--
+-- TOC entry 1868 (class 2606 OID 16782)
+-- Name: client_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY client
+    ADD CONSTRAINT client_pkey PRIMARY KEY (userid);
+
+
+--
+-- TOC entry 1856 (class 2606 OID 16674)
+-- Name: collection_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY collection
+    ADD CONSTRAINT collection_pkey PRIMARY KEY (groupid);
+
+
+--
+-- TOC entry 1871 (class 2606 OID 16806)
+-- Name: connectionprimary; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY connection
+    ADD CONSTRAINT connectionprimary PRIMARY KEY (connectionid);
+
+
+--
+-- TOC entry 1864 (class 2606 OID 16737)
+-- Name: logger_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY logger
+    ADD CONSTRAINT logger_pkey PRIMARY KEY (logid);
+
+
+--
+-- TOC entry 1862 (class 2606 OID 16719)
+-- Name: messeges_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY messeges
+    ADD CONSTRAINT messeges_pkey PRIMARY KEY (messageid);
+
+
+--
+-- TOC entry 1860 (class 2606 OID 16701)
+-- Name: streamdata_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY streamdata
+    ADD CONSTRAINT streamdata_pkey PRIMARY KEY (streamdataid);
+
+
+--
+-- TOC entry 1858 (class 2606 OID 16687)
+-- Name: streamproperty_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY streamproperty
+    ADD CONSTRAINT streamproperty_pkey PRIMARY KEY (streamid);
+
+
+--
+-- TOC entry 1869 (class 1259 OID 16857)
+-- Name: fki_groupForeign; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX "fki_groupForeign" ON client USING btree (groupid);
+
+
+--
+-- TOC entry 1873 (class 2606 OID 16858)
+-- Name: connectionForeign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY streamproperty
+    ADD CONSTRAINT "connectionForeign" FOREIGN KEY (connectionid) REFERENCES connection(connectionid);
+
+
+--
+-- TOC entry 1877 (class 2606 OID 16893)
+-- Name: connectionForeign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY streamdata
+    ADD CONSTRAINT "connectionForeign" FOREIGN KEY ("connectionID") REFERENCES connection(connectionid) MATCH FULL;
+
+
+--
+-- TOC entry 1878 (class 2606 OID 16852)
+-- Name: groupForeign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY client
+    ADD CONSTRAINT "groupForeign" FOREIGN KEY (groupid) REFERENCES collection(groupid) MATCH FULL;
+
+
+--
+-- TOC entry 1872 (class 2606 OID 16847)
+-- Name: ownerForeign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY collection
+    ADD CONSTRAINT "ownerForeign" FOREIGN KEY (ownerid) REFERENCES client(userid) MATCH FULL;
+
+
+--
+-- TOC entry 1875 (class 2606 OID 16883)
+-- Name: streamdata_streamid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY streamdata
+    ADD CONSTRAINT streamdata_streamid_fkey FOREIGN KEY (streamid) REFERENCES streamproperty(streamid) MATCH FULL;
+
+
+--
+-- TOC entry 1879 (class 2606 OID 16837)
+-- Name: userForeign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY connection
+    ADD CONSTRAINT "userForeign" FOREIGN KEY (userid) REFERENCES client(userid);
+
+
+--
+-- TOC entry 1876 (class 2606 OID 16888)
+-- Name: userForeign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY streamdata
+    ADD CONSTRAINT "userForeign" FOREIGN KEY (userid) REFERENCES client(userid) MATCH FULL;
+
+
+--
+-- TOC entry 1874 (class 2606 OID 16863)
+-- Name: userforeign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY streamproperty
+    ADD CONSTRAINT userforeign FOREIGN KEY (userid) REFERENCES client(userid);
+
+
+--
+-- TOC entry 2000 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2014-09-23 17:05:45
+
+--
+-- PostgreSQL database dump complete
+--
+
+
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2014-09-30 13:24:58
+
+--
+-- PostgreSQL database dump complete
+--
+
