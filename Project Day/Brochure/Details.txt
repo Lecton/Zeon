@@ -1,0 +1,10 @@
+Team Name: Zeon
+Short Project Description:
+	Stream2Me is an application that allows desktop and microphone sharing between different computers. The application will allow users to chat with others in their current group session as well as selectively share data between other users within their group session. The application allows the communication cross platform without the need for special hardware or software. The application is aimed to be user friendly as well as provide seamless secure communication. Stream2Me communicates with an off site internet server or if specified with an offline locally hosted instanced server, while the online server allows for profile editing and storing, the offline server provides no secure user login however while the server is running data will be stored as per usual. The servers in addition provides options for logging of data as well as Text Message storage, in addition the offline server will also provide the option for a slower and less secure offline database storage for reuse of user accounts and groups.
+
+Group Members:
+	Z Groenewald, 12265676
+	BW Müller, 11037157
+	LM Ramasila, 10637291
+Clients:
+	PubliCaptivation
