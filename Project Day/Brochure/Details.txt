@@ -6,5 +6,5 @@ Group Members:
 	Z Groenewald, 12265676
 	BW Müller, 11037157
 	LM Ramasila, 10637291
-Clients:
+Client:
 	PubliCaptivation
