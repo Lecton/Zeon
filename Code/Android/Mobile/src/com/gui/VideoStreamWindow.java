@@ -2,6 +2,8 @@ package com.gui;
 
 import messages.media.VideoStreamMessage;
 
+import com.gl.GlRenderer;
+import com.gl.Square;
 import com.gui.utils.Contact;
 import com.gui.utils.MessageFactory;
 import com.mobile.Client;
@@ -16,6 +18,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.BitmapDrawable;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -25,109 +28,66 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.os.Build;
 
 public class VideoStreamWindow extends Activity {
-	public static ImageView vid;
-	public static Handler UIHandler;
-	static 
-	{
-	    UIHandler = new Handler(Looper.getMainLooper());
-	}
+
+	/** The OpenGL view */
+	private GLSurfaceView glSurfaceView;
+	private static GlRenderer renderer;
 	
-	public static void runOnUI(Runnable runnable) {
-	    UIHandler.post(runnable);
-	}
-	
-	private static Contact contact;
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_video_stream_window);
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		  
+        // requesting to turn the title OFF
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // making it full screen
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-		String uid = getIntent().getStringExtra("ClientID");
-		
-		if(uid != null){
-			vid =(ImageView)findViewById(R.id.vidoeImage);
-			BitmapDrawable icon = null;
-			contact = ClientHandler.getFromUserID(uid);
-			setTitle(contact.getName());
-			icon = new BitmapDrawable(getResources(),contact.getImage());
-			getActionBar().setIcon(icon);
-			
-		}else{
-			Log.v("VideoStream","onCreate");
-		}
-	}
+        // Initiate the Open GL view and
+        // create an instance with this activity
+        glSurfaceView = new GLSurfaceView(this);
+        
+        // set our renderer to be the main renderer with
+        // the current activity context
+        renderer =new GlRenderer(this);
+        glSurfaceView.setRenderer(renderer);
+        setContentView(glSurfaceView);
+    }
 
+	/**
+	 * Remember to resume the glSurface
+	 */
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.video_stream_window, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+	protected void onResume() {
+		super.onResume();
+		glSurfaceView.onResume();
 	}
 
 	/**
-	 * A placeholder fragment containing a simple view.
+	 * Also pause the glSurface
 	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(
-					R.layout.fragment_video_stream_window, container, false);
-			return rootView;
-		}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		glSurfaceView.onPause();
 	}
 	
-
-	@Override
-	public void onBackPressed() {
-		Client.connection.writeMessage(
-				MessageFactory.generateStreamResponse(ClientHandler.getUser().getUserID(), 
-						ClientHandler.getFromUserID(contact.getUserID()).getVideoStreamID(), false));
-		
-		getIntent().putExtra("UserProfile", 3);
-		getIntent().putExtra("ClientID", contact.getUserID());
-		contact =null;
-		setResult(RESULT_OK, getIntent());		
-		finish();
-	}
-
-	public static void handleVideo(final VideoStreamMessage msg) {
-		if (contact != null) {
-			if (msg.getUserID().equals(contact.getUserID())) {
-				if (vid != null) {
-					VideoStreamWindow.runOnUI(new Runnable() {
-						
-						@Override
-						public void run() {
-							vid.setImageBitmap(ClientHandler.getImageBitMap(msg.getImg(), 150, 150));
-							vid.refreshDrawableState();
-						}
-					});
-				}
-			}
+	public static void handleVideo(VideoStreamMessage msg){
+		if (renderer != null) {
+			String image =msg.getImg();
+			String streamID =msg.getStreamID();
+			
+			renderer.addImage(streamID, image);
+		} else {
+			throw new IllegalStateException("Video window not open.");
 		}
-	}	
-
+	}
 }

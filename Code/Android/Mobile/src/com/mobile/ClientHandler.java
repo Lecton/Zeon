@@ -159,7 +159,7 @@ public class ClientHandler {
 	 public static Bitmap getImageBitMap(String avatar){
 		 byte[] decodedString = Base64Coder.decode(avatar);
 		 BitmapFactory.Options options = new BitmapFactory.Options(); 
-		 options.inSampleSize = 8; 
+		 options.inSampleSize = 0; 
 		  return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
 	 }
 	 

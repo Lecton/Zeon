@@ -43,7 +43,7 @@ public class Client extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		clientContext =getBaseContext();
-		connection = new Connection("192.168.43.26", 2014);
+		connection = new Connection("192.168.43.252", 2014);
 		try {
 			connection.makeConnection();
 		} catch (InterruptedException e) {

@@ -35,6 +35,7 @@ public class MessageHandler {
 				Log.v("Server notice",msg.getMessage());
 				return true;
 			case video:
+				Log.v("Video notice",msg.getMessage());
 				VideoStreamWindow.handleVideo((VideoStreamMessage)msg);
 				return true;
 			default:

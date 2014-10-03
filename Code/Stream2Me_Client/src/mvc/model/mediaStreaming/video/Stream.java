@@ -38,7 +38,7 @@ public class Stream implements Runnable {
         running =true;
         while (running) {
             try {
-                String img =ImageUtils.encodeToString(screen.getScreenImage(), "png");
+                String img =ImageUtils.encodeToString(screen.getScreenImage(), "jpg");
                 vs =new VideoStreamMessage(vs);
                 vs.setImg(img);
                 StreamControl.INSTANCE.write(vs);

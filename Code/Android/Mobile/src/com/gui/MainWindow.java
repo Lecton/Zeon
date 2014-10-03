@@ -12,7 +12,6 @@ import messages.userConnection.GreetingMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
 
-import com.connection.Connection;
 import com.gui.utils.ChatMessages;
 import com.gui.utils.ClientAdapter;
 import com.gui.utils.Contact;

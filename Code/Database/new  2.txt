@@ -92,7 +92,7 @@ CREATE TABLE streamdata (
     streamid text,
     userid text,
     accepted boolean DEFAULT false,
-    "connectionID" text NOT NULL
+    connectionID text NOT NULL
 );
 
 
