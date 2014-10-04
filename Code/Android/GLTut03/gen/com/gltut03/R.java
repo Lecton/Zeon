@@ -1077,8 +1077,27 @@ containing a value of this type.
         public static final int abc_textfield_searchview_holo_light=0x7f020054;
         public static final int abc_textfield_searchview_right_holo_dark=0x7f020055;
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
-        public static final int happy=0x7f020057;
-        public static final int ic_launcher=0x7f020058;
+        public static final int ic_launcher=0x7f020057;
+        public static final int img_1=0x7f020058;
+        public static final int img_10=0x7f020059;
+        public static final int img_11=0x7f02005a;
+        public static final int img_12=0x7f02005b;
+        public static final int img_13=0x7f02005c;
+        public static final int img_14=0x7f02005d;
+        public static final int img_15=0x7f02005e;
+        public static final int img_16=0x7f02005f;
+        public static final int img_17=0x7f020060;
+        public static final int img_18=0x7f020061;
+        public static final int img_19=0x7f020062;
+        public static final int img_2=0x7f020063;
+        public static final int img_20=0x7f020064;
+        public static final int img_3=0x7f020065;
+        public static final int img_4=0x7f020066;
+        public static final int img_5=0x7f020067;
+        public static final int img_6=0x7f020068;
+        public static final int img_7=0x7f020069;
+        public static final int img_8=0x7f02006a;
+        public static final int img_9=0x7f02006b;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;

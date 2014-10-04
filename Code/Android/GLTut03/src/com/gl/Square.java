@@ -11,25 +11,34 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import biz.source_code.base64Coder.Base64Coder;
+
 import com.gltut03.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.opengl.GLUtils;
+import android.util.Log;
 
 /**
  * @author impaler
  *
  */
 public class Square {
-	
+	int counter = 0;
+	int images [] = {
+			R.drawable.img_1,R.drawable.img_2,R.drawable.img_3,R.drawable.img_4,R.drawable.img_5,
+			R.drawable.img_6,R.drawable.img_7,R.drawable.img_8,R.drawable.img_9,R.drawable.img_10
+	};
 	private FloatBuffer vertexBuffer;	// buffer holding the vertices
 	private float vertices[] = {
-			-1.0f, -1.0f,  0.0f,		// V1 - bottom left
-			-1.0f,  1.0f,  0.0f,		// V2 - top left
-			 1.0f, -1.0f,  0.0f,		// V3 - bottom right
-			 1.0f,  1.0f,  0.0f			// V4 - top right
+			-3.0f, -2.0f,  0.0f,		// V1 - bottom left
+			-3.0f,  2.0f,  0.0f,		// V2 - top left
+			 3.0f, -2.0f,  0.0f,		// V3 - bottom right
+			 3.0f,  2.0f,  0.0f			// V4 - top right 
 	};
 
 	private FloatBuffer textureBuffer;	// buffer holding the texture coordinates
@@ -43,12 +52,14 @@ public class Square {
 	
 	/** The texture pointer */
 	private int[] textures = new int[1];
-
+	private Bitmap bitmap;
+	private Context context;
+	
 	public Square() {
+		
 		// a float has 4 bytes so we allocate for each coordinate 4 bytes
 		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		
 		// allocates the memory from the byte buffer
 		vertexBuffer = byteBuffer.asFloatBuffer();
 		
@@ -65,36 +76,85 @@ public class Square {
 		textureBuffer.position(0);
 	}
 
+	public Bitmap StringToBitMap(String encodedString){
+	     try{
+	       byte [] encodeByte = Base64Coder.decode(encodedString);
+	       Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+	       return bitmap;
+	     }catch(Exception e){
+	       e.getMessage();
+	       return null;
+     }
+	}	
 	/**
 	 * Load the texture for the square
 	 * @param gl
 	 * @param context
 	 */
-	public void loadGLTexture(GL10 gl, Context context) {
-		// loading texture
-		Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
-				R.drawable.happy);
+	public void loadGLTexture(GL10 gl, Context c) {
+		
+		context = c;
+		if(counter >= 10){
+			counter = 0;
+		}
+		
+		
+		bitmap = getImage();
+		
+		counter++;
+		if(bitmap != null){
+	
+			// generate one texture pointer
+			gl.glGenTextures(1, textures, 0);
+			// ...and bind it to our array
+			gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+			
+			// create nearest filtered texture
+			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
+			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+			
+			//Different possible texture parameters, e.g. GL10.GL_CLAMP_TO_EDGE
+			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
+			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
+			
+			// Use Android GLUtils to specify a two-dimensional texture image from our bitmap 
+			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+			
+			// Clean up
+			bitmap.recycle();
+			
+		}else{
+			Log.e("Square - loadGLTexture", "bitmap is null.");
+		}
+		Log.v("GLRenderer", "new Image");
 
-		// generate one texture pointer
-		gl.glGenTextures(1, textures, 0);
-		// ...and bind it to our array
-		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
-		
-		// create nearest filtered texture
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-
-		//Different possible texture parameters, e.g. GL10.GL_CLAMP_TO_EDGE
-//		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_REPEAT);
-//		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_REPEAT);
-		
-		// Use Android GLUtils to specify a two-dimensional texture image from our bitmap 
-		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
-		
-		// Clean up
-		bitmap.recycle();
 	}
+	
+	public Bitmap getImage(){
+		  BitmapFactory.Options o = new BitmapFactory.Options();
+		  o.inJustDecodeBounds = true;
+		Bitmap src = BitmapFactory.decodeResource(context.getResources(),
+				 								images[counter]	);
+		
+		return src;
+	}
+	 
+	public void updateImage(GL10 gl){
+		if(counter >= 10){
+			counter = 0;
+		}
 
+		bitmap = getImage();
+		
+		if(bitmap != null){
+			// Use Android GLUtils to specify a two-dimensional texture image from our bitmap
+			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+			
+			// Clean up
+			bitmap.recycle();
+		}
+		counter++;
+	}
 	
 	/** The draw method for the square with the GL context */
 	public void draw(GL10 gl) {
@@ -119,4 +179,14 @@ public class Square {
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 	}
+	
+
+	
+	public void free(GL10 gl){
+//		
+//		for each Image img {
+			  gl.glDeleteTextures(1, textures, 0);
+//			}		
+		gl.glFinish();
+	}	
 }

@@ -11,8 +11,10 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import biz.source_code.base64Coder.Base64Coder;
+import com.gui.VideoStreamWindow;
+import com.mobile.ClientHandler;
 
+import biz.source_code.base64Coder.Base64Coder;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -47,6 +49,7 @@ public class Square {
 	private int[] textures = new int[1];
 	private Bitmap bitmap;
 	private Context context;
+	private GL10 gl;
 	private GlRenderer renderer;
 	
 	public Square(GlRenderer renderer) {
@@ -74,21 +77,37 @@ public class Square {
 	public Bitmap StringToBitMap(String encodedString){
 	     try{
 	       byte [] encodeByte = Base64Coder.decode(encodedString);
-	       Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-	       return bitmap;
+	       return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
 	     }catch(Exception e){
 	       e.getMessage();
 	       return null;
      }
 	}	
+	
+	protected void reloadTexture() {
+		gl.glDeleteTextures(1, textures, 0);
+		
+		// generate one texture pointer
+		gl.glGenTextures(1, textures, 0);
+		// ...and bind it to our array
+		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+		// create nearest filtered texture
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+		
+		//Different possible texture parameters, e.g. GL10.GL_CLAMP_TO_EDGE
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
+	}
+	
 	/**
 	 * Load the texture for the square
 	 * @param gl
 	 * @param context
 	 */
-	public void loadGLTexture(GL10 gl, Context c) {
-		
-		context = c;
+	public void loadGLTexture(GL10 gl, Context context) {
+		this.gl =gl;
+		this.context = context;
 		
 		// generate one texture pointer
 		gl.glGenTextures(1, textures, 0);
@@ -109,7 +128,7 @@ public class Square {
 			// Use Android GLUtils to specify a two-dimensional texture image from our bitmap 
 			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
 			// Clean up
-			bitmap.recycle();
+			recycle();
 			
 		}else{
 			Log.e("Square - loadGLTexture", "bitmap is null.");
@@ -130,9 +149,10 @@ public class Square {
 			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
 			
 			// Clean up
-			bitmap.recycle();
+			recycle();
 		}
 	}
+	
 	
 	/** The draw method for the square with the GL context */
 	public void draw(GL10 gl) {
@@ -157,4 +177,30 @@ public class Square {
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 	}
+	
+	public void recycle(){
+		bitmap.recycle();
+		bitmap = null;
+		System.gc();
+	}
+	
+//	public Bitmap getImage(){
+//
+//		String image = renderer.getImage();
+//		if (image != null) {
+//			BitmapWithOptions src = ClientHandler.getImageBitMapWithOptions(image);
+//			
+//	// First decode with inJustDecodeBounds=true to check dimensions
+//			src.options.inJustDecodeBounds = true;
+////			BitmapFactory.decodeResource(context.getResources(),
+////					src, options);
+//			// Calculate inSampleSize
+//			src.options.inSampleSize = calculateInSampleSize(src.options, VideoStreamWindow.width, VideoStreamWindow.height);
+//			// Decode bitmap with inSampleSize set
+//			src.options.inJustDecodeBounds = false;
+//			return src.getImage();
+//		} else {
+//			return null;
+//		}
+//	}
 }

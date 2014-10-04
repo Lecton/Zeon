@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +39,7 @@ public class VideoStreamWindow extends Activity {
 	/** The OpenGL view */
 	private GLSurfaceView glSurfaceView;
 	private static GlRenderer renderer;
+	public static int width,height;
 	
     /** Called when the activity is first created. */
     @Override
@@ -50,6 +52,9 @@ public class VideoStreamWindow extends Activity {
         // making it full screen
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Display display = getWindowManager().getDefaultDisplay(); 
+        width = display.getWidth();
+        height = display.getHeight();
 
         // Initiate the Open GL view and
         // create an instance with this activity

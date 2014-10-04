@@ -9,16 +9,16 @@ import javax.microedition.khronos.opengles.GL10;
 import android.content.Context;
 import android.opengl.GLU;
 import android.opengl.GLSurfaceView.Renderer;
+import android.util.Log;
 
 /**
  * @author impaler
  *
  */
-public class GlRenderer implements Renderer {
+public final class GlRenderer implements Renderer {
 
 	private Square 		square;		// the square
 	private Context 	context;
-	
 	/** Constructor to set the handed over context */
 	public GlRenderer(Context context) {
 		this.context = context;
@@ -27,6 +27,7 @@ public class GlRenderer implements Renderer {
 		this.square = new Square();
 	}
 
+
 	@Override
 	public void onDrawFrame(GL10 gl) {
 		// clear Screen and Depth Buffer
@@ -34,13 +35,14 @@ public class GlRenderer implements Renderer {
 
 		// Reset the Modelview Matrix
 		gl.glLoadIdentity();
-
+		
 		// Drawing
-		gl.glTranslatef(0.0f, 0.0f, -5.0f);		// move 5 units INTO the screen
 												// is the same as moving the camera 5 units away
-//		gl.glScalef(0.5f, 0.5f, 0.5f);			// scale the square to 50% 
-												// otherwise it will be too large
-		square.draw(gl);						// Draw the triangle
+//		gl.glScalef(0.5f, 0.5f, 0.5f);		S	// scale the square to 50% 
+					
+		square.draw(gl);						// Draw the square
+		square.updateImage(gl);
+		square.free(gl);
 
 	}
 
@@ -75,7 +77,7 @@ public class GlRenderer implements Renderer {
 		
 		//Really Nice Perspective Calculations
 		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST); 
-
 	}
+	
 
 }

@@ -4,18 +4,24 @@
 package com.gl;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import biz.source_code.base64Coder.Base64Coder;
+
+import com.gui.VideoStreamWindow;
 import com.mobile.ClientHandler;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.opengl.GLU;
 import android.opengl.GLSurfaceView.Renderer;
+import android.os.Debug;
 import android.util.Log;
 
 /**
@@ -23,7 +29,8 @@ import android.util.Log;
  *
  */
 public final class GlRenderer implements Renderer {
-
+	private AtomicInteger counter =new AtomicInteger(0);
+	
 	private Square 		square;		// the square
 	private Context 	context;
 	private ConcurrentLinkedQueue<String> images =new ConcurrentLinkedQueue<>();
@@ -83,18 +90,78 @@ public final class GlRenderer implements Renderer {
 		
 		//Really Nice Perspective Calculations
 		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST); 
+		
+		
 	}
 	
 	protected Bitmap getImage() {
 		String image =images.poll();
 		if (image != null) {
-			Bitmap src = ClientHandler.getImageBitMap(image);
-			return src;
+			Log.v("Image counter", "Count: "+counter.incrementAndGet());
+//			BitmapWithOptions src = ClientHandler.getImageBitMapWithOptions(image);
+//			src.options.inJustDecodeBounds = true;
+//			// First decode with inJustDecodeBounds=true to check dimensions
+//			// Calculate inSampleSize
+//			src.options.inSampleSize = calculateInSampleSize(src.options, VideoStreamWindow.width, VideoStreamWindow.height);
+//			// Decode bitmap with inSampleSize set
+//			src.options.inJustDecodeBounds = false;
+//			return src.getImage();
+			
+			byte[] decodedString = Base64Coder.decode(image);
+			final BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inJustDecodeBounds = true;
+			BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);			
+			// Calculate inSampleSize
+			options.inSampleSize = calculateInSampleSize(options, VideoStreamWindow.width, VideoStreamWindow.height);
+			// Decode bitmap with inSampleSize set
+            options.inPurgeable = true;
+            options.inInputShareable = true;
+            options.inJustDecodeBounds = false;
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            int[] pids = { android.os.Process.myPid() };
+            
+            Double free = new Double(Debug.getNativeHeapFreeSize())/1024.0;
+            Bitmap src =BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
+            double size =src.getWidth()*src.getHeight()*4;
+            if (free < size*1.5) {
+//				counter.set(0);
+				square.reloadTexture();
+				Log.v("GLRenderer MemClear", "Pausing for memory clearing.");
+				try {
+					int contained =images.size();
+					images.clear();
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					Log.e("MemClear sleep error", e.getMessage());
+				}
+			}
+//			
+            
+            return src;		
 		} else {
 			return null;
 		}
 	}
 
+	 
+	//Given the bitmap size and View size calculate a subsampling size (powers of 2) 
+	static int calculateInSampleSize( BitmapFactory.Options options, int reqWidth, int reqHeight) {
+	    int inSampleSize = 1;	//Default subsampling size
+		// See if image raw height and width is bigger than that of required view
+		if (options.outHeight > reqHeight || options.outWidth > reqWidth) {
+			//bigger
+			final int halfHeight = options.outHeight / 2;
+			final int halfWidth = options.outWidth / 2;
+			// Calculate the largest inSampleSize value that is a power of 2 and keeps both
+			// height and width larger than the requested height and width.
+		    while ((halfHeight / inSampleSize) > reqHeight 
+		    		&& (halfWidth / inSampleSize) > reqWidth) {
+		    	inSampleSize *= 2;
+		    }
+		}
+		return inSampleSize;
+	}	
+	
 	public void addImage(String streamID, String image) {
 		images.add(image);
 	}

@@ -19,6 +19,7 @@ import android.util.Base64;
 import android.util.Log;
 import biz.source_code.base64Coder.Base64Coder;
 
+import com.gl.BitmapWithOptions;
 import com.gui.MainWindow;
 import com.gui.utils.Contact;
 
@@ -156,11 +157,19 @@ public class ClientHandler {
 	}
 	
 
-	 public static Bitmap getImageBitMap(String avatar){
+	public static Bitmap getImageBitMap(String avatar){
 		 byte[] decodedString = Base64Coder.decode(avatar);
 		 BitmapFactory.Options options = new BitmapFactory.Options(); 
 		 options.inSampleSize = 0; 
-		  return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
+		 return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
+	 }
+	
+	 public static BitmapWithOptions getImageBitMapWithOptions(String avatar){
+		 byte[] decodedString = Base64Coder.decode(avatar);
+		 BitmapFactory.Options options = new BitmapFactory.Options();
+		 options.inJustDecodeBounds = true;
+		 options.inSampleSize = 0; 
+		 return new BitmapWithOptions(decodedString, options);
 	 }
 	 
 	 public static Bitmap getImageBitMap(String avatar,int height,int width){
