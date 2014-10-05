@@ -1,0 +1,19 @@
+Bugs:
+	Video notification icon display. When remove from stream is called and window is closed afterwards. Should not display the icon
+	Unselecting should dismount the active user from GUI control. Used by the displaying of the stream acceptors
+	Avatar Picture resizing - will remove load time. Do not use original sized avatars. Do this client-side.
+
+To Do:
+	Group
+		Create
+		Join
+		Exit
+	Logout
+	Server options
+	Client options
+	Offline Server
+	
+	Registration third party
+Done:
+	Update avatar
+	Registration

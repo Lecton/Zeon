@@ -78,11 +78,6 @@ public class UserControl implements ActionListener {
         String command =e.getActionCommand();
         if (command.equals("streamVideo")) {
             if (model.isStreamingVideo()) {
-                Message msg =MessageFactory.generateStreamProperty(
-                        UserControl.getUserID(), model.getVideoStreamID(), 
-                        model.getVideoStreamName(), false, 0);
-                Control.INSTANCE.writeMessage(msg);
-                
                 List<String> users =ContactListControl.resetVideoReceivers();
                 
                 for (String uID: users) {
@@ -90,6 +85,12 @@ public class UserControl implements ActionListener {
                             .generateStreamUpdate(model.getUserID(), 
                                     "SERVER", model.getVideoStreamID(), uID, 0, false));
                 }
+                
+                Message msg =MessageFactory.generateStreamProperty(
+                        UserControl.getUserID(), model.getVideoStreamID(), 
+                        model.getVideoStreamName(), false, 0);
+                Control.INSTANCE.writeMessage(msg);
+                
                 model.setVideoStreamID(null);
                 //stop video
             } else {
@@ -104,17 +105,17 @@ public class UserControl implements ActionListener {
             }
         } else if (command.equals("streamAudio")) {
             if (model.isStreamingAudio()) {
-                Message msg =MessageFactory.generateStreamProperty(
-                        UserControl.getUserID(), model.getAudioStreamID(), 
-                        model.getAudioStreamName(), false, 1);
-                Control.INSTANCE.writeMessage(msg);
-                
                 List<String> users =ContactListControl.resetAudioReceivers();
                 for (String uID: users) {
                     Control.INSTANCE.writeMessage(MessageFactory
                             .generateStreamUpdate(model.getUserID(), 
                                     "SERVER", model.getAudioStreamID(), uID, 1, false));
                 }
+                
+                Message msg =MessageFactory.generateStreamProperty(
+                        UserControl.getUserID(), model.getAudioStreamID(), 
+                        model.getAudioStreamName(), false, 1);
+                Control.INSTANCE.writeMessage(msg);
                 model.setAudioStreamID(null);
                 //stop audio
             } else {
