@@ -370,4 +370,8 @@ public class GUI extends javax.swing.JFrame {
             this.acceptAudio.setVisible(audio);
         }
     }
+
+    public void setEnableStreamVideo(boolean enable) {
+        streamVideo.setEnabled(enable);
+    }
 }

@@ -12,8 +12,10 @@ import messages.Message;
 import communication.handlers.LoginHandler;
 import communication.handlers.MessageFactory;
 import communication.handlers.MessageHandler;
+import communication.handlers.RegistrationHandler;
 import java.util.logging.Logger;
 import mvc.view.authentication.Login;
+import mvc.view.authentication.Register;
 import mvc.view.generalUI.GUI;
 
 /**
@@ -33,6 +35,7 @@ public class Control {
     
     private GUI ui;
     private Login login;
+    private Register register;
     
 //    private Control() {setup();}
     
@@ -45,7 +48,9 @@ public class Control {
     private void setup() {
         login =new Login();
         LoginControl.register(login);
-
+        
+        register =new Register();
+        RegisterControl.register(register);
 
         ui =new GUI();
         GUIControl.register(ui);
@@ -87,7 +92,9 @@ public class Control {
                         msgHandler =new LoginHandler();
                         break;
                     case 1:
-        //                window =new Registration();
+                        GUIControl.clear();
+                        window =register;
+                        msgHandler =new RegistrationHandler();
                         break;
                     case 2:
                         window =ui;

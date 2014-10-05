@@ -90,6 +90,10 @@ public class GUIControl implements WindowListener {
         view.toggleStreamAudio(onOrOff);
     }
 
+    static void setEnableStreamVideo(boolean enable) {
+        view.setEnableStreamVideo(enable);
+    }
+
     @Override
     public void windowOpened(WindowEvent e) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

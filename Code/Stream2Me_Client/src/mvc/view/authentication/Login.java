@@ -21,7 +21,6 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
-        btnRegister.setVisible(false);
     }
     
     public void setResponse(String text) {
@@ -151,7 +150,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
-        
+        LoginControl.viewRegistration();
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

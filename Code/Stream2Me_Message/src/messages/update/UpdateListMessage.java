@@ -7,6 +7,7 @@
 package messages.update;
 
 import messages.Message;
+import messages.MessageType;
 
 /**
  *

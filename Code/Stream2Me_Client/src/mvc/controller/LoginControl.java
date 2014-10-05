@@ -8,7 +8,6 @@ package mvc.controller;
 
 import biz.source_code.base64Coder.Base64Coder;
 import communication.handlers.MessageFactory;
-import java.security.MessageDigest;
 import java.util.logging.Logger;
 import messages.userConnection.GreetingMessage;
 import mvc.view.authentication.Login;
@@ -58,6 +57,11 @@ public class LoginControl {
             Control.INSTANCE.initiate(2);
             UpdateControl.INSTANCE.add(userID, UpdateControl.LOGIN);
         }
+    }
+    
+    public static void viewRegistration() {
+        view.dispose();
+        Control.INSTANCE.initiate(1);
     }
     
     public static void updateList() {

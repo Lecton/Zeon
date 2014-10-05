@@ -7,6 +7,7 @@
 package messages.media.creation;
 
 import messages.Message;
+import messages.MessageType;
 
 /**
  *

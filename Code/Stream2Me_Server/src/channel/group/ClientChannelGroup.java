@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.Message;
+import messages.MessageType;
 
 /**
  *
@@ -407,8 +408,8 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
             }
         }
         
-        if (message.handle() != Message.MessageType.auido || 
-                message.handle() != Message.MessageType.video) {
+        if (message.handle() != MessageType.auido || 
+                message.handle() != MessageType.video) {
             Logger.getLogger(ClientChannelGroup.class.getName()).log(Level.INFO, 
                          "Writing message "+message.handle()+": ("
                                  +message.getMessage()+") to group. "
@@ -444,7 +445,7 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
         return StringUtil.simpleClassName(this) + "(name: " + name() + ", size: " + size() + ')';
     }
 
-    public String getConnectionID(Channel c) {
+    protected String getConnectionID(Channel c) {
         if (c instanceof ServerChannel) {
             ClientChannel[] serverCH =serverChannels.toArray(new ClientChannel[0]);
             for (ClientChannel cc: serverCH) {
@@ -457,6 +458,25 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
             for (ClientChannel cc: serverCH) {
                 if (cc.getChannel().equals(c)) {
                     return cc.getConnectionID();
+                }
+            }
+        }
+        return null;
+    }
+
+    protected ClientChannel getChannel(Channel c) {
+        if (c instanceof ServerChannel) {
+            ClientChannel[] serverCH =serverChannels.toArray(new ClientChannel[0]);
+            for (ClientChannel cc: serverCH) {
+                if (cc.getChannel().equals(c)) {
+                    return cc;
+                }
+            }
+        } else {
+            ClientChannel[] serverCH =nonServerChannels.toArray(new ClientChannel[0]);
+            for (ClientChannel cc: serverCH) {
+                if (cc.getChannel().equals(c)) {
+                    return cc;
                 }
             }
         }

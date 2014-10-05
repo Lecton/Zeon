@@ -14,6 +14,7 @@ import channel.group.matcher.ConnectionGroup;
 import channel.group.matcher.ConnectionMatcher;
 import channel.group.matcher.StringMatcher;
 import connection.bootstrap.Handler;
+import core.database.RegistrationHandler;
 import core.database.StreamHandler;
 import core.database.StringMessageHandler;
 import core.database.UserHandler;
@@ -40,6 +41,9 @@ import messages.userConnection.GreetingMessage;
 import messages.userConnection.LoginMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
+import messages.userConnection.registration.CheckEmailMessage;
+import messages.userConnection.registration.CheckUsernameMessage;
+import messages.userConnection.registration.RegisterMessage;
 
 /**
  *
@@ -83,6 +87,16 @@ public class MessageHandler {
             case video:
                 handleVideoStream(ctx.channel(), (VideoStreamMessage)msg);
                 break;
+                
+            case checkUsername:
+                handleCheckUsername(ctx.channel(), (CheckUsernameMessage)msg);
+                break;
+            case checkEmail:
+                handleCheckEmail(ctx.channel(), (CheckEmailMessage)msg);
+                break;
+            case register:
+                handleRegister(ctx.channel(), (RegisterMessage)msg);
+                break;
             default:
                 break;
         }
@@ -125,10 +139,15 @@ public class MessageHandler {
     }
 
     private static void handleUpdateAvatar(Channel ch, UpdateAvatarMessage msg) {
+        System.out.println("Got update avatar");
+        try {
         Message message =UserHandler.updateAvatar(msg);
         ClientHandler.writeAndFlush(UserHandler.getGroupID(msg.getUserID()), message);
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                 "Update avatar.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void handleUpdateProfile(Channel ch, UpdateProfileMessage msg) {
@@ -249,5 +268,22 @@ public class MessageHandler {
 //                    "No Stream Property set for this audio stream. ID: "
 //                            +vs.getStreamID());
         }
+    }
+
+    private static void handleCheckUsername(Channel ch, CheckUsernameMessage msg) {
+        boolean result =RegistrationHandler.checkUsername(msg);
+        msg.setValid(result);
+        ch.writeAndFlush(msg);
+    }
+
+    private static void handleCheckEmail(Channel ch, CheckEmailMessage msg) {
+        boolean result =RegistrationHandler.checkEmail(msg);
+        msg.setValid(result);
+        ch.writeAndFlush(msg);
+    }
+
+    private static void handleRegister(Channel ch, RegisterMessage msg) {
+        Message message =RegistrationHandler.register(msg);
+        ch.writeAndFlush(message);
     }
 }

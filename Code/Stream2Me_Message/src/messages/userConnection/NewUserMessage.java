@@ -1,6 +1,7 @@
 package messages.userConnection;
 
 import messages.Message;
+import messages.MessageType;
 
 /**
  *

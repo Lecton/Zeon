@@ -1,0 +1,4 @@
+Team: Zeon
+Requirements:
+	IPs that are accessible across the subnet. 
+	I.e. PCs and tablets all can communicate via IP socket connections where IP addresses are specified.

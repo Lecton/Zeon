@@ -51,7 +51,7 @@ public class ImageUtils {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         try {
-            ImageIO.write(image, "jpg", bos);
+            ImageIO.write(image, type, bos);
             byte[] imageBytes = bos.toByteArray();
 
             imageString = new String(Base64Coder.encode(imageBytes));

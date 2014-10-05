@@ -13,24 +13,23 @@ import java.sql.Timestamp;
  */
 
 public abstract class Message implements Serializable {
-    public static enum MessageType {login, logout, newUser,
-                                    updateProfile, updateAvatar, updateList, 
-                                    string, streamPropertyRequest, streamUpdate, 
-                                    streamNotify, auido, video, streamProperty, 
-                                    streamReply, greeting, console, streamTerminate};
+    public static MessageType messageType;
     
-    public static String SERVER ="SERVER";
-    public static String ALL ="ALL";
-    public static String ERROR ="ERROR";
-    public static String IGNORE ="IGNORE";
+    public static final String SERVER ="SERVER";
+    public static final String ALL ="ALL";
+    public static final String ERROR ="ERROR";
+    public static final String IGNORE ="IGNORE";
+    
+    private String timestamp =(new Timestamp((new java.util.Date()).getTime())).toString();
+    private transient int SSN;
+    private String targetGroupID =IGNORE;
     
     protected String userID =IGNORE;
-    protected String timestamp =(new Timestamp((new java.util.Date()).getTime())).toString();
-    protected transient int SSN;
     protected String targetID =IGNORE;
-    protected String targetGroupID =IGNORE;
     
     public abstract String getMessage();
+    
+    public abstract MessageType handle();
     
     public String getUserID() {
         return userID;
@@ -59,6 +58,4 @@ public abstract class Message implements Serializable {
     public void setTargetGroupID(String targetGroupID) {
         this.targetGroupID = targetGroupID;
     }
-    
-    public abstract MessageType handle();
 }

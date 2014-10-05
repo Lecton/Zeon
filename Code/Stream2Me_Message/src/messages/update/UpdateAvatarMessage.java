@@ -1,6 +1,7 @@
 package messages.update;
 
 import messages.Message;
+import messages.MessageType;
 
 public class UpdateAvatarMessage extends Message {
     private String avatar;

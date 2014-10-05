@@ -7,6 +7,7 @@
 package messages.media.creation;
 
 import messages.Message;
+import messages.MessageType;
 
 /**
  *
@@ -46,7 +47,7 @@ public class StreamTerminateMessage extends Message {
     }
 
     @Override
-    public Message.MessageType handle() {
-        return Message.MessageType.streamTerminate;
+    public MessageType handle() {
+        return MessageType.streamTerminate;
     }
 }

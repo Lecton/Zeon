@@ -72,9 +72,10 @@ public class StreamControl {
                 LOGGER.log(Level.WARNING, "Video stream not allowed");
             }
         } else {
+            GUIControl.setEnableStreamVideo(msg.isSuccessful());
             if (msg.isSuccessful()) {
-                UserControl.INSTANCE.getUser().setVideoStreamID(msg.getStreamID());
-                UserControl.INSTANCE.getUser().setStreamingVideo(true);
+//                UserControl.INSTANCE.getUser().setVideoStreamID(msg.getStreamID());
+//                UserControl.INSTANCE.getUser().setStreamingVideo(true);
             }
             LOGGER.log(Level.WARNING, "Video stream does not match response");
         }

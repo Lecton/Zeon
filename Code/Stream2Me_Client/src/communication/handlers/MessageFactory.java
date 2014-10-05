@@ -17,6 +17,9 @@ import messages.update.UpdateListMessage;
 import messages.update.UpdateProfileMessage;
 import messages.userConnection.LoginMessage;
 import messages.userConnection.LogoutMessage;
+import messages.userConnection.registration.CheckEmailMessage;
+import messages.userConnection.registration.CheckUsernameMessage;
+import messages.userConnection.registration.RegisterMessage;
 
 /**
  *
@@ -66,5 +69,17 @@ public class MessageFactory {
 
     public static StreamResponseMessage generateStreamResponse(String userID, String videoStreamID, boolean response) {
         return new StreamResponseMessage(userID, videoStreamID, response);
+    }
+    
+    public static CheckUsernameMessage generateCheckUsername(String username) {
+        return new CheckUsernameMessage(username);
+    }
+
+    public static CheckEmailMessage generateCheckEmail(String email) {
+        return new CheckEmailMessage(email);
+    }
+
+    public static RegisterMessage generateRegistration(String username, String name, String surname, String email, String pw) {
+        return new RegisterMessage(username, name, surname, email, pw);
     }
 }

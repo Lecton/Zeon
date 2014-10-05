@@ -7,6 +7,7 @@
 package messages.media.communication;
 
 import messages.Message;
+import messages.MessageType;
 
 /**
  * User being informed of a stream invite

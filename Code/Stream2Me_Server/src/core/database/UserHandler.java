@@ -30,6 +30,7 @@ import messages.update.UpdateProfileMessage;
 import messages.userConnection.GreetingMessage;
 import messages.userConnection.LoginMessage;
 import messages.userConnection.NewUserMessage;
+import messages.userConnection.registration.CheckUsernameMessage;
 
 /**
  *

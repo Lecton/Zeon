@@ -48,11 +48,12 @@ public class ClientHandler {
         Logger.getLogger(ClientHandler.class.getName()).log(Level.INFO, 
                 "Groups: " + serverGroup.size());
         ClientChannelGroup ccg =serverGroup.get(groupID);
-            ClientChannel cc =(ClientChannel) channel;
         if (ccg != null) {
+            ClientChannel cc =ccg.getChannel(channel);
             ccg.remove(new RemoveMatcher(cc.getUserID()));
             return cc;
         } else {
+            ClientChannel cc =serverGroup.get("default").getChannel(channel);
             serverGroup.get("default").remove(cc);
             return cc;
         }

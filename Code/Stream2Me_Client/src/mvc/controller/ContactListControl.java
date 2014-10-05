@@ -9,6 +9,7 @@ package mvc.controller;
 import communication.handlers.MessageFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JMenuItem;
@@ -107,12 +108,12 @@ public class ContactListControl implements ActionListener {
         }
     }
 
-    protected static void resetVideoReceivers() {
-        model.resetVideoReceivers();
+    protected static List<String> resetVideoReceivers() {
+        return model.resetVideoReceivers();
     }
 
-    protected static void resetAudioReceivers() {
-        model.resetAudioReceivers();
+    protected static List<String> resetAudioReceivers() {
+        return model.resetAudioReceivers();
     }
     
     protected void addProfile(String userID) {

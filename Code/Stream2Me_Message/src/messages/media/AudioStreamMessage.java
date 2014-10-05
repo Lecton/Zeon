@@ -1,6 +1,7 @@
 package messages.media;
 
 import messages.Message;
+import messages.MessageType;
 
 /**
  *

@@ -6,11 +6,16 @@
 
 package mvc.model;
 
+import communication.handlers.MessageFactory;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import mvc.controller.Control;
+import mvc.controller.UserControl;
 
 /**
  *
@@ -33,17 +38,27 @@ public class ColleagueList {
         return colleagues.get(userID);
     }
 
-    public void resetVideoReceivers() {
+    public List<String> resetVideoReceivers() {
         Collection<Colleague> colls =colleagues.values();
+        List<String> users =new ArrayList<>();
         for (Colleague c: colls) {
+            if (c.isReceivingVideo()) {
+                users.add(c.getUserID());
+            }
             c.setReceivingVideo(false);
         }
+        return users;
     }
 
-    public void resetAudioReceivers() {
+    public List<String> resetAudioReceivers() {
         Collection<Colleague> colls =colleagues.values();
+        List<String> users =new ArrayList<>();
         for (Colleague c: colls) {
+            if (c.isReceivingAudio()) {
+                users.add(c.getUserID());
+            }
             c.setReceivingAudio(false);
         }
+        return users;
     }
 }

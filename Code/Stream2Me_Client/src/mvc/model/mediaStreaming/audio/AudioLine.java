@@ -53,8 +53,8 @@ public class AudioLine {
     
     public static AudioFormat createFormat() {
         float sampleRate = 8000;
-        int sampleSizeInBits = 8;
-        int channels = 1;
+        int sampleSizeInBits = 16;
+        int channels = 2;
         boolean signed = true;
         boolean bigEndian = false;
 

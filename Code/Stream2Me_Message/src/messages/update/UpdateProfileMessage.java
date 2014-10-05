@@ -1,6 +1,7 @@
 package messages.update;
 
 import messages.Message;
+import messages.MessageType;
 
 public class UpdateProfileMessage extends Message {
     private String name;

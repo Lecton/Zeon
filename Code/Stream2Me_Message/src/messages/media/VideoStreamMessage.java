@@ -1,6 +1,7 @@
 package messages.media;
 
 import messages.Message;
+import messages.MessageType;
 
 /**
  *
@@ -40,12 +41,12 @@ public class VideoStreamMessage extends Message {
         return img;
     }
 
+    public void setStreamID(String streamID) {
+        this.streamID = streamID;
+    }
+
     @Override
     public MessageType handle() {
         return MessageType.video;
-    }
-
-    public void setStreamID(String streamID) {
-        this.streamID = streamID;
     }
 }

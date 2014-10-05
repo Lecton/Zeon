@@ -9,6 +9,7 @@ package mvc.controller;
 import communication.handlers.MessageFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.Message;
@@ -81,9 +82,15 @@ public class UserControl implements ActionListener {
                         UserControl.getUserID(), model.getVideoStreamID(), 
                         model.getVideoStreamName(), false, 0);
                 Control.INSTANCE.writeMessage(msg);
-                model.setVideoStreamID(null);
                 
-                ContactListControl.resetVideoReceivers();
+                List<String> users =ContactListControl.resetVideoReceivers();
+                
+                for (String uID: users) {
+                    Control.INSTANCE.writeMessage(MessageFactory
+                            .generateStreamUpdate(model.getUserID(), 
+                                    "SERVER", model.getVideoStreamID(), uID, 0, false));
+                }
+                model.setVideoStreamID(null);
                 //stop video
             } else {
                 String namn =model.getVideoStreamName() == null ? 
@@ -93,7 +100,6 @@ public class UserControl implements ActionListener {
                 Control.INSTANCE.writeMessage(msg);
                 model.setVideoStreamName(namn);
                 
-                ContactListControl.resetVideoReceivers();
                 //start video
             }
         } else if (command.equals("streamAudio")) {
@@ -102,9 +108,14 @@ public class UserControl implements ActionListener {
                         UserControl.getUserID(), model.getAudioStreamID(), 
                         model.getAudioStreamName(), false, 1);
                 Control.INSTANCE.writeMessage(msg);
-                model.setAudioStreamID(null);
                 
-                ContactListControl.resetAudioReceivers();
+                List<String> users =ContactListControl.resetAudioReceivers();
+                for (String uID: users) {
+                    Control.INSTANCE.writeMessage(MessageFactory
+                            .generateStreamUpdate(model.getUserID(), 
+                                    "SERVER", model.getAudioStreamID(), uID, 1, false));
+                }
+                model.setAudioStreamID(null);
                 //stop audio
             } else {
                 String namn =model.getAudioStreamName() == null ? 
