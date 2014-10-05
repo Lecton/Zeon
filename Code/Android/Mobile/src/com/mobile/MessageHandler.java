@@ -2,6 +2,7 @@ package com.mobile;
 
 import messages.Message;
 import messages.StringMessage;
+import messages.media.AudioStreamMessage;
 import messages.media.VideoStreamMessage;
 import messages.media.communication.StreamNotifyMessage;
 import messages.userConnection.GreetingMessage;
@@ -9,6 +10,7 @@ import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
 import android.util.Log;
 
+import com.gui.ClientProfileWindow;
 import com.gui.LoginWindow;
 import com.gui.MainWindow;
 import com.gui.VideoStreamWindow;
@@ -37,6 +39,10 @@ public class MessageHandler {
 			case video:
 				Log.v("Video notice",msg.getMessage());
 				VideoStreamWindow.handleVideo((VideoStreamMessage)msg);
+				return true;
+			case auido:
+				Log.v("Audio notice", msg.getMessage());
+				ClientProfileWindow.handleAudio((AudioStreamMessage)msg);
 				return true;
 			default:
 				Log.e("Message Read", "Unhandled message "+msg.handle());

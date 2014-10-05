@@ -34,7 +34,6 @@ public class AudioPlayer implements Runnable {
 
     public AudioPlayer() {
         format =AudioLine.createFormat();
-        
         setupPipes();
         setupAudioLines();
     }

@@ -2,6 +2,7 @@ package com.mobile;
 
 import messages.update.UpdateListMessage;
 
+import com.audioPlayer.AudioPlayer;
 import com.communication.Connection;
 import com.gui.ClientProfileWindow;
 import com.gui.LoginWindow;
@@ -165,8 +166,8 @@ public class Client extends ActionBarActivity {
 							Intent i = new Intent(getApplicationContext(), VideoStreamWindow.class);
 							i.putExtra("ClientID", clientID);
 							startActivityForResult(i, MAIN_RESULT);
-						}
-						else{
+						}else if(u_result == 6){
+							Log.v("Last Case","You shouldnt be here");
 							String clientID = in.getExtras().getString("ClientID");
 							Intent i = new Intent(getApplicationContext(), ContactWindow.class);
 							i.putExtra("ClientID", clientID);

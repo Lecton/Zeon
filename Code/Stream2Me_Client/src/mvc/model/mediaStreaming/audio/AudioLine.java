@@ -56,7 +56,7 @@ public class AudioLine {
         int sampleSizeInBits = 8;
         int channels = 1;
         boolean signed = true;
-        boolean bigEndian = true;
+        boolean bigEndian = false;
 
         return new AudioFormat(sampleRate, 
                 sampleSizeInBits, channels, signed, bigEndian);

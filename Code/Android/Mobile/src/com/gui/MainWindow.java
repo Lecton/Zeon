@@ -208,7 +208,8 @@ public class MainWindow extends Activity {
 		 					int position, long id) {
 		 				
 		 				Log.v(ClientHandler.get(position).getName(), "ID: " + ClientHandler.get(position).getUserID());
-		 				Contact c = ClientHandler.get(position);	
+		 				Contact c = ClientHandler.get(position);
+		 				activity.getIntent().putExtra("UserProfile", 6);
 		 				activity.getIntent().putExtra("ClientID", c.getUserID());
 		 				activity.setResult(RESULT_OK, activity.getIntent());		
 		 				activity.finish();

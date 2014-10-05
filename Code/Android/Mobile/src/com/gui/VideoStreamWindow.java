@@ -40,13 +40,17 @@ public class VideoStreamWindow extends Activity {
 	private GLSurfaceView glSurfaceView;
 	private static GlRenderer renderer;
 	public static int width,height;
+	private static Contact contact;
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		  
+
+		final String uid = getIntent().getStringExtra("ClientID");
+		if(uid != null){
+		contact = ClientHandler.getFromUserID(uid);
         // requesting to turn the title OFF
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         // making it full screen
@@ -65,6 +69,9 @@ public class VideoStreamWindow extends Activity {
         renderer =new GlRenderer(this);
         glSurfaceView.setRenderer(renderer);
         setContentView(glSurfaceView);
+		}else{
+			Log.v("VideoStreamWindow - onCreate","No userID");
+		}
     }
 
 	/**
@@ -94,5 +101,13 @@ public class VideoStreamWindow extends Activity {
 		} else {
 			throw new IllegalStateException("Video window not open.");
 		}
+	}
+	
+	@Override
+	public void onBackPressed() {
+		getIntent().putExtra("UserProfile", 6);
+		getIntent().putExtra("ClientID", contact.getUserID());
+		setResult(RESULT_OK, getIntent());		
+		finish();
 	}
 }

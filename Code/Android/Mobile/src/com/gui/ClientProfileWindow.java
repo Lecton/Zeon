@@ -1,5 +1,8 @@
 package com.gui;
 
+import messages.media.AudioStreamMessage;
+
+import com.audioPlayer.AudioPlayer;
 import com.gui.utils.Contact;
 import com.gui.utils.MessageFactory;
 import com.mobile.Client;
@@ -29,6 +32,8 @@ import android.widget.TextView;
 import android.os.Build;
 
 public class ClientProfileWindow extends Activity {
+	private static AudioPlayer player;
+	private static Contact playerContact;
 
 	ImageView image;
 	TextView name;
@@ -45,13 +50,17 @@ public class ClientProfileWindow extends Activity {
 		final String uid = getIntent().getStringExtra("ClientID");
 		
 		if(uid != null){
+			if (player != null) {
+				playerContact =contact;
+			}
+			
 			contact = ClientHandler.getFromUserID(uid);
 			image = (ImageView) findViewById(R.id.clientPicture);
 			name = (TextView) findViewById(R.id.name);
 			surname = (TextView) findViewById(R.id.surname);
 			email = (TextView) findViewById(R.id.email);
-			videoAccept = (ImageButton) findViewById(R.id.videoInvite);
-			videoAccept.setVisibility(View.GONE);
+			videoAccept = (ImageButton) findViewById(R.id.videoAccept);
+			audioAccept = (ImageButton) findViewById(R.id.audioAccept);
 			
 
 //			if(contact.getAudioNotification()){
@@ -59,7 +68,7 @@ public class ClientProfileWindow extends Activity {
 //			}
 			
 			if(contact.getVideoNotification()){
-				videoAccept.setVisibility(View.VISIBLE);
+				videoAccept.setImageResource(R.drawable.unclicked_camera);
 				videoAccept.setOnClickListener(new OnClickListener() {
 					
 					@Override
@@ -67,12 +76,56 @@ public class ClientProfileWindow extends Activity {
 						// TODO Auto-generated method stub
 						contact.setVideoNoticationOff();
 						Client.connection.writeMessage(
-								MessageFactory.generateStreamResponse(ClientHandler.getUser().getUserID(), 
-										ClientHandler.getFromUserID(uid).getVideoStreamID(), true));
+										MessageFactory.generateStreamResponse(ClientHandler.getUser().getUserID(), 
+												contact.getVideoStreamID(), true));
 						getIntent().putExtra("UserProfile", 5);
 						getIntent().putExtra("ClientID", contact.getUserID());
 						setResult(RESULT_OK, getIntent());		
 						finish();
+					}
+				});
+			}
+			
+			if(contact.getAudioNotification()){
+				if (player != null) {
+					if (player.getStreamID().equals(contact.getAudioStreamID())) {
+						audioAccept.setImageResource(R.drawable.clicked_microphone);
+					} else {
+						audioAccept.setImageResource(R.drawable.unclicked_microphone);
+					}
+				} else {
+					audioAccept.setImageResource(R.drawable.unclicked_microphone);
+				}
+				
+				audioAccept.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						if (player != null) {
+							playerContact.setAudioNoticationOn();
+							Client.connection.writeMessage(
+									MessageFactory.generateStreamResponse(ClientHandler.getUser().getUserID(), 
+									playerContact.getAudioStreamID(), false));
+							stopAudioPlayer();
+						}
+						
+						if (playerContact != null && playerContact.getUserID().equals(uid)) {
+							contact.setAudioNoticationOn();
+							audioAccept.setImageResource(R.drawable.clicked_microphone);
+							Client.connection.writeMessage(
+											MessageFactory.generateStreamResponse(ClientHandler.getUser().getUserID(), 
+											contact.getAudioStreamID(),false));
+							stopAudioPlayer();
+						} else {
+							// TODO Auto-generated method stub
+							contact.setAudioNoticationOff();
+							audioAccept.setImageResource(R.drawable.clicked_microphone);
+							Client.connection.writeMessage(
+											MessageFactory.generateStreamResponse(ClientHandler.getUser().getUserID(), 
+											contact.getAudioStreamID(),true));
+							playerContact =contact;
+							player =AudioPlayer.start(contact.getAudioStreamID());
+						}
 					}
 				});
 			}
@@ -119,7 +172,7 @@ public class ClientProfileWindow extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		getIntent().putExtra("UserProfile", 4);
+		getIntent().putExtra("UserProfile", 6);
 		getIntent().putExtra("ClientID", contact.getUserID());
 		setResult(RESULT_OK, getIntent());		
 		finish();
@@ -140,5 +193,22 @@ public class ClientProfileWindow extends Activity {
 			return rootView;
 		}
 	}
-
+	
+	public static void handleAudio(AudioStreamMessage msg) {
+		if (player != null) {
+			player.write(msg.getStreamID(), msg.buffer);
+		}
+	}
+	
+	public static void stopAudioPlayer() {
+		player.stop();
+		player =null;
+		playerContact =null;
+	}
+	
+	public void inviteToVideo(View view){
+		Client.connection.writeMessage(
+//				MessageFactory.generateStreamResponse(userID, streamID, response)(ClientHandler.getUser().getUserID(), 
+//						contact.getVideoStreamID(), true));
+	}
 }

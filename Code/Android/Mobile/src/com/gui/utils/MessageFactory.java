@@ -57,9 +57,9 @@ public class MessageFactory {
 //    public static StreamPropertyMessage generateStreamProperty(String userID, String targetID, String streamID, boolean turnOn) {
 //        return new StreamPropertyMessage(userID, targetID, streamID, (turnOn?1:0));
 //    }
-//
-    public static StreamResponseMessage generateStreamResponse(String userID, String videoStreamID, boolean response) {
-        return new StreamResponseMessage(userID, videoStreamID, response);
+
+    public static StreamResponseMessage generateStreamResponse(String userID, String streamID, boolean response) {
+        return new StreamResponseMessage(userID, streamID, response);
     }
     
     public static VideoStreamMessage clone(VideoStreamMessage vs) {
