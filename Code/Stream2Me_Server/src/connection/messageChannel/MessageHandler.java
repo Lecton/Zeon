@@ -15,13 +15,16 @@ import channel.group.matcher.ConnectionMatcher;
 import channel.group.matcher.StringMatcher;
 import connection.bootstrap.Handler;
 import core.database.RegistrationHandler;
+import core.database.SettingHandler;
 import core.database.StreamHandler;
 import core.database.StringMessageHandler;
 import core.database.UserHandler;
 import core.database.objects.BaseUser;
+import core.database.objects.Settings;
 import core.database.objects.StreamProperty;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.Message;
@@ -34,6 +37,14 @@ import messages.media.communication.StreamUpdateMessage;
 import messages.media.VideoStreamMessage;
 import messages.media.creation.StreamPropertyMessage;
 import messages.media.creation.StreamTerminateMessage;
+import messages.settings.group.GroupJoinMessage;
+import messages.settings.group.GroupJoinRequestMessage;
+import messages.settings.group.GroupListMessage;
+import messages.settings.group.GroupListRequestMessage;
+import messages.settings.SettingsMessage;
+import messages.settings.SettingsRequestMessage;
+import messages.settings.group.GroupCreateMessage;
+import messages.settings.group.GroupCreateRequestMessage;
 import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateListMessage;
 import messages.update.UpdateProfileMessage;
@@ -97,6 +108,18 @@ public class MessageHandler {
             case register:
                 handleRegister(ctx.channel(), (RegisterMessage)msg);
                 break;
+                
+            case settingsRequest:
+                handleSettingsRequest(ctx.channel(), (SettingsRequestMessage)msg);
+                break;
+            case settingsGroupListRequest:
+                handleSettingsGroupListRequest(ctx.channel(), (GroupListRequestMessage)msg);
+                break;
+            case settingsGroupJoinRequest:
+                handleSettingsGroupJoinRequest(ctx.channel(), (GroupJoinRequestMessage)msg);
+                break;
+            case settingsGroupCreateRequest:
+                handleSettingsGroupCreateRequest(ctx.channel(), (GroupCreateRequestMessage)msg);
             default:
                 break;
         }
@@ -285,5 +308,75 @@ public class MessageHandler {
     private static void handleRegister(Channel ch, RegisterMessage msg) {
         Message message =RegistrationHandler.register(msg);
         ch.writeAndFlush(message);
+    }
+
+    private static void handleSettingsRequest(Channel ch, SettingsRequestMessage msg) {
+        Settings settings =SettingHandler.getSettings(msg.getUserID());
+        if (settings != null) {
+            SettingsMessage sm =new SettingsMessage(settings.getGroupID(), settings.getGroupName(), settings.getOwnerName(), settings.isOwner(msg.getUserID()));
+            ch.writeAndFlush(sm);
+        } else {
+            ch.writeAndFlush(new SettingsMessage());
+        }
+    }
+
+    private static void handleSettingsGroupListRequest(Channel ch, GroupListRequestMessage msg) {
+        Map<String, String> groups =SettingHandler.getGroups();
+        GroupListMessage sm =new GroupListMessage(groups);
+        ch.writeAndFlush(sm);
+    }
+    
+    private static void handleSettingsGroupJoinRequest(Channel ch, GroupJoinRequestMessage msg) {
+        BaseUser u =UserHandler.getUser(msg.getUserID());
+        
+        GroupJoinMessage gjm =SettingHandler.groupJoin(msg.getUserID(), msg.getGroupID(), msg.getPassword());
+        
+        Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
+                "Join was "+(gjm.isSuccessful()? "successful" : "unsuccessful")+".");
+        if (gjm.isSuccessful()) {
+            if (u == null) {
+                Logger.getLogger(MessageHandler.class.getName()).log(Level.parse("ERROR"), 
+                        "Client closed connection, but client could not be found.");
+                return;
+            }
+
+            ClientChannel channel =ClientHandler.remove(ch, u.getGroupID());
+            boolean contained =ClientHandler.contains(channel, channel.getUserID());
+            if (!contained) {
+                LogoutMessage message =new LogoutMessage(u.getUserID(), messages.Message.ALL);
+                message.setTargetGroupID(u.getGroupID());
+                ClientHandler.writeAndFlush(u.getGroupID(), message);
+            }
+            UserHandler.changeUserGroup(channel, msg.getUserID(), msg.getGroupID());
+        }
+        
+        ch.writeAndFlush(gjm);
+    }
+    
+    private static void handleSettingsGroupCreateRequest(Channel ch, GroupCreateRequestMessage msg) {
+        BaseUser u =UserHandler.getUser(msg.getUserID());
+        
+        GroupCreateMessage gcm =SettingHandler.groupCreate(msg.getUserID(), msg.getGroupName(), msg.getPassword());
+        
+        Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
+                "Create was "+(gcm.isSuccessful()? "successful" : "unsuccessful")+".");
+        if (gcm.isSuccessful()) {
+            if (u == null) {
+                Logger.getLogger(MessageHandler.class.getName()).log(Level.parse("ERROR"), 
+                        "Client closed connection, but client could not be found.");
+                return;
+            }
+
+            ClientChannel channel =ClientHandler.remove(ch, u.getGroupID());
+            boolean contained =ClientHandler.contains(channel, channel.getUserID());
+            if (!contained) {
+                LogoutMessage message =new LogoutMessage(u.getUserID(), messages.Message.ALL);
+                message.setTargetGroupID(u.getGroupID());
+                ClientHandler.writeAndFlush(u.getGroupID(), message);
+            }
+            UserHandler.changeUserGroup(channel, msg.getUserID(), gcm.getGroupID());
+        }
+        
+        ch.writeAndFlush(gcm);
     }
 }

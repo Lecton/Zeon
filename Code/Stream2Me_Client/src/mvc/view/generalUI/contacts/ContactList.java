@@ -26,7 +26,7 @@ public class ContactList extends JPanel implements MouseListener {
     private final static Logger LOGGER = Logger.getLogger(ContactList.class.getName());
     
     private GridBagConstraints gbcContent;
-    private ArrayList<ContactProfile> list =new ArrayList<ContactProfile>();
+    private ArrayList<ContactProfile> list =new ArrayList<>();
     private ContactProfile selectedProfile =null;
     
     /**
@@ -34,6 +34,10 @@ public class ContactList extends JPanel implements MouseListener {
      */
     public ContactList() {
         initComponents();
+        initLayout();
+    }
+    
+    private void initLayout() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.weightx = 1;
@@ -168,9 +172,9 @@ public class ContactList extends JPanel implements MouseListener {
     }
 
     public void empty() {
-        for (ContactProfile cp: list) {
-            remove(cp);
-            selectedProfile =null;
-        }
+        removeAll();
+        list =new ArrayList<>();
+        selectedProfile =null;
+        initLayout();
     }
 }

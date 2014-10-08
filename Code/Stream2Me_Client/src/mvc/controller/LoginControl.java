@@ -64,7 +64,7 @@ public class LoginControl {
         Control.INSTANCE.initiate(1);
     }
     
-    public static void updateList() {
+//    public static void updateList() {
 //        String pwd =new String(password);
 //        Control.INSTANCE.writeMessage(MessageFactory.generateLogin(username, pwd));
 //        if (con != null) {
@@ -75,5 +75,5 @@ public class LoginControl {
 //                Log.error(this.getClass(), "Connection error");
 //            }
 //        }
-    }
+//    }
 }

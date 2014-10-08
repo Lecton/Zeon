@@ -29,8 +29,8 @@ public class Authentication implements GenericFutureListener<Future<Channel>> {
         System.out.println("Handshake success: "+future.isSuccess());
         if (future.isSuccess()) {
             future.get().write(new ConsoleMessage(
-                    "Welcome to "+InetAddress.getLocalHost().getHostName()+
-                    " secure chat service!"));
+                    "Welcome to PubliCaptivation" +
+                    " secure stream2Me service!"));
             future.get().write(new ConsoleMessage(
                     "Your session is protectd by "+
                     sslHandler.engine().getSession().getCipherSuite()+

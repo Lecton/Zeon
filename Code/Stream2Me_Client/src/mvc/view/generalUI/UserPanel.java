@@ -109,4 +109,10 @@ public class UserPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblID;
     private javax.swing.JLabel lblName;
     // End of variables declaration//GEN-END:variables
+
+    public void clear() {
+        lblID.setText("");
+        lblName.setText("");
+        imgAvatar.clear();
+    }
 }

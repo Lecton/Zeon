@@ -33,8 +33,7 @@ public class GUI extends javax.swing.JFrame {
         
         setupGUI();
         
-        settings.setVisible(false);
-        logout.setVisible(false);
+//        settings.setVisible(false);
     }
 
     /**
@@ -111,13 +110,20 @@ public class GUI extends javax.swing.JFrame {
         streamAudio.setUnclicked(new javax.swing.ImageIcon(getClass().getResource("/streaming_Icons/unclicked-microphone.png"))); // NOI18N
         controls.add(streamAudio, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 67, -1, -1));
 
+        logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/exit.png"))); // NOI18N
         logout.setActionCommand("logout");
         logout.setMargin(new java.awt.Insets(2, 2, 2, 2));
         logout.setMaximumSize(new java.awt.Dimension(58, 58));
         logout.setMinimumSize(new java.awt.Dimension(58, 58));
         logout.setPreferredSize(new java.awt.Dimension(58, 58));
+        logout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutActionPerformed(evt);
+            }
+        });
         controls.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 441, -1, 56));
 
+        settings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/settings.png"))); // NOI18N
         settings.setActionCommand("settings");
         settings.setMargin(new java.awt.Insets(2, 2, 2, 2));
         settings.setMaximumSize(new java.awt.Dimension(58, 58));
@@ -247,8 +253,12 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_rightArrowActionPerformed
 
     private void settingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsActionPerformed
-        // TODO add your handling code here:
+        GUIControl.settings();
     }//GEN-LAST:event_settingsActionPerformed
+
+    private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
+        GUIControl.logout();
+    }//GEN-LAST:event_logoutActionPerformed
 
     private void setupGUI() {
         leftArrow.setPosition(controls, true);

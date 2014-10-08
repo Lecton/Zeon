@@ -1,5 +1,6 @@
 package mvc.controller;
 
+import communication.handlers.MessageFactory;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -31,6 +32,9 @@ public class AudioPlayer implements Runnable {
     
     private boolean running =false;
     private boolean dead =false;
+    
+    private String streamID;
+    private String userID;
 
     public AudioPlayer() {
         format =AudioLine.createFormat();
@@ -71,18 +75,16 @@ public class AudioPlayer implements Runnable {
         return player;
     }
     
-//    public void stop() {
-//        running =false;
-//    }
-    
-    public void write(byte[] buffer) {
-        try {
-            synchronized (pos) {
-                pos.write(buffer);
+    public void write(String streamID, byte[] buffer) {
+        if (this.streamID != null && this.streamID.equals(streamID)) {
+            try {
+                synchronized (pos) {
+                    pos.write(buffer);
+                }
+            } catch (IOException ex) {
+                LOGGER.log(Level.SEVERE, "Could not write to pipe buffer");
+                dead =true;
             }
-        } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, "Could not write to pipe buffer");
-            dead =true;
         }
     }
 
@@ -108,5 +110,29 @@ public class AudioPlayer implements Runnable {
             buffer =new byte[bufferSize];
         }
         line.close();
+    }
+
+    void stop() {
+        Control.INSTANCE.writeMessage(MessageFactory
+                        .generateStreamResponse(UserControl.getUserID(), 
+                                streamID, false));
+    }
+
+    void setStreamIDs(String userID, String streamID) {
+        this.streamID =streamID;
+        this.userID =userID;
+    }
+    
+    void clearStreamIDs() {
+        this.streamID =null;
+        this.userID =null;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    boolean isReceiving() {
+        return streamID != null && userID != null;
     }
 }

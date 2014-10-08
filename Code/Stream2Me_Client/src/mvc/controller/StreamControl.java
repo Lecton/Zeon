@@ -7,6 +7,7 @@
 package mvc.controller;
 
 import communication.handlers.MessageFactory;
+import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.Message;
@@ -140,12 +141,20 @@ public class StreamControl {
         }
     }
 
-    public static void handleAudioData(byte[] buffer) {
-        audioView.write(buffer);
+    public static void handleAudioData(String streamID, byte[] buffer) {
+        audioView.write(streamID, buffer);
     }
 
     public static void handleVideoData(String streamID, String imageBuffer) {
         videoView.write(streamID, imageBuffer);
+    }
+
+    static void setAudioPlayerIDs(String userID, String streamID) {
+        audioView.setStreamIDs(userID, streamID);
+    }
+
+    static void clearAudioPlayerIDs() {
+        audioView.clearStreamIDs();
     }
     
     public void write(Message msg) {
@@ -173,5 +182,26 @@ public class StreamControl {
 
     protected void closeVideoFrame(String streamID, String userID) {
         videoView.removeVideoFrame(streamID);
+    }
+    
+    protected void stop() {
+        videoView.stopAll();
+        UserControl.INSTANCE.stopVideo();
+        UserControl.INSTANCE.stopAudio();
+        
+        
+        if (audioView.isReceiving()) {
+            Receiver person =ContactListControl.INSTANCE.getColleague(audioView.getUserID());
+
+            person.setAcceptedAudio(false);
+            person.setAudio(!false);
+
+            ContactListControl.INSTANCE.alert(person.getUserID());
+
+            StreamControl.setAudioPlayerIDs(person.getUserID(), person.getAudioStream());
+            Control.INSTANCE.writeMessage(MessageFactory
+                    .generateStreamResponse(UserControl.getUserID(), 
+                            person.getAudioStream(), false));
+        }
     }
 }

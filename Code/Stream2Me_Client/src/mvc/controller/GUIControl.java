@@ -94,6 +94,24 @@ public class GUIControl implements WindowListener {
         view.setEnableStreamVideo(enable);
     }
 
+    public static void logout() {
+        Control.INSTANCE.writeMessage(MessageFactory.generateLogout(UserControl.getUserID()));
+        Control.INSTANCE.initiate(0);
+    }
+
+    public static void settings() {
+        StreamControl.INSTANCE.stop();
+        Control.INSTANCE.initiate(3);
+    }
+
+    static void reset() {
+        UpdateControl.clear();
+        ContactListControl.clear();
+        ChatControl.clear();
+        ProfileControl.clear();
+        view.changeContent(3, null, UserControl.INSTANCE.getFullname());
+    }
+
     @Override
     public void windowOpened(WindowEvent e) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

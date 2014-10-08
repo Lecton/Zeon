@@ -9,6 +9,7 @@ package mvc.controller.videoPlayer;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import mvc.controller.StreamControl;
@@ -103,5 +104,13 @@ public class VideoManager implements WindowListener {
 
     @Override
     public void windowDeactivated(WindowEvent e) {
+    }
+
+    public void stopAll() {
+        Collection<VideoFrame> frameSet =frames.values();
+        for (VideoFrame f: frameSet) {
+            frames.remove(f);
+            f.dispose();
+        }
     }
 }

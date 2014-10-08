@@ -114,8 +114,8 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
                 }
             }
         } else {
-            ClientChannel[] serverCH =nonServerChannels.toArray(new ClientChannel[0]);
-            for (ClientChannel cc: serverCH) {
+            ClientChannel[] nonServerCH =nonServerChannels.toArray(new ClientChannel[0]);
+            for (ClientChannel cc: nonServerCH) {
                 if (cc.getUserID().equals(userID)) {
                     return true;
                 }

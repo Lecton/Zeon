@@ -23,6 +23,11 @@ public enum MessageType {
     auido, video, 
     streamReply, streamTerminate, 
     
+    settings, settingsRequest, 
+    settingsGroupListRequest, settingsGroupList,
+    settingsGroupJoinRequest, settingsGroupJoin,
+    settingsGroupCreateRequest, settingsGroupCreate,
+    
     greeting, 
     console
 }

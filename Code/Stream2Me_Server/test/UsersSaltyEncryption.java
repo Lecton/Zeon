@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author Bernhard
  */
-public class SaltyEncryption {
+public class UsersSaltyEncryption {
     static MessageDigest digest;
     
     public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -31,6 +31,8 @@ public class SaltyEncryption {
         String zenadia ="9735d1f3-0503-40d4-a1c2-1e7c84dda390";
         
         digest =MessageDigest.getInstance("SHA1");
+        
+        
         updateDB(bernhard, getPassword(password, bernhard));
         
         

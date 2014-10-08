@@ -118,7 +118,7 @@ public class RegistrationHandler {
                 statement.setString(2, name);
                 statement.setString(3, surname);
                 statement.setString(4, username);
-                statement.setString(5, getPassword(password, uID));
+                statement.setString(5, Database.getPassword(password, uID));
                 statement.setString(6, email);
                 statement.setObject(7, new Date(Calendar.getInstance().getTimeInMillis()));
                 int result =statement.executeUpdate();
@@ -142,12 +142,5 @@ public class RegistrationHandler {
             }
         }
         return new RegistrationResponseMessage(false);
-    }
-    
-    private static String getPassword(String pass, String key) throws UnsupportedEncodingException {
-        String pwd =key+pass;
-        byte[] pwdDigest =UserHandler.digest.digest(pwd.getBytes("Latin1"));
-        String temp =new String(pwdDigest, "Latin1");
-        return temp;
     }
 }

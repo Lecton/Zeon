@@ -6,6 +6,9 @@
 
 package core.database;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,6 +23,16 @@ import java.util.logging.Logger;
  * @author Lecton
  */
 public class Database {
+    static MessageDigest digest;
+    static {
+        try {
+            digest =MessageDigest.getInstance("SHA1");
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(UserHandler.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private String host; //127.0.0.1
     private int port;//5433
     private String database;//stream2me
@@ -84,5 +97,12 @@ public class Database {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public static String getPassword(String pass, String key) throws UnsupportedEncodingException {
+        String pwd =key+pass;
+        byte[] pwdDigest =digest.digest(pwd.getBytes("Latin1"));
+        String temp =new String(pwdDigest, "Latin1");
+        return temp;
     }
 }

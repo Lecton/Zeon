@@ -50,7 +50,9 @@ public class VideoStream {
     }
     
     public void stop() {
-        transmitter.stop();
-        clearStream();
+        if (transmitter != null) {
+            transmitter.stop();
+            clearStream();
+        }
     }
 }

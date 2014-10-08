@@ -12,6 +12,11 @@ import messages.StringMessage;
 import messages.media.creation.StreamPropertyRequestMessage;
 import messages.media.communication.StreamResponseMessage;
 import messages.media.communication.StreamUpdateMessage;
+import messages.settings.group.GroupJoinRequestMessage;
+import messages.settings.group.GroupListRequestMessage;
+import messages.settings.SettingsRequestMessage;
+import messages.settings.group.GroupCreateMessage;
+import messages.settings.group.GroupCreateRequestMessage;
 import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateListMessage;
 import messages.update.UpdateProfileMessage;
@@ -81,5 +86,21 @@ public class MessageFactory {
 
     public static RegisterMessage generateRegistration(String username, String name, String surname, String email, String pw) {
         return new RegisterMessage(username, name, surname, email, pw);
+    }
+
+    public static SettingsRequestMessage generateSettingsRequestMessage(String userID) {
+        return new SettingsRequestMessage(userID);
+    }
+
+    public static GroupListRequestMessage generateSettingsGroupListRequest(String userID) {
+        return new GroupListRequestMessage(userID);
+    }
+
+    public static GroupJoinRequestMessage generateSettingsGroupJoin(String groupID, String userID, String password) {
+        return new GroupJoinRequestMessage(groupID, userID, password);
+    }
+
+    public static GroupCreateRequestMessage generateSettingsCreateGroup(String userID, String groupName, String password) {
+        return new GroupCreateRequestMessage(userID, groupName, password);
     }
 }

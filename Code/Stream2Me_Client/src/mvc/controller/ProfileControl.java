@@ -7,6 +7,7 @@
 package mvc.controller;
 
 import communication.handlers.MessageFactory;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -88,6 +89,7 @@ public class ProfileControl implements ActionListener {
                         File cf =chooser.getSelectedFile();
                         
                         BufferedImage image =ImageIO.read(cf);
+                        image =ImageUtils.resize(image, new Dimension(500, 500));
                         Control.INSTANCE.writeMessage(
                                 MessageFactory.generateUpdateAvatar(userID, 
                                         ImageUtils.encodeToString(image, "jpg")));

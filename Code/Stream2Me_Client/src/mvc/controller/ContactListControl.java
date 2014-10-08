@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JMenuItem;
-import mvc.controller.videoPlayer.VideoManager;
 import mvc.model.Colleague;
 import mvc.model.ColleagueList;
 import mvc.model.person.Notifier;
@@ -191,6 +190,11 @@ public class ContactListControl implements ActionListener {
                 
                 view.alert(person.getUserID());
                 
+                if (accept) {
+                    StreamControl.setAudioPlayerIDs(person.getUserID(), person.getAudioStream());
+                } else {
+                    StreamControl.clearAudioPlayerIDs();
+                }
                 Control.INSTANCE.writeMessage(MessageFactory
                         .generateStreamResponse(UserControl.getUserID(), 
                                 person.getAudioStream(), accept));
@@ -272,5 +276,13 @@ public class ContactListControl implements ActionListener {
             return true;
         }
         return false;
+    }
+    
+    protected void stopAudioPlayer(String userID) {
+        
+    }
+
+    void alert(String userID) {
+        view.alert(userID);
     }
 }

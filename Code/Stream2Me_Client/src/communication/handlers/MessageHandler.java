@@ -6,6 +6,8 @@
 
 package communication.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.Message;
@@ -123,7 +125,7 @@ public class MessageHandler {
     }
 
     private boolean handleAudioStream(AudioStreamMessage msg) {
-        StreamControl.handleAudioData(msg.getBuffer());
+        StreamControl.handleAudioData(msg.getStreamID(), msg.getBuffer());
         return true;
     }
 
@@ -140,5 +142,15 @@ public class MessageHandler {
     private boolean handleStreamTerminate(StreamTerminateMessage msg) {
         StreamControl.handleStreamTerminate(msg);
         return true;
+    }
+    
+    public List<Message> getPrivatePool() {
+        return new ArrayList<>();
+    }
+    
+    public void empty(List<Message> pool) {
+        for (Message msg: pool) {
+            handle(msg);
+        }
     }
 }

@@ -30,22 +30,12 @@ import messages.update.UpdateProfileMessage;
 import messages.userConnection.GreetingMessage;
 import messages.userConnection.LoginMessage;
 import messages.userConnection.NewUserMessage;
-import messages.userConnection.registration.CheckUsernameMessage;
 
 /**
  *
  * @author Bernhard
  */
 public class UserHandler {
-    static MessageDigest digest;
-    static {
-        try {
-            digest =MessageDigest.getInstance("SHA1");
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(UserHandler.class.getName())
-                    .log(Level.SEVERE, null, ex);
-        }
-    }
     
     /**
      * Private helper function for the login and logoff functions strictly. 
@@ -67,12 +57,26 @@ public class UserHandler {
                 statement.setString(1, connectionID);
                 statement.setString(2, userID);
                 statement.execute();
+                
+                query = "UPDATE client " +
+                        "set loggedin = true " +
+                        "WHERE userid = ?";
+                statement = Database.INSTANCE.getPreparedStatement(query);
+                statement.setString(1, userID);
+                statement.executeUpdate();
             } else {
                 String query ="DELETE FROM connection " +
                         "WHERE connectionID = ?";
                 statement = Database.INSTANCE.getPreparedStatement(query);
                 statement.setString(1, connectionID);
                 statement.execute();
+                
+                query = "UPDATE client " +
+                        "set loggedin = false " +
+                        "WHERE userid = ?";
+                statement = Database.INSTANCE.getPreparedStatement(query);
+                statement.setString(1, userID);
+                statement.executeUpdate();
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserHandler.class.getName())
@@ -125,7 +129,7 @@ public class UserHandler {
                     byte[] dbDigest =pwd.getBytes("Latin1");
                     password =userID+password;
                     password =password;
-                    byte[] pwdDigest =digest.digest(password.getBytes("Latin1"));
+                    byte[] pwdDigest =Database.digest.digest(password.getBytes("Latin1"));
                     boolean digestMatch =MessageDigest.isEqual(pwdDigest, dbDigest);
                     
                     if (digestMatch) {
@@ -137,19 +141,24 @@ public class UserHandler {
                         String aboutMe =result.getString("aboutme");
                         String title =result.getString("title");
                         String avatar =result.getString("avatar");
-                        User person =new User(userID, uName, groupID, 
-                                name, surname, email, title, aboutMe, avatar);
-                        ClientChannel cc =new ClientChannel(ch, userID, groupID);
-                        int addResult =ClientHandler.add(cc);
-                        if (addResult == 1) {
-                            ClientHandler.writeAndFlush(groupID, MessageBuilder.generateNewUser(person, null), new ClientGroup(userID, groupID));
-                            userLoggedInUpdate(userID, cc.getConnectionID(), true);
-                            return MessageBuilder.generateGreeting(person, true, "Login success.");
-                        } else if (addResult == 2) {
-                            userLoggedInUpdate(userID, cc.getConnectionID(), true);
-                            return MessageBuilder.generateGreeting(person, true, "Login success.");
+                        boolean loggedIn =result.getBoolean("loggedin");
+                        if (!loggedIn) {
+                            User person =new User(userID, uName, groupID, 
+                                    name, surname, email, title, aboutMe, avatar);
+                            ClientChannel cc =new ClientChannel(ch, userID, groupID);
+                            int addResult =ClientHandler.add(cc);
+                            if (addResult == 1) {
+                                ClientHandler.writeAndFlush(groupID, MessageBuilder.generateNewUser(person, null), new ClientGroup(userID, groupID));
+                                userLoggedInUpdate(userID, cc.getConnectionID(), true);
+                                return MessageBuilder.generateGreeting(person, true, "Login success.");
+                            } else if (addResult == 2) {
+                                userLoggedInUpdate(userID, cc.getConnectionID(), true);
+                                return MessageBuilder.generateGreeting(person, true, "Login success.");
+                            } else {
+                                return MessageBuilder.generateGreeting(null, false, "Users group could not be found.");
+                            }
                         } else {
-                            return MessageBuilder.generateGreeting(null, false, "Users group could not be found.");
+                            return MessageBuilder.generateGreeting(null, false, "Multiple logins not allowed.");
                         }
                     } else {
                         return MessageBuilder.generateGreeting(null, false, "Username or password did not match.");
@@ -515,5 +524,51 @@ public class UserHandler {
             }
         }
         return null;
+    }
+    
+    public static void changeUserGroup(ClientChannel cc, String userID, String groupID) {
+        PreparedStatement statement;
+        ResultSet result = null;
+        String query = "SELECT * " +
+                        "FROM client " +
+                        "WHERE userID = ? ";
+        statement = Database.INSTANCE.getPreparedStatement(query);
+        try {
+            statement.setString(1, userID);
+            result = statement.executeQuery();
+
+            if (result.next()) {
+                String name =result.getString("name");
+                String surname =result.getString("surname");
+                String uName =result.getString("username");
+                String email =result.getString("email");
+                String aboutMe =result.getString("aboutme");
+                String title =result.getString("title");
+                String avatar =result.getString("avatar");
+                boolean loggedIn =result.getBoolean("loggedin");
+                User person =new User(userID, uName, groupID, 
+                        name, surname, email, title, aboutMe, avatar);
+                cc.setGroupID(groupID);
+                int addResult =ClientHandler.add(cc);
+                if (addResult == 1) {
+                    ClientHandler.writeAndFlush(groupID, MessageBuilder.generateNewUser(person, null), new ClientGroup(userID, groupID));
+                } else if (addResult == 2) {
+                    userLoggedInUpdate(userID, cc.getConnectionID(), true);
+                }
+            }
+          }catch (SQLException ex) {
+              Logger.getLogger(UserHandler.class.getName())
+                      .log(Level.SEVERE, null, ex);
+        }finally{
+              try{
+                  if(statement != null){
+                      statement.close();
+                  }
+              }catch(SQLException ex){
+//                      System.out.println("here2");
+                  Logger.getLogger(UserHandler.class.getName())
+                          .log(Level.SEVERE, null, ex);
+              }
+          }
     }
 }
