@@ -9,7 +9,7 @@ package mvc.view.generalUI;
 import java.util.logging.Logger;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import mvc.controller.UserControl;
+import mvc.controller.generalUI.UserControl;
 
 /**
  *

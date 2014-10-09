@@ -6,6 +6,14 @@
 
 package mvc.controller;
 
+import mvc.controller.generalUI.message.ChatControl;
+import mvc.controller.generalUI.contacts.ContactListControl;
+import mvc.controller.generalUI.SettingsControl;
+import mvc.controller.generalUI.ProfileControl;
+import mvc.controller.generalUI.UserControl;
+import mvc.controller.generalUI.GUIControl;
+import mvc.controller.authentication.RegisterControl;
+import mvc.controller.authentication.LoginControl;
 import communication.Connection;
 import javax.swing.JFrame;
 import messages.Message;
@@ -17,6 +25,7 @@ import communication.handlers.SettingsHandler;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import mvc.controller.connection.ConnectionControl;
 import mvc.view.authentication.Login;
 import mvc.view.authentication.Register;
 import mvc.view.generalUI.GUI;
@@ -29,7 +38,7 @@ import mvc.view.generalUI.Settings;
 public class Control {
     private final static Logger LOGGER = Logger.getLogger(Control.class.getName());
     
-    protected static Control INSTANCE;
+    public static Control INSTANCE;
     private static MessageHandler msgHandler =new LoginHandler();
     
 //    private static ArrayList<
@@ -41,14 +50,23 @@ public class Control {
     private Login login;
     private Register register;
     private Settings settings;
+    private mvc.view.connection.Connection connection;
     
-    public Control(String HOST, int PORT) throws InterruptedException {
+    public Control() {
         setup();
+    }
+    
+    public void makeConnection() throws InterruptedException {
+        String HOST =ConnectionControl.INSTANCE.getIP();
+        int PORT =ConnectionControl.INSTANCE.getPORT();
+        
         con =new Connection(HOST, PORT);
         con.makeConnection();
     }
     
     private void setup() {
+        setupConnection();
+        
         setupLogin();
         
         setupRegister();
@@ -82,6 +100,11 @@ public class Control {
         SettingsControl.register(settings);
     }
     
+    private void setupConnection() {
+        ConnectionControl.INSTANCE =new ConnectionControl();
+        connection =new mvc.view.connection.Connection();
+    }
+    
     public void close() {
         if (UserControl.hasUser()) {
             con.writeMessage(MessageFactory.generateLogout(UserControl.getUserID()));
@@ -94,11 +117,11 @@ public class Control {
         return msgHandler.handle(msg);
     }
     
-    protected void writeMessage(Message msg) {
+    public void writeMessage(Message msg) {
         con.writeMessage(msg);
     }
     
-    protected void initiate(final int windowID) {
+    public void initiate(final int windowID) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -108,6 +131,9 @@ public class Control {
                 }
 
                 switch (windowID) {
+                    case -1:
+                        window =connection;
+                        break;
                     case 0:
                         GUIControl.clear();
                         login.clear();

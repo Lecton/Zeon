@@ -12,9 +12,9 @@ import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import mvc.controller.ContactControl;
-import mvc.controller.ContactListControl;
-import mvc.controller.UserControl;
+import mvc.controller.generalUI.contacts.ContactControl;
+import mvc.controller.generalUI.contacts.ContactListControl;
+import mvc.controller.generalUI.UserControl;
 
 
 /**

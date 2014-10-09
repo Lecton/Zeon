@@ -8,17 +8,11 @@ package connection.messageChannel;
 
 import channel.ClientChannel;
 import channel.group.ClientHandler;
-import channel.group.matcher.ClientGroup;
 import channel.group.matcher.ClientMatcher;
-import channel.group.matcher.ConnectionGroup;
 import channel.group.matcher.ConnectionMatcher;
 import channel.group.matcher.StringMatcher;
 import connection.bootstrap.Handler;
-import core.database.RegistrationHandler;
-import core.database.SettingHandler;
-import core.database.StreamHandler;
-import core.database.StringMessageHandler;
-import core.database.UserHandler;
+import core.database.DatabaseHandler;
 import core.database.objects.BaseUser;
 import core.database.objects.Settings;
 import core.database.objects.StreamProperty;
@@ -126,7 +120,7 @@ public class MessageHandler {
     }
     
     private static void handleLogin(Channel ch, LoginMessage msg) {
-        GreetingMessage g =UserHandler.userLogin(ch, msg);
+        GreetingMessage g =DatabaseHandler.userHandler.userLogin(ch, msg);
         if (g != null) {
             ch.writeAndFlush(g);
         } else {
@@ -135,7 +129,7 @@ public class MessageHandler {
     }
     
     private static void handleLogout(Channel ch, LogoutMessage msg) {
-        BaseUser u =UserHandler.getUser(msg.getUserID());
+        BaseUser u =DatabaseHandler.userHandler.getUser(msg.getUserID());
         if (u == null) {
             Logger.getLogger(MessageHandler.class.getName()).log(Level.parse("ERROR"), 
                     "Client closed connection, but client could not be found.");
@@ -149,14 +143,14 @@ public class MessageHandler {
         if (!contained) {
             LogoutMessage message =new LogoutMessage(u.getUserID(), messages.Message.ALL);
             message.setTargetGroupID(u.getGroupID());
-            ClientHandler.writeAndFlush(UserHandler.getGroupID(msg.getUserID()), message);
+            ClientHandler.writeAndFlush(DatabaseHandler.userHandler.getGroupID(msg.getUserID()), message);
         }
-        UserHandler.logoff(u.getUserID(), channel.getConnectionID());
+        DatabaseHandler.userHandler.logoff(u.getUserID(), channel.getConnectionID());
     }
     
     private static void handleStringMessage(Channel ch, StringMessage msg) {
-        Message message =StringMessageHandler.handleStringMessage(msg);
-        String groupID =UserHandler.getGroupID(msg.getUserID());
+        Message message =DatabaseHandler.stringMessageHandler.handleStringMessage(msg);
+        String groupID =DatabaseHandler.userHandler.getGroupID(msg.getUserID());
         String connectionID =ClientHandler.getConnectionID(ch, groupID);
         ClientHandler.writeAndFlush(groupID, message, new StringMatcher(msg.getTargetID(), connectionID, msg.getUserID(), groupID));
     }
@@ -164,8 +158,8 @@ public class MessageHandler {
     private static void handleUpdateAvatar(Channel ch, UpdateAvatarMessage msg) {
         System.out.println("Got update avatar");
         try {
-        Message message =UserHandler.updateAvatar(msg);
-        ClientHandler.writeAndFlush(UserHandler.getGroupID(msg.getUserID()), message);
+        Message message =DatabaseHandler.userHandler.updateAvatar(msg);
+        ClientHandler.writeAndFlush(DatabaseHandler.userHandler.getGroupID(msg.getUserID()), message);
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                 "Update avatar.");
         } catch (Exception e) {
@@ -174,8 +168,8 @@ public class MessageHandler {
     }
 
     private static void handleUpdateProfile(Channel ch, UpdateProfileMessage msg) {
-        Message message =UserHandler.updateProfile(msg);
-        ClientHandler.writeAndFlush(UserHandler.getGroupID(msg.getUserID()), message);
+        Message message =DatabaseHandler.userHandler.updateProfile(msg);
+        ClientHandler.writeAndFlush(DatabaseHandler.userHandler.getGroupID(msg.getUserID()), message);
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                     "Update profile.");
     }
@@ -183,10 +177,10 @@ public class MessageHandler {
     private static void handleListRequest(Channel ch, UpdateListMessage msg) {
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                 "Update list request.");
-        String groupUsers[] =UserHandler.getGroupUsers(msg.getUserID());
+        String groupUsers[] =DatabaseHandler.userHandler.getGroupUsers(msg.getUserID());
         for (String userID: groupUsers) {
-            NewUserMessage message =UserHandler.getNewUserMessage(userID, msg.getUserID());
-            String groupID =UserHandler.getGroupID(msg.getUserID());
+            NewUserMessage message =DatabaseHandler.userHandler.getNewUserMessage(userID, msg.getUserID());
+            String groupID =DatabaseHandler.userHandler.getGroupID(msg.getUserID());
             String connectionID =ClientHandler.getConnectionID(ch, groupID);
             if (message != null) {
                 ClientHandler.writeAndFlush(groupID, message, new ConnectionMatcher(connectionID));
@@ -199,18 +193,18 @@ public class MessageHandler {
         if (msg.getAction()) {
             String connectionID =ClientHandler.getConnectionID(ch, msg.getUserID());
             
-            StreamPropertyMessage message =StreamHandler.createStreamProperty(msg.getUserID(), connectionID, 
+            StreamPropertyMessage message =DatabaseHandler.streamHandler.createStreamProperty(msg.getUserID(), connectionID, 
                     msg.getStreamName(), msg.getType());
             
             if (message.isSuccessful()) {
                 Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                         "StreamProperty "+msg.getStreamName()+" created.");
             }
-            String groupID =UserHandler.getGroupID(msg.getUserID());
+            String groupID =DatabaseHandler.userHandler.getGroupID(msg.getUserID());
             ClientHandler.writeAndFlush(groupID, message, new ClientMatcher(msg.getUserID()));
         } else {
             try {
-                StreamProperty sp =StreamHandler.removeStreamProperty(msg.getUserID(), msg.getStreamID());
+                StreamProperty sp =DatabaseHandler.streamHandler.removeStreamProperty(msg.getUserID(), msg.getStreamID());
                 if (sp != null) {
                     StreamTerminateMessage terminate =MessageBuilder.generateStreamTerminate(msg.getUserID(), msg.getStreamID(), sp.getType());
                     String groupID =sp.getGroupID();
@@ -236,8 +230,8 @@ public class MessageHandler {
     private static void handleStreamResponse(Channel ch, StreamResponseMessage msg) {
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                     msg.getMessage()+".");
-        String connectionID =ClientHandler.getConnectionID(ch, UserHandler.getGroupID(msg.getUserID()));
-        boolean result =StreamHandler.respondStream(msg.getStreamID(), msg.getUserID(), connectionID, msg.isAccept());
+        String connectionID =ClientHandler.getConnectionID(ch, DatabaseHandler.userHandler.getGroupID(msg.getUserID()));
+        boolean result =DatabaseHandler.streamHandler.respondStream(msg.getStreamID(), msg.getUserID(), connectionID, msg.isAccept());
         if (!result) {
             Logger.getLogger(MessageHandler.class.getName()).log(Level.WARNING, 
                     "Stream response unsuccessful.");
@@ -251,12 +245,12 @@ public class MessageHandler {
     private static void handleStreamUpdate(Channel ch, StreamUpdateMessage msg) {
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                     msg.getMessage()+".");
-        String affectedConnectionID =UserHandler.getConnectionID(msg.getAffectedUserID());
-        boolean success =StreamHandler.updateStream(msg.getStreamID(), msg.getUserID(), msg.getAffectedUserID(), affectedConnectionID, msg.getAction());
+        String affectedConnectionID =DatabaseHandler.userHandler.getConnectionID(msg.getAffectedUserID());
+        boolean success =DatabaseHandler.streamHandler.updateStream(msg.getStreamID(), msg.getUserID(), msg.getAffectedUserID(), affectedConnectionID, msg.getAction());
         if (success) {
             Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                         "Stream Update successful.");
-            String groupID =UserHandler.getGroupID(msg.getUserID());
+            String groupID =DatabaseHandler.userHandler.getGroupID(msg.getUserID());
             ClientHandler.writeAndFlush(groupID, new StreamNotifyMessage(msg.getUserID(), 
                     msg.getAffectedUserID(), msg.getStreamID(), msg.getType(),
                     msg.getAction()));
@@ -269,7 +263,7 @@ public class MessageHandler {
     private static void handleAudioStream(Channel ch, AudioStreamMessage msg) {
 //        Log.write(MessageHandler.class, "Audio stream received on streamID: "
 //                +as.getStreamID());
-        StreamProperty sp =StreamHandler.getStreamProperty(msg.getUserID(), msg.getStreamID(), true);
+        StreamProperty sp =DatabaseHandler.streamHandler.getStreamProperty(msg.getUserID(), msg.getStreamID(), true);
         if (sp != null) {
             ClientHandler.writeAndFlush(sp.getGroupID(), msg, sp.generateMatcher());
         } else {
@@ -282,7 +276,7 @@ public class MessageHandler {
     private static void handleVideoStream(Channel ch, VideoStreamMessage msg) {
 //        Log.write(MessageHandler.class, "Video stream received on streamID: "
 //                +vs.getStreamID());
-        StreamProperty sp =StreamHandler.getStreamProperty(msg.getUserID(), msg.getStreamID(), true);
+        StreamProperty sp =DatabaseHandler.streamHandler.getStreamProperty(msg.getUserID(), msg.getStreamID(), true);
         
         if (sp != null) {
             ClientHandler.writeAndFlush(sp.getGroupID(), msg, sp.generateMatcher());
@@ -294,24 +288,24 @@ public class MessageHandler {
     }
 
     private static void handleCheckUsername(Channel ch, CheckUsernameMessage msg) {
-        boolean result =RegistrationHandler.checkUsername(msg);
+        boolean result =DatabaseHandler.registrationHandler.checkUsername(msg);
         msg.setValid(result);
         ch.writeAndFlush(msg);
     }
 
     private static void handleCheckEmail(Channel ch, CheckEmailMessage msg) {
-        boolean result =RegistrationHandler.checkEmail(msg);
+        boolean result =DatabaseHandler.registrationHandler.checkEmail(msg);
         msg.setValid(result);
         ch.writeAndFlush(msg);
     }
 
     private static void handleRegister(Channel ch, RegisterMessage msg) {
-        Message message =RegistrationHandler.register(msg);
+        Message message =DatabaseHandler.registrationHandler.register(msg);
         ch.writeAndFlush(message);
     }
 
     private static void handleSettingsRequest(Channel ch, SettingsRequestMessage msg) {
-        Settings settings =SettingHandler.getSettings(msg.getUserID());
+        Settings settings =DatabaseHandler.settingHandler.getSettings(msg.getUserID());
         if (settings != null) {
             SettingsMessage sm =new SettingsMessage(settings.getGroupID(), settings.getGroupName(), settings.getOwnerName(), settings.isOwner(msg.getUserID()));
             ch.writeAndFlush(sm);
@@ -321,15 +315,15 @@ public class MessageHandler {
     }
 
     private static void handleSettingsGroupListRequest(Channel ch, GroupListRequestMessage msg) {
-        Map<String, String> groups =SettingHandler.getGroups();
+        Map<String, String> groups =DatabaseHandler.settingHandler.getGroups();
         GroupListMessage sm =new GroupListMessage(groups);
         ch.writeAndFlush(sm);
     }
     
     private static void handleSettingsGroupJoinRequest(Channel ch, GroupJoinRequestMessage msg) {
-        BaseUser u =UserHandler.getUser(msg.getUserID());
+        BaseUser u =DatabaseHandler.userHandler.getUser(msg.getUserID());
         
-        GroupJoinMessage gjm =SettingHandler.groupJoin(msg.getUserID(), msg.getGroupID(), msg.getPassword());
+        GroupJoinMessage gjm =DatabaseHandler.settingHandler.groupJoin(msg.getUserID(), msg.getGroupID(), msg.getPassword());
         
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                 "Join was "+(gjm.isSuccessful()? "successful" : "unsuccessful")+".");
@@ -347,16 +341,16 @@ public class MessageHandler {
                 message.setTargetGroupID(u.getGroupID());
                 ClientHandler.writeAndFlush(u.getGroupID(), message);
             }
-            UserHandler.changeUserGroup(channel, msg.getUserID(), msg.getGroupID());
+            DatabaseHandler.userHandler.changeUserGroup(channel, msg.getUserID(), msg.getGroupID());
         }
         
         ch.writeAndFlush(gjm);
     }
     
     private static void handleSettingsGroupCreateRequest(Channel ch, GroupCreateRequestMessage msg) {
-        BaseUser u =UserHandler.getUser(msg.getUserID());
+        BaseUser u =DatabaseHandler.userHandler.getUser(msg.getUserID());
         
-        GroupCreateMessage gcm =SettingHandler.groupCreate(msg.getUserID(), msg.getGroupName(), msg.getPassword());
+        GroupCreateMessage gcm =DatabaseHandler.settingHandler.groupCreate(msg.getUserID(), msg.getGroupName(), msg.getPassword());
         
         Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                 "Create was "+(gcm.isSuccessful()? "successful" : "unsuccessful")+".");
@@ -374,7 +368,7 @@ public class MessageHandler {
                 message.setTargetGroupID(u.getGroupID());
                 ClientHandler.writeAndFlush(u.getGroupID(), message);
             }
-            UserHandler.changeUserGroup(channel, msg.getUserID(), gcm.getGroupID());
+            DatabaseHandler.userHandler.changeUserGroup(channel, msg.getUserID(), gcm.getGroupID());
         }
         
         ch.writeAndFlush(gcm);

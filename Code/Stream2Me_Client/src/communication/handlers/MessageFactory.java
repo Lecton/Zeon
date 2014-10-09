@@ -15,7 +15,6 @@ import messages.media.communication.StreamUpdateMessage;
 import messages.settings.group.GroupJoinRequestMessage;
 import messages.settings.group.GroupListRequestMessage;
 import messages.settings.SettingsRequestMessage;
-import messages.settings.group.GroupCreateMessage;
 import messages.settings.group.GroupCreateRequestMessage;
 import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateListMessage;

@@ -6,11 +6,12 @@
 package communication.handlers;
 
 import java.util.logging.Logger;
+import messages.ConsoleMessage;
 import messages.Message;
 import messages.userConnection.registration.CheckEmailMessage;
 import messages.userConnection.registration.CheckUsernameMessage;
 import messages.userConnection.registration.RegistrationResponseMessage;
-import mvc.controller.RegisterControl;
+import mvc.controller.authentication.RegisterControl;
 
 /**
  *
@@ -34,7 +35,7 @@ public class RegistrationHandler extends MessageHandler {
                 RegistrationResponseMessage rrMsg =(RegistrationResponseMessage) msg;
                 RegisterControl.registrationResponse(rrMsg.isSuccess(), rrMsg.isValidate());
             case console:
-                return handleConsole(msg);
+                return handleConsole((ConsoleMessage)msg);
             default:
                 return false;
         }

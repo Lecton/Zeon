@@ -10,7 +10,7 @@ import channel.ClientChannel;
 import channel.group.matcher.ClientGroup;
 import channel.group.matcher.ClientMatcher;
 import channel.group.matcher.RemoveMatcher;
-import core.database.UserHandler;
+import core.database.DatabaseHandler;
 import io.netty.channel.Channel;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import java.util.HashMap;
@@ -102,7 +102,7 @@ public class ClientHandler {
             ClientChannel c =ccg.containsAndRemove(channel);
             if (c != null) {
                 System.out.println(ccg.name()+" contained the user.");
-                UserHandler.logoff(c.getUserID(), c.getConnectionID());
+                DatabaseHandler.userHandler.logoff(c.getUserID(), c.getConnectionID());
                 
                 boolean contained =ClientHandler.contains(c, c.getUserID());
                 if (!contained) {

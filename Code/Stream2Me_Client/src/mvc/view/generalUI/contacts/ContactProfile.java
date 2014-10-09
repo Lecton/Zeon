@@ -10,7 +10,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
-import mvc.controller.ContactControl;
+import mvc.controller.generalUI.contacts.ContactControl;
 
 /**
  *

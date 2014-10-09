@@ -11,7 +11,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Collection;
 import javax.swing.DefaultComboBoxModel;
-import mvc.controller.SettingsControl;
+import mvc.controller.generalUI.SettingsControl;
 
 /**
  *

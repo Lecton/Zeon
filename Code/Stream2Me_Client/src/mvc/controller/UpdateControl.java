@@ -6,6 +6,10 @@
 
 package mvc.controller;
 
+import mvc.controller.generalUI.message.ChatControl;
+import mvc.controller.generalUI.contacts.ContactListControl;
+import mvc.controller.generalUI.UserControl;
+import mvc.controller.generalUI.GUIControl;
 import java.awt.Event;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -15,12 +19,12 @@ import java.util.logging.Logger;
  *
  * @author Bernhard
  */
-class UpdateControl {
+public class UpdateControl {
     private final static Logger LOGGER = Logger.getLogger(UpdateControl.class.getName());
     
     public static UpdateControl INSTANCE =new UpdateControl();
 
-    static void clear() {
+    public static void clear() {
         INSTANCE.updates.clear();
         while (INSTANCE.usage.get() != 0) {
             try {
@@ -34,15 +38,15 @@ class UpdateControl {
     private final ConcurrentLinkedQueue<Observer> threadPool =new ConcurrentLinkedQueue<>();
     private final AtomicInteger usage =new AtomicInteger(0);
     
-    protected static final int LOGIN =0;
-    protected static final int NEWUSER =1;
-    protected static final int REMOVEUSER =2;
-    protected static final int UPDATEDETAILS =3;
-    protected static final int UPDATECONTENT =4;
-    protected static final int STRINGMESSAGE =5;
-    protected static final int UPDATEAVATAR =6;
-    protected static final int VIDEONOTIFICATION =7;
-    protected static final int AUDIONOTIFICATION =8;
+    public static final int LOGIN =0;
+    public static final int NEWUSER =1;
+    public static final int REMOVEUSER =2;
+    public static final int UPDATEDETAILS =3;
+    public static final int UPDATECONTENT =4;
+    public static final int STRINGMESSAGE =5;
+    public static final int UPDATEAVATAR =6;
+    public static final int VIDEONOTIFICATION =7;
+    public static final int AUDIONOTIFICATION =8;
     
     public UpdateControl() {
         for (int i=0; i<10; i++) {
@@ -52,7 +56,7 @@ class UpdateControl {
         }
     }
     
-    protected void stop() {
+    public void stop() {
         for (Observer ob: threadPool) {
             ob.stop();
         }
@@ -66,7 +70,7 @@ class UpdateControl {
         updates.add(new Event(target, action, arg));
     }
     
-    protected Event getEvent() {
+    private Event getEvent() {
         return updates.poll();
     }
     

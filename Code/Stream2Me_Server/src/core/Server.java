@@ -7,8 +7,8 @@
 package core;
 
 import connection.bootstrap.Initialiser;
-import core.database.Database;
-import core.database.UserHandler;
+import core.database.DatabaseHandler;
+import core.database.online.Database;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -20,11 +20,33 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  */
 public class Server implements Runnable {
     private final int PORT;
+    public static String name ="PubliCaptivation Server";
     
     public static void main(String[] argv) {
-        System.out.println("Starting Server");
+        boolean offline =false;
+        for (int i=0; i<argv.length; i++) {
+            String arg =argv[i];
+            if (arg.equals("-n")) {
+                if (i+1 < argv.length) {
+                    if (!argv[i+1].startsWith("-")) {
+                        Server.name =argv[i+1];
+                    }
+                }
+            } else if (arg.equals("-offline")) {
+                offline =true;
+            }
+        }
+        
+        System.out.println("Starting "+name);
+        if (offline) {
+            DatabaseHandler.setOffline();
+        } else {
+            boolean connected =DatabaseHandler.setOnline();
+            if (!connected) {
+                DatabaseHandler.setOffline();
+            }
+        }
         Thread serverThread =new Thread(new Server(2014));
-        Database.INSTANCE.connect();
         serverThread.start();
     }
 
@@ -34,7 +56,7 @@ public class Server implements Runnable {
 
     @Override
     public void run() {
-        UserHandler.generateGroups();
+        DatabaseHandler.userHandler.generateGroups();
         
         EventLoopGroup bossGroup =new NioEventLoopGroup();
         EventLoopGroup workerGroup =new NioEventLoopGroup();

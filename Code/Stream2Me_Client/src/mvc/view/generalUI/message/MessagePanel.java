@@ -7,7 +7,7 @@
 package mvc.view.generalUI.message;
 
 import java.util.logging.Logger;
-import mvc.controller.ChatControl;
+import mvc.controller.generalUI.message.ChatControl;
 
 /**
  *

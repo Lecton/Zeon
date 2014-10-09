@@ -1,6 +1,5 @@
 
-import core.database.Database;
-import core.database.UserHandler;
+import core.database.online.Database;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -56,7 +55,7 @@ public class GroupsSaltyEncryption {
             int lines =statement.executeUpdate();
             System.out.println(lines);
         } catch (SQLException ex) {
-            Logger.getLogger(UserHandler.class.getName())
+            Logger.getLogger(GroupsSaltyEncryption.class.getName())
                     .log(Level.SEVERE, null, ex);
         } finally {
             try {
@@ -64,7 +63,7 @@ public class GroupsSaltyEncryption {
                     statement.close();
                 }
             } catch(SQLException ex) {
-                Logger.getLogger(UserHandler.class.getName())
+                Logger.getLogger(GroupsSaltyEncryption.class.getName())
                         .log(Level.SEVERE, null, ex);
             }
         }

@@ -9,7 +9,7 @@ import java.awt.Color;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.border.LineBorder;
-import mvc.controller.RegisterControl;
+import mvc.controller.authentication.RegisterControl;
 
 /**
  *

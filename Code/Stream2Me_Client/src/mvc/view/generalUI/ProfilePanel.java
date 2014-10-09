@@ -9,7 +9,7 @@ package mvc.view.generalUI;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import mvc.controller.ProfileControl;
+import mvc.controller.generalUI.ProfileControl;
 
 /**
  *

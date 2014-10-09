@@ -8,7 +8,7 @@ package mvc.view.generalUI;
 
 import java.awt.event.ActionEvent;
 import java.util.logging.Logger;
-import mvc.controller.UserControl;
+import mvc.controller.generalUI.UserControl;
 
 /**
  *

@@ -8,12 +8,13 @@ package communication.handlers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import messages.ConsoleMessage;
 import messages.Message;
 import messages.settings.group.GroupJoinMessage;
 import messages.settings.group.GroupListMessage;
 import messages.settings.SettingsMessage;
 import messages.settings.group.GroupCreateMessage;
-import mvc.controller.SettingsControl;
+import mvc.controller.generalUI.SettingsControl;
 
 /**
  *
@@ -48,7 +49,7 @@ public class SettingsHandler extends MessageHandler {
                 GroupCreateMessage gcm =(GroupCreateMessage)msg;
                 return SettingsControl.handleGroupCreateMessage(gcm.isSuccessful(), gcm.getError());
             case console:
-                return handleConsole(msg);
+                return handleConsole((ConsoleMessage)msg);
             default:
                 pool.add(msg);
                 return true;

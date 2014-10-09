@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import mvc.controller.Control;
-import mvc.controller.UserControl;
+import mvc.controller.generalUI.UserControl;
 
 /**
  *

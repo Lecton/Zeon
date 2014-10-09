@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import messages.ConsoleMessage;
 import messages.Message;
 import messages.StringMessage;
 import messages.media.AudioStreamMessage;
@@ -21,9 +22,10 @@ import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateProfileMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
-import mvc.controller.ContactListControl;
-import mvc.controller.MessageControl;
-import mvc.controller.StreamControl;
+import mvc.controller.connection.ConnectionControl;
+import mvc.controller.generalUI.contacts.ContactListControl;
+import mvc.controller.generalUI.message.MessageControl;
+import mvc.controller.generalUI.StreamControl;
 
 /**
  *
@@ -36,7 +38,7 @@ public class MessageHandler {
 //        LOGGER.log(Level.INFO, msg.handle()+"");
         switch (msg.handle()) {
             case console:
-                return handleConsole(msg);
+                return handleConsole((ConsoleMessage)msg);
             case newUser:
                 return handleNewUser((NewUserMessage)msg);
             case logout:
@@ -66,8 +68,11 @@ public class MessageHandler {
         return false;
     }
     
-    boolean handleConsole(Message msg) {
+    boolean handleConsole(ConsoleMessage msg) {
         LOGGER.log(Level.INFO, msg.getMessage());
+        if (ConnectionControl.INSTANCE.requiresSave()) {
+            ConnectionControl.INSTANCE.setServerName(msg.getServerName());
+        }
         return true;
     }
 

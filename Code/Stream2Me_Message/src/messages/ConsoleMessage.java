@@ -12,19 +12,24 @@ package messages;
  */
 public class ConsoleMessage extends Message {
     String message;
+    String serverName;
 
-    public ConsoleMessage(String message) {
+    public ConsoleMessage(String message, String serverName) {
         this.message = message;
+        this.serverName =serverName;
     }
     
     @Override
     public String getMessage() {
-        return "[SERVER]: "+message;
+        return "["+serverName.toUpperCase()+"]: "+message;
     }
 
     @Override
     public MessageType handle() {
         return MessageType.console;
     }
-    
+
+    public String getServerName() {
+        return serverName;
+    }
 }

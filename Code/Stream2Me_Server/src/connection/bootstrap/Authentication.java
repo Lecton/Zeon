@@ -6,6 +6,7 @@
 
 package connection.bootstrap;
 
+import core.Server;
 import io.netty.channel.Channel;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.util.concurrent.Future;
@@ -30,11 +31,11 @@ public class Authentication implements GenericFutureListener<Future<Channel>> {
         if (future.isSuccess()) {
             future.get().write(new ConsoleMessage(
                     "Welcome to PubliCaptivation" +
-                    " secure stream2Me service!"));
+                    " secure stream2Me service!", Server.name));
             future.get().write(new ConsoleMessage(
                     "Your session is protectd by "+
                     sslHandler.engine().getSession().getCipherSuite()+
-                    " cipher suite."));
+                    " cipher suite.", Server.name));
             future.get().flush();
             Handler.connections.add(future.get());
         } else {

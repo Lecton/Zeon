@@ -3,7 +3,7 @@ package mvc.model.mediaStreaming.video;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.media.VideoStreamMessage;
-import mvc.controller.StreamControl;
+import mvc.controller.generalUI.StreamControl;
 import utils.ImageUtils;
 
 /**

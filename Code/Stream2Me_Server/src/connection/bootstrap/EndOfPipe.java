@@ -6,7 +6,7 @@
 
 package connection.bootstrap;
 
-import core.database.Database;
+import core.database.online.Database;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.ssl.NotSslRecordException;

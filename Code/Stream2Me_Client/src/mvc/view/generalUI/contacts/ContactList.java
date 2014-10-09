@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
-import mvc.controller.ContactControl;
+import mvc.controller.generalUI.contacts.ContactControl;
 import mvc.view.generalUI.containers.SeparatorBorder;
 
 /**

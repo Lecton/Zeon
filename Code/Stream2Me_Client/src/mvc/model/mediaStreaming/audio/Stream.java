@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.media.AudioStreamMessage;
-import mvc.controller.StreamControl;
+import mvc.controller.generalUI.StreamControl;
 
 /**
  *

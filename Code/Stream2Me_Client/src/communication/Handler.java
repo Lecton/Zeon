@@ -10,6 +10,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import messages.Message;
 import mvc.controller.Control;
 
@@ -19,6 +20,11 @@ import mvc.controller.Control;
  */
 public class Handler extends SimpleChannelInboundHandler<Message> {
     private final static Logger LOGGER = Logger.getLogger(Handler.class.getName()); 
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        JOptionPane.showMessageDialog(null, "Server connection error.", "Communication error", JOptionPane.ERROR_MESSAGE);
+    }
     
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {

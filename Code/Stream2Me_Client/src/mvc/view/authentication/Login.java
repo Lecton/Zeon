@@ -7,7 +7,7 @@
 package mvc.view.authentication;
 
 import java.util.logging.Logger;
-import mvc.controller.LoginControl;
+import mvc.controller.authentication.LoginControl;
 
 /**
  *

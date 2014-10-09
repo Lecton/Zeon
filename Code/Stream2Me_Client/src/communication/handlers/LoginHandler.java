@@ -8,9 +8,10 @@ package communication.handlers;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import messages.ConsoleMessage;
 import messages.Message;
 import messages.userConnection.GreetingMessage;
-import mvc.controller.LoginControl;
+import mvc.controller.authentication.LoginControl;
 
 /**
  *
@@ -28,7 +29,7 @@ public class LoginHandler extends MessageHandler {
                 LoginControl.response(message.isSuccessful(), message.getResponse(), message);
                 return true;
             case console:
-                return handleConsole(msg);
+                return handleConsole((ConsoleMessage)msg);
             default:
                 return false;
         }

@@ -11,9 +11,9 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
-import mvc.controller.ContactListControl;
-import mvc.controller.GUIControl;
-import mvc.controller.UserControl;
+import mvc.controller.generalUI.contacts.ContactListControl;
+import mvc.controller.generalUI.GUIControl;
+import mvc.controller.generalUI.UserControl;
 import mvc.view.generalUI.contacts.ContactList;
 import mvc.view.generalUI.message.MessagePanel;
 
