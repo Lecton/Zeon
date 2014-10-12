@@ -6,11 +6,6 @@
 package mvc.view.connection;
 
 import java.util.List;
-import javax.swing.DefaultListSelectionModel;
-import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import mvc.controller.connection.ConnectionControl;
 
@@ -208,9 +203,9 @@ public class Connection extends javax.swing.JFrame {
         for (int i=0; i<dtm.getRowCount(); i++) {dtm.removeRow(i);}
         
         for (HostEntry entry: entries) {
-			if (entry.active) {
-				dtm.addRow(entry.getData());
-			}
+            if (entry.active) {
+                    dtm.addRow(entry.getData());
+            }
         }
     }//GEN-LAST:event_formWindowActivated
 

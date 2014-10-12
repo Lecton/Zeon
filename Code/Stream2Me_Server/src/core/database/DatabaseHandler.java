@@ -5,35 +5,42 @@
  */
 package core.database;
 
-import core.database.online.Database;
-import core.database.online.RegistrationHandler;
-import core.database.online.SettingHandler;
-import core.database.online.StreamHandler;
-import core.database.online.StringMessageHandler;
-import core.database.online.UserHandler;
+import core.database.online.OnlineDatabase;
+import core.database.online.OnlineRegistrationHandler;
+import core.database.online.OnlineSettingHandler;
+import core.database.online.OnlineStreamHandler;
+import core.database.online.OnlineStringMessageHandler;
+import core.database.online.OnlineUserHandler;
 
 /**
  *
  * @author Bernhard
  */
 public class DatabaseHandler {
-    public static RegistrationHandler registrationHandler;
-    public static SettingHandler settingHandler;
-    public static StreamHandler streamHandler;
-    public static StringMessageHandler stringMessageHandler;
-    public static UserHandler userHandler;
+    public static OnlineRegistrationHandler registrationHandler;
+    public static OnlineSettingHandler settingHandler;
+    public static OnlineStreamHandler streamHandler;
+    public static OnlineStringMessageHandler stringMessageHandler;
+    public static OnlineUserHandler userHandler;
+    public static OnlineDatabase database;
 
-    public static void setOffline() {
-        
+    public static boolean setOffline() {
+//        registrationHandler =new OnlineRegistrationHandler();
+//        settingHandler =new OnlineSettingHandler();
+//        streamHandler =new OnlineStreamHandler();
+//        stringMessageHandler =new OnlineStringMessageHandler();
+//        userHandler =new OnlineUserHandler();
+        return false;
     }
 
     public static boolean setOnline() {
-        registrationHandler =new RegistrationHandler();
-        settingHandler =new SettingHandler();
-        streamHandler =new StreamHandler();
-        stringMessageHandler =new StringMessageHandler();
-        userHandler =new UserHandler();
+        registrationHandler =new OnlineRegistrationHandler();
+        settingHandler =new OnlineSettingHandler();
+        streamHandler =new OnlineStreamHandler();
+        stringMessageHandler =new OnlineStringMessageHandler();
+        userHandler =new OnlineUserHandler();
+        database =new OnlineDatabase();
         
-        return Database.INSTANCE.connect();
+        return database.connect();
     }
 }

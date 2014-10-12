@@ -18,11 +18,13 @@ import java.util.Vector;
 public class HostEntry {
     String IP;
     int PORT;
+    String name;
     boolean active;
 
-    public HostEntry(String IP, int PORT) {
+    public HostEntry(String IP, int PORT, String name) {
         this.IP = IP;
         this.PORT = PORT;
+        this.name =name;
         this.active = ping(IP, PORT);
     }
     
@@ -42,7 +44,7 @@ public class HostEntry {
 
     public Vector getData() {
         Vector v =new Vector();
-        v.add("Server");
+        v.add(name);
         v.add(IP+":"+PORT);
         Delete d =new Delete();
         v.add(d);

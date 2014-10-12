@@ -1,5 +1,6 @@
 
-import core.database.online.Database;
+import core.database.DatabaseHandler;
+import core.database.online.OnlineDatabase;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -49,13 +50,13 @@ public class UsersSaltyEncryption {
     }
     
     private static void updateDB(String userID, String password) {
-        Database.INSTANCE.connect();
+        DatabaseHandler.setOnline();
         PreparedStatement statement;
         ResultSet result = null;
         String query = "UPDATE client " +
                         "SET password = ? " +
                         "WHERE userID = ?";
-        statement = Database.INSTANCE.getPreparedStatement(query);
+        statement = DatabaseHandler.database.getPreparedStatement(query);
         try {
             statement.setString(1, password);
             statement.setString(2, userID);

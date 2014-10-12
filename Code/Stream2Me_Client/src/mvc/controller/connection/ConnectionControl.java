@@ -49,7 +49,7 @@ public class ConnectionControl {
         List<HostEntry> result =new ArrayList<>();
         List<Entries> list =model.getHostData();
         for (Entries entry: list) {
-            result.add(new HostEntry(entry.getIP(), entry.getPORT()));
+            result.add(new HostEntry(entry.getIP(), entry.getPORT(), entry.getName()));
         }
         return result;
     }
@@ -83,7 +83,7 @@ public class ConnectionControl {
             PrintWriter pw =new PrintWriter(new File("host.conf"));
             List<Entries> list =model.getHostData();
             for (Entries entry: list) {
-                pw.write(entry.toString());
+                pw.write(entry.toString()+"\n");
             }
             pw.close();
             changed =false;

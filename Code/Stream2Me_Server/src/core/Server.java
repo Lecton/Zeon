@@ -8,7 +8,6 @@ package core;
 
 import connection.bootstrap.Initialiser;
 import core.database.DatabaseHandler;
-import core.database.online.Database;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
