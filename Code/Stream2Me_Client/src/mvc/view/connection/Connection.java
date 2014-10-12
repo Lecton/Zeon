@@ -194,18 +194,25 @@ public class Connection extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         List<HostEntry> entries =ConnectionControl.INSTANCE.getHostData();
+        System.out.println("Entries: "+entries.size());
         
-        DefaultTableModel dtm =(DefaultTableModel)tblHosts.getModel();
+        final DefaultTableModel dtm =(DefaultTableModel)tblHosts.getModel();
         
-        System.out.println(dtm.getRowCount());
         for (int i=0; i<dtm.getRowCount(); i++) {dtm.removeRow(i);}
-        System.out.println(dtm.getRowCount());
         for (int i=0; i<dtm.getRowCount(); i++) {dtm.removeRow(i);}
         
-        for (HostEntry entry: entries) {
-            if (entry.active) {
-                    dtm.addRow(entry.getData());
-            }
+        for (final HostEntry entry: entries) {
+            (new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (entry.isActive()) {
+                        System.out.println("Active");
+                        dtm.addRow(entry.getData());
+                    } else {
+                        System.out.println("Inactive");
+                    }
+                }
+            })).start();
         }
     }//GEN-LAST:event_formWindowActivated
 

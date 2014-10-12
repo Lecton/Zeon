@@ -58,6 +58,12 @@ public class Register extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Registration");
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -149,6 +155,8 @@ public class Register extends javax.swing.JFrame {
         });
         getContentPane().add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 300, 390, -1));
 
+        getAccessibleContext().setAccessibleName("RegistrationView");
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -159,12 +167,6 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsernameFocusLost
 
     private void txtEmailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEmailFocusLost
-        if (!txtEmail.getText().contains("@")) {
-            setEmailValid(false, "Invalid email");
-        }
-        if (!txtEmail.getText().contains(".")) {
-            setEmailValid(false, "Invalid email");
-        }
         if (!txtEmail.getText().isEmpty()) {
             RegisterControl.checkEmail(txtEmail.getText());
         }
@@ -237,6 +239,29 @@ public class Register extends javax.swing.JFrame {
         pwdRePasswordKeyTyped(evt);
     }//GEN-LAST:event_pwdRePasswordKeyReleased
 
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        txtUsername.setText("");                               
+        txtUsername.setEnabled(true);
+        txtUsername.setBorder(BorderFactory.createLineBorder(new Color(204, 204, 255)));
+        txtName.setText("");                               
+        txtName.setEnabled(true);
+        txtName.setBorder(BorderFactory.createLineBorder(new Color(204, 204, 255)));
+        txtSurname.setText("");                               
+        txtSurname.setEnabled(true);
+        txtSurname.setBorder(BorderFactory.createLineBorder(new Color(204, 204, 255)));
+        txtEmail.setText("");                               
+        txtEmail.setEnabled(true);
+        txtEmail.setBorder(BorderFactory.createLineBorder(new Color(204, 204, 255)));
+        pwdPassword.setText("");                               
+        pwdPassword.setEnabled(true);
+        pwdPassword.setBorder(BorderFactory.createLineBorder(new Color(204, 204, 255)));
+        pwdRePassword.setText("");                               
+        pwdRePassword.setEnabled(true);
+        pwdRePassword.setBorder(BorderFactory.createLineBorder(new Color(204, 204, 255)));
+        btnRegister.setEnabled(true);
+        valid =false;
+    }//GEN-LAST:event_formComponentShown
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnRegister;
@@ -274,6 +299,16 @@ public class Register extends javax.swing.JFrame {
         } else {
             txtEmail.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         }
+        if (!txtEmail.getText().contains("@")) {
+            valid =false;
+            txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED)); 
+            hint ="Invalid email";
+        }
+        if (!txtEmail.getText().contains(".")) {
+            valid =false;
+            txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED)); 
+            hint ="Invalid email";
+        }
         txtEmail.setToolTipText(hint);
         txtEmail.invalidate();
     }
@@ -303,8 +338,23 @@ public class Register extends javax.swing.JFrame {
     public void setResult(boolean success) {
         if (success) {
             lblMessage.setText("Registration successful.");
+            
+            txtUsername.setText("");
+            txtName.setText("");
+            txtSurname.setText("");
+            txtEmail.setText("");
+            pwdPassword.setText("");
+            pwdRePassword.setText("");
         } else {
             lblMessage.setText("Error registering.");
         }
+            
+        txtUsername.setEnabled(true);
+        txtName.setEnabled(true);
+        txtSurname.setEnabled(true);
+        txtEmail.setEnabled(true);
+        pwdPassword.setEnabled(true);
+        pwdRePassword.setEnabled(true);
+        btnRegister.setEnabled(true);
     }
 }

@@ -11,7 +11,7 @@ import channel.ClientChannel;
 import channel.group.ClientHandler;
 import channel.group.matcher.ClientGroup;
 import connection.messageChannel.MessageBuilder;
-import core.database.DatabaseHandler;
+import core.database.abstractInterface.UserHandler;
 import core.database.objects.BaseUser;
 import core.database.objects.User;
 import io.netty.channel.Channel;
@@ -35,7 +35,7 @@ import messages.userConnection.NewUserMessage;
  *
  * @author Bernhard
  */
-public class OnlineUserHandler {
+public class OnlineUserHandler implements UserHandler {
     
     /**
      * Private helper function for the login and logoff functions strictly. 
@@ -46,14 +46,13 @@ public class OnlineUserHandler {
      * @param action - Flag to add (true) or remove (false) from the connections
      */
     private void userLoggedInUpdate(String userID, String connectionID, boolean action) {
-        
         PreparedStatement statement =null;
         try{
             if (action) {
                 String query = "INSERT INTO connection " +
                         "(connectionID, userID)" +
                         "VALUES (?, ?)";
-                statement = DatabaseHandler.database.getPreparedStatement(query);
+                statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
                 statement.setString(1, connectionID);
                 statement.setString(2, userID);
                 statement.execute();
@@ -61,20 +60,20 @@ public class OnlineUserHandler {
                 query = "UPDATE client " +
                         "set loggedin = true " +
                         "WHERE userid = ?";
-                statement = DatabaseHandler.database.getPreparedStatement(query);
+                statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
                 statement.setString(1, userID);
                 statement.executeUpdate();
             } else {
                 String query ="DELETE FROM connection " +
                         "WHERE connectionID = ?";
-                statement = DatabaseHandler.database.getPreparedStatement(query);
+                statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
                 statement.setString(1, connectionID);
                 statement.execute();
                 
                 query = "UPDATE client " +
                         "set loggedin = false " +
                         "WHERE userid = ?";
-                statement = DatabaseHandler.database.getPreparedStatement(query);
+                statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
                 statement.setString(1, userID);
                 statement.executeUpdate();
             }
@@ -93,17 +92,7 @@ public class OnlineUserHandler {
         }
     }
 
-    /**
-     * Checks if the username and password match. If there is a match and 
-     * the user is not logged in then a greeting message is generated with
-     * a success. If there is a mismatch or already logged in state then a 
-     * false greeting is generated. 
-     * 
-     * The channel is populated with the static user data
-     * @param ch - The channel of the user to be logged in
-     * @param message - The LoginMessage containing the users login details
-     * @return GreetingMessage with success or failure data
-     */
+    @Override
     public GreetingMessage userLogin(Channel ch, LoginMessage message) {
         String username =message.getUsername();
         String password =Base64Coder.decodeString(message.getPasswordHash());
@@ -114,7 +103,7 @@ public class OnlineUserHandler {
             String query = "SELECT * " +
                             "FROM client " +
                             "WHERE username = ? ";
-            statement = DatabaseHandler.database.getPreparedStatement(query);
+            statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
             try{
                 statement.setString(1, username);
 //                statement.setString(2, password);
@@ -126,10 +115,10 @@ public class OnlineUserHandler {
                     String userID =result.getString("userid");
                     String pwd =result.getString("password");
                     
-                    byte[] dbDigest =pwd.getBytes("Latin1");
+                    byte[] dbDigest =pwd.getBytes(OnlineDatabase.ENCODING);
                     password =userID+password;
                     password =password;
-                    byte[] pwdDigest =DatabaseHandler.database.digest.digest(password.getBytes("Latin1"));
+                    byte[] pwdDigest =OnlineDatabase.INSTANCE.digest.digest(password.getBytes(OnlineDatabase.ENCODING));
                     boolean digestMatch =MessageDigest.isEqual(pwdDigest, dbDigest);
                     
                     if (digestMatch) {
@@ -185,20 +174,14 @@ public class OnlineUserHandler {
 //        throw new UnsupportedOperationException("Login error."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     * Gets the base user with the corresponding userID
-     * The base user is the same as the user except it only
-     * holds the userID, groupID and loggedin fields.
-     * @param userID - ID of the user to be retrieved
-     * @return BaseUser if found, otherwise null
-     */
+    @Override
     public BaseUser getUser(String userID) {
         PreparedStatement statement;
         ResultSet result = null;
         String query = "SELECT userid, groupid " +
                         "FROM client " +
                         "WHERE userid = ? ";
-        statement = DatabaseHandler.database.getPreparedStatement(query);
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
         try {
             statement.setString(1, userID);
             result = statement.executeQuery();
@@ -226,27 +209,19 @@ public class OnlineUserHandler {
         return null;
     }
 
-    /**
-     * Logs off the user with the provided user id
-     * @param userID - ID of the user
-     */
+    @Override
     public void logoff(String userID, String connectionID) {
         userLoggedInUpdate(userID, connectionID, false);
     }
 
-    /**
-     * Update the avatar string of the user and retrieves the groupID of the user,
-     * if the user has a group.
-     * @param msg - Message containing the updated avatar and userID
-     * @return Possibly modified UpdateAvatarMessage
-     */
+    @Override
     public Message updateAvatar(UpdateAvatarMessage msg) {
         PreparedStatement statement;
         ResultSet result = null;
         String query = "UPDATE client " +
                         "SET avatar = ? " +
                         "WHERE userID = ?";
-        statement = DatabaseHandler.database.getPreparedStatement(query);
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
         try {
             statement.setString(1, msg.getAvatar());
             statement.setString(2, msg.getUserID());
@@ -277,12 +252,7 @@ public class OnlineUserHandler {
         return null;
     }
 
-    /**
-     * Update the profile of the user and retrieves the groupID of the user,
-     * if the user has a group.
-     * @param msg - Message containing the updated profile details and userID
-     * @return Possibly modified UpdateNameMessage
-     */
+    @Override
     public Message updateProfile(UpdateProfileMessage msg) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         PreparedStatement statement;
@@ -294,7 +264,7 @@ public class OnlineUserHandler {
                         "title = ?, " +
                         "aboutMe = ? " +
                         "WHERE userID = ?";
-        statement = DatabaseHandler.database.getPreparedStatement(query);
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
         try {
             statement.setString(1, msg.getName());
             statement.setString(2, msg.getSurname());
@@ -329,16 +299,10 @@ public class OnlineUserHandler {
         return null;
     }
 
-    /**
-     * Gets the groupID of the user provided and returns an array of all the users
-     * in the specified group. If the user is not in a group then an empty array
-     * is returned
-     * @param userID - ID of the user to find
-     * @return users in the group or an empty (int[0]) array
-     */
+    @Override
     public String[] getGroupUsers(String userID) {
         BaseUser bu =getUser(userID);
-        if (bu != null && !bu.getGroupID().equalsIgnoreCase("DEFAULT")) {
+        if (bu != null) {
             PreparedStatement statement;
             ResultSet result = null;
             String query = "SELECT DISTINCT con.userid as userid " +
@@ -346,7 +310,7 @@ public class OnlineUserHandler {
                     "WHERE con.userID = c.userID " +
                     "AND c.groupID = ? " +
                     "AND con.userID <> ? ";
-            statement = DatabaseHandler.database.getPreparedStatement(query);
+            statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
             try {
                 statement.setString(1, bu.getGroupID());
                 statement.setString(2, bu.getUserID());
@@ -376,21 +340,14 @@ public class OnlineUserHandler {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     * Gets the user with the specified userID and returns a NewUserMessage populated
-     * with the specified users details. A additional check if the user is still in
-     * the group is done against the targets group ID. The target of the returned message
-     * is set to the provided target ID.
-     * @param userID - ID of the user to find
-     * @return generated NewUserMessage of the user provided or null if a mismatch or error occurred
-     */
+    @Override
     public NewUserMessage getNewUserMessage(String userID, String targetID) {
         PreparedStatement statement;
         ResultSet result = null;
         String query = "SELECT * " +
                         "FROM client " +
                         "WHERE userID = ?";
-        statement = DatabaseHandler.database.getPreparedStatement(query);
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
         try {
             statement.setString(1, userID);
             result = statement.executeQuery();
@@ -422,16 +379,13 @@ public class OnlineUserHandler {
         return null;
     }
     
-
-    /**
-     * Iterates through the database and generates all the groups in the DB
-     */
+    @Override
     public void generateGroups() {
         PreparedStatement statement;
         ResultSet result = null;
         String query = "SELECT groupid " +
                         "FROM collection";
-        statement = DatabaseHandler.database.getPreparedStatement(query);
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
         try {
             result = statement.executeQuery();
 
@@ -455,20 +409,14 @@ public class OnlineUserHandler {
           }
     }
 
-
-    /**
-     * Gets the groupID of the user provided and returns the ID. If the user
-     * could not be found then the Default Group Flag is returned
-     * @param userID - ID of the user to find
-     * @return users group ID.
-     */
+    @Override
     public String getGroupID(String userID) {
         PreparedStatement statement;
         ResultSet result = null;
         String query = "SELECT groupid "
                         + "FROM client "
                         + "WHERE userid = ?";
-        statement = DatabaseHandler.database.getPreparedStatement(query);
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
         try{
             statement.setString(1, userID);
             result = statement.executeQuery();
@@ -494,13 +442,14 @@ public class OnlineUserHandler {
         return "default";
     }
 
+    @Override
     public String getConnectionID(String userID) {
         PreparedStatement statement;
         ResultSet result = null;
         String query = "SELECT connectionid "
                         + "FROM connection "
                         + "WHERE userid = ?";
-        statement = DatabaseHandler.database.getPreparedStatement(query);
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
         try{
             statement.setString(1, userID);
             result = statement.executeQuery();
@@ -526,13 +475,14 @@ public class OnlineUserHandler {
         return null;
     }
     
+    @Override
     public void changeUserGroup(ClientChannel cc, String userID, String groupID) {
         PreparedStatement statement;
         ResultSet result = null;
         String query = "SELECT * " +
                         "FROM client " +
                         "WHERE userID = ? ";
-        statement = DatabaseHandler.database.getPreparedStatement(query);
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
         try {
             statement.setString(1, userID);
             result = statement.executeQuery();

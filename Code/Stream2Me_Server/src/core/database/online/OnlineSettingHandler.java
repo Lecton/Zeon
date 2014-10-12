@@ -7,7 +7,7 @@ package core.database.online;
 
 import biz.source_code.base64Coder.Base64Coder;
 import channel.group.ClientHandler;
-import core.database.DatabaseHandler;
+import core.database.abstractInterface.SettingHandler;
 import core.database.objects.Settings;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -26,7 +26,8 @@ import messages.settings.group.GroupJoinMessage;
  *
  * @author Bernhard
  */
-public class OnlineSettingHandler {
+public class OnlineSettingHandler implements SettingHandler {
+    @Override
     public Settings getSettings(String userID) {
         PreparedStatement statement;
         ResultSet result = null;
@@ -36,7 +37,7 @@ public class OnlineSettingHandler {
                     + "WHERE cl.userid = col.ownerid) as owner "
                 + "FROM client AS c, collection AS col "
                 + "WHERE c.groupid = col.groupid AND c.userid = ?";
-        statement = DatabaseHandler.database.getPreparedStatement(query);
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
         try {
             statement.setString(1, userID);
             result = statement.executeQuery();
@@ -65,6 +66,7 @@ public class OnlineSettingHandler {
         return null;
     }
 
+    @Override
     public Map<String, String> getGroups() {
         Map<String, String> groups =new HashMap<>();
         
@@ -73,7 +75,7 @@ public class OnlineSettingHandler {
         ResultSet result = null;
         String query = "SELECT groupid, name "
                 + "FROM collection ";
-        statement = DatabaseHandler.database.getPreparedStatement(query);
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
         try {
             result = statement.executeQuery();
 
@@ -99,6 +101,7 @@ public class OnlineSettingHandler {
         return groups;
     }
 
+    @Override
     public GroupJoinMessage groupJoin(String userID, String groupID, String password) {
         Settings settings =getSettings(userID);
         
@@ -111,7 +114,7 @@ public class OnlineSettingHandler {
             String query = "SELECT groupID, password "
                     + "FROM collection "
                     + "WHERE groupID = ?";
-            statement = DatabaseHandler.database.getPreparedStatement(query);
+            statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
             
             statement.setString(1, groupID);
             result = statement.executeQuery();
@@ -120,19 +123,29 @@ public class OnlineSettingHandler {
                 String uid =result.getString("groupID");
                 String pass =result.getString("password");
 
-                byte[] dbDigest =pass.getBytes("Latin1");
-                password =Base64Coder.decodeString(password);
-                String pwd =uid+password;
-                byte[] pwdDigest =DatabaseHandler.database.digest.digest(pwd.getBytes("Latin1"));
-                System.out.println(new String(pwdDigest));
-                boolean digestMatch =MessageDigest.isEqual(pwdDigest, dbDigest);
-                
-                if (digestMatch || pass == null) {
+                boolean digestMatch =false;
+                if (pass == null) {
+                    if (password.isEmpty()) {
+                        digestMatch =true;
+                    } else {
+                        GroupJoinMessage gjm =new GroupJoinMessage(false);
+                        gjm.setError("Password mismatch");
+                        return gjm;
+                    }
                     
+                } else {
+                    byte[] dbDigest =pass.getBytes(OnlineDatabase.ENCODING);
+
+                    password =Base64Coder.decodeString(password);
+                    String pwd =uid+password;
+                    byte[] pwdDigest =OnlineDatabase.INSTANCE.digest.digest(pwd.getBytes(OnlineDatabase.ENCODING));
+                    digestMatch =MessageDigest.isEqual(pwdDigest, dbDigest);
+                }
+                if (digestMatch || pass == null) {
                     query = "UPDATE client " +
                         "set groupid = ?" +
                         "WHERE userid = ?";
-                    statement = DatabaseHandler.database.getPreparedStatement(query);
+                    statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
                     statement.setString(1, groupID);
                     statement.setString(2, userID);
                     statement.executeUpdate();
@@ -140,10 +153,11 @@ public class OnlineSettingHandler {
                 }
             }
         } catch(SQLException ex) {
-              Logger.getLogger(OnlineUserHandler.class.getName())
-                      .log(Level.SEVERE, null, ex);
+            Logger.getLogger(OnlineUserHandler.class.getName())
+                    .log(Level.SEVERE, "SQLException", ex);
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(OnlineSettingHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OnlineSettingHandler.class.getName())
+                    .log(Level.SEVERE, "UnsupportedEncodingException", ex);
         } finally {
             try {
                 if(statement != null){
@@ -159,6 +173,7 @@ public class OnlineSettingHandler {
         return gjm;
     }
 
+    @Override
     public GroupCreateMessage groupCreate(String userID, String groupName, String password) {
         Settings settings =getSettings(userID);
         
@@ -174,12 +189,12 @@ public class OnlineSettingHandler {
                     + "VALUES (?, ?, ?, ?)";
 
             String pwd =Base64Coder.decodeString(password);
-            statement = DatabaseHandler.database.getPreparedStatement(query);
+            statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
             String uID =UUID.randomUUID().toString();
             statement.setString(1, uID);
             statement.setString(2, userID);
             statement.setString(3, groupName);
-            statement.setString(4, DatabaseHandler.database.getPassword(pwd, uID));
+            statement.setString(4, OnlineDatabase.INSTANCE.getPassword(pwd, uID));
             
             int result =statement.executeUpdate();
             
@@ -187,7 +202,7 @@ public class OnlineSettingHandler {
                 query = "UPDATE client " +
                     "set groupid = ?" +
                     "WHERE userid = ?";
-                statement = DatabaseHandler.database.getPreparedStatement(query);
+                statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
                 statement.setString(1, uID);
                 statement.setString(2, userID);
                 statement.executeUpdate();
@@ -198,9 +213,9 @@ public class OnlineSettingHandler {
                 System.out.println("Hell. Hells fury");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(OnlineRegistrationHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OnlineRegistrationHandler.class.getName()).log(Level.SEVERE, "SQLException", ex);
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(OnlineRegistrationHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OnlineRegistrationHandler.class.getName()).log(Level.SEVERE, "UnsupportedEncodingException", ex);
         }
         return new GroupCreateMessage(false, null);
     }

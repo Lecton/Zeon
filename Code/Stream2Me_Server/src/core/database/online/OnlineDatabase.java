@@ -6,6 +6,7 @@
 
 package core.database.online;
 
+import core.database.abstractInterface.Database;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,14 +23,16 @@ import java.util.logging.Logger;
  * @author Bernhard
  * @author Lecton
  */
-public class OnlineDatabase {
+public class OnlineDatabase implements Database {
+    protected static OnlineDatabase INSTANCE;
+            
     MessageDigest digest;
     
-    private String host; //127.0.0.1
-    private int port;//5433
-    private String database;//stream2me
-    private String username;//postgres
-    private String password;//root
+    private final String host; //127.0.0.1
+    private final int port;//5433
+    private final String database;//stream2me
+    private final String username;//postgres
+    private final String password;//root
     private Connection connection;
 
     public OnlineDatabase() {
@@ -48,7 +51,9 @@ public class OnlineDatabase {
         this.connection = null;
     }
     
+    @Override
     public boolean connect() {
+        INSTANCE =this;
         System.out.println("Starting Online Database");
         if(checkDrivers()) {
             try {
@@ -78,7 +83,7 @@ public class OnlineDatabase {
         }        
     }
     
-    public PreparedStatement getPreparedStatement(String statement){
+    protected PreparedStatement getPreparedStatement(String statement){
         try {
             return connection.prepareStatement(statement);
         } catch (SQLException ex) {
@@ -87,7 +92,7 @@ public class OnlineDatabase {
         return null;
     }
     
-    public Statement getStatment(){
+    protected Statement getStatment(){
         try {
             return connection.createStatement();
         } catch (SQLException ex) {
@@ -96,10 +101,24 @@ public class OnlineDatabase {
         return null;
     }
     
+    @Override
     public String getPassword(String pass, String key) throws UnsupportedEncodingException {
-        String pwd =key+pass;
-        byte[] pwdDigest =digest.digest(pwd.getBytes("Latin1"));
-        String temp =new String(pwdDigest, "Latin1");
+        String pwd =new String((key+pass).getBytes(),ENCODING);
+        byte[] pwdDigest =digest.digest(pwd.getBytes(ENCODING));
+        String temp =new String(pwdDigest, ENCODING);
         return temp;
+    }
+
+    @Override
+    public boolean close() {
+        if (connection != null) {
+            try {
+                connection.close();
+                return true;
+            } catch (SQLException ex) {
+                Logger.getLogger(OnlineDatabase.class.getName()).log(Level.SEVERE, "SQLException", ex);
+            }
+        }
+        return false;
     }
 }

@@ -12,6 +12,7 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import java.util.Scanner;
 
 /**
  *
@@ -20,33 +21,44 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class Server implements Runnable {
     private final int PORT;
     public static String name ="PubliCaptivation Server";
+    private static Server server;
     
-    public static void main(String[] argv) {
-        boolean offline =false;
-        for (int i=0; i<argv.length; i++) {
-            String arg =argv[i];
-            if (arg.equals("-n")) {
-                if (i+1 < argv.length) {
-                    if (!argv[i+1].startsWith("-")) {
-                        Server.name =argv[i+1];
+    public static void main(String[] args) {
+        try {
+            boolean offline =false;
+            for (int i=0; i<args.length; i++) {
+                String arg =args[i];
+                if (arg.equals("-n")) {
+                    if (i+1 < args.length) {
+                        if (!args[i+1].startsWith("-")) {
+                            Server.name =args[i+1];
+                        }
                     }
+                } else if (arg.equals("-offline")) {
+                    offline =true;
                 }
-            } else if (arg.equals("-offline")) {
-                offline =true;
             }
-        }
-        
-        System.out.println("Starting "+name);
-        if (offline) {
-            DatabaseHandler.setOffline();
-        } else {
-            boolean connected =DatabaseHandler.setOnline();
-            if (!connected) {
+            if (offline) {
                 DatabaseHandler.setOffline();
+            } else {
+                boolean connected =DatabaseHandler.setOnline();
+                if (!connected) {
+                    DatabaseHandler.setOffline();
+                }
             }
+            server =new Server(2014);
+            Thread serverThread =new Thread(server);
+            serverThread.start();
+            Scanner in =new Scanner(System.in);
+            while (true) {
+                String line =in.nextLine();
+                if (line.equalsIgnoreCase("exit")) {
+                    System.exit(0);
+                }
+            }
+        } finally {
+            server.close();
         }
-        Thread serverThread =new Thread(new Server(2014));
-        serverThread.start();
     }
 
     public Server(int PORT) {
@@ -55,6 +67,7 @@ public class Server implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("Starting "+name);
         DatabaseHandler.userHandler.generateGroups();
         
         EventLoopGroup bossGroup =new NioEventLoopGroup();
@@ -69,10 +82,14 @@ public class Server implements Runnable {
             bootstrap.bind(PORT).channel().closeFuture().sync();
         }
         catch (InterruptedException ex) {
-        }
-        finally {
+        } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
+            DatabaseHandler.database.close();
         }
+    }
+    
+    public void close() {
+        DatabaseHandler.database.close();
     }
 }

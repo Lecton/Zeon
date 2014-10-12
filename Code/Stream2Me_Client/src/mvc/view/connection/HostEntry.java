@@ -25,9 +25,12 @@ public class HostEntry {
         this.IP = IP;
         this.PORT = PORT;
         this.name =name;
-        this.active = ping(IP, PORT);
     }
-    
+
+    public boolean isActive() {
+        this.active = ping(IP, PORT);
+        return active;
+    }
     
     private static boolean ping(String ipAddress, int PORT) {
         Socket socket = null;

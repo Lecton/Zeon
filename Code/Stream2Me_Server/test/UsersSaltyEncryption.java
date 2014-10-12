@@ -50,30 +50,30 @@ public class UsersSaltyEncryption {
     }
     
     private static void updateDB(String userID, String password) {
-        DatabaseHandler.setOnline();
-        PreparedStatement statement;
-        ResultSet result = null;
-        String query = "UPDATE client " +
-                        "SET password = ? " +
-                        "WHERE userID = ?";
-        statement = DatabaseHandler.database.getPreparedStatement(query);
-        try {
-            statement.setString(1, password);
-            statement.setString(2, userID);
-            int lines =statement.executeUpdate();
-            System.out.println(lines);
-        } catch (SQLException ex) {
-            Logger.getLogger(UsersSaltyEncryption.class.getName())
-                    .log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if(statement != null) {
-                    statement.close();
-                }
-            } catch(SQLException ex) {
-                Logger.getLogger(UsersSaltyEncryption.class.getName())
-                        .log(Level.SEVERE, null, ex);
-            }
-        }
+//        DatabaseHandler.setOnline();
+//        PreparedStatement statement;
+//        ResultSet result = null;
+//        String query = "UPDATE client " +
+//                        "SET password = ? " +
+//                        "WHERE userID = ?";
+//        statement = DatabaseHandler.database.getPreparedStatement(query);
+//        try {
+//            statement.setString(1, password);
+//            statement.setString(2, userID);
+//            int lines =statement.executeUpdate();
+//            System.out.println(lines);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(UsersSaltyEncryption.class.getName())
+//                    .log(Level.SEVERE, null, ex);
+//        } finally {
+//            try {
+//                if(statement != null) {
+//                    statement.close();
+//                }
+//            } catch(SQLException ex) {
+//                Logger.getLogger(UsersSaltyEncryption.class.getName())
+//                        .log(Level.SEVERE, null, ex);
+//            }
+//        }
     }
 }

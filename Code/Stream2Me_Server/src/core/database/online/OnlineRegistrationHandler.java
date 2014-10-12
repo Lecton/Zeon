@@ -6,7 +6,7 @@
 package core.database.online;
 
 import biz.source_code.base64Coder.Base64Coder;
-import core.database.DatabaseHandler;
+import core.database.abstractInterface.RegistrationHandler;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -26,14 +26,15 @@ import messages.userConnection.registration.RegistrationResponseMessage;
  *
  * @author Bernhard
  */
-public class OnlineRegistrationHandler {
+public class OnlineRegistrationHandler implements RegistrationHandler {
     
+    @Override
     public boolean checkUsername(CheckUsernameMessage msg) {
         PreparedStatement statement;
         ResultSet result = null;
         String query = "SELECT username " +
                         "FROM client";
-        statement = DatabaseHandler.database.getPreparedStatement(query);
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
         try {
             result = statement.executeQuery();
 
@@ -62,12 +63,13 @@ public class OnlineRegistrationHandler {
         return false;
     }
     
+    @Override
     public boolean checkEmail(CheckEmailMessage msg) {
         PreparedStatement statement;
         ResultSet result = null;
         String query = "SELECT email " +
                         "FROM client";
-        statement = DatabaseHandler.database.getPreparedStatement(query);
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
         try {
             result = statement.executeQuery();
 
@@ -96,6 +98,7 @@ public class OnlineRegistrationHandler {
         return false;
     }
 
+    @Override
     public Message register(RegisterMessage msg) {
         boolean validUsername =checkUsername(new CheckUsernameMessage(msg.getUsername()));
         boolean validEmail =checkEmail(new CheckEmailMessage(msg.getEmail()));
@@ -112,13 +115,13 @@ public class OnlineRegistrationHandler {
                 String query = "INSERT INTO client " +
                         "(userid, name, surname, username, password, email, registrationdate)" +
                         "VALUES (?, ?, ?, ?, ?, ?, ?)";
-                statement = DatabaseHandler.database.getPreparedStatement(query);
+                statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
                 String uID =UUID.randomUUID().toString();
                 statement.setString(1, uID);
                 statement.setString(2, name);
                 statement.setString(3, surname);
                 statement.setString(4, username);
-                statement.setString(5, DatabaseHandler.database.getPassword(password, uID));
+                statement.setString(5, OnlineDatabase.INSTANCE.getPassword(password, uID));
                 statement.setString(6, email);
                 statement.setObject(7, new Date(Calendar.getInstance().getTimeInMillis()));
                 int result =statement.executeUpdate();
@@ -136,9 +139,9 @@ public class OnlineRegistrationHandler {
                     System.out.println("Hell");
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(OnlineRegistrationHandler.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(OnlineRegistrationHandler.class.getName()).log(Level.SEVERE, "SQLException", ex);
             } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(OnlineRegistrationHandler.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(OnlineRegistrationHandler.class.getName()).log(Level.SEVERE, "UnsupportedEncodingException", ex);
             }
         }
         return new RegistrationResponseMessage(false);

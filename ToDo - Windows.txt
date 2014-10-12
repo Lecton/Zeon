@@ -5,11 +5,8 @@ Bugs:
 	
 	- Check and hide client chat window when respective client disconnects
 	
-	
+	- Profile viewing of client. Use non-editable txtBoxes instead.
 To Do:
-	Server options - Online/Offline
-	Offline Server - DB
-	
 	Recording
 	
 	Registration third party - Online only
@@ -25,3 +22,5 @@ Done:
 		Exit
 	Client options - Online/Offline -> URL
 	Client multi-platform jar generation
+	Server options - Online/Offline
+	Offline Server - DB

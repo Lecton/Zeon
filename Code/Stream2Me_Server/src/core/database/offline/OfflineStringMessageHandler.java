@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-package core.database.online;
+package core.database.offline;
 
-import core.database.DatabaseHandler;
+import core.database.*;
 import core.database.abstractInterface.StringMessageHandler;
 import messages.Message;
 import messages.StringMessage;
@@ -15,7 +15,7 @@ import messages.StringMessage;
  *
  * @author Bernhard
  */
-public class OnlineStringMessageHandler implements StringMessageHandler {
+public class OfflineStringMessageHandler implements StringMessageHandler {
 
     @Override
     public Message handleStringMessage(StringMessage msg) {

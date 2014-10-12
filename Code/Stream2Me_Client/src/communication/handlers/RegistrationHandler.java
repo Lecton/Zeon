@@ -34,6 +34,7 @@ public class RegistrationHandler extends MessageHandler {
             case registrationResponse:
                 RegistrationResponseMessage rrMsg =(RegistrationResponseMessage) msg;
                 RegisterControl.registrationResponse(rrMsg.isSuccess(), rrMsg.isValidate());
+                return true;
             case console:
                 return handleConsole((ConsoleMessage)msg);
             default:

@@ -36,6 +36,7 @@ public class ClientHandler {
 //                "Clients: " + serverGroup.size());
         ClientChannelGroup ccg =serverGroup.get(channel.getGroupID());
         if (ccg != null) {
+//            System.out.println("Adding to "+ccg.name());
             return ccg.add(channel);
         } else {
             Logger.getLogger(ClientHandler.class.getName()).log(Level.INFO, 
@@ -50,10 +51,12 @@ public class ClientHandler {
         ClientChannelGroup ccg =serverGroup.get(groupID);
         if (ccg != null) {
             ClientChannel cc =ccg.getChannel(channel);
+//            System.out.println("CC: "+(cc == null));
             ccg.remove(new RemoveMatcher(cc.getUserID()));
             return cc;
         } else {
             ClientChannel cc =serverGroup.get("default").getChannel(channel);
+//            System.out.println("CC: "+(cc == null));
             serverGroup.get("default").remove(cc);
             return cc;
         }

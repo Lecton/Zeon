@@ -8,6 +8,7 @@ package core.database.online;
 
 import connection.messageChannel.MessageBuilder;
 import core.database.DatabaseHandler;
+import core.database.abstractInterface.StreamHandler;
 import core.database.objects.StreamProperty;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,7 +24,7 @@ import messages.media.creation.StreamPropertyMessage;
  *
  * @author Bernhard
  */
-public class OnlineStreamHandler {
+public class OnlineStreamHandler implements StreamHandler {
     
     private boolean streamPropertyExists(String userID, int type) throws UnsupportedOperationException {
         PreparedStatement statement =null;
@@ -41,7 +42,7 @@ public class OnlineStreamHandler {
             String query = "SELECT count(1) FROM streamproperty " +
                     "WHERE userID = ? " +
                     "AND type = ?";
-            statement = DatabaseHandler.database.getPreparedStatement(query);
+            statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
             statement.setString(1, userID);
             statement.setString(2, streamType);
             ResultSet result =statement.executeQuery();
@@ -67,17 +68,7 @@ public class OnlineStreamHandler {
         throw new UnsupportedOperationException("Query did not execute and broke.");
     }
     
-
-    /**
-     * Adds a stream property to the database with the userID as the owner
-     * and the stream Name.
-     * Cannot be added if a stream for the provided owner and name already exists
-     * @param userID - ID of the stream owner
-     * @param connectionID
-     * @param streamName - Name of the stream
-     * @param type
-     * @return success of the stream creation
-     */
+    @Override
     public StreamPropertyMessage createStreamProperty(String userID, String connectionID, String streamName, int type) {
         PreparedStatement statement =null;
         try {
@@ -103,7 +94,7 @@ public class OnlineStreamHandler {
             String query = "INSERT INTO streamproperty " +
                     "(streamID, userID, name, connectionID, type)" +
                     "VALUES (?, ?, ?, ?, ?)";
-            statement = DatabaseHandler.database.getPreparedStatement(query);
+            statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
             statement.setString(1, streamID);
             statement.setString(2, userID);
             statement.setString(3, streamName);
@@ -129,16 +120,7 @@ public class OnlineStreamHandler {
         return msg;
     }
 
-    /**
-     * Removes the stream property from the database and removes all data entries 
-     * for the stream property from the database. Returns all the users added to 
-     * the stream property. The accepted flag is not taken into account.
-     * 
-     * The owner ID and stream name are used to jointly identify the stream.
-     * @param userID - ID of the stream owner
-     * @param streamName - Name of the stream
-     * @return StreamProperty with the required stream data for notifying everyone of removal
-     */
+    @Override
     public StreamProperty removeStreamProperty(String userID, String streamID) {
         PreparedStatement statement =null;
         try {
@@ -147,7 +129,7 @@ public class OnlineStreamHandler {
                     "WHERE streamID = ? " +
                     "AND userID = ?";
             
-            statement = DatabaseHandler.database.getPreparedStatement(query);
+            statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
             statement.setString(1, streamID);
             statement.setString(2, userID);
             int result =statement.executeUpdate();
@@ -174,14 +156,7 @@ public class OnlineStreamHandler {
         throw new UnsupportedOperationException("Query did not execute and broke.");
     }
 
-    /**
-     * Adds an entry to the database for the provided stream and the user. If the user
-     * is allowed on the stream, then it sets the stream data to the provided response
-     * @param streamID - ID of the stream
-     * @param userID - ID of the user
-     * @param response - User response to the stream
-     * @return success of the response
-     */
+    @Override
     public boolean respondStream(String streamID, String userID, String connectionID, boolean response) {
         PreparedStatement statement;
         ResultSet result = null;
@@ -190,7 +165,7 @@ public class OnlineStreamHandler {
                         "WHERE userID = ?" +
                         "AND connectionID = ? " +
                         "AND streamID = ? ";
-        statement = DatabaseHandler.database.getPreparedStatement(query);
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
         try {
             statement.setBoolean(1, response);
             statement.setString(2, userID);
@@ -223,16 +198,7 @@ public class OnlineStreamHandler {
         return false;
     }
 
-    /**
-     * Adds/Removes a user to/from the stream. Provided the owner has a 
-     * stream with the stream ID
-     * @param streamID - ID of the stream
-     * @param ownerID - Owner of the stream
-     * @param affectedUserID - User affected by the update
-     * @param connectionID - Session ID of the affected user
-     * @param action - Add or remove flag. 0 - Remove. 1 - Add
-     * @return success of the request
-     */
+    @Override
     public boolean updateStream(String streamID, String ownerID, String affectedUserID, String affectedConnectionID, boolean action) {
         if (action) {
             StreamProperty sp =getStreamProperty(ownerID, streamID, false);
@@ -242,7 +208,7 @@ public class OnlineStreamHandler {
                     String query = "INSERT INTO streamData " +
                             "(streamdataid, streamid, userid, connectionid) " +
                             "VALUES (?, ?, ?, ?)";
-                    statement = DatabaseHandler.database.getPreparedStatement(query);
+                    statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
                     statement.setString(1, UUID.randomUUID().toString());
                     statement.setString(2, streamID);
                     statement.setString(3, affectedUserID);
@@ -277,7 +243,7 @@ public class OnlineStreamHandler {
                     String query = "DELETE FROM streamData " +
                             "WHERE streamID = ? " +
                             "AND userID = ?";
-                    statement = DatabaseHandler.database.getPreparedStatement(query);
+                    statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
                     statement.setString(1, streamID);
                     statement.setString(2, affectedUserID);
                     int result =statement.executeUpdate();
@@ -304,19 +270,13 @@ public class OnlineStreamHandler {
         }
     }
 
-    /**
-     * Generate a stream property object from the stream data for the owner and streamID.
-     * The stream is identified using the ownerID and streamID
-     * @param ownerID - Owner of the stream
-     * @param streamID - ID of the stream
-     * @return Stream Property for the found stream. Null if nothing found
-     */
+    @Override
     public StreamProperty getStreamProperty(String ownerID, String streamID, boolean withTargets) {
         PreparedStatement statement =null;
         try {            
             String query = "SELECT * FROM streamproperty " +
                     "WHERE streamID = ? ";
-            statement = DatabaseHandler.database.getPreparedStatement(query);
+            statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
             statement.setString(1, streamID);
             ResultSet result =statement.executeQuery();
             
@@ -351,7 +311,7 @@ public class OnlineStreamHandler {
         try {            
             String query = "SELECT userID FROM streamdata " +
                     "WHERE streamID = ? ";
-            statement = DatabaseHandler.database.getPreparedStatement(query);
+            statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
             statement.setString(1, streamID);
             ResultSet result =statement.executeQuery();
             
@@ -382,7 +342,7 @@ public class OnlineStreamHandler {
             String query = "SELECT userID FROM streamdata " +
                     "WHERE streamID = ? " +
                     "AND accepted  = TRUE";
-            statement = DatabaseHandler.database.getPreparedStatement(query);
+            statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
             statement.setString(1, streamID);
             ResultSet result =statement.executeQuery();
             

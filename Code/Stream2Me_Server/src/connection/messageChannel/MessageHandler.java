@@ -156,7 +156,6 @@ public class MessageHandler {
     }
 
     private static void handleUpdateAvatar(Channel ch, UpdateAvatarMessage msg) {
-        System.out.println("Got update avatar");
         try {
         Message message =DatabaseHandler.userHandler.updateAvatar(msg);
         ClientHandler.writeAndFlush(DatabaseHandler.userHandler.getGroupID(msg.getUserID()), message);
@@ -335,7 +334,9 @@ public class MessageHandler {
             }
 
             ClientChannel channel =ClientHandler.remove(ch, u.getGroupID());
-            boolean contained =ClientHandler.contains(channel, channel.getUserID());
+//            System.out.println(channel == null);
+            String uid =channel.getUserID();
+            boolean contained =ClientHandler.contains(channel, uid);
             if (!contained) {
                 LogoutMessage message =new LogoutMessage(u.getUserID(), messages.Message.ALL);
                 message.setTargetGroupID(u.getGroupID());
@@ -362,6 +363,7 @@ public class MessageHandler {
             }
 
             ClientChannel channel =ClientHandler.remove(ch, u.getGroupID());
+            String uID =channel.getUserID();
             boolean contained =ClientHandler.contains(channel, channel.getUserID());
             if (!contained) {
                 LogoutMessage message =new LogoutMessage(u.getUserID(), messages.Message.ALL);
