@@ -110,11 +110,18 @@ public class OfflineUserHandler implements UserHandler {
                         return MessageBuilder.generateGreeting(null, false, "Username or password did not match.");
                     }
                 }
-              }catch (Db4oIOException ex) {
-                  Logger.getLogger(OfflineUserHandler.class.getName())
-                          .log(Level.SEVERE, null, ex);
+            } catch (Db4oIOException ex) {
+                Logger.getLogger(OfflineUserHandler.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            } catch (IllegalStateException ex) {
+                Logger.getLogger(OfflineUserHandler.class.getName())
+                        .log(Level.SEVERE, null, ex);
             } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(OfflineUserHandler.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(OfflineUserHandler.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(OfflineUserHandler.class.getName())
+                        .log(Level.SEVERE, null, ex);
             }
         }
         return MessageBuilder.generateGreeting(null, false, "Login failed. Username or password incorrect.");
