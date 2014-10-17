@@ -76,21 +76,19 @@ public class ClientAdapter extends BaseAdapter {
 		   if(contact.getVideoNotification()){
 			   holder.video_icon.setVisibility(View.VISIBLE);
 		   }else{
-			   holder.video_icon.setVisibility(View.GONE);
+			   holder.video_icon.setVisibility(View.INVISIBLE);
 		   }
-		   
 
 		   if(contact.getAudioNotification()){
 			   holder.audio_icon.setVisibility(View.VISIBLE);
 		   }else{
-			   holder.audio_icon.setVisibility(View.GONE);
+			   holder.audio_icon.setVisibility(View.INVISIBLE);
 		   }
-		   
 
 		   if(contact.getStringNotification()){
 			   holder.string_icon.setVisibility(View.VISIBLE);
 		   }else{
-			   holder.string_icon.setVisibility(View.GONE);
+			   holder.string_icon.setVisibility(View.INVISIBLE);
 		   }
 		   
 		   convertView.setTag(holder);

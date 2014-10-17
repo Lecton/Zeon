@@ -185,7 +185,14 @@ public class MainWindow extends Activity {
 	public static void handleStringMessage(StringMessage message){
 		boolean result = ContactWindow.handleStringMessage(message);
 		if (!result) {
-			ClientHandler.handleStringMessage(message);
+			result = ClientHandler.handleStringMessage(message);
+			if (!result) {
+				Log.e("MainWindow handleStringMessage", "Message not handled. From: "+message.getUserID());
+			} else {
+				updateClientList();
+			}
+		}else{
+			updateClientList();
 		}
 	}
 	

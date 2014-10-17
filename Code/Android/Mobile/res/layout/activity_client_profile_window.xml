@@ -52,11 +52,11 @@
         android:layout_marginRight="69dp"
         android:layout_marginTop="202dp"
         android:src="@drawable/clicked_camera" />
-
+ 
     <ImageButton
-        android:id="@+id/audioAccept"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:id="@+id/audioAccept" 
+        android:layout_width="100dp"  
+        android:layout_height="100dp" 
         android:layout_alignLeft="@+id/email"
         android:layout_alignTop="@+id/videoAccept"
         android:layout_marginLeft="193dp"

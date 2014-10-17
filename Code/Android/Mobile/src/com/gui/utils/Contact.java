@@ -122,7 +122,7 @@ public class Contact implements Serializable {
 	 public boolean setStringNoticationOff(){
 		 
 		 return !(notification[2] = false);
-	 }	 
+	 }
 	 
 	 public boolean getVideoNotification(){
 		 return notification[0];

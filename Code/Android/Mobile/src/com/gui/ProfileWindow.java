@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import messages.Message;
 import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateProfileMessage;
 
@@ -19,6 +20,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -51,6 +53,7 @@ public class ProfileWindow extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile_window);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
 		profileImage = (ImageButton) findViewById(R.id.profileImg);
 		eName = (EditText) findViewById(R.id.userName);
@@ -180,5 +183,22 @@ public class ProfileWindow extends Activity {
 		return cursor.getString(column_index);
 	}    
 	
-
+    public void createVideoStream(View view){
+    	
+    	if(ClientHandler.getUser().isStreamingVideo()){
+    		Message msg = (MessageFactory.generateStreamProperty(
+							ClientHandler.getUser().getUserID(), ClientHandler.getUser().getVideoStreamingID(), 
+							ClientHandler.getUser().getVideoStreamingName(), false, 0));
+    		Client.connection.writeMessage(msg);
+    		ClientHandler.getUser().setVideoStreamingName(null);
+    	}else{
+    		String name = ClientHandler.getUser().getVideoStreamingName() == null ? 
+                    "videoStream" : ClientHandler.getUser().getVideoStreamingName();
+    		
+            Message msg = MessageFactory.generateStreamProperty(
+            		ClientHandler.getUser().getUserID(), null, name, true, 0);
+            Client.connection.writeMessage(msg);
+            ClientHandler.getUser().setVideoStreamingName(name);
+    	}
+    }
 }

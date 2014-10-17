@@ -96,18 +96,33 @@ public class VideoStreamWindow extends Activity {
 		if (renderer != null) {
 			String image =msg.getImg();
 			String streamID =msg.getStreamID();
-			
-			renderer.addImage(streamID, image);
+			if (contact != null) {
+				if (contact.getVideoStreamID().equals(streamID)) {
+					renderer.addImage(streamID, image);
+				}
+			}
 		} else {
-			throw new IllegalStateException("Video window not open.");
+//			throw new IllegalStateException("Video window not open.");
 		}
 	}
 	
 	@Override
 	public void onBackPressed() {
-		getIntent().putExtra("UserProfile", 6);
-		getIntent().putExtra("ClientID", contact.getUserID());
-		setResult(RESULT_OK, getIntent());		
-		finish();
+		synchronized(this){
+			Client.connection.writeMessage(
+					MessageFactory.generateStreamResponse(ClientHandler.getUser().getUserID(), 
+							contact.getVideoStreamID(), false));
+			
+			renderer.close();
+			renderer =null;
+			
+			String contactID = contact.getUserID();
+			contact =null;
+			
+			getIntent().putExtra("UserProfile", 6);
+			getIntent().putExtra("ClientID", contactID);
+			setResult(RESULT_OK, getIntent());
+			finish();
+		}
 	}
 }

@@ -51,6 +51,7 @@ public class Square {
 	private Context context;
 	private GL10 gl;
 	private GlRenderer renderer;
+	private boolean open =false;
 	
 	public Square(GlRenderer renderer) {
 		this.renderer =renderer;
@@ -72,6 +73,7 @@ public class Square {
 		textureBuffer = byteBuffer.asFloatBuffer();
 		textureBuffer.put(texture);
 		textureBuffer.position(0);
+		open =true;
 	}
 
 	public Bitmap StringToBitMap(String encodedString){
@@ -83,6 +85,16 @@ public class Square {
 	       return null;
      }
 	}	
+	
+	public void close(){
+		open =false;
+		gl.glDeleteTextures(1, textures, 0);
+		recycle();
+	}
+	
+	public boolean isOpen() {
+		return open;
+	}
 	
 	protected void reloadTexture() {
 		gl.glDeleteTextures(1, textures, 0);
@@ -179,7 +191,9 @@ public class Square {
 	}
 	
 	public void recycle(){
-		bitmap.recycle();
+		if(bitmap != null){
+			bitmap.recycle();
+		}
 		bitmap = null;
 		System.gc();
 	}

@@ -1,5 +1,7 @@
 package com.gui;
 
+import java.util.UUID;
+
 import messages.media.AudioStreamMessage;
 
 import com.audioPlayer.AudioPlayer;
@@ -74,7 +76,6 @@ public class ClientProfileWindow extends Activity {
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						contact.setVideoNoticationOff();
 						Client.connection.writeMessage(
 										MessageFactory.generateStreamResponse(ClientHandler.getUser().getUserID(), 
 												contact.getVideoStreamID(), true));
@@ -124,7 +125,7 @@ public class ClientProfileWindow extends Activity {
 											MessageFactory.generateStreamResponse(ClientHandler.getUser().getUserID(), 
 											contact.getAudioStreamID(),true));
 							playerContact =contact;
-							player =AudioPlayer.start(contact.getAudioStreamID());
+//							player =AudioPlayer.start(contact.getAudioStreamID());
 						}
 					}
 				});
@@ -207,8 +208,9 @@ public class ClientProfileWindow extends Activity {
 	}
 	
 	public void inviteToVideo(View view){
-		Client.connection.writeMessage(
-//				MessageFactory.generateStreamResponse(userID, streamID, response)(ClientHandler.getUser().getUserID(), 
-//						contact.getVideoStreamID(), true));
+		
+//		UUID u;
+//		Client.connection.writeMessage(
+//				MessageFactory.generateStreamProperty(playerContact.getUserID(), streamID, streamName, turnOn, type)
 	}
 }

@@ -55,8 +55,12 @@ public final class GlRenderer implements Renderer {
 		gl.glTranslatef(0.0f, 0.0f, -5.0f);		// move 5 units INTO the screen
 												// is the same as moving the camera 5 units away
 //		gl.glScalef(0.5f, 0.5f, 0.5f);			// scale the square to 50% 
-		square.updateImage(gl);			
-		square.draw(gl);						// Draw the square
+		if(square != null && gl != null) {
+			try {
+				square.updateImage(gl);			
+				square.draw(gl);						// Draw the square
+			} catch (NullPointerException e) {}
+		}
 	}
 
 	@Override
@@ -125,15 +129,17 @@ public final class GlRenderer implements Renderer {
             double size =src.getWidth()*src.getHeight()*4;
             if (free < size*1.5) {
 //				counter.set(0);
-				square.reloadTexture();
-				Log.v("GLRenderer MemClear", "Pausing for memory clearing.");
-				try {
-					int contained =images.size();
-					images.clear();
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					Log.e("MemClear sleep error", e.getMessage());
-				}
+            	if(square != null){
+					square.reloadTexture();
+					Log.v("GLRenderer MemClear", "Pausing for memory clearing.");
+					try {
+						int contained =images.size();
+						images.clear();
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						Log.e("MemClear sleep error", e.getMessage());
+					}
+            	}
 			}
 //			
             
@@ -163,6 +169,14 @@ public final class GlRenderer implements Renderer {
 	}	
 	
 	public void addImage(String streamID, String image) {
-		images.add(image);
+		if (square != null && square.isOpen()) {
+			images.add(image);
+		}
+	}
+	
+	public void close(){
+		square.close();
+		square = null;
+		images.clear();
 	}
 }

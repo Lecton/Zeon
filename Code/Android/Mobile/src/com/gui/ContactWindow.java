@@ -44,13 +44,14 @@ import android.widget.Toast;
 import android.os.Build;
 
 public class ContactWindow extends Activity {
-
+	private static String DEFAULTID ="-11";
+	
 	public static List<ChatMessages> chatHistory;
 	public static ListView listChats = null;
 	public static Handler UIHandler;
 	public static Context baseContext;
 	public static ChatAdapter chatAdapter;
-	private static String clientID ="-1";
+	private static String clientID =DEFAULTID;
 
 	static 
 	{
@@ -87,6 +88,7 @@ public class ContactWindow extends Activity {
 				setTitle("Group Messages");
 				icon = new BitmapDrawable(getResources(),ClientHandler.getUser().getImage());
 			} else {
+				ClientHandler.getFromUserID(clientID).setStringNoticationOff();
 				setTitle(ClientHandler.getFromUserID(clientID).getName());
 				icon = new BitmapDrawable(getResources(),ClientHandler.getFromUserID(clientID).getImage());
 			}
@@ -142,50 +144,45 @@ public class ContactWindow extends Activity {
 
 
 	public static boolean handleStringMessage(StringMessage message){
-//		if (ClientHandler.getFromUserID(clientID) != null) {
-		Log.v("ContactWindow.handleStringMessage", message.getTargetID());
-			if (!(message.getTargetID().equals(Message.ALL))) {
-				if (ClientHandler.getFromUserID(clientID) != null)  {
-					if (ClientHandler.getFromUserID(clientID).getUserID().equals(message.getUserID())) {
-						ClientHandler.getFromUserID(clientID).addMessage(message);
-						updateChatList();
-						return true;
-					} else {
-						return false;
-					}
-				} else {
-					return false;
-				}
-			} else {
-				if (ClientHandler.getUser() != null 
-						&& ClientHandler.getUser().getUserID().equals(clientID)) {
-					ClientHandler.getUser().addMessage(message);
+		Log.v("ContactWindow.handleStringMessage JIMMY", message.getTargetID());
+		if (clientID.equals(DEFAULTID)) {
+			return false;
+		}
+		
+		if (!(message.getTargetID().equals(Message.ALL))) {
+			if (ClientHandler.getFromUserID(clientID) != null)  {
+				if (ClientHandler.getFromUserID(clientID).getUserID().equals(message.getUserID())) {
+					ClientHandler.getFromUserID(clientID).addMessage(message);
 					updateChatList();
+//					Log.v("ContactWindow.handleStringMessage ", "Name  "+ClientHandler.getFromUserID(clientID).getName() + "  Message=" + ClientHandler.getFromUserID(clientID).getStringNotification());
 					return true;
 				} else {
 					return false;
 				}
+			} else {
+				return false;
 			}
-//		} else {
-//			if (ClientHandler.getUser() != null) {
-//				ClientHandler.getUser().addMessage(message);
-//				GroupMessages.updateChatList();
-//				return true;
-//			} else {
-//				return false;
-//			}
-//		}
-//		chatHistory.add(new ChatMessages(messages,owner));
+		} else {
+			if (ClientHandler.getUser() != null 
+					&& ClientHandler.getUser().getUserID().equals(clientID)) {
+				ClientHandler.getUser().addMessage(message);
+				updateChatList();
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 	
 	@Override
 	public void onBackPressed() {
+		clientID =DEFAULTID;
 //		getIntent().putExtra("User", user);
 //		getIntent().putExtra("Client", client);
 		getIntent().putExtra("UserProfile", 2);
 		setResult(RESULT_OK, getIntent());		
 		finish();
-	}	
+	}
 
 	public static void updateChatList(){
 		

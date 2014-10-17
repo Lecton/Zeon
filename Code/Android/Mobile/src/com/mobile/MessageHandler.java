@@ -17,6 +17,7 @@ import com.gui.VideoStreamWindow;
 
 public class MessageHandler {
 	public static boolean handle(Message msg) {
+		Log.v("MessageHandler", "Got: "+msg.handle());
 		switch (msg.handle()) {
 			case greeting:
 				LoginWindow.setGreetingMessage((GreetingMessage)msg);
@@ -34,15 +35,21 @@ public class MessageHandler {
 				MainWindow.handleLogoutUser((LogoutMessage)msg);
 				return true;
 			case console:
-				Log.v("Server notice",msg.getMessage());
 				return true;
 			case video:
-				Log.v("Video notice",msg.getMessage());
 				VideoStreamWindow.handleVideo((VideoStreamMessage)msg);
 				return true;
 			case auido:
-				Log.v("Audio notice", msg.getMessage());
 				ClientProfileWindow.handleAudio((AudioStreamMessage)msg);
+				return true;
+			case streamProperty:
+				Log.v("MessageHandler","streamProperty");
+				return true;
+			case streamPropertyRequest:
+				Log.v("MessageHandler","streamPropertyRequest");
+				return true;
+			case streamReply:
+				Log.v("MessageHandler","streamReply");
 				return true;
 			default:
 				Log.e("Message Read", "Unhandled message "+msg.handle());

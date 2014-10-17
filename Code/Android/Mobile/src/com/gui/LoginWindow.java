@@ -6,6 +6,7 @@ import biz.source_code.base64Coder.Base64Coder;
 
 import com.gui.utils.Contact;
 import com.gui.utils.MessageFactory;
+import com.gui.utils.User;
 import com.mobile.Client;
 import com.mobile.ClientHandler;
 import com.mobile.R;
@@ -14,6 +15,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -133,19 +136,6 @@ public class LoginWindow extends Activity {
 			focusView = mPasswordView;
 			cancel = true;
 		}
-
-		// Check for a valid email address.
-//		if (TextUtils.isEmpty(mEmail)) {
-//			mEmailView.setError(getString(R.string.error_field_required));
-//			focusView = mEmailView;
-//			cancel = true;
-//		} else if (!mEmail.contains("@")) {
-//			mEmailView.setError(getString(R.string.error_invalid_email));
-//			focusView = mEmailView;
-//			cancel = true;
-//		}
-
-		Log.v("Cancel value", ""+cancel);
 		
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
@@ -214,13 +204,26 @@ public class LoginWindow extends Activity {
 			try {
 				//Send the login message
 				Client.getConnection().writeMessage(new LoginMessage(mUsername, Base64Coder.encodeString(mPassword)));
-				
+				int logginCount = 0;
 				//Wait until server response has been set
 				while (true) {
 					if (greet != null) {
 						break;
 					}
 					
+					if(logginCount >= 10){
+						AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getApplicationContext());
+						alertBuilder.setMessage("Connection to server timed out.");
+						alertBuilder.setCancelable(true);
+						alertBuilder.setPositiveButton("Yes",
+			                    	new DialogInterface.OnClickListener() {
+				                		public void onClick(DialogInterface dialog, int id) {
+				                    		dialog.cancel();
+				                    		System.exit(0);
+				                		}
+			            });						
+					}
+					++logginCount;
 					//Sleep in order to not have the thread die of boredome
 					Thread.sleep(200);
 				}
@@ -246,7 +249,7 @@ public class LoginWindow extends Activity {
 			showProgress(false);
 
 			if (success) {	
-				getIntent().putExtra("LoggedInUser", new Contact(greet));
+				getIntent().putExtra("LoggedInUser", new User(greet));
 				setResult(RESULT_OK, getIntent());		
 				finish();
 				

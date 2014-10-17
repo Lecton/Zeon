@@ -21,16 +21,17 @@ import biz.source_code.base64Coder.Base64Coder;
 
 import com.gui.MainWindow;
 import com.gui.utils.Contact;
+import com.gui.utils.User;
 
 public class ClientHandler {
 	private static List<Contact> contacts =new ArrayList<Contact>();
-	private static Contact user;
+	private static User user;
 	
 	public ClientHandler() throws Exception {
 		throw new Exception("Do not create ME!!!!!!");
 	}
 	
-	protected static boolean setUser(Contact loggedUser) {
+	protected static boolean setUser(User loggedUser) {
 		if (user == null && loggedUser != null) {
 			user =loggedUser;
 			for (Iterator<Contact> it = contacts.iterator(); it.hasNext(); ) {
@@ -45,7 +46,7 @@ public class ClientHandler {
 		}
 	}
 	
-	public static Contact getUser() {
+	public static User getUser() {
 		return user;
 	}
 	
@@ -130,14 +131,17 @@ public class ClientHandler {
 	}
 	
 	public static boolean handleStringMessage(StringMessage message) {
-		if (message.getTargetID() == Message.ALL) {
+		if (message.getTargetID().equals(Message.ALL)) {
 			user.addMessage(message);
 			return true;
 		} else {
+			Log.v("ClientHandler","Client size: " + contacts.size());
 			for (Iterator<Contact> it = contacts.iterator(); it.hasNext(); ) {
 				Contact c = it.next();
-				if (c.getUserID() == message.getUserID()) {
+				if (c.getUserID().equals(message.getUserID())) {
 					c.addMessage(message);
+					c.setStringNoticationOn();
+					Log.v("ClientHandler","Name: " + c.getName());
 					return true;
 				}
 			}
