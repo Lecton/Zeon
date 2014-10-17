@@ -23,8 +23,7 @@ public class Handler extends SimpleChannelInboundHandler<Message> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        LOGGER.log(Level.WARNING, "Connection exception", cause);
-        JOptionPane.showMessageDialog(null, "Server connection error.", "Communication error", JOptionPane.ERROR_MESSAGE);
+        Control.exceptionCaught(cause);
     }
     
     @Override

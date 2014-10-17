@@ -87,15 +87,17 @@ public class ContactListControl implements ActionListener {
         }
     }
 
-    public static void acceptStream(String streamID, String userID, int type, boolean action) {
+    public static void acceptStream(String streamID, String userID, String streamName, int type, boolean action) {
         if (type == 0) {
             Receiver person =INSTANCE.getColleague(userID);
             if (person != null) {
                 StreamControl.INSTANCE.closeVideoFrame(streamID, userID);
                 if (action) {
                     person.setVideoStream(streamID);
+                    person.setVideoStreamName(streamName);
                 } else {
                     person.setVideoStream(null);
+                    person.setVideoStreamName(null);
                 }
                 person.setAcceptedVideo(false);
                 UpdateControl.INSTANCE.add(userID, UpdateControl.VIDEONOTIFICATION, action);
@@ -105,8 +107,10 @@ public class ContactListControl implements ActionListener {
             if (person != null) {
                 if (action) {
                     person.setAudioStream(streamID);
+                    person.setAudioStreamName(streamName);
                 } else {
                     person.setAudioStream(null);
+                    person.setAudioStreamName(null);
                 }
                 person.setAcceptedAudio(false);
                 UpdateControl.INSTANCE.add(userID, UpdateControl.AUDIONOTIFICATION, action);
@@ -175,7 +179,7 @@ public class ContactListControl implements ActionListener {
                 person.setVideo(!accept);
                 
                 if (accept) {
-                    StreamControl.INSTANCE.addVideoFrame(person.getVideoStream(), person.getUserID());
+                    StreamControl.INSTANCE.addVideoFrame(person.getVideoStream(), person.getUserID(), person.getVideoStreamName());
                 }
                 
                 view.alert(person.getUserID());
@@ -219,8 +223,6 @@ public class ContactListControl implements ActionListener {
                         .generateStreamUpdate(UserControl.getUserID(), 
                                 "SERVER", videoStreamID, userID, 0, true));
             }
-            
-            System.out.println("Invite to video");
         } else if (command.equals("inviteAudio")) {
             String userID =((ContactPopup)((JMenuItem) e.getSource()).getParent()).getUserID();
             Receiver person =model.get(userID);
@@ -232,8 +234,6 @@ public class ContactListControl implements ActionListener {
                         .generateStreamUpdate(UserControl.getUserID(), 
                                 "SERVER", audioStreamID, userID, 1, true));
             }
-            
-            System.out.println("Invite to audio");
         } else if (command.equals("removeVideo")) {
             String userID =((ContactPopup)((JMenuItem) e.getSource()).getParent()).getUserID();
             Receiver person =model.get(userID);
@@ -245,8 +245,6 @@ public class ContactListControl implements ActionListener {
                         .generateStreamUpdate(UserControl.getUserID(), 
                                 "SERVER", videoStreamID, userID, 0, false));
             }
-            
-            System.out.println("Remove from video");
         } else if (command.equals("removeAudio")) {
             String userID =((ContactPopup)((JMenuItem) e.getSource()).getParent()).getUserID();
             Receiver person =model.get(userID);
@@ -258,8 +256,6 @@ public class ContactListControl implements ActionListener {
                         .generateStreamUpdate(UserControl.getUserID(), 
                                 "SERVER", audioStreamID, userID, 1, false));
             }
-            
-            System.out.println("Remove from audio");
         }
     }
 

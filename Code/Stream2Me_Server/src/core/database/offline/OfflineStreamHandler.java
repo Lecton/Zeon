@@ -83,7 +83,7 @@ public class OfflineStreamHandler implements StreamHandler {
             Connection connection =resultCon.next();
             
             String streamID =UUID.randomUUID().toString();
-            StreamProp sp =new StreamProp(streamID, person, streamType, streamID, connection);
+            StreamProp sp =new StreamProp(streamID, person, streamType, streamName, connection);
             OfflineDatabase.INSTANCE.db.store(sp);
             OfflineDatabase.INSTANCE.db.commit();
             return MessageBuilder.generateStreamResponse(userID, streamID, streamName, type, true);
@@ -161,17 +161,15 @@ public class OfflineStreamHandler implements StreamHandler {
             StreamProperty sp =getStreamProperty(ownerID, streamID, false);
             if (sp != null) {
                 try {
-                    String query = "DELETE FROM streamData " +
-                            "WHERE streamID = ? " +
-                            "AND userID = ?";
                     StreamData sd =new StreamData();
                     sd.setStreamID(streamID);
-                    sd.setUserID(streamID);
+                    sd.setUserID(affectedUserID);
                     ObjectSet<StreamData> result =OfflineDatabase.INSTANCE.db.queryByExample(sd);
+                    System.out.println(result.size());
                     sd =result.next();
                     OfflineDatabase.INSTANCE.db.delete(sd);
                     return true;
-                } catch (Db4oIOException ex) {
+                } catch (Db4oIOException | IllegalStateException ex) {
                     Logger.getLogger(OfflineUserHandler.class.getName())
                             .log(Level.SEVERE, null, ex);
                 }
@@ -190,10 +188,10 @@ public class OfflineStreamHandler implements StreamHandler {
                 String type =sp.getType();
                 
                 if (withTargets) {
-                    return new StreamProperty(getStreamDataActiveTargetIDs(streamID), streamID, DatabaseHandler.userHandler.getGroupID(ownerID), type.equals("video") ? 0 : 1); 
+                    return new StreamProperty(getStreamDataActiveTargetIDs(streamID), streamID, sp.getName(), DatabaseHandler.userHandler.getGroupID(ownerID), type.equals("video") ? 0 : 1); 
                 }
                 
-                return new StreamProperty(new String[0], streamID, DatabaseHandler.userHandler.getGroupID(ownerID), type.equals("video") ? 0 : 1);
+                return new StreamProperty(new String[0], streamID, sp.getName(), DatabaseHandler.userHandler.getGroupID(ownerID), type.equals("video") ? 0 : 1);
             }
             return null;
         } catch (Db4oIOException ex) {

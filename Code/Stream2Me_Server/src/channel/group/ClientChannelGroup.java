@@ -408,7 +408,7 @@ public class ClientChannelGroup extends AbstractSet<Channel> implements ChannelG
             }
         }
         
-        if (message.handle() != MessageType.auido || 
+        if (message.handle() != MessageType.auido && 
                 message.handle() != MessageType.video) {
             Logger.getLogger(ClientChannelGroup.class.getName()).log(Level.INFO, 
                          "Writing message "+message.handle()+": ("

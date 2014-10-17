@@ -209,7 +209,8 @@ public class MessageHandler {
                     String groupID =sp.getGroupID();
                     ClientHandler.writeAndFlush(groupID, terminate, new ClientMatcher(msg.getUserID()));
                     StreamNotifyMessage message =new StreamNotifyMessage(
-                            msg.getUserID(), Message.ALL, sp.getStreamID(), sp.getType(), false);
+                            msg.getUserID(), Message.ALL, sp.getStreamID(), sp.getStreamName(),
+                            sp.getType(), false);
                     ClientHandler.writeAndFlush(groupID, message, sp.generateMatcher());
                     Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                             "StreamProperty "+msg.getStreamName()+" removed.");
@@ -250,9 +251,10 @@ public class MessageHandler {
             Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
                         "Stream Update successful.");
             String groupID =DatabaseHandler.userHandler.getGroupID(msg.getUserID());
+            StreamProperty sp =DatabaseHandler.streamHandler.getStreamProperty(msg.getUserID(), msg.getStreamID(), false);
             ClientHandler.writeAndFlush(groupID, new StreamNotifyMessage(msg.getUserID(), 
-                    msg.getAffectedUserID(), msg.getStreamID(), msg.getType(),
-                    msg.getAction()));
+                    msg.getAffectedUserID(), msg.getStreamID(), sp.getStreamName(), 
+                    msg.getType(), msg.getAction()));
         } else {
             Logger.getLogger(MessageHandler.class.getName()).log(Level.WARNING, 
                         "Could not update the connection.");

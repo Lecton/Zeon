@@ -272,6 +272,9 @@ public class GUI extends javax.swing.JFrame {
         streamVideo.addActionListener(UserControl.INSTANCE);
         streamAudio.addActionListener(UserControl.INSTANCE);
         
+        streamVideo.setComponentPopupMenu(new StreamingPopup(streamVideo, 0));
+//        streamAudio.setComponentPopupMenu(new StreamingPopup(streamAudio, 1));
+        
         acceptVideo.addActionListener(ContactListControl.INSTANCE);
         acceptAudio.addActionListener(ContactListControl.INSTANCE);
     }
@@ -356,8 +359,8 @@ public class GUI extends javax.swing.JFrame {
     }
 
     public void hideStreamAcceptors(String userID) {
-        acceptVideo.setOwnerID(userID);
-        acceptAudio.setOwnerID(userID);
+        acceptVideo.setOwnerID(null);
+        acceptAudio.setOwnerID(null);
         
         acceptVideo.setVisible(false);
         acceptAudio.setVisible(false);

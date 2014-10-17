@@ -14,7 +14,7 @@ import java.io.UnsupportedEncodingException;
  * @author Lecton
  */
 public interface Database {
-    static String ENCODING ="Latin1";
+    static String ENCODING ="LATIN1";
     
     public abstract boolean connect();
     

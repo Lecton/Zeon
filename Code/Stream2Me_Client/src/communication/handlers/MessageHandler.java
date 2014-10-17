@@ -125,7 +125,7 @@ public class MessageHandler {
     }
 
     private boolean handleStreamNotification(StreamNotifyMessage msg) {
-        ContactListControl.acceptStream(msg.getStreamID(), msg.getUserID(), msg.getType(), msg.getAction());
+        ContactListControl.acceptStream(msg.getStreamID(), msg.getUserID(), msg.getStreamName(), msg.getType(), msg.getAction());
         return true;
     }
 

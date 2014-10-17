@@ -58,8 +58,8 @@ public class Handler extends SimpleChannelInboundHandler<Message> {
     
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-        Logger.getLogger(Handler.class.getName()).log(Level.INFO, 
-                "Received message: "+msg.handle());
+//        Logger.getLogger(Handler.class.getName()).log(Level.INFO, 
+//                "Received message: "+msg.handle());
         Channel incomming =ctx.channel();
         
         try {

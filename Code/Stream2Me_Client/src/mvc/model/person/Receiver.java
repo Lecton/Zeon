@@ -15,6 +15,10 @@ public class Receiver extends Notifier {
     private String videoStream =null;
     private String audioStream =null;
     
+    //Names of streams receiving
+    private String videoStreamName =null;
+    private String audioStreamName =null;
+    
     //Flags to show if has accepted streams
     private boolean acceptedVideo =false;
     private boolean acceptedAudio =false;
@@ -81,5 +85,21 @@ public class Receiver extends Notifier {
 
     public void setReceivingVideo(boolean receivingVideo) {
         this.receivingVideo = receivingVideo;
+    }
+
+    public String getVideoStreamName() {
+        return videoStreamName;
+    }
+
+    public String getAudioStreamName() {
+        return audioStreamName;
+    }
+
+    public void setAudioStreamName(String audioStreamName) {
+        this.audioStreamName = audioStreamName;
+    }
+
+    public void setVideoStreamName(String videoStreamName) {
+        this.videoStreamName = videoStreamName;
     }
 }

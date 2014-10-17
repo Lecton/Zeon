@@ -1,11 +1,6 @@
 Bugs:
-	- Video notification icon display. When remove from stream is called and window is closed afterwards. Should not display the icon
-	
-	- Unselecting should dismount the active user from GUI control. Used by the displaying of the stream acceptors
-	
 	- Check and hide client chat window when respective client disconnects
 	
-	- Profile viewing of client. Use non-editable txtBoxes instead.
 To Do:
 	Recording
 	
@@ -24,3 +19,7 @@ Done:
 	Client multi-platform jar generation
 	Server options - Online/Offline
 	Offline Server - DB
+	Titling
+	Video notification icon display. When remove from stream is called and window is closed afterwards Should not display the icon
+	Profile viewing of client. Use non-editable txtBoxes instead.
+	Unselecting should dismount the active user from GUI control. Used by the displaying of the stream acceptors

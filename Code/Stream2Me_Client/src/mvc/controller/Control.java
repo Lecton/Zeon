@@ -25,6 +25,7 @@ import communication.handlers.SettingsHandler;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import mvc.controller.connection.ConnectionControl;
 import mvc.view.authentication.Login;
 import mvc.view.authentication.Register;
@@ -40,6 +41,12 @@ public class Control {
     
     public static Control INSTANCE;
     private static MessageHandler msgHandler =new LoginHandler();
+
+    public static void exceptionCaught(Throwable cause) {
+        LOGGER.log(Level.WARNING, "Connection exception", cause);
+        JOptionPane.showMessageDialog(null, "Server connection error.", "Communication error", JOptionPane.OK_OPTION);
+        INSTANCE.initiate(-1);
+    }
     
 //    private static ArrayList<
     
@@ -53,7 +60,6 @@ public class Control {
     private mvc.view.connection.Connection connection;
     
     public Control() {
-        setup();
     }
     
     public void makeConnection() throws InterruptedException {
@@ -65,8 +71,6 @@ public class Control {
     }
     
     private void setup() {
-        setupConnection();
-        
         setupLogin();
         
         setupRegister();
@@ -132,7 +136,9 @@ public class Control {
 
                 switch (windowID) {
                     case -1:
+                        setupConnection();
                         window =connection;
+                        setup();
                         break;
                     case 0:
                         GUIControl.clear();

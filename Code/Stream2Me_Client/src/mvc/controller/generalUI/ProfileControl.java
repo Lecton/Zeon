@@ -113,27 +113,7 @@ public class ProfileControl implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String command =e.getActionCommand();
         if (command != null) {
-            if (command.equals("updateDetails")) {
-//                String userID =view.getUserID();
-//                String name =view.getFirstname();
-//                String surname =view.getSurname();
-//                String email =view.getEmail();
-//                String title =view.getTitle();
-//                String aboutMe =view.getAboutMe();
-//                
-//                Person person =ContactListControl.INSTANCE.getColleague(userID);
-//                if (person != null) {
-//                    person.setName(name);
-//                    person.setSurname(surname);
-//                    person.setEmail(email);
-//                    person.setTitle(title);
-//                    person.setAboutMe(aboutMe);
-//                    Control.INSTANCE.writeMessage(MessageFactory.generateUpdateProfile(userID, name, surname, email, title, aboutMe));
-//                }
-                System.out.println("ERROR HERE!!!!!!!!!!!!!!!!!!!!!!!!!");
-            } else if (command.equals("updateAvatar")) {
-                System.out.println("ERROR!!!!!!!!!!!!!!!!!!!!!!!!!");
-            } else if (command.equals("updateUserDetails")) {
+            if (command.equals("updateUserDetails")) {
                 String userID =view.getUserID();
                 String name =view.getFirstname();
                 String surname =view.getSurname();
@@ -151,8 +131,6 @@ public class ProfileControl implements ActionListener {
                     UserControl.INSTANCE.update(userID);
                     Control.INSTANCE.writeMessage(MessageFactory.generateUpdateProfile(userID, name, surname, email, title, aboutMe));
                 }
-            } else if (command.equals("updateUserAvatar")) {
-                
             }
         }
     }

@@ -15,19 +15,25 @@ import messages.MessageType;
  */
 public class StreamNotifyMessage extends Message {
     String streamID;
+    String streamName;
     int type;
     boolean action;
 
-    public StreamNotifyMessage(String userID, String targetID, String streamID, int type, boolean action) {
+    public StreamNotifyMessage(String userID, String targetID, String streamID, String streamName, int type, boolean action) {
         this.userID =userID;
         this.targetID =targetID;
         this.streamID = streamID;
+        this.streamName =streamName;
         this.type = type;
         this.action =action;
     }
 
     public String getStreamID() {
         return streamID;
+    }
+
+    public String getStreamName() {
+        return streamName;
     }
 
     public int getType() {

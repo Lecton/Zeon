@@ -282,12 +282,13 @@ public class OnlineStreamHandler implements StreamHandler {
             
             if(result.next()) {
                 String type =result.getString("type");
+                String name =result.getString("name");
                 
                 if (withTargets) {
-                    return new StreamProperty(getStreamDataActiveTargetIDs(streamID), streamID, DatabaseHandler.userHandler.getGroupID(ownerID), type.equals("video") ? 0 : 1); 
+                    return new StreamProperty(getStreamDataActiveTargetIDs(streamID), streamID, name, DatabaseHandler.userHandler.getGroupID(ownerID), type.equals("video") ? 0 : 1); 
                 }
                 
-                return new StreamProperty(new String[0], streamID, DatabaseHandler.userHandler.getGroupID(ownerID), type.equals("video") ? 0 : 1);
+                return new StreamProperty(new String[0], streamID, name, DatabaseHandler.userHandler.getGroupID(ownerID), type.equals("video") ? 0 : 1);
             }
             return null;
         } catch (SQLException ex) {

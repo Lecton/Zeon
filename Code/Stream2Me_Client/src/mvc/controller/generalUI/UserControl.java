@@ -168,4 +168,17 @@ public class UserControl implements ActionListener {
             model.setVideoStreamID(null);
         }
     }
+
+    public void setStreamName(String name, int type) {
+        if (name == null || (name != null && name.isEmpty())) {
+            name =model.getFullname();
+        }
+        if (type == 0) {
+            model.setVideoStreamName(name);
+        } else if (type == 1) {
+            model.setAudioStreamName(name);
+        } else {
+            LOGGER.log(Level.WARNING, "Unknown setName action type");
+        }
+    }
 }

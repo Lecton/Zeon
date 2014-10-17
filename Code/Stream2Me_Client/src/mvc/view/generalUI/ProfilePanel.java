@@ -38,10 +38,10 @@ public class ProfilePanel extends javax.swing.JPanel {
         }
         this.userID =userID;
         
-        txtName.setVisible(owner);
-        txtSurname.setVisible(owner);
-        txtEmail.setVisible(owner);
-        txtTitle.setVisible(owner);
+        txtName.setEditable(owner);
+        txtSurname.setEditable(owner);
+        txtEmail.setEditable(owner);
+        txtTitle.setEditable(owner);
         txaAboutMe.setEditable(owner);
         btnUpdateDetails.setVisible(owner);
         
@@ -54,28 +54,12 @@ public class ProfilePanel extends javax.swing.JPanel {
     }
 
     public void setProfile(String name, String surname, String email, String avatar, String title, String aboutMe) {
-        if (owner) {
-            txtName.setText(name);
-            txtSurname.setText(surname);
-            txtEmail.setText(email);
-            imgProfilePic.setImage(avatar, false);
-            txtTitle.setText(title);
-            
-            lblName.setText("Name");
-            lblSurname.setText("Surname");
-            lblEmail.setText("Email");
-            lblTitle.setText("Title");
-            
-            txaAboutMe.setEditable(true);
-        } else {
-            lblName.setText(name);
-            lblSurname.setText(surname);
-            lblEmail.setText(email);
-            lblTitle.setText(title);
-            
-            txaAboutMe.setEditable(false);
-            imgProfilePic.setImage(avatar, false);
-        }
+        txtName.setText(name);
+        txtSurname.setText(surname);
+        txtEmail.setText(email);
+        txtTitle.setText(title);
+
+        imgProfilePic.setImage(avatar, false);
         txaAboutMe.setText(aboutMe);
     }
 

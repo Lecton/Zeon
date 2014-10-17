@@ -126,7 +126,7 @@ public class SettingsControl {
         if (groupID != null) {
             Control.INSTANCE.writeMessage(MessageFactory.generateSettingsGroupJoin(groupID, UserControl.getUserID(), password));
         } else {
-            System.out.println("Group not found");
+            LOGGER.log(Level.SEVERE, "Group not found");
         }
     }
 

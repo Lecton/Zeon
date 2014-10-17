@@ -5,6 +5,8 @@ import com.sun.opengl.util.texture.TextureCoords;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
@@ -12,6 +14,8 @@ import javax.media.opengl.glu.GLU;
 import utils.ImageUtils;
 
 public class ImageRenderer implements GLEventListener {
+    private final static Logger LOGGER = Logger.getLogger(ImageRenderer.class.getName());
+    
     private GLU glu = new GLU();
     private TextureData textureData;
     private Texture  texture;
@@ -111,8 +115,12 @@ public class ImageRenderer implements GLEventListener {
     private void setImage(String image) {
 //        lblVideo.setIcon(ImageUtils.resizeConvert(image, lblVideo.getWidth(), 
 //                lblVideo.getHeight()));
-        this.image =ImageUtils.decodeToImage(image);
-        parent.draw();
+        try {
+            this.image =ImageUtils.decodeToImage(image);
+            parent.draw();
+        } catch (NullPointerException e) {
+            LOGGER.log(Level.WARNING, "Image lost");
+        }
 //        this.paintImmediately(this.getBounds());
     }
 }

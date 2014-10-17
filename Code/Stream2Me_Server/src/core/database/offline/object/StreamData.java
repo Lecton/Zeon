@@ -45,6 +45,11 @@ public class StreamData {
     String connectionID;
 
     public StreamData() {
+        streamDataID =null;
+        streamID =null;
+        userID =null;
+        accepted =null;
+        connectionID =null;
     }
 
     public StreamData(String streamDataID, String streamID, String userID, String connectionID) {

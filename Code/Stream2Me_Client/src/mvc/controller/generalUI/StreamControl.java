@@ -7,10 +7,7 @@
 package mvc.controller.generalUI;
 
 import mvc.controller.generalUI.contacts.ContactListControl;
-import mvc.controller.generalUI.UserControl;
-import mvc.controller.generalUI.GUIControl;
 import communication.handlers.MessageFactory;
-import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import messages.Message;
@@ -104,7 +101,6 @@ public class StreamControl {
      */
     public static void startAudio(StreamPropertyMessage msg) {
         String name =msg.getStreamName();
-        System.out.println(name);
         if (name.equals(UserControl.INSTANCE.getUser().getAudioStreamName())) {
             if (msg.isSuccessful()) {
                 UserControl.INSTANCE.getUser().setAudioStreamID(msg.getStreamID());
@@ -165,18 +161,17 @@ public class StreamControl {
         Control.INSTANCE.writeMessage(msg);
     }
 
-    public void addVideoFrame(String videoStreamID, String userID) {
-        videoView.addVideoFrame(videoStreamID, userID);
+    public void addVideoFrame(String videoStreamID, String userID, String streamName) {
+        videoView.addVideoFrame(videoStreamID, userID, streamName);
     }
     
     public void closedVideoFrame(String streamID, String userID) {
         Receiver person =ContactListControl.INSTANCE.getColleague(userID);
         if (person != null) {
             person.setAcceptedVideo(false);
-            person.setVideo(false);
-            
-            GUIControl.updateStreamAcceptors(userID);
-            ContactListControl.INSTANCE.alertVideo(userID, true);
+            if (person.getVideoStream() != null) {
+                ContactListControl.INSTANCE.alertVideo(userID, true);
+            }
             
             Control.INSTANCE.writeMessage(MessageFactory
                     .generateStreamResponse(UserControl.getUserID(), 

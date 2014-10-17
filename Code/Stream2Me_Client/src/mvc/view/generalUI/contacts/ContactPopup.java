@@ -91,42 +91,4 @@ public class ContactPopup extends JPopupMenu {
         }
         pack();
     }
-    
-    class audioAction implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            int action;
-//            if (parent.isAudioOut()) {
-//                action =0;
-//            } else {
-//                action =1;
-//            }
-//            GUI UI =parent.getParent().getUserInterface();
-//            UI.getConnection().writeSafe(
-//                    MessageFactory.generateStreamUpdate(UI.getUserID(), 
-//                            Message.SERVER, UI.getAudioStreamID(),
-//                            parent.getUserID(), action));
-//            
-//            parent.setAudioOut(action == 1);
-        }
-    }
-    
-    private class videoAction implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            int action;
-//            if (parent.isVideoOut()) {
-//                action =0;
-//            } else {
-//                action =1;
-//            }
-//            GUI UI =parent.getParent().getUserInterface();
-//            UI.getConnection().writeSafe(
-//                    MessageFactory.generateStreamUpdate(UI.getUserID(), 
-//                            Message.SERVER, UI.getVideoStreamID(),
-//                            parent.getUserID(), action));
-//            
-//            parent.setVideoOut(action == 1);
-        }
-    }
 }

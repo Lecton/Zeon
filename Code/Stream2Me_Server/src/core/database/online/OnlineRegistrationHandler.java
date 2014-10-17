@@ -6,6 +6,7 @@
 package core.database.online;
 
 import biz.source_code.base64Coder.Base64Coder;
+import core.database.abstractInterface.Database;
 import core.database.abstractInterface.RegistrationHandler;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
@@ -117,12 +118,12 @@ public class OnlineRegistrationHandler implements RegistrationHandler {
                         "VALUES (?, ?, ?, ?, ?, ?, ?)";
                 statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
                 String uID =UUID.randomUUID().toString();
-                statement.setString(1, uID);
-                statement.setString(2, name);
-                statement.setString(3, surname);
-                statement.setString(4, username);
+                statement.setString(1, new String(uID.getBytes(), Database.ENCODING));
+                statement.setString(2, new String(name.getBytes(), Database.ENCODING));
+                statement.setString(3, new String(surname.getBytes(), Database.ENCODING));
+                statement.setString(4, new String(username.getBytes(), Database.ENCODING));
                 statement.setString(5, OnlineDatabase.INSTANCE.getPassword(password, uID));
-                statement.setString(6, email);
+                statement.setString(6, new String(email.getBytes(), Database.ENCODING));
                 statement.setObject(7, new Date(Calendar.getInstance().getTimeInMillis()));
                 int result =statement.executeUpdate();
 //                int count =0;

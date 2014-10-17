@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.media.opengl.GLCanvas;
 import javax.swing.JFrame;
-import javax.swing.JPopupMenu;
 
 public class VideoFrame extends JFrame {
     private GLCanvas mainCanvas;
@@ -21,14 +20,14 @@ public class VideoFrame extends JFrame {
     
     private Thread fps;
 
-    public VideoFrame(String title, String streamID, String userID) throws HeadlessException {
+    public VideoFrame(String title, String streamID, String userID, String streamName) throws HeadlessException {
         imageBuffer =new ArrayList<>();
         this.streamID =streamID;
         this.userID =userID;
 //        System.out.println("streamID: "+streamID);
         this.videoRenderer =new ImageRenderer();
         
-        setTitle(title+" - "+streamID);
+        setTitle(title+" - "+streamName);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         mainCanvas = new GLCanvas();
         mainCanvas.addGLEventListener(videoRenderer);

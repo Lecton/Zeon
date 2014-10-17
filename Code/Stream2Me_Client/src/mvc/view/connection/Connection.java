@@ -6,6 +6,8 @@
 package mvc.view.connection;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import mvc.controller.connection.ConnectionControl;
 
@@ -14,6 +16,8 @@ import mvc.controller.connection.ConnectionControl;
  * @author Bernhard
  */
 public class Connection extends javax.swing.JFrame {
+    private final static Logger LOGGER = Logger.getLogger(Connection.class.getName());
+    
 
     /**
      * Creates new form Connection
@@ -194,7 +198,7 @@ public class Connection extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         List<HostEntry> entries =ConnectionControl.INSTANCE.getHostData();
-        System.out.println("Entries: "+entries.size());
+        LOGGER.log(Level.INFO, "Entries: "+entries.size());
         
         final DefaultTableModel dtm =(DefaultTableModel)tblHosts.getModel();
         
@@ -206,10 +210,7 @@ public class Connection extends javax.swing.JFrame {
                 @Override
                 public void run() {
                     if (entry.isActive()) {
-                        System.out.println("Active");
                         dtm.addRow(entry.getData());
-                    } else {
-                        System.out.println("Inactive");
                     }
                 }
             })).start();

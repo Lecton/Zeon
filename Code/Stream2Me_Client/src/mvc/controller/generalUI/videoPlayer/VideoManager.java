@@ -28,9 +28,9 @@ public class VideoManager implements WindowListener {
 //        defaultFrame.setVisible(true);
     }
     
-    public boolean addVideoFrame(final String streamID, String userID) {
+    public boolean addVideoFrame(final String streamID, String userID, String streamName) {
         if (!frames.containsKey(streamID)) {
-            VideoFrame vf =new VideoFrame("VideoPlayer", streamID, userID);
+            VideoFrame vf =new VideoFrame("VideoPlayer", streamID, userID, streamName);
             vf.addWindowListener(this);
             vf.setVisible(true);
             return frames.put(streamID, vf) != null;
@@ -62,14 +62,6 @@ public class VideoManager implements WindowListener {
                         found =true;
                     }
                 }
-//                for (VideoFrame vf: frames) {
-////                    System.out.println(vf.getStreamID()+" --> "+streamID);
-//                    if (vf.getStreamID().equals(streamID)) {
-//                        vf.write(image);
-//                        found =true;
-//                    }
-//                }
-                System.out.println(found);
             }
         })).start();
     }
@@ -82,7 +74,6 @@ public class VideoManager implements WindowListener {
     public void windowClosing(WindowEvent e) {
         VideoFrame vf =(VideoFrame)e.getSource();
         removeVideoFrame(vf.getStreamID());
-        System.out.println("Closing");
         StreamControl.INSTANCE.closedVideoFrame(vf.getStreamID(), vf.getUserID());
     }
 

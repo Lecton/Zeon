@@ -10,6 +10,7 @@ import java.awt.CardLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Collection;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import mvc.controller.generalUI.SettingsControl;
 
@@ -18,6 +19,7 @@ import mvc.controller.generalUI.SettingsControl;
  * @author Bernhard
  */
 public class Settings extends javax.swing.JFrame implements WindowListener {
+    private final static Logger LOGGER = Logger.getLogger(Settings.class.getName());
 
     /**
      * Creates new form Settings
@@ -423,12 +425,10 @@ public class Settings extends javax.swing.JFrame implements WindowListener {
 
     @Override
     public void windowOpened(WindowEvent we) {
-        System.out.println("Opened");
     }
 
     @Override
     public void windowClosing(WindowEvent we) {
-        System.out.println("Closing");
     }
 
     @Override
@@ -438,22 +438,18 @@ public class Settings extends javax.swing.JFrame implements WindowListener {
 
     @Override
     public void windowIconified(WindowEvent we) {
-        System.out.println("Iconified");
     }
 
     @Override
     public void windowDeiconified(WindowEvent we) {
-        System.out.println("Deiconified");
     }
 
     @Override
     public void windowActivated(WindowEvent we) {
-        System.out.println("Activated");
     }
 
     @Override
     public void windowDeactivated(WindowEvent we) {
-        System.out.println("Deactivated");
     }
 
     public void updateDetails(String groupName, String ownerName, boolean isOwner) {
