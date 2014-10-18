@@ -1,6 +1,5 @@
 package com.mobile;
 
-import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,13 +8,12 @@ import java.util.List;
 import messages.Message;
 import messages.StringMessage;
 import messages.media.communication.StreamNotifyMessage;
+import messages.update.UpdateAvatarMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.util.Base64;
 import android.util.Log;
 import biz.source_code.base64Coder.Base64Coder;
 
@@ -24,6 +22,7 @@ import com.gui.utils.Contact;
 import com.gui.utils.User;
 
 public class ClientHandler {
+	private static Bitmap BLANK = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
 	private static List<Contact> contacts =new ArrayList<Contact>();
 	private static User user;
 	
@@ -36,7 +35,7 @@ public class ClientHandler {
 			user =loggedUser;
 			for (Iterator<Contact> it = contacts.iterator(); it.hasNext(); ) {
 				Contact c = it.next();
-				if (c.getUserID() == user.getUserID()) {
+				if (c.getUserID().equals(user.getUserID())) {
 					contacts.remove(c);
 				}
 			}
@@ -99,17 +98,29 @@ public class ClientHandler {
 	public static boolean updateContact(Contact client) {
 		for (Iterator<Contact> it = contacts.iterator(); it.hasNext();) {
 			Contact c = it.next();
-			if (c.getUserID() == client.getUserID()) {
-				c =client;
+			if (c.getUserID().equals(client.getUserID())) {
+				c = client;
 				return true;
 			}
 		}
 		return false;
 	}
 	
+	public static boolean updateUserAvatar(UpdateAvatarMessage msg){
+		for(Iterator<Contact> it = contacts.iterator();it.hasNext();){
+			Contact c = it.next();
+			if(c.getUserID().equals(msg.getUserID())){
+				c.setImage(msg.getAvatar());
+				Log.v("ClientHandler","Client found to update.");
+				return true;
+			}
+		}
+		return false;
+	}
+		
 	public static boolean handleNewUserMessage(NewUserMessage message) {
 		Contact c =new Contact(message);
-		if (user != null && c.getUserID() != user.getUserID()) {
+		if (user != null && !(c.getUserID().equals(user.getUserID()))) {
 			if(!(contacts.contains(c))){ 
 				return contacts.add(c);
 			} else {
@@ -188,4 +199,8 @@ public class ClientHandler {
 	        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
 	        return resizedBitmap;
 	  }
+
+	public static Bitmap getBLANK() {
+		return BLANK;
+	}
 }

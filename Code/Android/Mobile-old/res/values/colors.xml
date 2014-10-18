@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<color name="textColor">#FFF</color>
+	<color name="textFieldColor">#000</color>
+	<color name="textShadow">#FFF</color>
+	<color name="listViewBg">#FFF</color>
+
+	<color name="sendLightColor">#FF8000</color>
+	<color name="sendMeduimColor">#FF8000</color>
+	<color name="sendDarkColor">#515F9F</color>
+
+	<color name="barDarkColor">#ffdb99</color>
+	<color name="barMeduimColor">#ffdb99</color>
+	<color name="barLightColor">#ffdb99</color>
+
+</resources>

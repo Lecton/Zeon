@@ -5,6 +5,7 @@ import messages.StringMessage;
 import messages.media.AudioStreamMessage;
 import messages.media.VideoStreamMessage;
 import messages.media.communication.StreamNotifyMessage;
+import messages.update.UpdateAvatarMessage;
 import messages.userConnection.GreetingMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
@@ -41,6 +42,9 @@ public class MessageHandler {
 				return true;
 			case auido:
 				ClientProfileWindow.handleAudio((AudioStreamMessage)msg);
+				return true;
+			case updateAvatar:
+				MainWindow.updateUserAvatar((UpdateAvatarMessage)msg);
 				return true;
 			case streamProperty:
 				Log.v("MessageHandler","streamProperty");

@@ -1,0 +1,93 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context="com.gui.ProfileWindow"
+    tools:ignore="MergeRootFrame" >
+
+    <ImageButton
+        android:id="@+id/profileImg"
+        android:layout_width="550dp"
+        android:layout_height="550dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:background="#FFFFFF" />
+
+    <Button
+        android:id="@+id/updateBtn"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5sp"
+        android:background="@drawable/send_button"
+        android:onClick="sendMessage"
+        android:paddingBottom="5sp"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp"
+        android:paddingTop="5sp"
+        android:text="Update"
+        android:textColor="#FFF" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_above="@+id/updateBtn"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="165dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/userName"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/message_bar"
+            android:inputType="text" >
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/userSurname"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/message_bar"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/userAbout"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/message_bar"
+            android:inputType="text" />
+    </LinearLayout>
+    
+    <ImageButton 
+        android:id="@+id/stream_audio"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/updateBtn"
+        android:layout_alignLeft="@+id/profileImg"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="103dp"
+        android:layout_marginLeft="29dp"
+        android:src="@drawable/unclicked_microphone" /> 
+
+    <ImageButton
+        android:id="@+id/stream_video"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/updateBtn"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="103dp"
+        android:onClick="createVideoStream"
+        android:src="@drawable/unclicked_camera" /> 
+
+</RelativeLayout>

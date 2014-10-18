@@ -7,6 +7,7 @@ import java.util.List;
 
 import messages.Message;
 import messages.StringMessage;
+import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateListMessage;
 import messages.userConnection.GreetingMessage;
 import messages.userConnection.LogoutMessage;
@@ -169,7 +170,11 @@ public class MainWindow extends Activity {
 		updateClientList();
 	}
 	
-
+	public static void updateUserAvatar(UpdateAvatarMessage msg){
+		  ClientHandler.updateUserAvatar((UpdateAvatarMessage)msg);
+		  updateClientList();
+	}
+	
 	public static void handleLogoutUser(LogoutMessage message){
 		ClientHandler.handleLogoutMessage(message);
 		updateClientList();

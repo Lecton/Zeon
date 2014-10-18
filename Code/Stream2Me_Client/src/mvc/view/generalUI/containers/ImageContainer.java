@@ -12,6 +12,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -34,13 +35,21 @@ public class ImageContainer extends javax.swing.JPanel {
     
     public void setImage(String base64Image, boolean fill) {
         if (base64Image != null && !base64Image.isEmpty()) {
-            setImage(ImageUtils.decodeToImage(base64Image), fill);
+            try {
+                setImage(ImageUtils.decodeToImage(base64Image), fill);
+            } catch (NullPointerException e) {
+                LOGGER.log(Level.WARNING, "Unknown reason for this.", e);
+            }
         }
     }
     
     public void setImage(URL filename, boolean fill) throws IOException {
         if (filename != null) {
-            setImage(ImageIO.read(filename), fill);
+            try {
+                setImage(ImageIO.read(filename), fill);
+            } catch (NullPointerException e) {
+                LOGGER.log(Level.WARNING, "Unknown reason for this.", e);
+            }
         }
     }
     

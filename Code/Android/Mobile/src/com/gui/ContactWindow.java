@@ -144,7 +144,6 @@ public class ContactWindow extends Activity {
 
 
 	public static boolean handleStringMessage(StringMessage message){
-		Log.v("ContactWindow.handleStringMessage JIMMY", message.getTargetID());
 		if (clientID.equals(DEFAULTID)) {
 			return false;
 		}

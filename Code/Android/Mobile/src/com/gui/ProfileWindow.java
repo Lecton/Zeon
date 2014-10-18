@@ -166,9 +166,11 @@ public class ProfileWindow extends Activity {
 				Bitmap bm;
 				BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
 				bm = BitmapFactory.decodeFile(tempPath, btmapOptions);
-				profileImage.setImageBitmap(bm);
-				Client.getConnection().writeMessage(new UpdateAvatarMessage(ClientHandler.getUser().getUserID(),ClientHandler.BitMapToString(bm)));
- 
+				bm =ClientHandler.getResizedBitmap(bm, 400, 400);
+				String avatar =ClientHandler.BitMapToString(bm);
+				ClientHandler.getUser().setImage(avatar);
+				profileImage.setImageBitmap(ClientHandler.getUser().getImage());
+				Client.getConnection().writeMessage(new UpdateAvatarMessage(ClientHandler.getUser().getUserID(), avatar));
             }
         }
     }

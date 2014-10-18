@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import com.mobile.ClientHandler;
 
-import biz.source_code.base64Coder.Base64Coder;
 import messages.userConnection.GreetingMessage;
 import messages.userConnection.LogoutMessage;
 import messages.userConnection.NewUserMessage;
@@ -24,7 +23,6 @@ import android.util.Log;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class Contact implements Serializable {
-	
 	 private static final long serialVersionUID = 1L;
 	 private String image;
 	 private String name;
@@ -79,9 +77,18 @@ public class Contact implements Serializable {
 	 }
 	 
 	 public Bitmap getImage(){
-		 return ClientHandler.getImageBitMap(image);
+		 try {
+			 if (image == null) {
+				 return ClientHandler.getBLANK();
+			 } else if (image.isEmpty()) {
+				 return ClientHandler.getBLANK();
+			 }
+			 return ClientHandler.getImageBitMap(image);
+		 } catch (Exception e) {
+			 return ClientHandler.getBLANK();
+		 }
 	 }
-
+	 
 	 public String getName() {
 		 return name;
 	 }

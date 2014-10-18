@@ -38,7 +38,7 @@ public class Client extends ActionBarActivity {
 	final int MAIN_RESULT = 3;
 	final int MESSAGE_RESULT = 4;
 	final int PROFILE_RESULT = 5;
-	final String HOST = "192.168.1.41";
+	final String HOST = "bwmuller.duckdns.org";//"10.0.2.2";
 	public static Connection connection;
 
 	public static void getCachedPath() {}
@@ -49,13 +49,11 @@ public class Client extends ActionBarActivity {
 		setContentView(R.layout.activity_client);
 		clientContext = getBaseContext();
 		
-		
 			connection = new Connection(HOST, 2014);
 			try {
 				connection.makeConnection();
 				startActivityForResult(new Intent(getApplicationContext(),SplashWindow.class),SPLASH_RESULT);
 			} catch (Exception e) {
-				Log.v("Tag", "Exception");
 				final Dialog dialog = new Dialog(this);
 
 				//tell the Dialog to use the dialog.xml as it's layout description
