@@ -29,21 +29,25 @@ public class ContactProfile extends javax.swing.JPanel {
         this.userID =userID;
         initComponents();
         setComponentPopupMenu(new ContactPopup(this));
-        lblID.setVisible(false);
     }
 
-    public void setProfile(String fullname, String avatar) {
+    public void setProfile(String fullname, String title, String avatar) {
         lblName.setText(fullname);
+        lblTitle.setText(title);
         imgAvatar.setImage(avatar, true);
     }
     
-    public void setFullname(String fullname) {
-        lblName.setText(fullname);
-    }
-    
-    public void setAvatar(String avatar) {
-        imgAvatar.setImage(avatar, true);
-    }
+//    public void setFullname(String fullname) {
+//        lblName.setText(fullname);
+//    }
+//    
+//    public void setTitle(String title) {
+//        lblTitle.setText(title);
+//    }
+//    
+//    public void setAvatar(String avatar) {
+//        imgAvatar.setImage(avatar, true);
+//    }
     
     public String getUserID() {
         return userID;
@@ -65,7 +69,7 @@ public class ContactProfile extends javax.swing.JPanel {
         contactList1 = new mvc.view.generalUI.contacts.ContactList();
         imgAvatar = new mvc.view.generalUI.containers.ImageContainer();
         lblName = new javax.swing.JLabel();
-        lblID = new javax.swing.JLabel();
+        lblTitle = new javax.swing.JLabel();
         ntiMessage = new mvc.view.generalUI.containers.NotificationIcon();
         ntiAudio = new mvc.view.generalUI.containers.NotificationIcon();
         ntiVideo = new mvc.view.generalUI.containers.NotificationIcon();
@@ -96,8 +100,8 @@ public class ContactProfile extends javax.swing.JPanel {
         lblName.setText("Name");
         add(lblName, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 21, -1, -1));
 
-        lblID.setText("ID");
-        add(lblID, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 46, -1, -1));
+        lblTitle.setText("Title");
+        add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 46, -1, -1));
 
         ntiMessage.setMaximumSize(new java.awt.Dimension(15, 15));
         ntiMessage.setMinimumSize(new java.awt.Dimension(15, 15));
@@ -163,8 +167,8 @@ public class ContactProfile extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private mvc.view.generalUI.contacts.ContactList contactList1;
     private mvc.view.generalUI.containers.ImageContainer imgAvatar;
-    private javax.swing.JLabel lblID;
     private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblTitle;
     private mvc.view.generalUI.containers.NotificationIcon ntiAudio;
     private mvc.view.generalUI.containers.NotificationIcon ntiMessage;
     private mvc.view.generalUI.containers.NotificationIcon ntiVideo;

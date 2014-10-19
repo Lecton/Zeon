@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +27,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Client extends ActionBarActivity { 
 	public static Context clientContext;
@@ -36,7 +39,8 @@ public class Client extends ActionBarActivity {
 	final int MAIN_RESULT = 3;
 	final int MESSAGE_RESULT = 4;
 	final int PROFILE_RESULT = 5;
-	final String HOST = "192.168.1.37";//"bwmuller.duckdns.org";//"10.0.2.2";
+	String HOST = "";//"bwmuller.duckdns.org";//"10.0.2.2";
+	int PORT;
 	public static Connection connection;
 
 	public static void getCachedPath() {}
@@ -44,37 +48,66 @@ public class Client extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
 		setContentView(R.layout.activity_client);
 		clientContext = getBaseContext();
-		
-			connection = new Connection(HOST, 2014);
-			try {
-				connection.makeConnection();
-				startActivityForResult(new Intent(getApplicationContext(),SplashWindow.class),SPLASH_RESULT);
-			} catch (Exception e) {
-				e.printStackTrace();
-				final Dialog dialog = new Dialog(this);
-
-				//tell the Dialog to use the dialog.xml as it's layout description
-				dialog.setContentView(R.layout.dialog);
-				dialog.setTitle("Android Custom Dialog Box");
-
-				TextView txt = (TextView) dialog.findViewById(R.id.txt);
-
-				txt.setText("Could not connect to the server, sorry :(");
-				Button dialogButton = (Button) dialog.findViewById(R.id.dialogButton);
-
-				dialogButton.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						dialog.dismiss();
-						finish();
+		Button button = (Button) findViewById(R.id.propBtn);
+		button.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				EditText host = (EditText) findViewById(R.id.IPaddress);
+				EditText port = (EditText) findViewById(R.id.PORT);
+				try {
+					HOST = host.getText().toString();
+					if (HOST.isEmpty()) {
+						throw new Exception();
 					}
-				});
-
-				dialog.show();
-//				e.printStackTrace();
+					PORT = Integer.parseInt(port.getText().toString());
+				
+					if(!connect(HOST, PORT)){
+						Log.v("Cliet","Could not connecto to server.");
+					}
+				} catch (Exception e) {
+			        Toast t =Toast.makeText(clientContext, "Invalid IP/PORT data", Toast.LENGTH_SHORT);
+			        t.show();
+				}
 			}
+		});
+	}
+	
+	public boolean connect(String host,int port){
+		connection = new Connection(host, port);
+		try {
+			connection.makeConnection();
+			startActivityForResult(new Intent(getApplicationContext(),SplashWindow.class),SPLASH_RESULT);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			final Dialog dialog = new Dialog(this);
+
+			//tell the Dialog to use the dialog.xml as it's layout description
+			dialog.setContentView(R.layout.dialog);
+			dialog.setTitle("Android Custom Dialog Box");
+
+			TextView txt = (TextView) dialog.findViewById(R.id.txt);
+
+			txt.setText("Could not connect to the server, sorry :(");
+			Button dialogButton = (Button) dialog.findViewById(R.id.dialogButton);
+
+			dialogButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					finish();
+				}
+			});
+
+			dialog.show();
+//			e.printStackTrace();
+		}
+		return false;
+		
 	}
 
 	@Override
@@ -117,7 +150,9 @@ public class Client extends ActionBarActivity {
 	
 	@Override
 	protected void onDestroy() {
-		connection.close();
+		if (connection != null) {
+			connection.close();
+		}
 		super.onDestroy();
 	}
 

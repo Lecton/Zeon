@@ -24,22 +24,32 @@ public class Server implements Runnable {
     private static Server server;
     
     public static void main(String[] args) {
-        int port =9999;
+        int port =2014;
         try {
             boolean offline =false;
             for (int i=0; i<args.length; i++) {
                 String arg =args[i];
                 if (arg.equals("-n")) {
-                    if (i+1 < args.length) {
-                        if (!args[i+1].startsWith("-")) {
-                            Server.name =args[i+1];
+                    String temp ="";
+                    for (int j=i+1; j<args.length; j++) {
+                        if (!args[j].startsWith("-")) {
+                            temp +=args[j]+" ";
+                        } else {
+                            break;
                         }
+                    }
+                    temp =temp.trim();
+                    if (!temp.isEmpty()) {
+                        Server.name =temp;
+                    } else {
+                        System.out.println("Name not accepted. Defaulting to "+Server.name);
                     }
                 } else if (arg.equals("-p")) {
                     if (i+1 < args.length) {
                         if (!args[i+1].startsWith("-")) {
                             try {
                                 port =Integer.parseInt(args[i+1]);
+                                i++;
                             } catch (NumberFormatException e) {
                                 System.out.println("Port setting failed. Defaulting to: "+port);
                             }
@@ -47,6 +57,15 @@ public class Server implements Runnable {
                     }
                 } else if (arg.equals("--offline")) {
                     offline =true;
+                } else if (arg.equals("--help")) {
+                    System.out.println("Commands: ");
+                    System.out.println("\t-n <Server name> [eg. -n Stream2Me]");
+                    System.out.println("\t-p <Server port> [eg. -p 6060]");
+                    System.out.println("\t--offline [Creates an offline server]");
+                    System.out.println("");
+                    System.exit(0);
+                } else {
+                    System.out.println(arg+" is not a valid command or input");
                 }
             }
             if (offline) {

@@ -59,11 +59,11 @@ public class UserControl implements ActionListener {
         return model.getUserID();
     }
 
-    public void update(String userID) {
+    public void update() {
         view.setAvatar(model.getAvatar());
-        view.setName(model.getFullname());
+        view.setUsersName(model.getFullname());
         
-        view.setID(userID);
+        view.setTitle(model.getTitle());
         
         ChatControl.INSTANCE.setUserName(model.getFullname());
     }

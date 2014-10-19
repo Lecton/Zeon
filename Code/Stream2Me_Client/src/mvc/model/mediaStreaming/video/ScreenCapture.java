@@ -2,11 +2,16 @@ package mvc.model.mediaStreaming.video;
 
 import java.awt.AWTException;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -16,8 +21,8 @@ import javax.swing.ImageIcon;
 public class ScreenCapture {
     private final static Logger LOGGER = Logger.getLogger(ScreenCapture.class.getName());
     
-    public static ScreenCapture INSTANCE =new ScreenCapture();
-    
+    public final static ScreenCapture INSTANCE =new ScreenCapture();
+     
     private Robot r =null;
     private Rectangle rect =null;
     private int width, height, x, y;
@@ -56,9 +61,37 @@ public class ScreenCapture {
         this.y =y;
         rect = new Rectangle(this.x, this.y, this.width, this.height);
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+    
+    public void testSize() { 
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        if (width != size.width || height != size.height) {
+            setSize(size);
+        }
+    }
     
     public BufferedImage getScreenImage() {
-        return r.createScreenCapture(rect);
+        BufferedImage bi =r.createScreenCapture(rect);
+        try {
+            BufferedImage cursor =ImageIO.read(getClass().getResource("/cursor.png"));
+            PointerInfo a = MouseInfo.getPointerInfo();
+            Point b = a.getLocation();
+            int x = (int) b.getX();
+            int y = (int) b.getY();
+            Graphics2D graphics2D = bi.createGraphics();
+            graphics2D.drawImage(cursor, x, y, 16, 16, null);
+            cursor =null;
+            System.gc();
+        } catch (Exception e) {
+        }
+        return bi;
     }
     
     public ImageIcon getScreenIcon() {

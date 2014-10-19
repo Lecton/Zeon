@@ -94,7 +94,7 @@ public class UpdateControl {
                     usage.incrementAndGet();
                     switch (e.id) {
                         case LOGIN:
-                            UserControl.INSTANCE.update((String)e.target);
+                            UserControl.INSTANCE.update();
                             break;
                         case NEWUSER:
                             ContactListControl.INSTANCE.addProfile((String)e.target);

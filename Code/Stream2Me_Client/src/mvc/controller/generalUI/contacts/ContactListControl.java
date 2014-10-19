@@ -128,7 +128,7 @@ public class ContactListControl implements ActionListener {
     
     public void addProfile(String userID) {
         Person person =model.get(userID);
-        view.addProfile(person.getUserID(), person.getFullname(), person.getAvatar());
+        view.addProfile(person.getUserID(), person.getFullname(), person.getTitle(), person.getAvatar());
     }
     
     public Colleague getColleague(String userID) {
@@ -162,7 +162,7 @@ public class ContactListControl implements ActionListener {
 
     public void update(String userID) {
         Person person =model.get(userID);
-        view.updateProfile(person.getUserID(), person.getFullname(), person.getAvatar());
+        view.updateProfile(person.getUserID(), person.getFullname(), person.getTitle(), person.getAvatar());
         ProfileControl.INSTANCE.update(person);
     }
 

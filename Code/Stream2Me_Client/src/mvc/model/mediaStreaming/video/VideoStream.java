@@ -14,10 +14,8 @@ public class VideoStream {
     
     private Stream transmitter;
     private VideoStreamMessage vs =null;
-    private final ScreenCapture screen;
 
     public VideoStream(String userID) {
-        this.screen = ScreenCapture.INSTANCE;
         vs =new VideoStreamMessage(userID, null);
     }
     
@@ -26,7 +24,7 @@ public class VideoStream {
             LOGGER.log(Level.SEVERE, "Trying to set stream on a non-null running video stream");
         } else {
             vs.setStreamID(streamID);
-            this.transmitter = new Stream(vs, screen);
+            this.transmitter = new Stream(vs);
         }
     }
     

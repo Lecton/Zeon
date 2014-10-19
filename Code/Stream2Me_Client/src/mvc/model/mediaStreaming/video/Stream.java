@@ -14,13 +14,13 @@ public class Stream implements Runnable {
     private final static Logger LOGGER = Logger.getLogger(Stream.class.getName());
     
     private VideoStreamMessage vs;
-    private final ScreenCapture screen;
+    private ScreenCapture screen;
     
     private boolean running =false;
 
-    public Stream(VideoStreamMessage vs, ScreenCapture screen) {
+    public Stream(VideoStreamMessage vs) {
         this.vs = vs;
-        this.screen = screen;
+        screen =ScreenCapture.INSTANCE;
     }
     
     public void stop() {
@@ -38,7 +38,9 @@ public class Stream implements Runnable {
         running =true;
         while (running) {
             try {
+                screen.testSize();
                 String img =ImageUtils.encodeToString(screen.getScreenImage(), "jpg");
+                System.gc();
                 vs =new VideoStreamMessage(vs);
                 vs.setImg(img);
                 StreamControl.INSTANCE.write(vs);

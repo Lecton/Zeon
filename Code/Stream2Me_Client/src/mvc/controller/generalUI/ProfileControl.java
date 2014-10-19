@@ -96,7 +96,7 @@ public class ProfileControl implements ActionListener {
                                 MessageFactory.generateUpdateAvatar(userID, 
                                         ImageUtils.encodeToString(image, "png")));
                         UserControl.INSTANCE.setAvatar(ImageUtils.encodeToString(image, "png"));
-                        UserControl.INSTANCE.update(userID);
+                        UserControl.INSTANCE.update();
                         
                         return image;
                     }
@@ -128,7 +128,7 @@ public class ProfileControl implements ActionListener {
                     person.setEmail(email);
                     person.setTitle(title);
                     person.setAboutMe(aboutMe);
-                    UserControl.INSTANCE.update(userID);
+                    UserControl.INSTANCE.update();
                     Control.INSTANCE.writeMessage(MessageFactory.generateUpdateProfile(userID, name, surname, email, title, aboutMe));
                 }
             }

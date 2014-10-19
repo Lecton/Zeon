@@ -12,6 +12,7 @@ import messages.update.UpdateAvatarMessage;
 import messages.update.UpdateProfileMessage;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -44,6 +45,7 @@ public class ClientProfileWindow extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
 		setContentView(R.layout.activity_client_profile_window);
 
 		final String uid = getIntent().getStringExtra("ClientID");

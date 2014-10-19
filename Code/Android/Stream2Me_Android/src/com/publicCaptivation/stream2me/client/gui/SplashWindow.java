@@ -4,6 +4,7 @@ import com.publicCaptivation.stream2me.client.R;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +18,8 @@ public class SplashWindow extends ActionBarActivity {
 	final long SPLASH_DELAY = 1; 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState); 
+		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
 		setContentView(R.layout.activity_splash_screen);
 
 		if (savedInstanceState == null) {

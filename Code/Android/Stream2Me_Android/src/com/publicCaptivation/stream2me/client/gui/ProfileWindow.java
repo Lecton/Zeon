@@ -42,8 +42,8 @@ public class ProfileWindow extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
 		setContentView(R.layout.activity_profile_window);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
 		profileImage = (ImageButton) findViewById(R.id.profileImg);
 		eName = (EditText) findViewById(R.id.userName);

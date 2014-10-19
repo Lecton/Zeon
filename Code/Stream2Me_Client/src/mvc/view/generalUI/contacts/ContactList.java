@@ -62,10 +62,10 @@ public class ContactList extends JPanel implements MouseListener {
         return null;
     }
     
-    public void addProfile(String userID, String fullName, String avatar) {
+    public void addProfile(String userID, String fullName, String title, String avatar) {
         ContactProfile contact =new ContactProfile(userID);
         contact.setBorder(new SeparatorBorder(Color.BLACK, true, true, true, true));
-        contact.setProfile(fullName, avatar);
+        contact.setProfile(fullName, title, avatar);
         contact.setParent(this);
         contact.addMouseListener(this);
         
@@ -163,10 +163,10 @@ public class ContactList extends JPanel implements MouseListener {
         }
     }
 
-    public void updateProfile(String userID, String fullname, String avatar) {
+    public void updateProfile(String userID, String fullname, String title, String avatar) {
         ContactProfile profile =getContactProfile(userID);
         if (profile != null) {
-            profile.setProfile(fullname, avatar);
+            profile.setProfile(fullname, title, avatar);
             profile.update();
         }
     }

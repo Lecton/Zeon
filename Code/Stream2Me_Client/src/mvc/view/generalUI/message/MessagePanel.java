@@ -85,6 +85,7 @@ public class MessagePanel extends javax.swing.JPanel {
         btnSend.setUnclicked(null);
 
         messageList.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        messageList.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         messages.setBackground(new java.awt.Color(204, 204, 204));
         messageList.setViewportView(messages);

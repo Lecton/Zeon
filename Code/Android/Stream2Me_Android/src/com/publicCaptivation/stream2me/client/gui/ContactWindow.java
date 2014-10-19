@@ -14,6 +14,7 @@ import messages.StringMessage;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,6 +51,7 @@ public class ContactWindow extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
 		setContentView(R.layout.activity_message_window);
 
 //		Serializable c = getIntent().getSerializableExtra("Client");
@@ -175,15 +177,19 @@ public class ContactWindow extends Activity {
 		     public void run() {
 		    	
 		    	if(listChats != null){
-		    		List<ChatMessages> shortList =null;
-		    		if (ClientHandler.getUser().getUserID().equals(clientID)) {
-		    			shortList = ClientHandler.getUser().getMessageHistory();
-		    		} else {
-		    			shortList = ClientHandler.getFromUserID(clientID).getMessageHistory();
+		    		try {
+			    		List<ChatMessages> shortList =null;
+			    		if (ClientHandler.getUser().getUserID().equals(clientID)) {
+			    			shortList = ClientHandler.getUser().getMessageHistory();
+			    		} else {
+			    			shortList = ClientHandler.getFromUserID(clientID).getMessageHistory();
+			    		}
+			    		
+				 		chatAdapter = new ChatAdapter(baseContext,shortList);
+				 		listChats.setAdapter(chatAdapter);
+		    		} catch (Exception e) {
+		    			
 		    		}
-		    		
-			 		chatAdapter = new ChatAdapter(baseContext,shortList);
-			 		listChats.setAdapter(chatAdapter);
 		    	} else {
 		    		Log.e("MessageWindow - updateChatList()", "listChat is null");
 		    	}

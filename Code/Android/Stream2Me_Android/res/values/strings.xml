@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Mobile</string>
+    <string name="app_name">Stream2Me</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_client">Stream2Me</string>
@@ -13,5 +13,6 @@
     <string name="title_activity_client_profile_window">ClientProfileWindow</string>
     <string name="title_activity_group_messages">GroupMessages</string>
     <string name="title_activity_video_stream_window">VideoStreamWindow</string>
+    <string name="chat_item_message_bitmap">Sender Avatar</string>
 
 </resources>

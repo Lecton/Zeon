@@ -20,11 +20,10 @@ public class UserPanel extends javax.swing.JPanel {
      */
     public UserPanel() {
         initComponents();
-        lblID.setVisible(false);
         setComponentPopupMenu(new UserPopup());
     }
     
-    public void setName(String name) {
+    public void setUsersName(String name) {
         lblName.setText(name);
     }
     
@@ -32,9 +31,13 @@ public class UserPanel extends javax.swing.JPanel {
         imgAvatar.setImage(avatar, true);
     }
     
-    public void setID(String userID) {
-        lblID.setText(userID);
+    public void setTitle(String title) {
+        lblTitle.setText(title);
     }
+    
+//    public void setID(String userID) {
+//        lblTitle.setText(userID);
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,7 +50,7 @@ public class UserPanel extends javax.swing.JPanel {
 
         lblName = new javax.swing.JLabel();
         imgAvatar = new mvc.view.generalUI.containers.ImageContainer();
-        lblID = new javax.swing.JLabel();
+        lblTitle = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(325, 69));
@@ -72,7 +75,7 @@ public class UserPanel extends javax.swing.JPanel {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        lblID.setText("jLabel1");
+        lblTitle.setText("TItle");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -83,8 +86,8 @@ public class UserPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblName)
-                    .addComponent(lblID))
-                .addGap(0, 233, Short.MAX_VALUE))
+                    .addComponent(lblTitle))
+                .addGap(0, 296, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,7 +96,7 @@ public class UserPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(lblName)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblID)
+                .addComponent(lblTitle)
                 .addContainerGap(19, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -104,12 +107,12 @@ public class UserPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private mvc.view.generalUI.containers.ImageContainer imgAvatar;
-    private javax.swing.JLabel lblID;
     private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables
 
     public void clear() {
-        lblID.setText("");
+        lblTitle.setText("");
         lblName.setText("");
         imgAvatar.clear();
     }
