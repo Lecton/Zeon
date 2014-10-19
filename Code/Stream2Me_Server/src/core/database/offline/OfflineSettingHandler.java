@@ -102,12 +102,8 @@ public class OfflineSettingHandler implements SettingHandler {
                     }
                     
                 } else {
-                    byte[] dbDigest =pass.getBytes(OfflineDatabase.ENCODING);
-
                     password =Base64Coder.decodeString(password);
-                    String pwd =uid+password;
-                    byte[] pwdDigest =OfflineDatabase.INSTANCE.digest.digest(pwd.getBytes(OfflineDatabase.ENCODING));
-                    digestMatch =MessageDigest.isEqual(pwdDigest, dbDigest);
+                    digestMatch =OfflineDatabase.INSTANCE.validatePassword(uid, password, pass);
                 }
                 if (digestMatch || pass == null) {
                     ObjectSet<Client> resultC =OfflineDatabase.INSTANCE.db.queryByExample(new Client(userID));
@@ -121,9 +117,6 @@ public class OfflineSettingHandler implements SettingHandler {
         } catch(Db4oIOException ex) {
             Logger.getLogger(OfflineUserHandler.class.getName())
                     .log(Level.SEVERE, "SQLException", ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(OfflineSettingHandler.class.getName())
-                    .log(Level.SEVERE, "UnsupportedEncodingException", ex);
         }
         GroupJoinMessage gjm =new GroupJoinMessage(false);
         gjm.setError("Password mismatch");
@@ -145,7 +138,7 @@ public class OfflineSettingHandler implements SettingHandler {
             
             String uID =UUID.randomUUID().toString();
             String pwd =Base64Coder.decodeString(password);
-            Collection col =new Collection(uID, c, groupName, OfflineDatabase.INSTANCE.getPassword(pwd, uID));
+            Collection col =new Collection(uID, c, groupName, OfflineDatabase.INSTANCE.getPasswordForDatabase(uID, pwd));
             OfflineDatabase.INSTANCE.db.store(col);
             OfflineDatabase.INSTANCE.db.commit();
             c.setGroup(col);
@@ -156,8 +149,6 @@ public class OfflineSettingHandler implements SettingHandler {
             return new GroupCreateMessage(true, uID);
         } catch (Db4oIOException ex) {
             Logger.getLogger(OfflineRegistrationHandler.class.getName()).log(Level.SEVERE, "SQLException", ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(OfflineRegistrationHandler.class.getName()).log(Level.SEVERE, "UnsupportedEncodingException", ex);
         }
         return new GroupCreateMessage(false, null);
     }

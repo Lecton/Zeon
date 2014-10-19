@@ -24,6 +24,7 @@ public class Server implements Runnable {
     private static Server server;
     
     public static void main(String[] args) {
+        int port =9999;
         try {
             boolean offline =false;
             for (int i=0; i<args.length; i++) {
@@ -34,7 +35,17 @@ public class Server implements Runnable {
                             Server.name =args[i+1];
                         }
                     }
-                } else if (arg.equals("-offline")) {
+                } else if (arg.equals("-p")) {
+                    if (i+1 < args.length) {
+                        if (!args[i+1].startsWith("-")) {
+                            try {
+                                port =Integer.parseInt(args[i+1]);
+                            } catch (NumberFormatException e) {
+                                System.out.println("Port setting failed. Defaulting to: "+port);
+                            }
+                        }
+                    }
+                } else if (arg.equals("--offline")) {
                     offline =true;
                 }
             }
@@ -46,7 +57,7 @@ public class Server implements Runnable {
                     DatabaseHandler.setOffline();
                 }
             }
-            server =new Server(2014);
+            server =new Server(port);
             Thread serverThread =new Thread(server);
             serverThread.start();
             Scanner in =new Scanner(System.in);
@@ -56,6 +67,8 @@ public class Server implements Runnable {
                     System.exit(0);
                 }
             }
+        } catch (Exception e) {
+            System.exit(-1);
         } finally {
             server.close();
         }
@@ -68,6 +81,7 @@ public class Server implements Runnable {
     @Override
     public void run() {
         System.out.println("Starting "+name);
+        System.out.println("\ton PORT: "+PORT);
         DatabaseHandler.userHandler.generateGroups();
         
         EventLoopGroup bossGroup =new NioEventLoopGroup();
@@ -78,14 +92,14 @@ public class Server implements Runnable {
                     .group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new Initialiser());
-            
             bootstrap.bind(PORT).channel().closeFuture().sync();
         }
-        catch (InterruptedException ex) {
+        catch (Exception ex) {
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
             DatabaseHandler.database.close();
+            System.exit(1);
         }
     }
     

@@ -6,9 +6,7 @@
 
 package mvc.view.generalUI;
 
-import java.awt.event.ActionEvent;
 import java.util.logging.Logger;
-import mvc.controller.generalUI.UserControl;
 
 /**
  *
@@ -22,7 +20,7 @@ public class UserPanel extends javax.swing.JPanel {
      */
     public UserPanel() {
         initComponents();
-        
+        lblID.setVisible(false);
         setComponentPopupMenu(new UserPopup());
     }
     

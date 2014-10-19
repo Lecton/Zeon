@@ -157,10 +157,11 @@ public class MessageHandler {
 
     private static void handleUpdateAvatar(Channel ch, UpdateAvatarMessage msg) {
         try {
-        Message message =DatabaseHandler.userHandler.updateAvatar(msg);
-        ClientHandler.writeAndFlush(DatabaseHandler.userHandler.getGroupID(msg.getUserID()), message);
-        Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
-                "Update avatar.");
+            System.out.println(msg.getAvatar());
+            Message message =DatabaseHandler.userHandler.updateAvatar(msg);
+            ClientHandler.writeAndFlush(DatabaseHandler.userHandler.getGroupID(msg.getUserID()), message);
+            Logger.getLogger(MessageHandler.class.getName()).log(Level.INFO, 
+                    "Update avatar.");
         } catch (Exception e) {
             e.printStackTrace();
         }

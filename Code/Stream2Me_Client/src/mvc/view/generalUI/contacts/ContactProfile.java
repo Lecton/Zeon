@@ -29,6 +29,7 @@ public class ContactProfile extends javax.swing.JPanel {
         this.userID =userID;
         initComponents();
         setComponentPopupMenu(new ContactPopup(this));
+        lblID.setVisible(false);
     }
 
     public void setProfile(String fullname, String avatar) {

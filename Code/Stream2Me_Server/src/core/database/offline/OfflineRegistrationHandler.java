@@ -59,15 +59,12 @@ public class OfflineRegistrationHandler implements RegistrationHandler {
                 String surname =msg.getSurname();
                 String email =msg.getEmail();
                 String password =Base64Coder.decodeString(msg.getPass());
-                String query = "INSERT INTO client " +
-                        "(userid, name, surname, username, password, email, registrationdate)" +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
                 String uID =UUID.randomUUID().toString();
-                Client person =new Client(uID, name, surname, username, OfflineDatabase.INSTANCE.getPassword(password, uID), email, surname);
+                Client person =new Client(uID, name, surname, username, OfflineDatabase.INSTANCE.getPasswordForDatabase(uID, password), email, surname);
                 OfflineDatabase.INSTANCE.db.store(person);
                 OfflineDatabase.INSTANCE.db.commit();
                 return new RegistrationResponseMessage(true);
-            } catch (UnsupportedEncodingException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(OfflineRegistrationHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

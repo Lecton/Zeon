@@ -134,12 +134,8 @@ public class OnlineSettingHandler implements SettingHandler {
                     }
                     
                 } else {
-                    byte[] dbDigest =pass.getBytes(OnlineDatabase.ENCODING);
-
                     password =Base64Coder.decodeString(password);
-                    String pwd =uid+password;
-                    byte[] pwdDigest =OnlineDatabase.INSTANCE.digest.digest(pwd.getBytes(OnlineDatabase.ENCODING));
-                    digestMatch =MessageDigest.isEqual(pwdDigest, dbDigest);
+                    digestMatch =OnlineDatabase.INSTANCE.validatePassword(uid, password, pass);
                 }
                 if (digestMatch || pass == null) {
                     query = "UPDATE client " +
@@ -155,9 +151,6 @@ public class OnlineSettingHandler implements SettingHandler {
         } catch(SQLException ex) {
             Logger.getLogger(OnlineUserHandler.class.getName())
                     .log(Level.SEVERE, "SQLException", ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(OnlineSettingHandler.class.getName())
-                    .log(Level.SEVERE, "UnsupportedEncodingException", ex);
         } finally {
             try {
                 if(statement != null){
@@ -189,12 +182,13 @@ public class OnlineSettingHandler implements SettingHandler {
                     + "VALUES (?, ?, ?, ?)";
 
             String pwd =Base64Coder.decodeString(password);
+            System.out.println(pwd);
             statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
             String uID =UUID.randomUUID().toString();
             statement.setString(1, uID);
             statement.setString(2, userID);
             statement.setString(3, groupName);
-            statement.setString(4, OnlineDatabase.INSTANCE.getPassword(pwd, uID));
+            statement.setString(4, OnlineDatabase.INSTANCE.getPasswordForDatabase(uID, pwd));
             
             int result =statement.executeUpdate();
             
@@ -214,8 +208,6 @@ public class OnlineSettingHandler implements SettingHandler {
             }
         } catch (SQLException ex) {
             Logger.getLogger(OnlineRegistrationHandler.class.getName()).log(Level.SEVERE, "SQLException", ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(OnlineRegistrationHandler.class.getName()).log(Level.SEVERE, "UnsupportedEncodingException", ex);
         }
         return new GroupCreateMessage(false, null);
     }

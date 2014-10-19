@@ -57,7 +57,7 @@ public class Login extends javax.swing.JFrame {
 
         lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo.png"))); // NOI18N
 
-        lblUsername.setText("Email");
+        lblUsername.setText("Username");
 
         lblPassword.setText("Password");
 

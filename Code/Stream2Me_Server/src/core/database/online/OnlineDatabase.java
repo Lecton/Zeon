@@ -13,10 +13,12 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bouncycastle.util.Arrays;
 
 /**
  *
@@ -24,20 +26,20 @@ import java.util.logging.Logger;
  * @author Lecton
  */
 public class OnlineDatabase implements Database {
-    protected static OnlineDatabase INSTANCE;
+    public static OnlineDatabase INSTANCE;
             
-    MessageDigest digest;
+    private MessageDigest digest;
     
     private final String host; //127.0.0.1
     private final int port;//5433
     private final String database;//stream2me
     private final String username;//postgres
-    private final String password;//root
+    private final String dbPassword;//root
     private Connection connection;
 
     public OnlineDatabase() {
         try {
-            digest =MessageDigest.getInstance("SHA1");
+            digest =MessageDigest.getInstance(ENCRYPTION);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(OnlineUserHandler.class.getName())
                     .log(Level.SEVERE, null, ex);
@@ -47,7 +49,7 @@ public class OnlineDatabase implements Database {
         this.port = 5433;
         this.database = "stream2me";
         this.username = "postgres";
-        this.password = "root";
+        this.dbPassword = "root";
         this.connection = null;
     }
     
@@ -59,8 +61,11 @@ public class OnlineDatabase implements Database {
             try {
                 connection = DriverManager.getConnection(
                         "jdbc:postgresql://"+this.host+":"+this.port+"/"+this.database, 
-                        this.username,this.password);
+                        this.username, this.dbPassword);
                 if (connection != null) {
+                    checkDefaultGroup();
+                    
+                    
                     return true;
                 }
             } catch (SQLException e) {
@@ -83,7 +88,7 @@ public class OnlineDatabase implements Database {
         }        
     }
     
-    protected PreparedStatement getPreparedStatement(String statement){
+    public PreparedStatement getPreparedStatement(String statement){
         try {
             return connection.prepareStatement(statement);
         } catch (SQLException ex) {
@@ -100,14 +105,6 @@ public class OnlineDatabase implements Database {
         }
         return null;
     }
-    
-    @Override
-    public String getPassword(String pass, String key) throws UnsupportedEncodingException {
-        String pwd =new String((key+pass).getBytes(),ENCODING);
-        byte[] pwdDigest =digest.digest(pwd.getBytes(ENCODING));
-        String temp =new String(pwdDigest, ENCODING);
-        return temp;
-    }
 
     @Override
     public boolean close() {
@@ -120,5 +117,66 @@ public class OnlineDatabase implements Database {
             }
         }
         return false;
+    }
+
+    private void checkDefaultGroup() {
+        PreparedStatement statement;
+        ResultSet result = null;
+        String query = "SELECT groupid "
+                        + "FROM collection "
+                        + "WHERE groupid = '-111'";
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
+        try{
+            result = statement.executeQuery();
+
+            if(result.next()) {
+                return ;
+            } else {
+                query ="INSERT INTO collection (groupid, ownerid, name) VALUES ('-111','-111', 'Default')";
+                statement =OnlineDatabase.INSTANCE.getPreparedStatement(query);
+                statement.execute();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OnlineDatabase.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if(statement != null) {
+                    statement.close();
+                }
+            } catch(SQLException ex) {
+                Logger.getLogger(OnlineDatabase.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @Override
+    public boolean validatePassword(String salt, String pass, String key) {
+        System.out.println(pass);
+        pass =getPasswordForDatabase(salt, pass);
+        System.out.println(pass);
+        System.out.println(key);
+        System.out.println(Arrays.areEqual(pass.getBytes(), key.getBytes()));
+        return Arrays.areEqual(pass.getBytes(), key.getBytes());
+    }
+
+    @Override
+    public String getPasswordForDatabase(String salt, String pass) {
+        pass =salt+pass;
+        return getHex(digest.digest(pass.getBytes()));
+    }
+
+    @Override
+    public String getHex(byte[] b){
+        StringBuilder sb = new StringBuilder(b.length * 2);
+        for (int i = 0; i < b.length; i++){
+            int v = b[i] & 0xff;
+            if (v < 16) {
+                sb.append('0');
+            }
+            sb.append(Integer.toHexString(v));
+        }
+        return sb.toString().toUpperCase();
     }
 }

@@ -11,6 +11,7 @@ import channel.ClientChannel;
 import channel.group.ClientHandler;
 import channel.group.matcher.ClientGroup;
 import connection.messageChannel.MessageBuilder;
+import core.database.abstractInterface.Database;
 import core.database.abstractInterface.UserHandler;
 import core.database.objects.BaseUser;
 import core.database.objects.User;
@@ -94,81 +95,78 @@ public class OnlineUserHandler implements UserHandler {
 
     @Override
     public GreetingMessage userLogin(Channel ch, LoginMessage message) {
-        String username =message.getUsername();
-        String password =Base64Coder.decodeString(message.getPasswordHash());
-        
-        if(username != null){
-            PreparedStatement statement;
-            ResultSet result = null;
-            String query = "SELECT * " +
-                            "FROM client " +
-                            "WHERE username = ? ";
-            statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
-            try{
-                statement.setString(1, username);
-//                statement.setString(2, password);
-//                System.out.println("Pwd: "+password);
-//                System.out.println("Query: "+statement.toString());
-                result = statement.executeQuery();
-                
-                if (result.next()) {
-                    String userID =result.getString("userid");
-                    String pwd =result.getString("password");
-                    
-                    byte[] dbDigest =pwd.getBytes(OnlineDatabase.ENCODING);
-                    password =userID+password;
-                    password =password;
-                    byte[] pwdDigest =OnlineDatabase.INSTANCE.digest.digest(password.getBytes(OnlineDatabase.ENCODING));
-                    boolean digestMatch =MessageDigest.isEqual(pwdDigest, dbDigest);
-                    
-                    if (digestMatch) {
-                        String groupID =result.getString("groupid");
-                        String name =result.getString("name");
-                        String surname =result.getString("surname");
-                        String uName =result.getString("username");
-                        String email =result.getString("email");
-                        String aboutMe =result.getString("aboutme");
-                        String title =result.getString("title");
-                        String avatar =result.getString("avatar");
-                        boolean loggedIn =result.getBoolean("loggedin");
-                        if (!loggedIn) {
-                            User person =new User(userID, uName, groupID, 
-                                    name, surname, email, title, aboutMe, avatar);
-                            ClientChannel cc =new ClientChannel(ch, userID, groupID);
-                            int addResult =ClientHandler.add(cc);
-                            if (addResult == 1) {
-                                ClientHandler.writeAndFlush(groupID, MessageBuilder.generateNewUser(person, null), new ClientGroup(userID, groupID));
-                                userLoggedInUpdate(userID, cc.getConnectionID(), true);
-                                return MessageBuilder.generateGreeting(person, true, "Login success.");
-                            } else if (addResult == 2) {
-                                userLoggedInUpdate(userID, cc.getConnectionID(), true);
-                                return MessageBuilder.generateGreeting(person, true, "Login success.");
+        try {
+            String username =message.getUsername();
+            String password =Base64Coder.decodeString(message.getPasswordHash());
+
+            if(username != null){
+                PreparedStatement statement;
+                ResultSet result = null;
+                String query = "SELECT * " +
+                                "FROM client " +
+                                "WHERE username = ? ";
+                statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
+                try {
+                    statement.setString(1, username);
+    //                statement.setString(2, password);
+    //                System.out.println("Pwd: "+password);
+    //                System.out.println("Query: "+statement.toString());
+                    result = statement.executeQuery();
+
+                    if (result.next()) {
+                        String userID =new String(result.getString("userid").getBytes());
+                        String pwd =new String(result.getString("password").getBytes());
+                        boolean digestMatch =OnlineDatabase.INSTANCE.validatePassword(userID, password, pwd);
+
+                        if (digestMatch) {
+                            String groupID =result.getString("groupid");
+                            String name =result.getString("name");
+                            String surname =result.getString("surname");
+                            String uName =result.getString("username");
+                            String email =result.getString("email");
+                            String aboutMe =result.getString("aboutme");
+                            String title =result.getString("title");
+                            String avatar =result.getString("avatar");
+                            boolean loggedIn =result.getBoolean("loggedin");
+                            if (!loggedIn) {
+                                User person =new User(userID, uName, groupID, 
+                                        name, surname, email, title, aboutMe, avatar);
+                                ClientChannel cc =new ClientChannel(ch, userID, groupID);
+                                int addResult =ClientHandler.add(cc);
+                                if (addResult == 1) {
+                                    ClientHandler.writeAndFlush(groupID, MessageBuilder.generateNewUser(person, null), new ClientGroup(userID, groupID));
+                                    userLoggedInUpdate(userID, cc.getConnectionID(), true);
+                                    return MessageBuilder.generateGreeting(person, true, "Login success.");
+                                } else if (addResult == 2) {
+                                    userLoggedInUpdate(userID, cc.getConnectionID(), true);
+                                    return MessageBuilder.generateGreeting(person, true, "Login success.");
+                                } else {
+                                    return MessageBuilder.generateGreeting(null, false, "Users group could not be found.");
+                                }
                             } else {
-                                return MessageBuilder.generateGreeting(null, false, "Users group could not be found.");
+                                return MessageBuilder.generateGreeting(null, false, "Multiple logins not allowed.");
                             }
                         } else {
-                            return MessageBuilder.generateGreeting(null, false, "Multiple logins not allowed.");
+                            return MessageBuilder.generateGreeting(null, false, "Username or password did not match.");
                         }
-                    } else {
-                        return MessageBuilder.generateGreeting(null, false, "Username or password did not match.");
                     }
-                }
-              }catch (SQLException ex) {
-                  Logger.getLogger(OnlineUserHandler.class.getName())
-                          .log(Level.SEVERE, null, ex);
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(OnlineUserHandler.class.getName()).log(Level.SEVERE, null, ex);
-            }finally{
-                  try{
-                      if(statement != null){
-                          statement.close();
-                      }
-                  }catch(SQLException ex){
-//                      System.out.println("here2");
+                } catch (SQLException ex) {
                       Logger.getLogger(OnlineUserHandler.class.getName())
                               .log(Level.SEVERE, null, ex);
-                  }
-              }
+                } finally {
+                    try {
+                        if(statement != null) {
+                            statement.close();
+                        }
+                    } catch(SQLException ex) {
+                        Logger.getLogger(OnlineUserHandler.class.getName())
+                                .log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(OnlineUserHandler.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
         return MessageBuilder.generateGreeting(null, false, "Login failed. Username or password incorrect.");
 //        throw new UnsupportedOperationException("Login error."); //To change body of generated methods, choose Tools | Templates.

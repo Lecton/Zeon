@@ -25,55 +25,46 @@ public class UsersSaltyEncryption {
     
     public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         String password ="cos301";
-        String bernhard ="bca2414d-7ee0-40d9-a130-def36c44dc49";
-        String lecton ="dd124987-5599-4adf-8b6a-e465b23cfc61";
-        String xavier ="2f35aa55-3968-4669-b95c-c93668fa61b6";
-        String zenadia ="9735d1f3-0503-40d4-a1c2-1e7c84dda390";
+        String bernhard ="029a4095-4588-4c8a-b416-8e5ddbf7b585";
         
-        digest =MessageDigest.getInstance("SHA1");
-        
+        digest =MessageDigest.getInstance("SHA-512");
         
         updateDB(bernhard, getPassword(password, bernhard));
-        
-        
-        
-        updateDB(lecton, getPassword(password, lecton));
-        updateDB(xavier, getPassword(password, xavier));
-        updateDB(zenadia, getPassword(password, zenadia));
     }
     
     private static String getPassword(String pass, String key) throws UnsupportedEncodingException {
         String pwd =key+pass;
-        byte[] pwdDigest =digest.digest(pwd.getBytes("Latin1"));
-        String temp =new String(pwdDigest, "Latin1");
+        byte[] pwdDigest =digest.digest(pwd.getBytes());
+        String temp =new String(pwdDigest);
+        System.out.println(temp);
         return temp;
     }
     
     private static void updateDB(String userID, String password) {
-//        DatabaseHandler.setOnline();
-//        PreparedStatement statement;
-//        ResultSet result = null;
-//        String query = "UPDATE client " +
-//                        "SET password = ? " +
-//                        "WHERE userID = ?";
-//        statement = DatabaseHandler.database.getPreparedStatement(query);
-//        try {
-//            statement.setString(1, password);
-//            statement.setString(2, userID);
-//            int lines =statement.executeUpdate();
-//            System.out.println(lines);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UsersSaltyEncryption.class.getName())
-//                    .log(Level.SEVERE, null, ex);
-//        } finally {
-//            try {
-//                if(statement != null) {
-//                    statement.close();
-//                }
-//            } catch(SQLException ex) {
-//                Logger.getLogger(UsersSaltyEncryption.class.getName())
-//                        .log(Level.SEVERE, null, ex);
-//            }
-//        }
+        DatabaseHandler.setOnline();
+        PreparedStatement statement;
+        ResultSet result = null;
+        String query = "UPDATE client " +
+                        "SET password = ? " +
+                        "WHERE userID = ?";
+        statement = OnlineDatabase.INSTANCE.getPreparedStatement(query);
+        try {
+            statement.setString(1, password);
+            statement.setString(2, userID);
+            int lines =statement.executeUpdate();
+            System.out.println(lines);
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersSaltyEncryption.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if(statement != null) {
+                    statement.close();
+                }
+            } catch(SQLException ex) {
+                Logger.getLogger(UsersSaltyEncryption.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

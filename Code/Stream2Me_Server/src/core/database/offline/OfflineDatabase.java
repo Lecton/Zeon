@@ -15,7 +15,6 @@ import core.database.offline.object.Collection;
 import core.database.offline.object.Connection;
 import core.database.offline.object.StreamData;
 import core.database.offline.object.StreamProp;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
@@ -30,7 +29,7 @@ public class OfflineDatabase implements Database {
     protected static OfflineDatabase INSTANCE;
     
     protected ObjectContainer db;
-    protected MessageDigest digest;
+    private MessageDigest digest;
 
     public OfflineDatabase() {
         try {
@@ -68,14 +67,6 @@ public class OfflineDatabase implements Database {
         System.out.println("\tStreamData count: " + result5.size());
         return true;
     }
-    
-    @Override
-    public String getPassword(String pass, String key) throws UnsupportedEncodingException {
-        String pwd =key+pass;
-        byte[] pwdDigest =digest.digest(pwd.getBytes("Latin1"));
-        String temp =new String(pwdDigest, "Latin1");
-        return temp;
-    }
 
     @Override
     public boolean close() {
@@ -85,5 +76,30 @@ public class OfflineDatabase implements Database {
             return db.close();
         }
         return false;
+    }
+
+    @Override
+    public boolean validatePassword(String userID, String password, String pwd) {
+        password =getPasswordForDatabase(userID, password);
+        return MessageDigest.isEqual(password.getBytes(), pwd.getBytes());
+    }
+
+    @Override
+    public String getPasswordForDatabase(String userID, String password) {
+        password =userID+password;
+        return getHex(digest.digest(password.getBytes()));
+    }
+
+    @Override
+    public String getHex(byte[] b){
+        StringBuilder sb = new StringBuilder(b.length * 2);
+        for (int i = 0; i < b.length; i++){
+            int v = b[i] & 0xff;
+            if (v < 16) {
+                sb.append('0');
+            }
+            sb.append(Integer.toHexString(v));
+        }
+        return sb.toString().toUpperCase();
     }
 }

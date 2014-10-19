@@ -21,8 +21,6 @@ import core.database.offline.object.Connection;
 import core.database.offline.object.StreamData;
 import core.database.offline.object.StreamProp;
 import io.netty.channel.Channel;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -74,55 +72,55 @@ public class OfflineUserHandler implements UserHandler {
 
     @Override
     public GreetingMessage userLogin(Channel ch, LoginMessage msg) {
-        String username =msg.getUsername();
-        String password =Base64Coder.decodeString(msg.getPasswordHash());
-        
-        if(username != null) {
-            try {
-                ObjectSet<Client> result =OfflineDatabase.INSTANCE.db.queryByExample(Client.queryUsername(msg.getUsername()));
-                Client user =result.next();
-                if (result.size() == 1) {
-                    String userID =user.getUserid();
-                    String pwd =user.getPassword();
-                    byte[] dbDigest =pwd.getBytes(OfflineDatabase.ENCODING);
-                    password =userID+password;
-                    byte[] pwdDigest =OfflineDatabase.INSTANCE.digest.digest(password.getBytes(OfflineDatabase.ENCODING));
-                    boolean digestMatch =MessageDigest.isEqual(pwdDigest, dbDigest);
-                    
-                    if (digestMatch) {
-                        if (!user.isLoggedin()) {
-                            ClientChannel cc =new ClientChannel(ch, userID, user.getGroup().getGroupID());
-                            int addResult =ClientHandler.add(cc);
-                            if (addResult == 1) {
-                                ClientHandler.writeAndFlush(user.getGroup().getGroupID(), MessageBuilder.generateNewUser(user.getUser(), null), new ClientGroup(userID, user.getGroup().getGroupID()));
-                                userLoggedInUpdate(userID, cc.getConnectionID(), true);
-                                return MessageBuilder.generateGreeting(user.getUser(), true, "Login success.");
-                            } else if (addResult == 2) {
-                                userLoggedInUpdate(userID, cc.getConnectionID(), true);
-                                return MessageBuilder.generateGreeting(user.getUser(), true, "Login success.");
+        try {
+            String username =msg.getUsername();
+            String password =Base64Coder.decodeString(msg.getPasswordHash());
+
+            if(username != null) {
+                try {
+                    ObjectSet<Client> result =OfflineDatabase.INSTANCE.db.queryByExample(Client.queryUsername(msg.getUsername()));
+                    Client user =result.next();
+                    if (result.size() == 1) {
+                        String userID =user.getUserid();
+                        String pwd =user.getPassword();
+
+                        boolean digestMatch =OfflineDatabase.INSTANCE.validatePassword(userID, password, pwd);
+
+                        if (digestMatch) {
+                            if (!user.isLoggedin()) {
+                                ClientChannel cc =new ClientChannel(ch, userID, user.getGroup().getGroupID());
+                                int addResult =ClientHandler.add(cc);
+                                if (addResult == 1) {
+                                    ClientHandler.writeAndFlush(user.getGroup().getGroupID(), MessageBuilder.generateNewUser(user.getUser(), null), new ClientGroup(userID, user.getGroup().getGroupID()));
+                                    userLoggedInUpdate(userID, cc.getConnectionID(), true);
+                                    return MessageBuilder.generateGreeting(user.getUser(), true, "Login success.");
+                                } else if (addResult == 2) {
+                                    userLoggedInUpdate(userID, cc.getConnectionID(), true);
+                                    return MessageBuilder.generateGreeting(user.getUser(), true, "Login success.");
+                                } else {
+                                    return MessageBuilder.generateGreeting(null, false, "Users group could not be found.");
+                                }
                             } else {
-                                return MessageBuilder.generateGreeting(null, false, "Users group could not be found.");
+                                return MessageBuilder.generateGreeting(null, false, "Multiple logins not allowed.");
                             }
                         } else {
-                            return MessageBuilder.generateGreeting(null, false, "Multiple logins not allowed.");
+                            return MessageBuilder.generateGreeting(null, false, "Username or password did not match.");
                         }
-                    } else {
-                        return MessageBuilder.generateGreeting(null, false, "Username or password did not match.");
                     }
+                } catch (Db4oIOException ex) {
+                    Logger.getLogger(OfflineUserHandler.class.getName())
+                            .log(Level.SEVERE, null, ex);
+                } catch (IllegalStateException ex) {
+                    Logger.getLogger(OfflineUserHandler.class.getName())
+                            .log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(OfflineUserHandler.class.getName())
+                            .log(Level.SEVERE, null, ex);
                 }
-            } catch (Db4oIOException ex) {
-                Logger.getLogger(OfflineUserHandler.class.getName())
-                        .log(Level.SEVERE, null, ex);
-            } catch (IllegalStateException ex) {
-                Logger.getLogger(OfflineUserHandler.class.getName())
-                        .log(Level.SEVERE, null, ex);
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(OfflineUserHandler.class.getName())
-                        .log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(OfflineUserHandler.class.getName())
-                        .log(Level.SEVERE, null, ex);
             }
+        } catch (Exception ex) {
+            Logger.getLogger(OfflineUserHandler.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
         return MessageBuilder.generateGreeting(null, false, "Login failed. Username or password incorrect.");
     }

@@ -94,8 +94,8 @@ public class ProfileControl implements ActionListener {
                         image =ImageUtils.resize(image, new Dimension(500, 500));
                         Control.INSTANCE.writeMessage(
                                 MessageFactory.generateUpdateAvatar(userID, 
-                                        ImageUtils.encodeToString(image, "jpg")));
-                        UserControl.INSTANCE.setAvatar(ImageUtils.encodeToString(image, "jpg"));
+                                        ImageUtils.encodeToString(image, "png")));
+                        UserControl.INSTANCE.setAvatar(ImageUtils.encodeToString(image, "png"));
                         UserControl.INSTANCE.update(userID);
                         
                         return image;

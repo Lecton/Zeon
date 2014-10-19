@@ -6,19 +6,21 @@
 
 package core.database.abstractInterface;
 
-import java.io.UnsupportedEncodingException;
-
 /**
  *
  * @author Bernhard
  * @author Lecton
  */
 public interface Database {
-    static String ENCODING ="LATIN1";
+    static String ENCRYPTION ="SHA-512";
     
     public abstract boolean connect();
     
     public abstract boolean close();
     
-    public abstract String getPassword(String pass, String key) throws UnsupportedEncodingException;
+    public abstract boolean validatePassword(String userID, String password, String pwd);
+    
+    public abstract String getPasswordForDatabase(String userID, String password);
+    
+    public abstract String getHex(byte[] b);
 }
