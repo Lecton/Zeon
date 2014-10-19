@@ -1,0 +1,10 @@
+UNIT
+Database
+Video rendering
+Messages (Client -> Server -> Clinet -> ? is intact)
+
+INTEGRATION
+Video rendering - over network.
+
+NON-FUNCTIONALITY
+Security testing
